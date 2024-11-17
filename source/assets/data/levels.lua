@@ -354,30 +354,30 @@ levels = {
 			light = 0.1,
 			shadow = false,
 			triggers = {
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 170,
-				-- 	y = 150,
-				-- 	width = 60,
-				-- 	height = 30,
-				-- 	script = 2
-				-- },
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 220,
-				-- 	y = 100,
-				-- 	width = 60,
-				-- 	height = 30,
-				-- 	script = 3
-				-- },
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 200,
-				-- 	y = 55,
-				-- 	width = 60,
-				-- 	height = 30,
-				-- 	script = 4
-				-- },
+				{
+					usedTrigger = false,
+					x = 170,
+					y = 150,
+					width = 60,
+					height = 30,
+					script = 2
+				},
+				{
+					usedTrigger = false,
+					x = 220,
+					y = 100,
+					width = 60,
+					height = 30,
+					script = 3
+				},
+				{
+					usedTrigger = false,
+					x = 200,
+					y = 55,
+					width = 60,
+					height = 30,
+					script = 4
+				},
 			},
 			enemies = {
 				{

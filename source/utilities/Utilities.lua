@@ -123,7 +123,7 @@ function ResetGame()
 	PlayerData = playdate.datastore.read('playerOriginal')
 	levels = playdate.datastore.read('levelOriginal')
 end
-function DeleteGame()
+function DeleteGame() 
 	playdate.file.delete('playerSave.json')
 	playdate.file.delete('levelSave.json')
 	playdate.file.delete('playerOriginal.json')

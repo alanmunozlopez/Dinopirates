@@ -187,6 +187,8 @@ function scene:enter()
 			Trigger(x,y,width,height,script, i, room)
 		end
 	end
+	
+	SaveGame()
 end
 
 -- This runs once a transition from another scene is complete.
@@ -219,7 +221,7 @@ end
 function scene:exit()
 	scene.super.exit(self)
 	
-	SaveGame()
+	--SaveGame()
 	
 	uiScreen:removeAll()
 	floor:remove()
