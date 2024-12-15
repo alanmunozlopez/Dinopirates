@@ -60,29 +60,32 @@ function dialogScreen:nextDialog()
 		video:remove()
 	end
 	self:setImage(dialogtext)
-	if dialogcounter <= table.getSize(dialogArray)then
-		if videoActive == false then
-			video = videoFeed(400,240,dialogArray[dialogcounter].video, ZIndex.alert)
-			videoActive = true
-		end
+	if table.getsize(dialogArray) ~= nil then
 		
-		if dialogArray[dialogcounter].screen  then
-			screenimg:addScreenfeed(dialogArray[dialogcounter].screen)
+		if dialogcounter <= table.getsize(dialogArray)then
+			if videoActive == false then
+				video = videoFeed(400,240,dialogArray[dialogcounter].video, ZIndex.alert)
+				videoActive = true
+			end
+			
+			if dialogArray[dialogcounter].screen  then
+				screenimg:addScreenfeed(dialogArray[dialogcounter].screen)
+			else
+				screenimg:remove()
+			end
+			
+			dialogtext:clear(Graphics.kColorClear)
+			Graphics.pushContext(dialogtext)
+				Graphics.drawTextInRect(script[dialogPosition].dialog[dialogcounter].text, 0, 0, 255, 78)
+			Graphics.popContext()
+			
+			self:add()
+			dialogcounter += 1
+			videoActive = false
 		else
-			screenimg:remove()
+			dialogcounter = 1
+			self:removeAll()
 		end
-		
-		dialogtext:clear(Graphics.kColorClear)
-		Graphics.pushContext(dialogtext)
-			Graphics.drawTextInRect(script[dialogPosition].dialog[dialogcounter].text, 0, 0, 255, 78)
-		Graphics.popContext()
-		
-		self:add()
-		dialogcounter += 1
-		videoActive = false
-	else
-		dialogcounter = 1
-		self:removeAll()
 	end
 end
 
