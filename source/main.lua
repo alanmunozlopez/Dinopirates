@@ -56,9 +56,5 @@ local menuItem, error = menu:addMenuItem("debug", function()
 end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
-Noble.Transition.setDefaultProperties(Noble.Transition.SpotlightMask, {
-	x = 325,
-	y = 95,
-	invert = true
-})
-Noble.new(TitleScene, 0.5)
+
+Noble.new(TitleScene, 0.3)

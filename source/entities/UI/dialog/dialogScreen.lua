@@ -1,6 +1,4 @@
 
-
-
 import "entities/UI/dialog/videoFeed"
 
 local dialogbox <const> = Graphics.image.new('assets/images/ui/dialog/dialogbox.png')
