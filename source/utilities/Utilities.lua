@@ -111,21 +111,3 @@ function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
 end
-function SaveGame()
-	playdate.datastore.write(levels, 'levelSave', true)
-	playdate.datastore.write(PlayerData, 'playerSave', true)
-end
-function LoadGame()
-	PlayerData = playdate.datastore.read('playerSave')
-	levels = playdate.datastore.read('levelSave')
-end
-function ResetGame()
-	PlayerData = playdate.datastore.read('playerOriginal')
-	levels = playdate.datastore.read('levelOriginal')
-end
-function DeleteGame() 
-	playdate.file.delete('playerSave.json')
-	playdate.file.delete('levelSave.json')
-	playdate.file.delete('playerOriginal.json')
-	playdate.file.delete('levelOriginal.json')
-end
