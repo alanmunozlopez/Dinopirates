@@ -313,24 +313,21 @@ scene.inputHandler = {
 	-- D-pad left
 	--
 	leftButtonDown = function()
-		-- DIAGONAL PREVENTION: Only allow movement if no other direction is active
-		if not isMoving then
+		if allowDiagonalMovement or not isMoving then
 			isMoving = true
-			currentDirection = 'left'  -- Lock movement to left direction
+			currentDirection = 'left'
 			scene:movePlayer('left')
 		end
 	end,
 	leftButtonHold = function()
-		-- DIAGONAL PREVENTION: Only continue movement if left is the active direction
-		if isMoving and currentDirection == 'left' then
+		if allowDiagonalMovement or (isMoving and currentDirection == 'left') then
 			scene:movePlayer('left')
 		end
 	end,
 	leftButtonUp = function()
-		-- DIAGONAL PREVENTION: Only reset if this was the active direction
 		if currentDirection == 'left' then
 			isMoving = false
-			currentDirection = nil  -- Clear direction lock
+			currentDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -341,24 +338,21 @@ scene.inputHandler = {
 	-- D-pad right
 	--
 	rightButtonDown = function()
-		-- DIAGONAL PREVENTION: Only allow movement if no other direction is active
-		if not isMoving then
+		if allowDiagonalMovement or not isMoving then
 			isMoving = true
-			currentDirection = 'right'  -- Lock movement to right direction
+			currentDirection = 'right'
 			scene:movePlayer('right')
 		end
 	end,
 	rightButtonHold = function()
-		-- DIAGONAL PREVENTION: Only continue movement if right is the active direction
-		if isMoving and currentDirection == 'right' then
+		if allowDiagonalMovement or (isMoving and currentDirection == 'right') then
 			scene:movePlayer('right')
 		end
 	end,
 	rightButtonUp = function()
-		-- DIAGONAL PREVENTION: Only reset if this was the active direction
 		if currentDirection == 'right' then
 			isMoving = false
-			currentDirection = nil  -- Clear direction lock
+			currentDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -369,24 +363,21 @@ scene.inputHandler = {
 	-- D-pad up
 	--
 	upButtonDown = function()
-		-- DIAGONAL PREVENTION: Only allow movement if no other direction is active
-		if not isMoving then
+		if allowDiagonalMovement or not isMoving then
 			isMoving = true
-			currentDirection = 'up'  -- Lock movement to up direction
+			currentDirection = 'up'
 			scene:movePlayer('up')
 		end
 	end,
 	upButtonHold = function()
-		-- DIAGONAL PREVENTION: Only continue movement if up is the active direction
-		if isMoving and currentDirection == 'up' then
+		if allowDiagonalMovement or (isMoving and currentDirection == 'up') then
 			scene:movePlayer('up')
 		end
 	end,
 	upButtonUp = function()
-		-- DIAGONAL PREVENTION: Only reset if this was the active direction
 		if currentDirection == 'up' then
 			isMoving = false
-			currentDirection = nil  -- Clear direction lock
+			currentDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -397,24 +388,21 @@ scene.inputHandler = {
 	-- D-pad down
 	--
 	downButtonDown = function()
-		-- DIAGONAL PREVENTION: Only allow movement if no other direction is active
-		if not isMoving then
+		if allowDiagonalMovement or not isMoving then
 			isMoving = true
-			currentDirection = 'down'  -- Lock movement to down direction
+			currentDirection = 'down'
 			scene:movePlayer('down')
 		end
 	end,
 	downButtonHold = function()
-		-- DIAGONAL PREVENTION: Only continue movement if down is the active direction
-		if isMoving and currentDirection == 'down' then
+		if allowDiagonalMovement or (isMoving and currentDirection == 'down') then
 			scene:movePlayer('down')
 		end
 	end,
 	downButtonUp = function()
-		-- DIAGONAL PREVENTION: Only reset if this was the active direction
 		if currentDirection == 'down' then
 			isMoving = false
-			currentDirection = nil  -- Clear direction lock
+			currentDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -448,3 +436,7 @@ scene.inputHandler = {
 		
 	end
 }
+
+function MazeScene:setDiagonalMovement(enabled)
+    allowDiagonalMovement = enabled
+end

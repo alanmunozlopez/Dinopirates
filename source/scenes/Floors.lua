@@ -110,6 +110,7 @@ function Floor109:init()
 	self:setFloor(9)
 	Floor109.super.init(self)
 	PlayerData.saveLevel = 109
+	self:setDiagonalMovement(true)
 end
 
 function Floor109:exit()
