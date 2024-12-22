@@ -57,4 +57,4 @@ end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
-Noble.new(TitleScene, 0.3)
+Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus)

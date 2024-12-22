@@ -70,3 +70,18 @@ function Door:prevRoom(direction)
     PlayerData.playerSpawn.x = spawnCoordinates[direction].x
     PlayerData.playerSpawn.y = spawnCoordinates[direction].y
 end
+
+function Door:collisionResponse(other)
+	if other.type == "player" then
+		if self.isOpen then
+			-- Save current state before transition
+			Noble.transition(MazeScene, {
+				nextLevel = self.nextLevel,
+				nextRoom = self.nextRoom,
+				enterDoor = self.doorID,
+				playerData = other:getPlayerData()
+			}, 0.3, Noble.Transition.MetroNexus)  -- Added transition parameters here
+		end
+	end
+	return "overlap"
+end
