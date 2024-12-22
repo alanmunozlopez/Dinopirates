@@ -195,6 +195,7 @@ end
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)
+	self:setDiagonalMovement(Noble.Settings.get("DiagonalMovement"))
 	
 end
 
@@ -288,9 +289,11 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-	if PlayerData.hasKey == true then
-		print("has key")
-	end
+	--if PlayerData.hasKey == true then
+		print(checkBool(isDiagonalMovementEnabled))
+		print("----")
+		print(checkBool(Noble.Settings.get("DiagonalMovement")))
+	--end
 	if PlayerData.hasLamp == true then
 		print("has lamp")
 	end
@@ -313,21 +316,21 @@ scene.inputHandler = {
 	-- D-pad left
 	--
 	leftButtonDown = function()
-		if allowDiagonalMovement or not isMoving then
-			isMoving = true
-			currentDirection = 'left'
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'left'
 			scene:movePlayer('left')
 		end
 	end,
 	leftButtonHold = function()
-		if allowDiagonalMovement or (isMoving and currentDirection == 'left') then
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'left') then
 			scene:movePlayer('left')
 		end
 	end,
 	leftButtonUp = function()
-		if currentDirection == 'left' then
-			isMoving = false
-			currentDirection = nil
+		if currentMoveDirection == 'left' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -338,21 +341,21 @@ scene.inputHandler = {
 	-- D-pad right
 	--
 	rightButtonDown = function()
-		if allowDiagonalMovement or not isMoving then
-			isMoving = true
-			currentDirection = 'right'
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'right'
 			scene:movePlayer('right')
 		end
 	end,
 	rightButtonHold = function()
-		if allowDiagonalMovement or (isMoving and currentDirection == 'right') then
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'right') then
 			scene:movePlayer('right')
 		end
 	end,
 	rightButtonUp = function()
-		if currentDirection == 'right' then
-			isMoving = false
-			currentDirection = nil
+		if currentMoveDirection == 'right' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -363,21 +366,21 @@ scene.inputHandler = {
 	-- D-pad up
 	--
 	upButtonDown = function()
-		if allowDiagonalMovement or not isMoving then
-			isMoving = true
-			currentDirection = 'up'
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'up'
 			scene:movePlayer('up')
 		end
 	end,
 	upButtonHold = function()
-		if allowDiagonalMovement or (isMoving and currentDirection == 'up') then
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'up') then
 			scene:movePlayer('up')
 		end
 	end,
 	upButtonUp = function()
-		if currentDirection == 'up' then
-			isMoving = false
-			currentDirection = nil
+		if currentMoveDirection == 'up' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -388,21 +391,21 @@ scene.inputHandler = {
 	-- D-pad down
 	--
 	downButtonDown = function()
-		if allowDiagonalMovement or not isMoving then
-			isMoving = true
-			currentDirection = 'down'
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'down'
 			scene:movePlayer('down')
 		end
 	end,
 	downButtonHold = function()
-		if allowDiagonalMovement or (isMoving and currentDirection == 'down') then
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'down') then
 			scene:movePlayer('down')
 		end
 	end,
 	downButtonUp = function()
-		if currentDirection == 'down' then
-			isMoving = false
-			currentDirection = nil
+		if currentMoveDirection == 'down' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -423,7 +426,7 @@ scene.inputHandler = {
 }
 
 function MazeScene:setDiagonalMovement(enabled)
-    allowDiagonalMovement = enabled
+    isDiagonalMovementEnabled = enabled
 end
 
 function scene:PowerCrank()

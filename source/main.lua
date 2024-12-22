@@ -14,6 +14,7 @@ import 'assets/data/script'
 
 Noble.Settings.setup({
 	Difficulty = "Medium",
+	DiagonalMovement = true,
 })
 Noble.showFPS = false
 
