@@ -571,7 +571,7 @@ levels = {
 					name = "brocorat",
 					x = 250,
 					y = 150,
-					speed = 0.1
+					speed = 1
 				}
 			},
 			triggers = {
