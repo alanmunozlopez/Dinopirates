@@ -17,7 +17,8 @@ local scene = MazeScene
 local room = nil -- Level in table position
 
 import "entities/player/player"
-import "entities/enemies/enemy"
+import "entities/enemies/brocorat"
+import "entities/enemies/frogcolli"
 import 'entities/props/propItem'
 import 'entities/props/door'
 import 'entities/items/Items'

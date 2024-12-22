@@ -386,12 +386,12 @@ levels = {
 					y = 160,
 					speed = 0.7
 				},
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 120,
-				-- 	speed = 3
-				-- },
+				{
+					name = "frogcolli",
+					x = 200,
+					y = 120,
+					speed = 3
+				},
 				-- {
 				-- 	name = "frogcolli",
 				-- 	x = 200,
