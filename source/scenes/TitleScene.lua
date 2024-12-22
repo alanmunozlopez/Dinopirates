@@ -59,7 +59,13 @@ function scene:init()
 		SaveSystem.reset()
 		Noble.transition(Floor107)
 	end)
-
+	if playdate.file.exists('gameState.json') then
+		menu:addItem("Delete save", function() 
+			SaveSystem.delete()
+			Noble.transition(TitleScene)
+		end)
+	end
+	
 	-- Add Playground option only if debug is true
 	if debug then
 		menu:addItem("Playground", function()
