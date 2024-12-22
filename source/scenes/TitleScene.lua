@@ -1,4 +1,4 @@
-
+import "utilities/SaveSystem"
 
 TitleScene = {}
 class("TitleScene").extends(NobleScene)
@@ -39,45 +39,35 @@ TitleScene.inputHandler = {
 -- first thing that happens when transitining away from another scene.
 function scene:init()
 	scene.super.init(self)
-	-- Check save game
-	if playdate.file.exists('playerSave.json') == false then
-		playdate.datastore.write(levels, 'levelOriginal', true)
-		playdate.datastore.write(PlayerData, 'playerOriginal', true)
-	end
-	menu = Noble.Menu.new(
-			true,
-			Noble.Text.ALIGN_LEFT,
-			false,
-			nil,
-			2,16
-		)
 	
-		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
-		if playdate.file.exists('playerSave.json') == true then
-			LoadGame()
-			menu:addItem("Continue", function() 
-				Noble.transition(RoomTranslate(PlayerData.saveLevel)) 
-			end)
-		end
-		
-		menu:addItem("New Game", function()
-			ResetGame()
-			Noble.transition(Floor107)--107 
-		 end)
-		
-		
-		if playdate.file.exists('playerSave.json') == true then
-			menu:addItem("Delete save", function() 
-				DeleteGame()
-				Noble.transition(TitleScene)
-			end)
-		end
-		--menu:addItem("Test", function() Noble.transition(TestScene) end)
-		if playdate.file.exists('playerSave.json') == true then
-			menu:select("Continue")
-		else
-			menu:select("New Game")
-		end
+	-- Initialize original state if needed
+	if not playdate.file.exists('levelOriginal.json') then
+		playdate.datastore.write(levels, 'levelOriginal', true)
+		playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
+	end
+	
+	menu = Noble.Menu.new(true, Noble.Text.ALIGN_LEFT, false, nil, 2, 16)
+	
+	if playdate.file.exists('gameState.json') then
+		menu:addItem("Continue", function() 
+			SaveSystem.load()
+			Noble.transition(RoomTranslate(PlayerData.saveLevel)) 
+		end)
+	end
+	
+	menu:addItem("New Game", function()
+		SaveSystem.reset()
+		Noble.transition(Floor107)
+	end)
+	
+	if playdate.file.exists('gameState.json') then
+		menu:addItem("Delete save", function() 
+			SaveSystem.delete()
+			Noble.transition(TitleScene)
+		end)
+	end
+	
+	menu:select(playdate.file.exists('gameState.json') and "Continue" or "New Game")
 end
 
 -- When transitioning from another scene, this runs as soon as this

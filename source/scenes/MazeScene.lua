@@ -189,7 +189,7 @@ function scene:enter()
 		end
 	end
 	
-	SaveGame()
+	SaveSystem.save()
 end
 
 -- This runs once a transition from another scene is complete.
@@ -243,7 +243,7 @@ end
 function scene:pause()
 	scene.super.pause(self)
 	-- Your code here
-	SaveGame()
+	SaveSystem.save()
 	
 end
 function scene:movePlayer(direction)
