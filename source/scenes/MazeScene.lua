@@ -204,7 +204,7 @@ function scene:update()
 	-- Mark: cheat code
 	cheat:update()
 	-- Mark: Crank notification
-	if PlayerData.battery == 0  and playdate.isCrankDocked() and PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 	
@@ -265,7 +265,6 @@ scene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
-		--print((script[1].dialog[1].text))
 		if PlayerData.isTalking == true then
 			player:displayDialog()
 		end
@@ -389,9 +388,7 @@ scene.inputHandler = {
 			if player.battery == 100 then
 				player:idle()
 			end
-			
 		end
-		
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
 	end,
