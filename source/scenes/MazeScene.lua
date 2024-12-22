@@ -412,23 +412,8 @@ scene.inputHandler = {
 
 	-- Crank
 	--
-	cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
-		if player.isAlive then
-			-- TODO: turn this into a function
-			if playdate.getCrankTicks(3) > 0 then
-				if player.loadingPower == true then
-					print('powa') 
-				else
-					player:chargeBattery(1)
-					if shadow then
-						shadow:refresh()
-					end
-				end
-			end
-			if player.battery == 100 then
-				player:idle()
-			end
-		end
+	cranked = function(change, acceleratedChange)
+		scene:PowerCrank()
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
 	end,
@@ -439,4 +424,23 @@ scene.inputHandler = {
 
 function MazeScene:setDiagonalMovement(enabled)
     allowDiagonalMovement = enabled
+end
+
+function scene:PowerCrank()
+    if not player.isAlive then return end
+    
+    if playdate.getCrankTicks(3) > 0 then
+        if player.loadingPower then
+            print('powa')  -- Consider removing debug print
+        else
+            player:chargeBattery(1)
+            if shadow then
+                shadow:refresh()
+            end
+        end
+    end
+    
+    if player.battery == 100 then
+        player:idle()
+    end
 end
