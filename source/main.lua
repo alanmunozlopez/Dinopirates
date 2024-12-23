@@ -14,8 +14,8 @@ import 'assets/data/script'
 
 Noble.Settings.setup({
 	Difficulty = "Medium",
-	DiagonalMovement = true,
 })
+
 Noble.showFPS = false
 
 Noble.GameData.setup({
@@ -23,6 +23,7 @@ Noble.GameData.setup({
 })
 
 debug = false
+diagonalMovement = false
 
 ZIndex = {
 	player = 4,
@@ -55,6 +56,7 @@ local menuItem, error = menu:addMenuItem("debug", function()
 		Noble.showFPS = false
 	end
 end)
+
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 

@@ -195,8 +195,8 @@ end
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)
-	self:setDiagonalMovement(Noble.Settings.get("DiagonalMovement"))
-	
+	self:setDiagonalMovement(diagonalMovement)
+
 end
 
 -- This runs once per frame.
@@ -426,7 +426,7 @@ scene.inputHandler = {
 }
 
 function MazeScene:setDiagonalMovement(enabled)
-    isDiagonalMovementEnabled = enabled
+	isDiagonalMovementEnabled = enabled
 end
 
 function scene:PowerCrank()
