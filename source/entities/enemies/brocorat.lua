@@ -39,6 +39,10 @@ function Brocorat:search(player)
 	self:blindSearch(player)
 end
 
+function Brocorat:empty()
+	self.animation:setState('empty')
+end
+
 function Brocorat:update()
 	if PlayerData.isActive == true then
 		self:search(self.player)

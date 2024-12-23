@@ -89,8 +89,10 @@ end
 function Player:collisionResponse(other)
   
   if other:isa(Enemy) then
-    if other:isa(Brocorat)then
-      self.animation:setState('deadBrocolli')
+    if other:isa(Brocorat) then
+      other:empty()
+      --other.animation:setState('empty')  -- Set enemy animation to empty state
+      --self.animation:setState('deadBrocolli')
     end
     return self:dead()
     
@@ -174,7 +176,7 @@ end
 
 function Player:dead()
   self.isAlive = false
-  --self.animation:setState('dead')
+  self.animation:setState('deadBrocolli')
   local function deathScreen()
   
     Noble.transition(DeadScene)
