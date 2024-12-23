@@ -155,6 +155,7 @@ function scene:enter()
 	else
 		--player:fillBattery() -- Mark: dunno why I ws fillin the battery instantly
 	end
+	-- Mark: Comic
 	
 	-- Mark: UI
 	uiScreen = playerHud()

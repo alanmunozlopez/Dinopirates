@@ -1,4 +1,5 @@
 import 'libraries/noble/Noble'
+import 'libraries/panels/Panels'
 
 import 'utilities/Utilities'
 import 'utilities/PauseMenu'
