@@ -11,7 +11,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
 	self.animation.idle.frameDuration = 6
 	self.animation:addState('walk', 1, 8, 'idle')
 	self.animation.walk.frameDuration = 6
-	self.animation:addState('empty', 9, 9)
+	self.animation:addState('empty', 15, 15)
 	self.animation.empty.frameDuration = 6
 	self.animation:addState('shine', 9, 14)
 	self.animation.shine.frameDuration = 6
@@ -37,6 +37,10 @@ end
 
 function Brocorat:search(player)
 	self:blindSearch(player)
+end
+
+function Brocorat:empty()
+	self.animation:setState('empty')
 end
 
 function Brocorat:update()

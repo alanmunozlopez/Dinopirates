@@ -520,10 +520,7 @@ levels = {
 			visited = false,
 			tile = 2,
 			floorNumber = 9,
-			light = 0.4,
 			shadow = false,
-			enemies = {},
-			triggers = {},
 			doors = {
 				{
 					direction = 'top',
@@ -536,8 +533,50 @@ levels = {
 					leadsTo = 114,
 				},
 			},
-			items = {},
-			props = {}
+			props = {
+				{
+					type = "table",
+					x = 100,
+					y = 100,
+					
+				},
+				{
+					type = "chair",
+					x = 130,
+					y = 100,
+					
+				},
+				{
+					type = "box",
+					x = 300,
+					y = 150,
+					
+				},
+				{
+					type = "box",
+					x = 50,
+					y = 50,
+					
+				}
+			},
+			items = {
+				{
+					type = "lamp",
+					x = 200,
+					y = 100
+				}
+			},
+			enemies = {
+				{
+					name = "brocorat",
+					x = 250,
+					y = 150,
+					speed = 1
+				}
+			},
+			triggers = {
+				-- Add triggers if needed
+			}
 		}
 	},
 	{

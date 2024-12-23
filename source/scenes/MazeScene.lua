@@ -195,7 +195,8 @@ end
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)
-	
+	self:setDiagonalMovement(diagonalMovement)
+
 end
 
 -- This runs once per frame.
@@ -288,9 +289,11 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-	if PlayerData.hasKey == true then
-		print("has key")
-	end
+	--if PlayerData.hasKey == true then
+		print(checkBool(isDiagonalMovementEnabled))
+		print("----")
+		print(checkBool(Noble.Settings.get("DiagonalMovement")))
+	--end
 	if PlayerData.hasLamp == true then
 		print("has lamp")
 	end
@@ -313,24 +316,21 @@ scene.inputHandler = {
 	-- D-pad left
 	--
 	leftButtonDown = function()
-		-- DIAGONAL PREVENTION: Only allow movement if no other direction is active
-		if not isMoving then
-			isMoving = true
-			currentDirection = 'left'  -- Lock movement to left direction
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'left'
 			scene:movePlayer('left')
 		end
 	end,
 	leftButtonHold = function()
-		-- DIAGONAL PREVENTION: Only continue movement if left is the active direction
-		if isMoving and currentDirection == 'left' then
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'left') then
 			scene:movePlayer('left')
 		end
 	end,
 	leftButtonUp = function()
-		-- DIAGONAL PREVENTION: Only reset if this was the active direction
-		if currentDirection == 'left' then
-			isMoving = false
-			currentDirection = nil  -- Clear direction lock
+		if currentMoveDirection == 'left' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -341,24 +341,21 @@ scene.inputHandler = {
 	-- D-pad right
 	--
 	rightButtonDown = function()
-		-- DIAGONAL PREVENTION: Only allow movement if no other direction is active
-		if not isMoving then
-			isMoving = true
-			currentDirection = 'right'  -- Lock movement to right direction
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'right'
 			scene:movePlayer('right')
 		end
 	end,
 	rightButtonHold = function()
-		-- DIAGONAL PREVENTION: Only continue movement if right is the active direction
-		if isMoving and currentDirection == 'right' then
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'right') then
 			scene:movePlayer('right')
 		end
 	end,
 	rightButtonUp = function()
-		-- DIAGONAL PREVENTION: Only reset if this was the active direction
-		if currentDirection == 'right' then
-			isMoving = false
-			currentDirection = nil  -- Clear direction lock
+		if currentMoveDirection == 'right' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -369,24 +366,21 @@ scene.inputHandler = {
 	-- D-pad up
 	--
 	upButtonDown = function()
-		-- DIAGONAL PREVENTION: Only allow movement if no other direction is active
-		if not isMoving then
-			isMoving = true
-			currentDirection = 'up'  -- Lock movement to up direction
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'up'
 			scene:movePlayer('up')
 		end
 	end,
 	upButtonHold = function()
-		-- DIAGONAL PREVENTION: Only continue movement if up is the active direction
-		if isMoving and currentDirection == 'up' then
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'up') then
 			scene:movePlayer('up')
 		end
 	end,
 	upButtonUp = function()
-		-- DIAGONAL PREVENTION: Only reset if this was the active direction
-		if currentDirection == 'up' then
-			isMoving = false
-			currentDirection = nil  -- Clear direction lock
+		if currentMoveDirection == 'up' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -397,24 +391,21 @@ scene.inputHandler = {
 	-- D-pad down
 	--
 	downButtonDown = function()
-		-- DIAGONAL PREVENTION: Only allow movement if no other direction is active
-		if not isMoving then
-			isMoving = true
-			currentDirection = 'down'  -- Lock movement to down direction
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'down'
 			scene:movePlayer('down')
 		end
 	end,
 	downButtonHold = function()
-		-- DIAGONAL PREVENTION: Only continue movement if down is the active direction
-		if isMoving and currentDirection == 'down' then
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'down') then
 			scene:movePlayer('down')
 		end
 	end,
 	downButtonUp = function()
-		-- DIAGONAL PREVENTION: Only reset if this was the active direction
-		if currentDirection == 'down' then
-			isMoving = false
-			currentDirection = nil  -- Clear direction lock
+		if currentMoveDirection == 'down' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
 			player:idle()
 			if shadow then
 				shadow:refresh()
@@ -424,23 +415,8 @@ scene.inputHandler = {
 
 	-- Crank
 	--
-	cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
-		if player.isAlive then
-			-- TODO: turn this into a function
-			if playdate.getCrankTicks(3) > 0 then
-				if player.loadingPower == true then
-					print('powa') 
-				else
-					player:chargeBattery(1)
-					if shadow then
-						shadow:refresh()
-					end
-				end
-			end
-			if player.battery == 100 then
-				player:idle()
-			end
-		end
+	cranked = function(change, acceleratedChange)
+		scene:PowerCrank()
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
 	end,
@@ -448,3 +424,26 @@ scene.inputHandler = {
 		
 	end
 }
+
+function MazeScene:setDiagonalMovement(enabled)
+	isDiagonalMovementEnabled = enabled
+end
+
+function scene:PowerCrank()
+    if not player.isAlive then return end
+    
+    if playdate.getCrankTicks(3) > 0 then
+        if player.loadingPower then
+            print('powa')  -- Consider removing debug print
+        else
+            player:chargeBattery(1)
+            if shadow then
+                shadow:refresh()
+            end
+        end
+    end
+    
+    if player.battery == 100 then
+        player:idle()
+    end
+end

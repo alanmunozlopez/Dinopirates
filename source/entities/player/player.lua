@@ -23,8 +23,8 @@ function Player:init(x, y, speed, Zindex)
   self.animation:addState('up', 14, 16)
   self.animation.up.frameDuration = 12
   
-  self.animation:addState('dead', 17, 18)
-  self.animation.dead.frameDuration = 12
+  self.animation:addState('deadBrocolli', 17, 18)
+  self.animation.deadBrocolli.frameDuration = 12
   
   self.animation:addState('lampIdle', 19, 22)
   self.animation.lampIdle.frameDuration = 24
@@ -89,7 +89,13 @@ end
 function Player:collisionResponse(other)
   
   if other:isa(Enemy) then
+    if other:isa(Brocorat) then
+      other:empty()
+      --other.animation:setState('empty')  -- Set enemy animation to empty state
+      --self.animation:setState('deadBrocolli')
+    end
     return self:dead()
+    
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Trigger) then
@@ -170,7 +176,7 @@ end
 
 function Player:dead()
   self.isAlive = false
-  self.animation:setState('dead')
+  self.animation:setState('deadBrocolli')
   local function deathScreen()
   
     Noble.transition(DeadScene)

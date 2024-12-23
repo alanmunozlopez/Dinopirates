@@ -1,8 +1,16 @@
 local menuImg = Graphics.image.new('assets/images/ui/menu/menu.png')
+local keyImg = Graphics.image.new('assets/images/ui/key.png')
 
 function playdate.gameWillPause()
 	if PlayerData.isGaming == true then
 		mapFillingAndChecking()
+		
+		if PlayerData.hasLamp then
+			Graphics.pushContext(menuImg)
+			keyImg:draw(100, 200)
+			Graphics.popContext()
+		end
+		
 		playdate.setMenuImage(menuImg)
 	else
 		playdate.setMenuImage(nil)

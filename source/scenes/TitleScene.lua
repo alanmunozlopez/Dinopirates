@@ -47,7 +47,7 @@ function scene:init()
 	end
 	
 	menu = Noble.Menu.new(true, Noble.Text.ALIGN_LEFT, false, nil, 2, 16)
-	
+
 	if playdate.file.exists('gameState.json') then
 		menu:addItem("Continue", function() 
 			SaveSystem.load()
@@ -59,11 +59,18 @@ function scene:init()
 		SaveSystem.reset()
 		Noble.transition(Floor107)
 	end)
-	
 	if playdate.file.exists('gameState.json') then
 		menu:addItem("Delete save", function() 
 			SaveSystem.delete()
 			Noble.transition(TitleScene)
+		end)
+	end
+	
+	-- Add Playground option only if debug is true
+	if debug == true then
+		menu:addItem("Playground", function()
+			SaveSystem.reset()
+			Noble.transition(Floor109)  -- Direct transition to room 109
 		end)
 	end
 	
@@ -94,7 +101,7 @@ function scene:update()
 	-- Your code here
 	menu:draw(8, 120)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	Graphics.drawText("*v 0.1.4*", 2, 2)
+	Graphics.drawText(playdate.metadata.version, 2, 2)
 end
 
 -- This runs once per frame, and is meant for drawing code.
