@@ -101,7 +101,7 @@ function scene:update()
 	-- Your code here
 	menu:draw(8, 120)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	Graphics.drawText("*v 0.1.4*", 2, 2)
+	Graphics.drawText(playdate.metadata.version, 2, 2)
 end
 
 -- This runs once per frame, and is meant for drawing code.
