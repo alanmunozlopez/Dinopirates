@@ -229,7 +229,16 @@ function scene:update()
 	-- Mark: cheat code
 	cheat:update()
 	if PlayerData.isCutscene == true then
+		-- Disable game input handlers while cutscene is running
+		if Noble.Input.getEnabled() then
+			Noble.Input.setEnabled(false)
+		end
 		Panels.update()
+	else
+		-- Re-enable game input handlers when cutscene ends
+		if not Noble.Input.getEnabled() then
+			Noble.Input.setEnabled(true)
+		end
 	end
 	-- Mark: Crank notification
 	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
@@ -275,7 +284,7 @@ function scene:pause()
 	
 end
 function scene:movePlayer(direction)
-	if PlayerData.isTalking == false then
+	if PlayerData.isTalking == false and PlayerData.isCutscene == false then
 		if player.isAlive == true then
 			player:move(direction)
 			if shadow  then
@@ -315,31 +324,37 @@ scene.inputHandler = {
 
 	-- B button
 	--
+
 	BButtonDown = function()
-	--if PlayerData.hasKey == true then
-		print(checkBool(isDiagonalMovementEnabled))
-		print("----")
-		print(checkBool(Noble.Settings.get("DiagonalMovement")))
-	--end
-	if PlayerData.hasLamp == true then
-		print("has lamp")
-	end
-	if PlayerData.hasRadio == true then
-		print("has radio")
-	end
+		if playerData.isCutscene == false then
+			if PlayerData.hasKey == true then
+				print("has key")
+			end
+			if PlayerData.hasLamp == true then
+				print("has lamp")
+			end
+			if PlayerData.hasRadio == true then
+				print("has radio")
+			end
+		end
 	end,
 	BButtonHeld = function()
-		
-		player.loadingPower = true
-		player:focus()
+		if playerData.isCutscene == false then
+			player.loadingPower = true
+			player:focus()
+		end
 	end,
 	BButtonHold = function()
+		if playerData.isCutscene == false then
+			
+		end
 	end,
 	BButtonUp = function()
-		player.loadingPower = false
-		player:deFocus()
+		if playerData.isCutscene == false then
+			player.loadingPower = false
+			player:deFocus()
+		end
 	end,
-
 	-- D-pad left
 	--
 	leftButtonDown = function()
