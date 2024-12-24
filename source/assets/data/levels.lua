@@ -279,7 +279,7 @@ levels = {
 			shadow = false,
 			comic = {
 				wasPlayed = false,
-				name = "intro-comic",
+				name = "comic-test",
 				play = "enter"
 			},
 			enemies = {},
