@@ -12,7 +12,7 @@ comics = {
                     -- First panel
                     layers = {
                         {
-                            image = "intro-comic/panel1",
+                            image = "comics/intro-comic/panel1",
                             x = 0,
                             y = 0
                         }
@@ -23,7 +23,7 @@ comics = {
                     -- Second panel
                     layers = {
                         {
-                            image = "intro-comic/panel2",
+                            image = "comics/intro-comic/panel2",
                             x = 0,
                             y = 0
                         }
@@ -34,7 +34,7 @@ comics = {
                     -- Third panel
                     layers = {
                         {
-                            image = "intro-comic/panel3",
+                            image = "comics/intro-comic/panel3",
                             x = 0,
                             y = 0
                         }

@@ -166,14 +166,16 @@ function scene:enter()
 	if arrayData ~= nil and arrayData.play == "enter" then
 		local comicData = comics[arrayData.name]
 		if comicData then
+			print("comic should start soon")
 			Panels.startCutscene(comicData, function()
 				-- Resume game after cutscene
-				PlayerData.isGaming = true
-				if shadow then
-					shadow:refresh()
-				end
+				--PlayerData.isGaming = true
+				--if shadow then
+				--	shadow:refresh()
+				--end
 			end)
-			PlayerData.isGaming = false
+			--PlayerData.isGaming = false
+			print("comic ended")
 		else
 			print("Warning: Comic '" .. arrayData.name .. "' not found in comics table")
 		end
