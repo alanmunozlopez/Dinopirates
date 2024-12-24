@@ -17,12 +17,18 @@ local scene = MazeScene
 local room = nil -- Level in table position
 
 import "entities/player/player"
+
+import "assets/comics/comicsData"
+
 import "entities/enemies/brocorat"
 import "entities/enemies/frogcolli"
+
 import 'entities/props/propItem'
 import 'entities/props/door'
-import 'entities/items/Items'
 import 'entities/props/trigger'
+
+import 'entities/items/Items'
+
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
 
@@ -156,7 +162,12 @@ function scene:enter()
 		--player:fillBattery() -- Mark: dunno why I ws fillin the battery instantly
 	end
 	-- Mark: Comic
-	
+	arrayData = levels[room].floor.comic
+	if arrayData ~=nil then
+		print("theres a comic")
+		print(arrayData)
+		
+	end
 	-- Mark: UI
 	uiScreen = playerHud()
 	

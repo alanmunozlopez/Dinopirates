@@ -24,7 +24,7 @@ Noble.GameData.setup({
 })
 
 debug = false
-diagonalMovement = false
+diagonalMovement = true -- TODO: fix movement stuck after entering a new room
 
 ZIndex = {
 	player = 4,
