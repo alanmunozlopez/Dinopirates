@@ -163,10 +163,24 @@ function scene:enter()
 	end
 	-- Mark: Comic
 	arrayData = levels[room].floor.comic
-	if arrayData ~=nil then
-		print("theres a comic")
-		print(arrayData)
-		
+	if arrayData ~= nil then
+		print("there is comic")
+		if arrayData.play == "enter" then
+			print("comic should be playing")
+			-- Start cutscene with callback to resume game
+			local comicData = comics[arrayData.name]
+			if comicData then
+				print("cutsceneshouldstart")
+				Panels.startCutscene(comicData, function()
+					-- Resume game after cutscene
+					PlayerData.isGaming = true
+					if shadow then
+						shadow:refresh()
+					end
+				end)
+				PlayerData.isGaming = false
+			end
+		end
 	end
 	-- Mark: UI
 	uiScreen = playerHud()

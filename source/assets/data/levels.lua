@@ -277,7 +277,10 @@ levels = {
 			floorNumber = 4,
 			light = 0.4,
 			shadow = false,
-			comic = "intro-comic",
+			comic = {
+				name = "intro-comic",
+				play = "enter"
+			},
 			enemies = {},
 			triggers = {},
 			doors = {
