@@ -1,4 +1,5 @@
 import 'libraries/noble/Noble'
+import 'libraries/panels/Panels'
 
 import 'utilities/Utilities'
 import 'utilities/PauseMenu'
@@ -23,8 +24,8 @@ Noble.GameData.setup({
 })
 
 debug = false
-diagonalMovement = false
-
+diagonalMovement = true -- TODO: fix movement stuck after entering a new room
+Panels.Settings.path = ""
 ZIndex = {
 	player = 4,
 	enemy = 3,

@@ -100,8 +100,7 @@ function scene:update()
 	scene.super.update(self)
 	-- Your code here
 	menu:draw(8, 120)
-	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	Graphics.drawText(playdate.metadata.version, 2, 2)
+	drawVersionNumber()
 end
 
 -- This runs once per frame, and is meant for drawing code.

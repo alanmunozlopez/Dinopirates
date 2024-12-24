@@ -111,3 +111,20 @@ function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
 end
+
+function drawVersionNumber(x, y, alignment)
+	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+	local version = "*" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
+	local versionWidth = Graphics.getTextSize(version)
+	
+	-- If no x position provided, default to right-aligned at 400 (screen width)
+	x = x or 400
+	-- If no y position provided, default to 2 (near top)
+	y = y or 2
+	-- If no alignment provided, default to right alignment with 4px padding
+	if alignment == nil then
+		x = x - versionWidth - 4
+	end
+	
+	Graphics.drawText(version, x, y)
+end 

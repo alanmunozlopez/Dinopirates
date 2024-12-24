@@ -17,12 +17,18 @@ local scene = MazeScene
 local room = nil -- Level in table position
 
 import "entities/player/player"
+
+import "assets/comics/comicsData"
+
 import "entities/enemies/brocorat"
 import "entities/enemies/frogcolli"
+
 import 'entities/props/propItem'
 import 'entities/props/door'
-import 'entities/items/Items'
 import 'entities/props/trigger'
+
+import 'entities/items/Items'
+
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
 
@@ -45,7 +51,6 @@ local shadow = nil
 local uiScreen = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
-
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
 
@@ -150,12 +155,31 @@ function scene:enter()
 	PlayerData.direction = 'idle'
 	-- Mark: FX
 	if levels[room].floor.shadow == true then
-		
 		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)
 	else
-		--player:fillBattery() -- Mark: dunno why I ws fillin the battery instantly
+		--player:fillBattery() -- Mark: dunno why I was filling the battery instantly
 	end
-	
+	-- Mark: Comic
+	arrayData = levels[room].floor.comic
+	if arrayData ~= nil and arrayData.play == "enter" then
+		local comicData = comics[arrayData.name]
+		if comicData then
+			print("comic should start soon")
+			PlayerData.isCutscene = true
+			Panels.startCutscene(comicData, function()
+				PlayerData.isGaming = true
+				PlayerData.isCutscene = false
+				-- if shadow then
+				-- 	shadow:refresh()
+				-- end
+				print("comic ended")
+			end)
+			PlayerData.isGaming = false
+			print("comic ended 2")
+		else
+			print("Warning: Comic '" .. arrayData.name .. "' not found in comics table")
+		end
+	end
 	-- Mark: UI
 	uiScreen = playerHud()
 	
@@ -204,6 +228,18 @@ function scene:update()
 	scene.super.update(self)
 	-- Mark: cheat code
 	cheat:update()
+	if PlayerData.isCutscene == true then
+		-- Disable game input handlers while cutscene is running
+		if Noble.Input.getEnabled() then
+			Noble.Input.setEnabled(false)
+		end
+		Panels.update()
+	else
+		-- Re-enable game input handlers when cutscene ends
+		if not Noble.Input.getEnabled() then
+			Noble.Input.setEnabled(true)
+		end
+	end
 	-- Mark: Crank notification
 	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
 		playdate.ui.crankIndicator:draw(0, 0)
@@ -248,7 +284,7 @@ function scene:pause()
 	
 end
 function scene:movePlayer(direction)
-	if PlayerData.isTalking == false then
+	if PlayerData.isTalking == false and PlayerData.isCutscene == false then
 		if player.isAlive == true then
 			player:move(direction)
 			if shadow  then
@@ -288,31 +324,37 @@ scene.inputHandler = {
 
 	-- B button
 	--
+
 	BButtonDown = function()
-	--if PlayerData.hasKey == true then
-		print(checkBool(isDiagonalMovementEnabled))
-		print("----")
-		print(checkBool(Noble.Settings.get("DiagonalMovement")))
-	--end
-	if PlayerData.hasLamp == true then
-		print("has lamp")
-	end
-	if PlayerData.hasRadio == true then
-		print("has radio")
-	end
+		if playerData.isCutscene == false then
+			if PlayerData.hasKey == true then
+				print("has key")
+			end
+			if PlayerData.hasLamp == true then
+				print("has lamp")
+			end
+			if PlayerData.hasRadio == true then
+				print("has radio")
+			end
+		end
 	end,
 	BButtonHeld = function()
-		
-		player.loadingPower = true
-		player:focus()
+		if playerData.isCutscene == false then
+			player.loadingPower = true
+			player:focus()
+		end
 	end,
 	BButtonHold = function()
+		if playerData.isCutscene == false then
+			
+		end
 	end,
 	BButtonUp = function()
-		player.loadingPower = false
-		player:deFocus()
+		if playerData.isCutscene == false then
+			player.loadingPower = false
+			player:deFocus()
+		end
 	end,
-
 	-- D-pad left
 	--
 	leftButtonDown = function()
