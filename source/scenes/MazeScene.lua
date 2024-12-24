@@ -164,7 +164,6 @@ function scene:enter()
 	if arrayData ~= nil and arrayData.play == "enter" and arrayData.wasPlayed == false then
 		local comicData = comics[arrayData.name]
 		if comicData then
-			print("comic should start soon")
 			PlayerData.isCutscene = true
 			Panels.startCutscene(comicData, function()
 				PlayerData.isGaming = true
@@ -172,11 +171,10 @@ function scene:enter()
 				-- if shadow then
 				-- 	shadow:refresh()
 				-- end
-				print("comic finalized")
 				levels[room].floor.comic.wasPlayed = true
 			end)
 			PlayerData.isGaming = false
-			print("comic ended 2")
+			
 		else
 			print("Warning: Comic '" .. arrayData.name .. "' not found in comics table")
 		end
@@ -210,7 +208,8 @@ function scene:enter()
 			local width = triggerData.width
 			local height = triggerData.height
 			local script = triggerData.script
-			Trigger(x,y,width,height,script, i, room)
+			local type = triggerData.type
+			Trigger(x,y,width,height,script, i, room, type)
 		end
 	end
 	

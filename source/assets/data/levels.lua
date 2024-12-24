@@ -279,7 +279,7 @@ levels = {
 			shadow = false,
 			comic = {
 				wasPlayed = false,
-				name = "comic-test",
+				name = "intro-comic",
 				play = "enter"
 			},
 			enemies = {},
@@ -308,6 +308,10 @@ levels = {
 			floorNumber = 5,
 			light = 0.4,
 			shadow = false,
+			comic = {
+				wasPlayed = false,
+				name = "comic-test",
+			},
 			enemies = {},
 			triggers = {
 				{
@@ -316,10 +320,12 @@ levels = {
 					y = 150,
 					width = 60,
 					height = 30,
-					script = 2
-				}
+					script = 2,
+					type = "cutscene"
+				},
 			},
-			doors = {{
+			doors = {
+				{
 					direction = 'left',
 					open = 'open',
 					leadsTo = 104,
@@ -328,7 +334,8 @@ levels = {
 					direction = 'down',
 					open = 'open',
 					leadsTo = 110,
-				},},
+				},
+			},
 			items = {},
 			props = {}
 		}
