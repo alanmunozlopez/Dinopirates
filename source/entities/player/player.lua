@@ -104,8 +104,8 @@ function Player:collisionResponse(other)
       dialogUI:addScreen(other:returnScript(),other.sourceFeed)
     end
     if other.type == "cutscene" then
-      print("its a cutscene")
       PlayerData.isCutscene = true
+      other:returnScript()
       other:remove()
     end
     return 'freeze'
