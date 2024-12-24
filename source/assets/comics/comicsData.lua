@@ -5,7 +5,7 @@ comics = {
             -- Sequence properties
             scrollType = Panels.ScrollType.AUTO,
             scrollDirection = Panels.ScrollDirection.LEFT_RIGHT,
-            backgroundColor = Graphics.kColorBlack,
+            backgroundColor = Graphics.kColorWhite,
             
             panels = {
                 {
@@ -17,7 +17,7 @@ comics = {
                             y = 0
                         }
                     },
-                    advanceControl = Panels.Input.A
+                    --advanceControl = Panels.Input.A
                 },
                 {
                     -- Second panel
@@ -28,7 +28,7 @@ comics = {
                             y = 0
                         }
                     },
-                    advanceControl = Panels.Input.A
+                    --advanceControl = Panels.Input.A
                 },
                 {
                     -- Third panel
@@ -39,7 +39,7 @@ comics = {
                             y = 0
                         }
                     },
-                    advanceControl = Panels.Input.A
+                    --advanceControl = Panels.Input.A
                 },
             }
         }

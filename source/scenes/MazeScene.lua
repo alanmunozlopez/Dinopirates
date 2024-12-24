@@ -51,7 +51,6 @@ local shadow = nil
 local uiScreen = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
-
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
 
@@ -156,10 +155,9 @@ function scene:enter()
 	PlayerData.direction = 'idle'
 	-- Mark: FX
 	if levels[room].floor.shadow == true then
-		
 		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)
 	else
-		--player:fillBattery() -- Mark: dunno why I ws fillin the battery instantly
+		--player:fillBattery() -- Mark: dunno why I was filling the battery instantly
 	end
 	-- Mark: Comic
 	arrayData = levels[room].floor.comic
@@ -167,15 +165,17 @@ function scene:enter()
 		local comicData = comics[arrayData.name]
 		if comicData then
 			print("comic should start soon")
+			PlayerData.isCutscene = true
 			Panels.startCutscene(comicData, function()
-				-- Resume game after cutscene
-				--PlayerData.isGaming = true
-				--if shadow then
-				--	shadow:refresh()
-				--end
+				PlayerData.isGaming = true
+				PlayerData.isCutscene = false
+				-- if shadow then
+				-- 	shadow:refresh()
+				-- end
+				print("comic ended")
 			end)
-			--PlayerData.isGaming = false
-			print("comic ended")
+			PlayerData.isGaming = false
+			print("comic ended 2")
 		else
 			print("Warning: Comic '" .. arrayData.name .. "' not found in comics table")
 		end
@@ -228,6 +228,9 @@ function scene:update()
 	scene.super.update(self)
 	-- Mark: cheat code
 	cheat:update()
+	if PlayerData.isCutscene == true then
+		Panels.update()
+	end
 	-- Mark: Crank notification
 	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
 		playdate.ui.crankIndicator:draw(0, 0)
