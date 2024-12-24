@@ -309,7 +309,16 @@ levels = {
 			light = 0.4,
 			shadow = false,
 			enemies = {},
-			triggers = {},
+			triggers = {
+				{
+					usedTrigger = false,
+					x = 170,
+					y = 150,
+					width = 60,
+					height = 30,
+					script = 2
+				}
+			},
 			doors = {{
 					direction = 'left',
 					open = 'open',
