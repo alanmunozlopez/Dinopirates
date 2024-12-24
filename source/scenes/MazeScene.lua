@@ -161,7 +161,7 @@ function scene:enter()
 	end
 	-- Mark: Comic
 	arrayData = levels[room].floor.comic
-	if arrayData ~= nil and arrayData.play == "enter" then
+	if arrayData ~= nil and arrayData.play == "enter" and arrayData.wasPlayed == false then
 		local comicData = comics[arrayData.name]
 		if comicData then
 			print("comic should start soon")
@@ -172,7 +172,8 @@ function scene:enter()
 				-- if shadow then
 				-- 	shadow:refresh()
 				-- end
-				print("comic ended")
+				print("comic finalized")
+				levels[room].floor.comic.wasPlayed = true
 			end)
 			PlayerData.isGaming = false
 			print("comic ended 2")
@@ -228,6 +229,8 @@ function scene:update()
 	scene.super.update(self)
 	-- Mark: cheat code
 	cheat:update()
+	
+	-- Todo: make this a separate function
 	if PlayerData.isCutscene == true then
 		-- Disable game input handlers while cutscene is running
 		if Noble.Input.getEnabled() then
@@ -326,31 +329,19 @@ scene.inputHandler = {
 	--
 
 	BButtonDown = function()
-		if playerData.isCutscene == false then
-			if PlayerData.hasKey == true then
-				print("has key")
-			end
-			if PlayerData.hasLamp == true then
-				print("has lamp")
-			end
-			if PlayerData.hasRadio == true then
-				print("has radio")
-			end
-		end
+	
 	end,
 	BButtonHeld = function()
-		if playerData.isCutscene == false then
+		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
 			player.loadingPower = true
 			player:focus()
 		end
 	end,
 	BButtonHold = function()
-		if playerData.isCutscene == false then
-			
-		end
+		
 	end,
 	BButtonUp = function()
-		if playerData.isCutscene == false then
+		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
 			player.loadingPower = false
 			player:deFocus()
 		end

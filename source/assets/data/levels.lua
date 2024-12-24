@@ -278,6 +278,7 @@ levels = {
 			light = 0.4,
 			shadow = false,
 			comic = {
+				wasPlayed = false,
 				name = "intro-comic",
 				play = "enter"
 			},
