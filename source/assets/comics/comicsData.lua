@@ -1,6 +1,5 @@
 comics = {
-    -- First comic sequence (id = 1)
-    {
+    ["intro-comic"] = {
         -- First sequence
         {
             -- Sequence properties
@@ -31,17 +30,17 @@ comics = {
                     },
                     advanceControl = Panels.Input.A
                 },
-               {
-                   -- Second panel
-                   layers = {
-                       {
-                           image = "intro-comic/panel3",
-                           x = 0,
-                           y = 0
-                       }
-                   },
-                   advanceControl = Panels.Input.A
-               },
+                {
+                    -- Third panel
+                    layers = {
+                        {
+                            image = "intro-comic/panel3",
+                            x = 0,
+                            y = 0
+                        }
+                    },
+                    advanceControl = Panels.Input.A
+                },
             }
         }
     }
