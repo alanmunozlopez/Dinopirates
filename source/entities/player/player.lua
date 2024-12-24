@@ -100,13 +100,13 @@ function Player:collisionResponse(other)
     return 'freeze' 
   elseif other:isa(Trigger) then
     if other.type ~= nil and other.type ~= "cutscene" then
-      print("its a dialog")
       PlayerData.isTalking = true
       dialogUI:addScreen(other:returnScript(),other.sourceFeed)
     end
     if other.type == "cutscene" then
       print("its a cutscene")
       PlayerData.isCutscene = true
+      other:remove()
     end
     return 'freeze'
   elseif other:isa(Items) and other.type == 'keycard' then

@@ -161,10 +161,14 @@ function scene:enter()
 	end
 	-- Mark: Comic
 	arrayData = levels[room].floor.comic
-	if arrayData ~= nil and arrayData.play == "enter" and arrayData.wasPlayed == false then
+	if arrayData ~= nil then
 		local comicData = comics[arrayData.name]
 		if comicData then
-			PlayerData.isCutscene = true
+			if arrayData.play == "enter" and arrayData.wasPlayed == false then
+				PlayerData.isCutscene = true
+				PlayerData.isGaming = false
+			end
+			
 			Panels.startCutscene(comicData, function()
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
@@ -173,8 +177,6 @@ function scene:enter()
 				-- end
 				levels[room].floor.comic.wasPlayed = true
 			end)
-			PlayerData.isGaming = false
-			
 		else
 			print("Warning: Comic '" .. arrayData.name .. "' not found in comics table")
 		end
