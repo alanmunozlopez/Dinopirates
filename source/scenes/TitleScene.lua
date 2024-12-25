@@ -57,7 +57,7 @@ function scene:init()
 	
 	menu:addItem("New Game", function()
 		SaveSystem.reset()
-		Noble.transition(Floor107)
+		Noble.transition(Floor107, 1, Noble.Transition.Spotlight)
 	end)
 	if playdate.file.exists('gameState.json') then
 		menu:addItem("Delete save", function() 
