@@ -65,4 +65,4 @@ end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
-Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus)
+Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus) --- TODO: add custom transition

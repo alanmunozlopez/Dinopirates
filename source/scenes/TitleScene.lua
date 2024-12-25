@@ -51,13 +51,31 @@ function scene:init()
 	if playdate.file.exists('gameState.json') then
 		menu:addItem("Continue", function() 
 			SaveSystem.load()
-			Noble.transition(RoomTranslate(PlayerData.saveLevel)) 
+			Noble.transition(
+				RoomTranslate(PlayerData.saveLevel),
+				1, Noble.Transition.Spotlight, {
+				x = 200,
+				y = 120,
+				xExit = PlayerData.playerSpawn.x,
+				yExit = PlayerData.playerSpawn.y,
+				holdTime = 0.25,
+				ease = Ease.outInQuad}
+			) 
 		end)
 	end
 	
 	menu:addItem("New Game", function()
 		SaveSystem.reset()
-		Noble.transition(Floor107, 1, Noble.Transition.Spotlight)
+		Noble.transition(
+			Floor107,
+			 1, Noble.Transition.Spotlight, {
+			x = 200,
+			y = 120,
+			xExit = PlayerData.playerSpawn.x,
+			yExit = PlayerData.playerSpawn.y,
+			holdTime = 0.25,
+			ease = Ease.outInQuad
+		})
 	end)
 	if playdate.file.exists('gameState.json') then
 		menu:addItem("Delete save", function() 

@@ -57,7 +57,7 @@ function Door:init(direction, status, nextRoom, zIndex)
 end
 
 function Door:goTo()
-  Noble.transition(self.nextRoom)
+  Noble.transition(self.nextRoom, 0.5, Noble.Transition.Default)
 end
 function Door:prevRoom(direction)
     PlayerData.lastRoom = direction
@@ -80,7 +80,7 @@ function Door:collisionResponse(other)
 				nextRoom = self.nextRoom,
 				enterDoor = self.doorID,
 				playerData = other:getPlayerData()
-			}, 0.3, Noble.Transition.MetroNexus)  -- Added transition parameters here
+			},0.3, Noble.Transition.MetroNexus)  
 		end
 	end
 	return "overlap"
