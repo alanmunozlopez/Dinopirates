@@ -99,7 +99,7 @@ function Player:collisionResponse(other)
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Trigger) then
-    if other.type ~= nil and other.type ~= "cutscene" then
+    if other.type == nil and other.type ~= "cutscene" then
       PlayerData.isTalking = true
       dialogUI:addScreen(other:returnScript(),other.sourceFeed)
     end
