@@ -6,12 +6,12 @@ function playdate.gameWillPause()
 	if PlayerData.isGaming == true then
 		mapFillingAndChecking()
 		
-		if PlayerData.hasLamp then
+		if PlayerData.hasLamp == true then
 			Graphics.pushContext(menuImg)
 			lampImg:draw(13, 110)
 			Graphics.popContext()
 		end
-		if PlayerData.hasRadio then
+		if PlayerData.hasRadio == true then
 			Graphics.pushContext(menuImg)
 			radioImg:draw(50, 108)
 			Graphics.popContext()
