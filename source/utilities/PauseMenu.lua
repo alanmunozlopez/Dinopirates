@@ -1,5 +1,6 @@
 local menuImg = Graphics.image.new('assets/images/ui/menu/menu.png')
-local keyImg = Graphics.image.new('assets/images/ui/key.png')
+local lampImg = Graphics.image.new('assets/images/ui/menu/lamp.png')
+local radioImg = Graphics.image.new('assets/images/ui/menu/radio.png')
 
 function playdate.gameWillPause()
 	if PlayerData.isGaming == true then
@@ -7,7 +8,12 @@ function playdate.gameWillPause()
 		
 		if PlayerData.hasLamp then
 			Graphics.pushContext(menuImg)
-			keyImg:draw(100, 200)
+			lampImg:draw(13, 110)
+			Graphics.popContext()
+		end
+		if PlayerData.hasRadio then
+			Graphics.pushContext(menuImg)
+			radioImg:draw(50, 108)
 			Graphics.popContext()
 		end
 		
@@ -16,6 +22,7 @@ function playdate.gameWillPause()
 		playdate.setMenuImage(nil)
 	end
 end
+
 function mapFillingAndChecking()
 	local alpha = 0.5
 	local roomSize = 7

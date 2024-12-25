@@ -287,6 +287,7 @@ function scene:pause()
 	SaveSystem.save()
 	
 end
+
 function scene:movePlayer(direction)
 	if PlayerData.isTalking == false and PlayerData.isCutscene == false then
 		if player.isAlive == true then

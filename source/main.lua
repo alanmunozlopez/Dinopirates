@@ -25,7 +25,9 @@ Noble.GameData.setup({
 
 debug = false
 diagonalMovement = true -- TODO: fix movement stuck after entering a new room
+
 Panels.Settings.path = ""
+
 ZIndex = {
 	player = 4,
 	enemy = 3,
@@ -43,7 +45,9 @@ CollideGroups = {
 }
 playdate.datastore.write(levels, 'levelOriginal', true) 
 playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)-- DEBUG
+
 local menu = playdate.getSystemMenu()
+
 local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene)
 end)
