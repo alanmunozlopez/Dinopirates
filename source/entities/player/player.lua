@@ -307,3 +307,7 @@ end
 function Player:grabRadio()
   PlayerData.hasRadio = true
 end
+
+function Player:grabNotes()
+  PlayerData.hasNotes = true
+end
