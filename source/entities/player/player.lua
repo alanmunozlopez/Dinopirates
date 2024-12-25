@@ -99,8 +99,15 @@ function Player:collisionResponse(other)
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Trigger) then
+    if other.type == nil and other.type ~= "cutscene" then
       PlayerData.isTalking = true
       dialogUI:addScreen(other:returnScript(),other.sourceFeed)
+    end
+    if other.type == "cutscene" then
+      PlayerData.isCutscene = true
+      other:returnScript()
+      other:remove()
+    end
     return 'freeze'
   elseif other:isa(Items) and other.type == 'keycard' then
     other:removeAll()
@@ -299,4 +306,8 @@ end
 
 function Player:grabRadio()
   PlayerData.hasRadio = true
+end
+
+function Player:grabNotes()
+  PlayerData.hasNotes = true
 end

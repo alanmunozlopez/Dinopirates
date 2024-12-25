@@ -161,21 +161,22 @@ function scene:enter()
 	end
 	-- Mark: Comic
 	arrayData = levels[room].floor.comic
-	if arrayData ~= nil and arrayData.play == "enter" then
+	if arrayData ~= nil then
 		local comicData = comics[arrayData.name]
 		if comicData then
-			print("comic should start soon")
-			PlayerData.isCutscene = true
+			if arrayData.play == "enter" and arrayData.wasPlayed == false then
+				PlayerData.isCutscene = true
+				PlayerData.isGaming = false
+			end
+			
 			Panels.startCutscene(comicData, function()
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
 				-- if shadow then
 				-- 	shadow:refresh()
 				-- end
-				print("comic ended")
+				levels[room].floor.comic.wasPlayed = true
 			end)
-			PlayerData.isGaming = false
-			print("comic ended 2")
 		else
 			print("Warning: Comic '" .. arrayData.name .. "' not found in comics table")
 		end
@@ -209,7 +210,8 @@ function scene:enter()
 			local width = triggerData.width
 			local height = triggerData.height
 			local script = triggerData.script
-			Trigger(x,y,width,height,script, i, room)
+			local type = triggerData.type
+			Trigger(x,y,width,height,script, i, room, type)
 		end
 	end
 	
@@ -228,6 +230,8 @@ function scene:update()
 	scene.super.update(self)
 	-- Mark: cheat code
 	cheat:update()
+	
+	-- Todo: make this a separate function
 	if PlayerData.isCutscene == true then
 		-- Disable game input handlers while cutscene is running
 		if Noble.Input.getEnabled() then
@@ -241,7 +245,7 @@ function scene:update()
 		end
 	end
 	-- Mark: Crank notification
-	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 	
@@ -283,6 +287,7 @@ function scene:pause()
 	SaveSystem.save()
 	
 end
+
 function scene:movePlayer(direction)
 	if PlayerData.isTalking == false and PlayerData.isCutscene == false then
 		if player.isAlive == true then
@@ -326,31 +331,19 @@ scene.inputHandler = {
 	--
 
 	BButtonDown = function()
-		if playerData.isCutscene == false then
-			if PlayerData.hasKey == true then
-				print("has key")
-			end
-			if PlayerData.hasLamp == true then
-				print("has lamp")
-			end
-			if PlayerData.hasRadio == true then
-				print("has radio")
-			end
-		end
+	
 	end,
 	BButtonHeld = function()
-		if playerData.isCutscene == false then
+		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
 			player.loadingPower = true
 			player:focus()
 		end
 	end,
 	BButtonHold = function()
-		if playerData.isCutscene == false then
-			
-		end
+		
 	end,
 	BButtonUp = function()
-		if playerData.isCutscene == false then
+		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
 			player.loadingPower = false
 			player:deFocus()
 		end

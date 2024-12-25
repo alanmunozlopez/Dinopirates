@@ -276,8 +276,9 @@ levels = {
 			tile = 2,
 			floorNumber = 4,
 			light = 0.4,
-			shadow = false,
+			shadow = true,
 			comic = {
+				wasPlayed = false,
 				name = "intro-comic",
 				play = "enter"
 			},
@@ -306,10 +307,25 @@ levels = {
 			tile = 2,
 			floorNumber = 5,
 			light = 0.4,
-			shadow = false,
+			shadow = true,
+			comic = {
+				wasPlayed = false,
+				name = "comic-test",
+			},
 			enemies = {},
-			triggers = {},
-			doors = {{
+			triggers = {
+				{
+					usedTrigger = false,
+					x = 170,
+					y = 150,
+					width = 60,
+					height = 30,
+					script = 2,
+					type = "cutscene"
+				},
+			},
+			doors = {
+				{
 					direction = 'left',
 					open = 'open',
 					leadsTo = 104,
@@ -318,7 +334,8 @@ levels = {
 					direction = 'down',
 					open = 'open',
 					leadsTo = 110,
-				},},
+				},
+			},
 			items = {},
 			props = {}
 		}

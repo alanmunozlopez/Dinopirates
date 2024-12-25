@@ -1,10 +1,11 @@
 Trigger = {}
 class('Trigger').extends(Graphics.sprite)
 
-function Trigger:init(x, y, width, height, script, position, room)
+function Trigger:init(x, y, width, height, script, position, room, type)
   self.script = script
   self.position = position
   self.room = room
+  self.type = type
   self:setCollideRect(0, 0, width,height)
   self:setZIndex(3)
   self:moveTo(x, y)
