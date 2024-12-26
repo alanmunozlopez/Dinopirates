@@ -374,6 +374,11 @@ levels = {
 			tile = 2,
 			light = 0.1,
 			shadow = false,
+			comic = {
+				wasPlayed = false,
+				name = "intro-comic",
+				play = "enter"
+			},
 			triggers = {
 				{
 					usedTrigger = false,
