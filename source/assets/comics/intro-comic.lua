@@ -6,15 +6,20 @@ introComic = {
         direction = Panels.ScrollDirection.NONE,
         backgroundColor = Graphics.kColorWhite,
         advanceControl = Panels.Input.A,
-        title = "Intro test",
+        frame = {
+            margin = 0
+        },
+       -- borderless = true,
+        title = "Intro",
+        
         panels = {
             {
                 -- First panel
                 layers = {
                     {
-                        image = "comics/intro-comic/panel1",
-                        x = 0,
-                        y = 0
+                        image = "comics/intro-comic/001",
+                        x = -8,
+                        y = -8
                     }
                 },
             },
@@ -22,22 +27,63 @@ introComic = {
                 -- Second panel
                 layers = {
                     {
-                        image = "comics/intro-comic/panel2",
-                        x = 0,
-                        y = 0
-                    }
+                        image = "comics/intro-comic/001",
+                        x = -8,
+                        y = -8
+                    },
+                    {
+                        image = "comics/intro-comic/002",
+                        x = -8,
+                        y = -8
+                    },
                 },
                
             },
             {
                 -- Third panel
-                layers = {
+               layers = {
+                   {
+                       image = "comics/intro-comic/001",
+                       x = -8,
+                       y = -8
+                   },
+                   {
+                       image = "comics/intro-comic/002",
+                       x = -8,
+                       y = -8
+                   },
+                   {
+                          image = "comics/intro-comic/003",
+                          x = -8,
+                          y = -8
+                      },
+               },
+                
+            },
+            {
+                -- Fourth panel
+               layers = {
+                   {
+                       image = "comics/intro-comic/001",
+                       x = -8,
+                       y = -8
+                   },
+                   {
+                       image = "comics/intro-comic/002",
+                       x = -8,
+                       y = -8
+                   },
+                   {
+                        image = "comics/intro-comic/003",
+                        x = -8,
+                        y = -8
+                    },
                     {
-                        image = "comics/intro-comic/panel3",
-                        x = 0,
-                        y = 0
-                    }
-                },
+                        image = "comics/intro-comic/004",
+                        x = -8,
+                        y = -8
+                    },
+               },
                 
             },
         }
