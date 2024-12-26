@@ -582,7 +582,7 @@ levels = {
 			},
 			items = {
 				{
-					type = "lamp",
+					type = "notes",
 					x = 200,
 					y = 100
 				}

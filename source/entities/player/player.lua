@@ -121,6 +121,10 @@ function Player:collisionResponse(other)
     other:removeAll()
     self:grabRadio()
     return 'overlap'
+  elseif other:isa(Items) and other.type == 'notes' then
+    other:removeAll()
+    self:grabNotes()
+    return 'overlap'
   elseif other:isa(Door) then
     
     other:prevRoom(other.direction)
