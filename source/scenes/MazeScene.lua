@@ -170,11 +170,9 @@ function scene:enter()
 			end
 			
 			Panels.startCutscene(comicData, function()
+				
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
-				-- if shadow then
-				-- 	shadow:refresh()
-				-- end
 				levels[room].floor.comic.wasPlayed = true
 			end)
 		else
