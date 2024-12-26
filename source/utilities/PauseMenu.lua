@@ -1,6 +1,7 @@
 local menuImg = Graphics.image.new('assets/images/ui/menu/menu.png')
 local lampImg = Graphics.image.new('assets/images/ui/menu/lamp.png')
 local radioImg = Graphics.image.new('assets/images/ui/menu/radio.png')
+local notesImg = Graphics.image.new('assets/images/ui/menu/notes.png')
 
 function playdate.gameWillPause()
 	if PlayerData.isGaming == true then
@@ -14,6 +15,11 @@ function playdate.gameWillPause()
 		if PlayerData.hasRadio == true then
 			Graphics.pushContext(menuImg)
 			radioImg:draw(50, 108)
+			Graphics.popContext()
+		end
+		if PlayerData.hasNotes == true then
+			Graphics.pushContext(menuImg)
+			notesImg:draw(86, 111)
 			Graphics.popContext()
 		end
 		

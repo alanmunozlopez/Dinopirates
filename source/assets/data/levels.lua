@@ -589,10 +589,10 @@ levels = {
 			},
 			enemies = {
 				{
-					name = "brocorat",
-					x = 250,
-					y = 150,
-					speed = 1
+					-- name = "brocorat",
+					-- x = 250,
+					-- y = 150,
+					-- speed = 1
 				}
 			},
 			triggers = {
