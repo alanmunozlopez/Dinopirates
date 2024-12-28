@@ -14,17 +14,21 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   self.animation:addState('blood', 7, 7)
   self.animation:addState('blood2', 8, 8)
   self.animation:addState('deadrat', 9, 9)
+  self.animation:addState('xtree-1', 10, 10)
+  self.animation:addState('xtree-2', 11, 11)
+  self.animation:addState('xtree-3', 12, 12)
+  self.animation:addState('xtree-4', 13, 13)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(32, 32)
   if nocollide == nil then
-  self:setCollideRect(0,8, 32,24)
+    self:setCollideRect(0,8, 32,24)
   end
   self:setZIndex(zIndex)
   
   self:setGroups(3)
   
-  self:add(x,y)
+  self:add(x+32,y+32)
 end
 
 
