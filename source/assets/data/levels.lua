@@ -406,18 +406,18 @@ levels = {
 				},
 			},
 			enemies = {
-				{
-					name = "brocorat",
-					x = 128,
-					y = 160,
-					speed = 0.7
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 120,
-					speed = 3
-				},
+				-- {
+				-- 	name = "brocorat",
+				-- 	x = 128,
+				-- 	y = 160,
+				-- 	speed = 0.7
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 120,
+				-- 	speed = 3
+				-- },
 				-- {
 				-- 	name = "frogcolli",
 				-- 	x = 200,
@@ -435,7 +435,7 @@ levels = {
 			},
 			items = {
 				{
-					type = 'radio',
+					type = 'notes',
 					x = 230,
 					y = 80
 				}

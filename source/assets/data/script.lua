@@ -53,6 +53,10 @@ script = {
 				video = 'player',
 				text = Graphics.getLocalizedText("chairs1", "en")
 			},
+			{
+				video = 'playerSurprise',
+				text = Graphics.getLocalizedText("chairs2", "en")
+			},
 			
 		}
 	},
@@ -60,25 +64,25 @@ script = {
 		-- trigger pickup radio
 		dialog = {
 			{
-				video = 'radio',
+				video = 'notes',
 				text = Graphics.getLocalizedText("welcome", "en")
 			},
 			{
-				video = 'radio',
+				video = 'playerWorry',
 				text = Graphics.getLocalizedText("welcome1", "en"),
-				screen = Graphics.image.new('assets/images/ui/dialog/img/spaceship.png'),
-			},
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("welcome2", "en"),
-				screen = Graphics.image.new('assets/images/ui/dialog/img/spaceship.png'),
+				--screen = Graphics.image.new('assets/images/ui/dialog/img/spaceship.png'),
 			},
 			{
 				video = 'player',
+				text = Graphics.getLocalizedText("welcome2", "en"),
+				screen = Graphics.image.new('assets/images/ui/dialog/img/spaceship.png'), -- here goes the picture
+			},
+			{
+				video = 'notes',
 				text = Graphics.getLocalizedText("welcome3", "en")
 			},
 			{
-				video = 'radio',
+				video = 'player',
 				text = Graphics.getLocalizedText("welcome4", "en")
 			},
 		}
