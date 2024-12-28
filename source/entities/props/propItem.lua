@@ -28,7 +28,7 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   
   self:setGroups(3)
   
-  self:add(x+32,y+32)
+  self:add(x,y)
 end
 
 

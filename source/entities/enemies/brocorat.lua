@@ -2,7 +2,7 @@ import 'enemy'
 
 Brocorat = {}
 class('Brocorat').extends('Enemy')
-
+-- TODO check animation
 function Brocorat:init(x, y, moveSpeed, Zindex, player)
 	Brocorat.super.init(self, 'assets/images/enemies/brocorat', true)
 	

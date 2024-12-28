@@ -115,35 +115,39 @@ function scene:enter()
 	
 	-- Mark: doors
 	local arrayData = levels[room].floor.doors -- Used several times to save variables
-	
-	for _, doorData in ipairs(arrayData) do
-		local direction = doorData.direction
-		local open = doorData.open
-		local leads = doorData.leadsTo
-	
-		Door(direction, open, leads, ZIndex.props)
+	if arrayDta ~= nil then
+		for _, doorData in ipairs(arrayData) do
+			local direction = doorData.direction
+			local open = doorData.open
+			local leads = doorData.leadsTo
+		
+			Door(direction, open, leads, ZIndex.props)
+		end
 	end
 	
 	
 	-- Mark: Props 
 	arrayData = levels[room].floor.props
-	
-	for _, propData in ipairs(arrayData) do
-		local type = propData.type
-		local x = propData.x
-		local y = propData.y
-		local collide = propData.nocollide
-		PropItem(x, y, type, ZIndex.props, collide)
+	if arrayData ~= nil then
+		for _, propData in ipairs(arrayData) do
+			local type = propData.type
+			local x = propData.x
+			local y = propData.y
+			local collide = propData.nocollide
+			PropItem(x, y, type, ZIndex.props, collide)
+		end
 	end
 	
 	-- Mark: Items
 	arrayData = levels[room].floor.items
-	for _, itemData in ipairs(arrayData) do
-		local type = itemData.type
-		local x = itemData.x
-		local y = itemData.y
-		if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) or (type == 'notes' and PlayerData.hasNotes == false)then
-			Items(x, y, type)
+	if arrayData ~= nil then
+		for _, itemData in ipairs(arrayData) do
+			local type = itemData.type
+			local x = itemData.x
+			local y = itemData.y
+			if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) or (type == 'notes' and PlayerData.hasNotes == false)then
+				Items(x, y, type)
+			end
 		end
 	end
 	
@@ -160,6 +164,7 @@ function scene:enter()
 		--player:fillBattery() -- Mark: dunno why I was filling the battery instantly
 	end
 	-- Mark: Comic
+	-- handle nil
 	arrayData = levels[room].floor.comic
 	if arrayData ~= nil then
 		local comicData = comics[arrayData.name]
@@ -176,7 +181,7 @@ function scene:enter()
 				levels[room].floor.comic.wasPlayed = true
 			end)
 		else
-			print("Warning: Comic '" .. arrayData.name .. "' not found in comics table")
+			print("Warning: Comic not found in comics table")
 		end
 	end
 	-- Mark: UI

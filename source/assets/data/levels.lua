@@ -1,5 +1,4 @@
 levels = {
-	--1
 	{
 		floor = {
 			level = 1,
@@ -9,23 +8,31 @@ levels = {
 			light = 0.5,
 			shadow = false,
 			comic = {},
+			
 			triggers = {
 	
 			},
 			enemies = {
 			{
-				type = "brocorat",
+				name = "brocorat",
 				x = 82,
 				y = 120,
-				speed = 0.8489662728658536
-			}
+				speed = 1
 			},
-			items = {
+			{
+				name = "brocorat",
+				x = 50,
+				y = 160,
+				speed = 0.7
+			},
+			},
+			items = {},
+			props = {
 			{
 				type = "chair",
-				x = 118,
+				x = 200,
 				y = 120,
-				nocollide = false
+				
 			},
 			{
 				type = "chair",
@@ -35,7 +42,7 @@ levels = {
 			}
 			}
 		}
-	}
+	},
 	{
 		floor = {
 			level = 1,
@@ -43,7 +50,7 @@ levels = {
 			tile = 2,
 			floorNumber = 2,
 			light = 1,
-			shadow = true,
+			shadow = false,
 			triggers = {
 				{
 					usedTrigger = false,
@@ -260,7 +267,7 @@ levels = {
 			props = {}
 		}
 	},
-	{ 
+	{
 		floor = {
 			level = 1,
 			visited = false,
@@ -397,13 +404,35 @@ levels = {
 				},
 				{
 					type = 'table',
-					x = 95,
-					y = 30
+					x = 0,
+					y = 90
 				},
 				{
 					type = 'table',
 					x = 145,
 					y = 60
+				},
+				{
+					type = 'xtree-1',
+					x = 339,
+					y = 72,
+					nocollide = true
+				},
+				{
+					type = 'xtree-2',
+					x = 339,
+					y = 72,
+					nocollide = true
+				},
+				{
+					type = 'xtree-3',
+					x = 339,
+					y = 105,
+				},
+				{
+					type = 'xtree-4',
+					x = 339,
+					y = 105,
 				},
 			}
 		}
