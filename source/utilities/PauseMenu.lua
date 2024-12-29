@@ -71,7 +71,7 @@ function mapFillingAndChecking()
 			posY = 26
 			
 		-- mark the position where the player actually is
-		if levels[i].floor.visited == true and PlayerData.actualLevel == levels[i].floor.level and PlayerData.actualRoom == levels[i].floor.floorNumber and i == levels[i].floor.floorNumber then
+		if levels[i].floor.visited == true and PlayerData.actualLevel == levels[i].floor.level and PlayerData.actualRoom == levels[i].floor.roomNumber and i == levels[i].floor.roomNumber then
 			col = (i - 1) % 5 --(01234)
 			row = math.floor((i - 1) / 5) --(012)
 			
@@ -87,7 +87,7 @@ function mapFillingAndChecking()
 			Graphics.popContext() 
 			
 		-- clear the fog of a previously visited room		
-		elseif levels[i].floor.visited == true and i == levels[i].floor.floorNumber then
+		elseif levels[i].floor.visited == true and i == levels[i].floor.roomNumber then
 			
 			col = (i - 1) % 5
 			row = math.floor((i - 1) / 5)

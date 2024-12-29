@@ -81,12 +81,12 @@ function scene:enter()
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
-	PlayerData.room = levels[room].floor.floorNumber
+	PlayerData.room = levels[room].floor.roomNumber
 	PlayerData.isInDarkness = levels[room].floor.shadow
 	PlayerData.floor = room
 	
 	PlayerData.actualLevel = levels[room].floor.level
-	PlayerData.actualRoom = levels[room].floor.floorNumber
+	PlayerData.actualRoom = levels[room].floor.roomNumber
 	levels[room].floor.visited = true
 	
 	-- Mark: floor
@@ -335,7 +335,7 @@ scene.inputHandler = {
 	--
 
 	BButtonDown = function()
-	print("floor number".. .."")
+	
 	end,
 	BButtonHeld = function()
 		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
