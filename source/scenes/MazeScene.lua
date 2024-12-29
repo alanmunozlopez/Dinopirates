@@ -66,6 +66,7 @@ function scene:init()
 	
 end
 function scene:setFloor(floor)
+	-- TODO: make assign the room floor regarding number of floor instead of position
 	room = floor
 end
 
@@ -334,7 +335,7 @@ scene.inputHandler = {
 	--
 
 	BButtonDown = function()
-	
+	print("floor number".. .."")
 	end,
 	BButtonHeld = function()
 		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
