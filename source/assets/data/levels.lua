@@ -1,6 +1,5 @@
 levels = {
 --1
---1
 {
 	floor = {
 		level = 1,
@@ -13,7 +12,7 @@ levels = {
 		{
 			direction = 'top',
 			open = 'open',
-			leadsTo = 102
+			leadsTo = 101
 		},
 		{
 			direction = 'right',
@@ -36,42 +35,53 @@ levels = {
 		triggers = {
 		{
 			usedTrigger = false,
-			x = 200,
-			y = 169,
+			x = 92,
+			y = 98,
 			width = 60,
 			height = 30,
-			script = "mess"
+			script = "the chair"
 		}
 		},
 		enemies = {
 		{
 			name = "brocorat",
-			x = 262,
-			y = 62,
-			speed = 1.0
-		},
-		{
-			name = "brocorat",
-			x = 99,
-			y = 158,
+			x = 362,
+			y = 37,
 			speed = 1.0
 		}
 		},
 		props = {
 		{
 			type = "chair",
-			x = 133,
-			y = 179
-		},
-		{
-			type = "box",
-			x = 252,
-			y = 164
+			x = 138,
+			y = 157
 		},
 		{
 			type = "trash",
-			x = 231,
-			y = 82
+			x = 265,
+			y = 107
+		},
+		{
+			type = "blood",
+			x = 198,
+			y = 81,
+			nocollide = true
+		},
+		{
+			type = "table",
+			x = 91,
+			y = 99,
+			nocollide = true
+		},
+		{
+			type = "chair",
+			x = 318,
+			y = 47
+		},
+		{
+			type = "chair",
+			x = 359,
+			y = 78
 		}
 		}
 	}
@@ -717,4 +727,5 @@ levels = {
 			props = {}
 		}
 	},
+	
 }

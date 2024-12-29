@@ -1,5 +1,6 @@
 script = {
 	{
+		name = "no_door_key",
 		-- no door key 1
 		dialog = {
 			{
@@ -29,6 +30,39 @@ script = {
 		}
 	},
 	{
+		name = "the chair",
+		-- trigger the chair
+		dialog = {
+			{
+		video = 'playerWorry',
+		text = Graphics.getLocalizedText("the-chair-01", "en"),
+	},
+					{
+		video = 'playerSurprise',
+		text = Graphics.getLocalizedText("the-chair-02", "en"),
+	},
+					{
+		video = 'radio',
+		text = Graphics.getLocalizedText("the-chair-03", "en"),
+	}
+			
+		}
+	},
+	{
+		-- trigger mess
+		name = "test",
+		dialog = {
+			
+			script = {
+				{
+				video = 'radio',
+				text = Graphics.getLocalizedText("test1", "en"),
+	}
+			}
+		}
+	},
+	{
+		name = "mess",
 		-- trigger mess
 		dialog = {
 			{
@@ -43,6 +77,30 @@ script = {
 		}
 	},
 	{
+		name = "the final test",
+		-- trigger the final test
+		dialog = {
+			{
+		video = 'player',
+		text = Graphics.getLocalizedText("the final test_tft", "en"),
+	},
+					{
+		video = 'playerWorry',
+		text = Graphics.getLocalizedText("the final test_tft", "en"),
+	},
+					{
+		video = 'playerSurprise',
+		text = Graphics.getLocalizedText("the final test_tft", "en"),
+	},
+					{
+		video = 'radio',
+		text = Graphics.getLocalizedText("the final test_tft", "en"),
+	}
+			
+		}
+	},
+	{
+		name = "trigger_chairs",
 		-- trigger mess
 		dialog = {
 			{
@@ -61,6 +119,7 @@ script = {
 		}
 	},
 	{
+		name = "pickup_radio",
 		-- trigger pickup radio
 		dialog = {
 			{
@@ -88,6 +147,7 @@ script = {
 		}
 	},
 	{
+		name = "kitchen",
 		-- Kitchen
 		dialog = {
 			{

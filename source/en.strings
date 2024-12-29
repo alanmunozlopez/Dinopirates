@@ -19,7 +19,7 @@
 "door6" = "wait, they even pay me?"
 
 -- floor 1 mess
-"mess"="Ok, that was a good *nap*, that X-mas party was wild, and barely remember..."
+"mess"="Ok, that was a good *nap*, that X-mas party was wild, and barely remember...aaaaaaaaaaaaaaa"
 
 "mess2"="where is everyone? why it's such a big mess?"
 
@@ -46,3 +46,19 @@
 "kitchen2"="*CERVEZA CRISTAL, UNICA GRANDE Y NUESTRA...*"
 "kitchen3"="sweet, some *Chilean pee in a can* maybe I can use it later"
 "kitchen4"="just gonna keep walking straight, I really don't like dark places"
+
+"test1" = "this is a test of the new *feature* すごい !!!"
+
+"the final test_tft" = "not sure if this will work"
+
+"the final test_tft" = "omg its working!!"
+
+"the final test_tft" = "this will make creating a game so much easier"
+
+"the final test_tft" = "good job captian, you made it, its ugly AF but it works"
+
+"the-chair-01" = "ouch my feet"
+
+"the-chair-02" = "what the tools for creating the dialogs, ad¥nd the maps are working?!?!"
+
+"the-chair-03" = "yes captain, *are* working"
