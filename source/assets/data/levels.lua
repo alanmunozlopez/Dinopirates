@@ -1,48 +1,81 @@
 levels = {
-	{
-		floor = {
-			level = 1,
-			visited = false,
-			roomNumber = 7,
-			tile = 1,
-			light = 0.5,
-			shadow = false,
-			comic = {},
-			
-			triggers = {
-	
-			},
-			enemies = {
-			{
-				name = "brocorat",
-				x = 82,
-				y = 120,
-				speed = 1
-			},
-			{
-				name = "brocorat",
-				x = 50,
-				y = 160,
-				speed = 0.7
-			},
-			},
-			items = {},
-			props = {
-			{
-				type = "chair",
-				x = 200,
-				y = 120,
-				
-			},
-			{
-				type = "chair",
-				x = 177,
-				y = 176,
-				nocollide = true
-			}
-			}
+--1
+--1
+{
+	floor = {
+		level = 1,
+		visited = false,
+		roomNumber = 1,
+		tile = 1,
+		light = 0.5,
+		shadow = false,
+		doors = {
+		{
+			direction = 'top',
+			open = 'open',
+			leadsTo = 102
+		},
+		{
+			direction = 'right',
+			open = 'open',
+			leadsTo = 101
+		},
+		{
+			direction = 'down',
+			open = 'open',
+			leadsTo = 101
+		},
+		{
+			direction = 'left',
+			open = 'open',
+			leadsTo = 101
 		}
-	},
+		},
+		comic = {},
+		items = {},
+		triggers = {
+		{
+			usedTrigger = false,
+			x = 200,
+			y = 169,
+			width = 60,
+			height = 30,
+			script = "mess"
+		}
+		},
+		enemies = {
+		{
+			name = "brocorat",
+			x = 262,
+			y = 62,
+			speed = 1.0
+		},
+		{
+			name = "brocorat",
+			x = 99,
+			y = 158,
+			speed = 1.0
+		}
+		},
+		props = {
+		{
+			type = "chair",
+			x = 133,
+			y = 179
+		},
+		{
+			type = "box",
+			x = 252,
+			y = 164
+		},
+		{
+			type = "trash",
+			x = 231,
+			y = 82
+		}
+		}
+	}
+},
 	{
 		floor = {
 			level = 1,
@@ -307,12 +340,12 @@ levels = {
 				},
 			},
 			enemies = {
-				-- {
-				-- 	name = "brocorat",
-				-- 	x = 128,
-				-- 	y = 160,
-				-- 	speed = 0.7
-				-- },
+				{
+					name = "brocorat",
+					x = 128,
+					y = 160,
+					speed = 0.7
+				},
 				-- {
 				-- 	name = "frogcolli",
 				-- 	x = 200,

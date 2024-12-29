@@ -1,4 +1,3 @@
-
 import "entities/UI/dialog/videoFeed"
 
 local dialogbox <const> = Graphics.image.new('assets/images/ui/dialog/dialogbox.png')
@@ -47,9 +46,18 @@ end
 
 
 
-function dialogScreen:addScreen(scriptPosition)
-	dialogPosition = scriptPosition
-	self:nextDialog()
+function dialogScreen:addScreen(scriptName)
+	-- Buscar el diálogo por nombre
+	for i, scriptEntry in ipairs(script) do
+		if scriptEntry.name == scriptName then
+			dialogPosition = i
+			self:nextDialog()
+			return
+		end
+	end
+	
+	-- Si no se encuentra el diálogo, imprimir error
+	print("Warning: Dialog '" .. scriptName .. "' not found")
 end
 function dialogScreen:nextDialog()
 	dialogbg:add()
