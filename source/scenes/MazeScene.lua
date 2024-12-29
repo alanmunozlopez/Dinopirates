@@ -116,7 +116,7 @@ function scene:enter()
 	
 	-- Mark: doors
 	local arrayData = levels[room].floor.doors -- Used several times to save variables
-	if arrayDta ~= nil then
+	if arrayData ~= nil then
 		for _, doorData in ipairs(arrayData) do
 			local direction = doorData.direction
 			local open = doorData.open
