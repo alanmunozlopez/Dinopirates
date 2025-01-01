@@ -1,91 +1,61 @@
 levels = {
---1
-{
-	floor = {
-		level = 1,
-		visited = false,
-		roomNumber = 1,
-		tile = 1,
-		light = 0.5,
-		shadow = false,
-		doors = {
-		{
-			direction = 'top',
-			open = 'open',
-			leadsTo = 101
-		},
-		{
-			direction = 'right',
-			open = 'open',
-			leadsTo = 101
-		},
-		{
-			direction = 'down',
-			open = 'open',
-			leadsTo = 101
-		},
-		{
-			direction = 'left',
-			open = 'open',
-			leadsTo = 101
+	--2
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			roomNumber = 2,
+			tile = 1,
+			light = 0.5,
+			shadow = false,
+			doors = {
+			{
+				direction = 'right',
+				open = 'open',
+				leadsTo = 103
+			},
+			{
+				direction = 'down',
+				open = 'open',
+				leadsTo = 107
+			}
+			},
+			comic = {
+					wasPlayed = false,
+					name = "intro-comic",
+					play = "enter"
+			},
+			items = {},
+			triggers = {
+	
+			},
+			enemies = {
+	
+			},
+			props = {
+			{
+				type = "chair",
+				x = 134,
+				y = 178
+			},
+			{
+				type = "chair",
+				x = 104,
+				y = 205
+			},
+			{
+				type = "chair",
+				x = 237,
+				y = 206
+			},
+			{
+				type = "chair",
+				x = 278,
+				y = 97
+			}
+			}
 		}
-		},
-		comic = {},
-		items = {},
-		triggers = {
-		{
-			usedTrigger = false,
-			x = 92,
-			y = 98,
-			width = 60,
-			height = 30,
-			script = "the chair"
-		}
-		},
-		enemies = {
-		{
-			name = "brocorat",
-			x = 362,
-			y = 37,
-			speed = 1.0
-		}
-		},
-		props = {
-		{
-			type = "chair",
-			x = 138,
-			y = 157
-		},
-		{
-			type = "trash",
-			x = 265,
-			y = 107
-		},
-		{
-			type = "blood",
-			x = 198,
-			y = 81,
-			nocollide = true
-		},
-		{
-			type = "table",
-			x = 91,
-			y = 99,
-			nocollide = true
-		},
-		{
-			type = "chair",
-			x = 318,
-			y = 47
-		},
-		{
-			type = "chair",
-			x = 359,
-			y = 78
-		}
-		}
-	}
-},
+	},
 	{
 		floor = {
 			level = 1,
