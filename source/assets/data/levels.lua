@@ -1,5 +1,4 @@
 levels = {
-	--2
 	{
 		floor = {
 			level = 1,
@@ -33,26 +32,26 @@ levels = {
 	
 			},
 			props = {
-			{
-				type = "chair",
-				x = 134,
-				y = 178
-			},
-			{
-				type = "chair",
-				x = 104,
-				y = 205
-			},
-			{
-				type = "chair",
-				x = 237,
-				y = 206
-			},
-			{
-				type = "chair",
-				x = 278,
-				y = 97
-			}
+				{
+					type = "chair",
+					x = 134,
+					y = 178
+				},
+				{
+					type = "chair",
+					x = 104,
+					y = 205
+				},
+				{
+					type = "chair",
+					x = 237,
+					y = 206
+				},
+				{
+					type = "chair",
+					x = 278,
+					y = 97
+				}
 			}
 		}
 	},
