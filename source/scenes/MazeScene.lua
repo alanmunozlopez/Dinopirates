@@ -65,9 +65,16 @@ function scene:init()
 	-- Your code here
 	
 end
-function scene:setFloor(floor)
-	-- TODO: make assign the room floor regarding number of floor instead of position
-	room = floor
+function scene:setFloor(floorNumber)
+	-- Find the level with matching roomNumber
+	for i, levelData in ipairs(levels) do
+		if levelData.floor.roomNumber == floorNumber then
+			room = i
+			return
+		end
+	end
+	-- If room not found, print warning
+	print("Warning: Room number " .. floorNumber .. " not found")
 end
 
 -- When transitioning from another scene, this runs as soon as this
