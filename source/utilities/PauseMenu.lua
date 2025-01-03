@@ -4,7 +4,7 @@ local radioImg = Graphics.image.new('assets/images/ui/menu/radio.png')
 local notesImg = Graphics.image.new('assets/images/ui/menu/notes.png')
 
 function playdate.gameWillPause()
-	if PlayerData.isGaming == true then
+	if PlayerData.isGaming == true and PlayerData.hasNotes == true  then
 		mapFillingAndChecking()
 		
 		if PlayerData.hasLamp == true then
