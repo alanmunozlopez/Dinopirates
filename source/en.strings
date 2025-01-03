@@ -23,42 +23,16 @@
 
 "mess2"="where is everyone? why it's such a big mess?"
 
+"wakeup-01" = "what happened? did I *overslept*? we were about to eat before opening the gifts…"
 
--- floor 1 chair
+"wakeup-02" = "where's everyone? where's my *captain hat*? "
 
-"chairs"="wait the chairs are *glued to the floor*?"
+"mommicrowave-01" = "hey what happened with the microwave?"
 
-"chairs1"="what's that thing on the ground, it's like some kind of..."
+"mommicrowave-02" = "this was my *mom's microwave*… "
+"biggiftforcrew233-01" = "*Roar* that's a huge present…"
 
-"chairs2"="*THATS MY JOURNAL!! MY PRIVACY!!!*"
+"biggiftforcrew233-02" = "for sure its for me, my crew loves me, Im da best Dino Captain…"
 
--- floor 1 welcome
-
-"welcome"="it reads: *Captain's blog(daily), extremely private, do not read, unless you are the Captain*"
-"welcome1"="Oh no, its all touched and read, they leave me some *notes* and a picture..."
-"welcome2"="ahh my crew it's so lovely..."
-"welcome3"="with a really horrible handscript *To our former captain*....."
-"welcome4"="what?? these idiots, what they mean with *former*? "
-
--- Kitchen
-
-"kitchen"="oh? what's this, I can't see, it's cold and round... "
-"kitchen2"="*CERVEZA CRISTAL, UNICA GRANDE Y NUESTRA...*"
-"kitchen3"="sweet, some *Chilean pee in a can* maybe I can use it later"
-"kitchen4"="just gonna keep walking straight, I really don't like dark places"
-
-"test1" = "this is a test of the new *feature* すごい !!!"
-
-"the final test_tft" = "not sure if this will work"
-
-"the final test_tft" = "omg its working!!"
-
-"the final test_tft" = "this will make creating a game so much easier"
-
-"the final test_tft" = "good job captian, you made it, its ugly AF but it works"
-
-"the-chair-01" = "ouch my feet"
-
-"the-chair-02" = "what the tools for creating the dialogs, ad¥nd the maps are working?!?!"
-
-"the-chair-03" = "yes captain, *are* working"
+"biggiftforcrew233-03" = "it reads: *For crew member 233*"
+"biggiftforcrew488-01" = "it reads:*for crew member 488, you are our 487 favorite.*"
