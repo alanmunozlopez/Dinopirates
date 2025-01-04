@@ -5,13 +5,13 @@ function videoFeed:init(x,y, sourceFeed,Zindex)
 	-- Mark: animation states
 	self.animation:addState('player', 1, 1)
 	self.animation.player.frameDuration = 12
-	self.animation:addState('radio', 2, 2)
+	self.animation:addState('radioHand', 2, 2)
 	self.animation.radio.frameDuration = 12
-	self.animation:addState('radiopocket', 3, 3)
+	self.animation:addState('radioPocket', 3, 3)
 	self.animation.radiopocket.frameDuration = 12
-	self.animation:addState('radioring', 4, 5)
+	self.animation:addState('radioRing', 4, 5)
 	self.animation.radioring.frameDuration = 12
-	self.animation:addState('notes', 6, 6)
+	self.animation:addState('notesHand', 6, 6)
 	self.animation.notes.frameDuration = 12
 	self.animation:addState('playerWorry', 7, 7)
 	self.animation.playerWorry.frameDuration = 12
