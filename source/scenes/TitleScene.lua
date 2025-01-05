@@ -67,7 +67,7 @@ function scene:init()
 	menu:addItem("New Game", function()
 		SaveSystem.reset()
 		Noble.transition(
-			Floor107,
+			Floor101,
 			 1, Noble.Transition.Spotlight, {
 			x = 200,
 			y = 120,

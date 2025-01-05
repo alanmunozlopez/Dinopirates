@@ -93,8 +93,14 @@ function Player:collisionResponse(other)
       other:empty()
       --other.animation:setState('empty')  -- Set enemy animation to empty state
       --self.animation:setState('deadBrocolli')
+      return self:dead()
     end
-    return self:dead()
+    
+  elseif other:isa(CrewMember) then
+    print("CrewMember")
+    -- aqui va la logica que toma el numero de la habitacion actual y marca el crew member como recogido
+    other:taken()
+    --other:remove()  
     
   elseif other:isa(Box) then
     return 'freeze' 

@@ -22,6 +22,7 @@ import "assets/comics/comicsData"
 
 import "entities/enemies/brocorat"
 import "entities/enemies/frogcolli"
+import "entities/enemies/crewmember"
 
 import 'entities/props/propItem'
 import 'entities/props/door'
@@ -150,12 +151,13 @@ function scene:enter()
 	arrayData = levels[room].floor.items
 	if arrayData ~= nil then
 		for _, itemData in ipairs(arrayData) do
+			
 			local type = itemData.type
 			local x = itemData.x
 			local y = itemData.y
-			if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) or (type == 'notes' and PlayerData.hasNotes == false)then
+			if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) or (type == 'notes' and PlayerData.hasNotes == false) then
 				Items(x, y, type)
-			end
+			end		
 		end
 	end
 	
@@ -172,7 +174,6 @@ function scene:enter()
 		--player:fillBattery() -- Mark: dunno why I was filling the battery instantly
 	end
 	-- Mark: Comic
-	-- handle nil
 	arrayData = levels[room].floor.comic
 	if arrayData ~= nil then
 		local comicData = comics[arrayData.name]
@@ -195,7 +196,7 @@ function scene:enter()
 	-- Mark: UI
 	uiScreen = playerHud()
 	
-	-- Mark: Enemies 
+	-- Mark: Enemies & Crew members 
 	arrayData = levels[room].floor.enemies
 	
 	for _, enemyData in ipairs(arrayData) do
@@ -208,6 +209,21 @@ function scene:enter()
 			Brocorat(x, y, speed, ZIndex.enemy, player)
 		elseif name == "frogcolli" then
 			Frogcolli(x, y, speed, ZIndex.enemy, player)
+		end
+	end
+	
+	arrayData = levels[room].floor.items
+	
+	for i, crewData in ipairs(arrayData) do
+		local type = crewData.type
+		local x = crewData.x
+		local y = crewData.y
+		local speed = crewData.speed
+	 print("crew")
+		if type == "crewmember" then
+			--if crewData.taken == false then
+				CrewMember(x, y, speed, ZIndex.enemy, player, i ,room)
+			--end
 		end
 	end
 	
