@@ -97,10 +97,7 @@ function Player:collisionResponse(other)
     end
     
   elseif other:isa(CrewMember) then
-    print("CrewMember")
-    -- aqui va la logica que toma el numero de la habitacion actual y marca el crew member como recogido
-    other:taken()
-    --other:remove()  
+    other:taken() 
     
   elseif other:isa(Box) then
     return 'freeze' 

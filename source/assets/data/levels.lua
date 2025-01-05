@@ -151,9 +151,9 @@ levels = {
 			shadow = false,
 			doors = {
 			{
-				direction = 'top',
+				direction = 'down',
 				open = 'open',
-				leadsTo = 102
+				leadsTo = 101
 			}
 			},
 			comic = {

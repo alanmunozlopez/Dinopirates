@@ -60,7 +60,8 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	end
 end
 function CrewMember:taken()
-	levels[self.room].floor.triggers[self.position].taken = true
+	levels[self.room].floor.items[self.position].taken = true
+	self:remove()
 end
 
 function CrewMember:escape(player)

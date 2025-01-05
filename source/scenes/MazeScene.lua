@@ -219,11 +219,10 @@ function scene:enter()
 		local x = crewData.x
 		local y = crewData.y
 		local speed = crewData.speed
-	 print("crew")
 		if type == "crewmember" then
-			--if crewData.taken == false then
+			if crewData.taken == false then
 				CrewMember(x, y, speed, ZIndex.enemy, player, i ,room)
-			--end
+			end
 		end
 	end
 	
