@@ -19,6 +19,10 @@ function videoFeed:init(x,y, sourceFeed,Zindex)
 	self.animation.playerSurprise.frameDuration = 12
 	self.animation:addState('playerHappy', 9, 9)
 	self.animation.playerHappy.frameDuration = 12
+	self.animation:addState('playerAngry', 10, 10)
+	self.animation.playerAngry.frameDuration = 12
+	self.animation:addState('playerSleepy', 11, 11)
+	self.animation.playerSleepy.frameDuration = 12
 	self.animation:setState(sourceFeed)
 	
 	self:setSize(118*2,94*2) -- this is cuz is not a table
