@@ -1,9 +1,15 @@
+import 'entities/props/hats'
+
 CrewMember = {}
 class('CrewMember').extends('NobleSprite')
 -- TODO check animation
-function CrewMember:init(x, y, moveSpeed, Zindex, player, position, room)
+function CrewMember:init(x, y, moveSpeed, Zindex, player, position, room, crewId)
 	CrewMember.super.init(self, 'assets/images/enemies/crewmember', true)
 	
+	-- error handling
+	if moveSpeed == nil then
+		moveSpeed = 1
+	end
 	-- Mark: animation states
 	self.animation:addState('idle', 1, 4)
 	self.animation.idle.frameDuration = 6
@@ -31,6 +37,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, position, room)
 	})
 	self:setZIndex(self.Zindex)
 	self:add(x, y)
+	self.hat = Hats(x,y-15, 'chef', 2)
 end
 
 function CrewMember:search(player)
@@ -43,6 +50,7 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	elseif PlayerData.battery > 60 and PlayerData.isInDarkness == true then
 		self.moveSpeed = self.initialSpeed
 	end
+	self.hat:moveTo(movementX, movementY-15)
 	
 	local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY)
 	if lenght > 0 then
@@ -58,10 +66,13 @@ function CrewMember:moveCollision(movementX, movementY, player)
 			end
 		end
 	end
+	
 end
+
 function CrewMember:taken()
 	levels[self.room].floor.items[self.position].taken = true
 	self:remove()
+	self.hat:remove()
 end
 
 function CrewMember:escape(player)
@@ -71,6 +82,7 @@ function CrewMember:escape(player)
 
 	self.animation:setState('walk')
 	self:moveCollision(movementX, movementY, self.player)
+	
 end
 
 function CrewMember:update()

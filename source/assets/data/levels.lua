@@ -25,7 +25,8 @@ levels = {
 					x = 100,
 					y = 50,
 					speed = 1, 
-					taken = false
+					taken = false, 
+					
 				},
 				{
 					type = 'notes',
@@ -145,13 +146,28 @@ levels = {
 		floor = {
 			level = 1,
 			visited = false,
-			roomNumber = 20,
-			tile = 2,
+			roomNumber = 2,
+			tile = 1,
 			light = 0.5,
 			shadow = false,
 			doors = {
 			{
+				direction = 'top',
+				open = 'open',
+				leadsTo = 101
+			},
+			{
+				direction = 'right',
+				open = 'open',
+				leadsTo = 101
+			},
+			{
 				direction = 'down',
+				open = 'open',
+				leadsTo = 101
+			},
+			{
+				direction = 'left',
 				open = 'open',
 				leadsTo = 101
 			}
@@ -159,125 +175,81 @@ levels = {
 			comic = {
 					wasPlayed = false,
 					name = "intro-comic",
-					
+					play = "enter"
 			},
 			items = {
-				{
-					type = 'notes',
-					x = 200,
-					y = 120
-				}
-			},
-			triggers = {
 			{
-				usedTrigger = false,
-				x = 263,
-				y = 144,
-				width = 38,
-				height = 40,
-				script = "bigGiftForcrew233"
+				type = 'crewmember',
+				x = 100,
+				y = 68,
+						taken = false,
+						crewId = "chef"
 			},
 			{
-				usedTrigger = false,
-				x = 316,
-				y = 179,
-				width = 38,
-				height = 30,
-				script = "bigGiftforCrew488"
+				type = 'crewmember',
+				x = 281,
+				y = 141,
+						taken = false,
+						crewId = "chef"
 			},
 			{
-				usedTrigger = false,
-				x = 32,
-				y = 43,
-				width = 45,
-				height = 60,
-				script = "momMicrowave"
+				type = 'crewmember',
+				x = 219,
+				y = 79,
+						taken = false,
+						crewId = "chef"
 			},
 			{
-				usedTrigger = false,
-				x = 133,
-				y = 169,
-				width = 80,
-				height = 37,
-				script = "wakeup"
+				type = 'crewmember',
+				x = 135,
+				y = 152,
+						taken = false,
+						crewId = "chef"
+			},
+			{
+				type = 'crewmember',
+				x = 161,
+				y = 100,
+						taken = false,
+						crewId = "chef"
+			},
+			{
+				type = 'crewmember',
+				x = 75,
+				y = 150,
+						taken = false,
+						crewId = "hat"
+			},
+			{
+				type = 'crewmember',
+				x = 272,
+				y = 79,
+						taken = false,
+						crewId = "hat"
+			},
+			{
+				type = 'crewmember',
+				x = 340,
+				y = 89,
+						taken = false,
+						crewId = "hat"
+			},
+			{
+				type = 'crewmember',
+				x = 53,
+				y = 85,
+						taken = false,
+						crewId = "hat"
 			}
 			},
+			triggers = {
+	
+			},
 			enemies = {
-				{
-					name = "crewmember",
-					x = 100,
-					y = 50,
-					speed = 1, 
-					taken = false
-				}
 	
 			},
 			props = {
-			{
-				type = "fellchair",
-				x = 35,
-				y = 185
-			},
-			{
-				type = "fellchair",
-				x = 78,
-				y = 163
-			},
-			{
-				type = "chair",
-				x = 162,
-				y = 202
-			},
-			{
-				type = "table",
-				x = 28,
-				y = 52
-			},
-			{
-				type = "microwave",
-				x = 28,
-				y = 28
-			},
-			{
-				type = "gift",
-				x = 269,
-				y = 143
-			},
-			{
-				type = "gifts",
-				x = 286,
-				y = 158
-			},
-			{
-				type = "gifts",
-				x = 348,
-				y = 157
-			},
-			{
-				type = "gift",
-				x = 317,
-				y = 172
-			},
-			{
-				type = "xtree-1",
-				x = 301,
-				y = 87
-			},
-			{
-				type = "xtree-2",
-				x = 333,
-				y = 88
-			},
-			{
-				type = "xtree-3",
-				x = 302,
-				y = 118
-			},
-			{
-				type = "xtree-4",
-				x = 334,
-				y = 118
-			}
+	
 			}
 		}
 	},
