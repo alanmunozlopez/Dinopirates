@@ -21,7 +21,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, position, room, crewId
 	self:setSize(48, 48)
 	self:moveTo(x, y)
 	self:setCollideRect(12, 24, 24, 24)
-	
+	self.hatDelta = 15
 	self.room = room
 	self.position = position
 	self.moveSpeed = moveSpeed
@@ -37,7 +37,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, position, room, crewId
 	})
 	self:setZIndex(self.Zindex)
 	self:add(x, y)
-	self.hat = Hats(x,y-15, 'chef', 2)
+	self.hat = Hats(x,y - self.hatDelta, crewId, 2)
 end
 
 function CrewMember:search(player)
@@ -50,7 +50,7 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	elseif PlayerData.battery > 60 and PlayerData.isInDarkness == true then
 		self.moveSpeed = self.initialSpeed
 	end
-	self.hat:moveTo(movementX, movementY-15)
+	self.hat:moveTo(movementX, movementY - self.hatDelta)
 	
 	local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY)
 	if lenght > 0 then

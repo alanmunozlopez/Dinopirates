@@ -85,7 +85,7 @@ function scene:enter()
 	-- Your code here
 	
 	
-	PlayerData.isGaming = true
+	PlayerData.isGaming = false
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
@@ -219,9 +219,10 @@ function scene:enter()
 		local x = crewData.x
 		local y = crewData.y
 		local speed = crewData.speed
+		local crewId = crewData.crewId
 		if type == "crewmember" then
 			if crewData.taken == false then
-				CrewMember(x, y, speed, ZIndex.enemy, player, i ,room)
+				CrewMember(x, y, speed, ZIndex.enemy, player, i ,room, crewId)
 			end
 		end
 	end
@@ -248,7 +249,7 @@ end
 function scene:start()
 	scene.super.start(self)
 	self:setDiagonalMovement(diagonalMovement)
-
+	PlayerData.isGaming = true
 end
 
 -- This runs once per frame.

@@ -204,7 +204,7 @@ levels = {
 				x = 135,
 				y = 152,
 						taken = false,
-						crewId = "chef"
+						crewId = "cap"
 			},
 			{
 				type = 'crewmember',
@@ -218,28 +218,28 @@ levels = {
 				x = 75,
 				y = 150,
 						taken = false,
-						crewId = "hat"
+						crewId = "cap"
 			},
 			{
 				type = 'crewmember',
 				x = 272,
 				y = 79,
 						taken = false,
-						crewId = "hat"
+						crewId = "cap"
 			},
 			{
 				type = 'crewmember',
 				x = 340,
 				y = 89,
 						taken = false,
-						crewId = "hat"
+						crewId = "cap"
 			},
 			{
 				type = 'crewmember',
 				x = 53,
 				y = 85,
 						taken = false,
-						crewId = "hat"
+						crewId = "cap"
 			}
 			},
 			triggers = {

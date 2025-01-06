@@ -4,11 +4,15 @@ class('Hats').extends(NobleSprite)
 
 function Hats:init(x, y, type, zIndex)
   Hats.super.init(self,'assets/images/props/hats', true)
-  --- animation states
-  self.animation:addState('chef', 2, 2)
+  print(type)
+  -- error handling
   if type == nil then
     type = 'chef'
   end
+  
+  --- animation states
+  self.animation:addState('cap', 1, 1)
+  self.animation:addState('chef', 2, 2)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(20, 16)
