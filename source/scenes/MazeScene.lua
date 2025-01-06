@@ -190,7 +190,7 @@ function scene:enter()
 				levels[room].floor.comic.wasPlayed = true
 			end)
 		else
-			print("Warning: Comic not found in comics table")
+			-- comic not found
 		end
 	end
 	-- Mark: UI
