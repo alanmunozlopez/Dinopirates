@@ -14,7 +14,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, position, room)
 		
 	self:setSize(48, 48)
 	self:moveTo(x, y)
-	self:setCollideRect(4, 8, 24, 24)
+	self:setCollideRect(12, 24, 24, 24)
 	
 	self.room = room
 	self.position = position
