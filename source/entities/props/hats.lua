@@ -4,7 +4,6 @@ class('Hats').extends(NobleSprite)
 
 function Hats:init(x, y, type, zIndex)
   Hats.super.init(self,'assets/images/props/hats', true)
-  print(type)
   -- error handling
   if type == nil then
     type = 'chef'
