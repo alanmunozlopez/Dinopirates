@@ -27,7 +27,7 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   self.animation:addState('fridge2', 20, 20)
   self.animation:addState('kitchenStorage', 21, 21)
   self.animation:addState('pot', 22, 22)
-  self.animation:addState('knifeKettle', 18, 18)
+  self.animation:addState('knifeKettle', 23, 23)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(32, 32)
