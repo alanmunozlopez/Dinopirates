@@ -22,6 +22,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
 	
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
+	self.stepCount = moveSpeed * 20
 	self.player = player
 	self.Zindex = Zindex
 	self:setGroups(CollideGroups.enemy)
@@ -36,7 +37,9 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
 end
 
 function Brocorat:search(player)
-	self:blindSearch(player)
+	if stepCount > 10 then -- stun idea
+		self:blindSearch(player)
+	end
 end
 
 function Brocorat:empty()
