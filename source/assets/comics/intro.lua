@@ -1,4 +1,4 @@
-introComic = {
+intro = {
     -- First sequence
     {
         -- Sequence properties
@@ -17,7 +17,7 @@ introComic = {
                 -- First panel
                 layers = {
                     {
-                        image = "comics/intro-comic/001",
+                        image = "comics/intro/001",
                         x = -8,
                         y = -8
                     }
@@ -27,12 +27,12 @@ introComic = {
                 -- Second panel
                 layers = {
                     {
-                        image = "comics/intro-comic/001",
+                        image = "comics/intro/001",
                         x = -8,
                         y = -8
                     },
                     {
-                        image = "comics/intro-comic/002",
+                        image = "comics/intro/002",
                         x = -8,
                         y = -8
                     },
@@ -43,17 +43,17 @@ introComic = {
                 -- Third panel
                layers = {
                    {
-                       image = "comics/intro-comic/001",
+                       image = "comics/intro/001",
                        x = -8,
                        y = -8
                    },
                    {
-                       image = "comics/intro-comic/002",
+                       image = "comics/intro/002",
                        x = -8,
                        y = -8
                    },
                    {
-                          image = "comics/intro-comic/003",
+                          image = "comics/intro/003",
                           x = -8,
                           y = -8
                       },
@@ -64,22 +64,22 @@ introComic = {
                 -- Fourth panel
                layers = {
                    {
-                       image = "comics/intro-comic/001",
+                       image = "comics/intro/001",
                        x = -8,
                        y = -8
                    },
                    {
-                       image = "comics/intro-comic/002",
+                       image = "comics/intro/002",
                        x = -8,
                        y = -8
                    },
                    {
-                        image = "comics/intro-comic/003",
+                        image = "comics/intro/003",
                         x = -8,
                         y = -8
                     },
                     {
-                        image = "comics/intro-comic/004",
+                        image = "comics/intro/004",
                         x = -8,
                         y = -8
                     },

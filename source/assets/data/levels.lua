@@ -580,7 +580,11 @@ levels = {
 				leadsTo = 113
 			}
 			},
-			comic = {},
+			comic = {
+					wasPlayed = false,
+					name = "pick-the-device",
+					
+			},
 			items = {
 			{
 				type = 'radio',
@@ -589,7 +593,15 @@ levels = {
 			}
 			},
 			triggers = {
-	
+			{
+				usedTrigger = false,
+				x = 200,
+				y = 128,
+				width = 20,
+				height = 30,
+				script = "gettingThePhone",
+						type = "cutscene"
+			}
 			},
 			enemies = {
 	
@@ -629,6 +641,115 @@ levels = {
 				type = "table",
 				x = 323,
 				y = 72
+			},
+			{
+				type = "blood",
+				x = 170,
+				y = 135,
+						nocollide = true
+			},
+			{
+				type = "blood2",
+				x = 233,
+				y = 126,
+						nocollide = true
+			},
+			{
+				type = "box",
+				x = 336,
+				y = 32
+			},
+			{
+				type = "blood",
+				x = 355,
+				y = 190,
+						nocollide = true
+			},
+			{
+				type = "blood2",
+				x = 322,
+				y = 203,
+						nocollide = true
+			},
+			{
+				type = "blood",
+				x = 56,
+				y = 181,
+						nocollide = true
+			},
+			{
+				type = "blood2",
+				x = 94,
+				y = 198,
+						nocollide = true
+			},
+			{
+				type = "blood",
+				x = 86,
+				y = 178,
+						nocollide = true
+			},
+			{
+				type = "blood2",
+				x = 130,
+				y = 191,
+						nocollide = true
+			},
+			{
+				type = "chair",
+				x = 355,
+				y = 185
+			},
+			{
+				type = "fellchair",
+				x = 319,
+				y = 206
+			},
+			{
+				type = "chair",
+				x = 376,
+				y = 196
+			},
+			{
+				type = "chair",
+				x = 346,
+				y = 204
+			},
+			{
+				type = "fellchair",
+				x = 370,
+				y = 209
+			},
+			{
+				type = "chair",
+				x = 339,
+				y = 190
+			},
+			{
+				type = "fellchair",
+				x = 346,
+				y = 208
+			},
+			{
+				type = "chair",
+				x = 362,
+				y = 172
+			},
+			{
+				type = "fellTable",
+				x = 32,
+				y = 31
+			},
+			{
+				type = "table",
+				x = 28,
+				y = 98
+			},
+			{
+				type = "knifeKettle",
+				x = 28,
+				y = 79,
+						nocollide = true
 			}
 			}
 		}

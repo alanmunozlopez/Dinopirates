@@ -1,7 +1,7 @@
-import "assets/comics/intro-comic"
-import "assets/comics/comic-test"
+import "assets/comics/intro"
+import "assets/comics/pick-the-device"
 
 comics = {
-    ["intro-comic"] = introComic,
-    ["comic-test"] = comicTest
+    ["intro"] = introComic,
+    ["pick-the-device"] = pickDevice
 }
