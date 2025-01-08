@@ -16,7 +16,7 @@ levels = {
 			},
 			comic = {
 					wasPlayed = false,
-					name = "intro-comic",
+					name = "intro",
 					play = "enter"
 			},
 			items = {
@@ -227,7 +227,7 @@ levels = {
 				usedTrigger = false,
 				x = 326,
 				y = 69,
-				width = 123,
+				width = 100,
 				height = 116,
 				script = "notesLook"
 			},

@@ -7,6 +7,7 @@ pickDevice = {
         scrollType = Panels.ScrollType.AUTO,
         direction = Panels.ScrollDirection.NONE,
         backgroundColor = Graphics.kColorWhite,
+        advanceControl = Panels.Input.A,
         panels = {
             {
                 -- First panel
@@ -59,6 +60,40 @@ pickDevice = {
                     },
                     {
                         image = "comics/pick-the-device/004",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- fifth panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/003",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/004",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/005",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- sixth panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/006",
                         x = marginX,
                         y = marginY
                     },

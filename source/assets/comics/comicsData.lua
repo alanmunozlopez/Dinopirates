@@ -2,6 +2,6 @@ import "assets/comics/intro"
 import "assets/comics/pick-the-device"
 
 comics = {
-    ["intro"] = introComic,
+    ["intro"] = intro,
     ["pick-the-device"] = pickDevice
 }
