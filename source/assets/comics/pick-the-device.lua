@@ -10,7 +10,7 @@ pickDevice = {
         advanceControl = Panels.Input.A,
         panels = {
             {
-                -- First panel
+                -- 1st panel
                 layers = {
                     {
                         image = "comics/pick-the-device/001",
@@ -22,7 +22,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- second panel
+                -- 2nd panel
                 layers = {
                     {
                         image = "comics/pick-the-device/001",
@@ -39,7 +39,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- third panel
+                -- 3rd panel
                 layers = {
                     {
                         image = "comics/pick-the-device/003",
@@ -51,7 +51,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- forth panel
+                -- 4th panel
                 layers = {
                     {
                         image = "comics/pick-the-device/003",
@@ -68,7 +68,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- fifth panel
+                -- 5th panel
                 layers = {
                     {
                         image = "comics/pick-the-device/003",
@@ -90,7 +90,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- sixth panel
+                -- 6th panel
                 layers = {
                     {
                         image = "comics/pick-the-device/006",
@@ -102,7 +102,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- seventh panel
+                -- 7th panel
                 layers = {
                     {
                         image = "comics/pick-the-device/007",
@@ -114,7 +114,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- eight panel
+                -- 8th panel
                 layers = {
                     {
                         image = "comics/pick-the-device/007",
@@ -131,7 +131,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- ninth panel
+                -- 9h panel
                 layers = {
                     {
                         image = "comics/pick-the-device/007",
@@ -153,7 +153,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- tenth panel
+                -- 10th panel
                 layers = {
                     {
                         image = "comics/pick-the-device/007",
@@ -180,7 +180,7 @@ pickDevice = {
                 showControl = true
             },
             {
-                -- eleventh panel
+                -- 11th panel
                 layers = {
                     {
                         image = "comics/pick-the-device/007",
@@ -204,6 +204,187 @@ pickDevice = {
                     },
                     {
                         image = "comics/pick-the-device/011",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 12th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/012",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 13th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/012",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/013",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 14th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/012",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/013",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/014",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 15th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/012",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/013",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/015",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 16th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/016",
+                        x = marginX,
+                        y = marginY
+                    },
+                    
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 17th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/016",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/017",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 18th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/018",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/017",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 19th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/018",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/017",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/019",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 20th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/018",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/017",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/019",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        image = "comics/pick-the-device/020",
+                        x = marginX,
+                        y = marginY
+                    },
+                },
+                advanceControl = Panels.Input.A,
+                showControl = true
+            },
+            {
+                -- 21th panel
+                layers = {
+                    {
+                        image = "comics/pick-the-device/021",
                         x = marginX,
                         y = marginY
                     },

@@ -206,7 +206,11 @@ levels = {
 				leadsTo = 107
 			}
 			},
-			comic = {},
+			comic = {
+					wasPlayed = false,
+					name = "intro-comic",
+					play = "enter"
+			},
 			items = {
 			{
 				type = 'notes',
@@ -227,17 +231,9 @@ levels = {
 				usedTrigger = false,
 				x = 326,
 				y = 69,
-				width = 100,
+				width = 123,
 				height = 116,
 				script = "notesLook"
-			},
-			{
-				usedTrigger = false,
-				x = 330,
-				y = 61,
-				width = 48,
-				height = 48,
-				script = "notesPickup"
 			},
 			{
 				usedTrigger = false,
@@ -246,6 +242,14 @@ levels = {
 				width = 60,
 				height = 30,
 				script = "justBoxes"
+			},
+			{
+				usedTrigger = false,
+				x = 332,
+				y = 62,
+				width = 21,
+				height = 30,
+				script = "notesPickup"
 			}
 			},
 			enemies = {
