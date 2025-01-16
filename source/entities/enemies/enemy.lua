@@ -55,7 +55,7 @@ function Enemy:moveCollision(movementX, movementY, player)
 end
 
 function Enemy:collisionResponse(other)
-    if other:isa(Items) then
+    if other:isa(Items) or other:isa(Trigger) then
         return 'overlap'
     elseif other:isa(Box) or other:isa(PropItem) then
         return 'freeze'
