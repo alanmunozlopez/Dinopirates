@@ -8,9 +8,8 @@ function Hats:init(x, y, type, zIndex)
   if type == nil then
     type = 'chef'
   end
-  
   --- animation states
-  self.animation:addState('cap', 1, 1)
+  self.animation:addState('100', 1, 1)
   self.animation:addState('chef', 2, 2)
   self.animation:setState(type)
   -- position and z-index
