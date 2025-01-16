@@ -587,7 +587,6 @@ levels = {
 			comic = {
 					wasPlayed = false,
 					name = "pick-the-device",
-					
 			},
 			items = {
 			{
@@ -608,7 +607,24 @@ levels = {
 			}
 			},
 			enemies = {
-	
+			{
+				name = "brocorat",
+				x = 372,
+				y = 37,
+				speed = 1.0
+			},
+			{
+				name = "brocorat",
+				x = 361,
+				y = 78,
+				speed = 1.0
+			},
+			{
+				name = "brocorat",
+				x = 360,
+				y = 116,
+				speed = 1.0
+			}
 			},
 			props = {
 			{

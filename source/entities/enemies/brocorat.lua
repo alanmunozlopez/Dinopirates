@@ -22,6 +22,9 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
 	
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
+	if moveSpeed == nil then
+		self.moveSpeed = 1
+	end
 	self.stepCount = moveSpeed * 20
 	self.player = player
 	self.Zindex = Zindex
@@ -37,7 +40,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
 end
 
 function Brocorat:search(player)
-	if stepCount > 10 then -- stun idea
+	if self.stepCount > 10 then -- stun idea
 		self:blindSearch(player)
 	end
 end
