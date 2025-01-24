@@ -12,7 +12,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, position, room, crewId
 	end
 	-- Mark: animation states
 	self.animation:addState('idle', 1, 4)
-	self.animation.idle.frameDuration = 6
+	self.animation.idle.frameDuration = 8
 	self.animation:addState('walk', 1, 4)
 	self.animation.walk.frameDuration = 6
 	self.animation:addState('empty', 1, 4)
@@ -44,6 +44,11 @@ function CrewMember:search(player)
 	self:escape(player)
 end
 
+function CrewMember:collisionResponse(other)
+	if other:isa(Player) then -- only works if the crewmember collide with the player, not the other way around
+		print('PLAAAYER')
+	end
+end
 function CrewMember:moveCollision(movementX, movementY, player) 
 	if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
 		self.moveSpeed = 0
@@ -53,19 +58,17 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	self.hat:moveTo(movementX, movementY - self.hatDelta)
 	
 	local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY)
-	if lenght > 0 then
-		for index, collision in pairs(collisions) do
-			local collideObject = collision['other']
-			if collideObject:isa(Player) then -- not being used
-				print('player collision')
-				if self.player.isAlive then
-					self:taken(PlayerData.actualRoom)
-					--self:remove()
-					
-				end
-			end
-		end
-	end
+	-- if lenght > 0 then
+	-- 	for index, collision in pairs(collisions) do
+	-- 		local collideObject = collision['other']
+	-- 		if collideObject:isa(Player) then -- not being used
+	-- 			print('enemy collision')
+	-- 			if self.player.isAlive then
+	-- 				self:taken(PlayerData.actualRoom)
+	-- 			end
+	-- 		end
+	-- 	end
+	-- end
 	
 end
 

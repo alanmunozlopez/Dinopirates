@@ -50,6 +50,9 @@ function Enemy:moveCollision(movementX, movementY, player)
                     self.player:dead()
                 end
             end
+            if collideObject:isa(PropItem) then
+                print("prop collision")
+            end
         end
     end
 end
