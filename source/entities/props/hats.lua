@@ -10,7 +10,7 @@ function Hats:init(x, y, type, zIndex)
   end
   --- animation states
   self.animation:addState('100', 1, 1)
-  self.animation:addState('chef', 2, 2)
+  self.animation:addState('101', 2, 2)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(20, 16)
