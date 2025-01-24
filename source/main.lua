@@ -32,6 +32,7 @@ ZIndex = {
 	player = 4,
 	enemy = 3,
 	props = 3,
+	items = 4,
 	fx = 6,
 	ui = 10,
 	alert = 12
