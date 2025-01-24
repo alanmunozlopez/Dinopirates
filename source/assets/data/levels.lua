@@ -589,11 +589,11 @@ levels = {
 					name = "pick-the-device",
 			},
 			items = {
-			{
-				type = 'radio',
-				x = 200,
-				y = 120
-			}
+				{
+					type = 'radio',
+					x = 200,
+					y = 120
+				},
 			},
 			triggers = {
 			{
