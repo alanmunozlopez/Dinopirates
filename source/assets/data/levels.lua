@@ -581,7 +581,7 @@ levels = {
 			{
 				direction = 'down',
 				open = 'open',
-				leadsTo = 113
+				leadsTo = 116
 			}
 			},
 			comic = {
@@ -589,18 +589,11 @@ levels = {
 					name = "pick-the-device",
 			},
 			items = {
-			{
-				type = 'radio',
-				x = 200,
-				y = 120
-			},
-			{
-				type = 'crewmember',
-				x = 320,
-				y = 120,
-				taken = false,
-				crewId = '100'
-			},
+				{
+					type = 'radio',
+					x = 200,
+					y = 120
+				},
 			},
 			triggers = {
 			{
@@ -760,6 +753,53 @@ levels = {
 				y = 79,
 						nocollide = true
 			}
+			}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			roomNumber = 16,
+			tile = 2,
+			light = 0.5,
+			shadow = false,
+			doors = {
+			{
+				direction = 'top',
+				open = 'open',
+				leadsTo = 108
+			}
+			},
+			comic = {
+					wasPlayed = false,
+					name = "intro-comic",
+					play = "enter"
+			},
+			items = {
+	
+			},
+			triggers = {
+	
+			},
+			enemies = {
+			{
+				name = "brocorat",
+				x = 294,
+				y = 169,
+				speed = 1.0,
+				id = 000
+			},
+			{
+				name = "brocorat",
+				x = 110,
+				y = 175,
+				speed = 1.0,
+				id = 001
+			}
+			},
+			props = {
+	
 			}
 		}
 	}

@@ -3,7 +3,7 @@ import 'enemy'
 Brocorat = {}
 class('Brocorat').extends('Enemy')
 -- TODO check animation
-function Brocorat:init(x, y, moveSpeed, Zindex, player)
+function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	Brocorat.super.init(self, 'assets/images/enemies/brocorat', true)
 	
 	-- Mark: animation states
@@ -16,6 +16,8 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
 	self.animation:addState('shine', 9, 14)
 	self.animation.shine.frameDuration = 6
 	
+	self.type = "Enemy"
+	self.id = ID
 	self:setSize(32, 32)
 	self:moveTo(x, y)
 	self:setCollideRect(4, 8, 24, 24)

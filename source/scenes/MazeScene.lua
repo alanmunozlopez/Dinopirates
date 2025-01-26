@@ -196,7 +196,7 @@ function scene:enter()
 	-- Mark: UI
 	uiScreen = playerHud()
 	
-	-- Mark: Enemies & Crew members 
+	-- Mark: Enemies
 	arrayData = levels[room].floor.enemies
 	
 	for _, enemyData in ipairs(arrayData) do
@@ -204,14 +204,16 @@ function scene:enter()
 		local x = enemyData.x
 		local y = enemyData.y
 		local speed = enemyData.speed
-	
+		local id = enemyData.id
+		
 		if name == "brocorat" then
-			Brocorat(x, y, speed, ZIndex.enemy, player)
+			Brocorat(x, y, speed, ZIndex.enemy, player, id)
 		elseif name == "frogcolli" then
-			Frogcolli(x, y, speed, ZIndex.enemy, player)
+			Frogcolli(x, y, speed, ZIndex.enemy, player, id)
 		end
 	end
 	
+	-- Mark: Crew members 
 	arrayData = levels[room].floor.items
 	
 	for i, crewData in ipairs(arrayData) do
@@ -358,6 +360,16 @@ scene.inputHandler = {
 	--
 
 	BButtonDown = function()
+		
+		for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
+			if enemy.type == "Enemy" then
+				print("x:", enemy.x)
+				print("y:", enemy.y)
+				print("Type:", enemy.type)
+				print("ID:", enemy.id)
+				print("----")
+		    end
+		end
 	
 	end,
 	BButtonHeld = function()
