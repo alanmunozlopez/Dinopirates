@@ -85,12 +85,12 @@ function scene:init()
 	end
 	
 	-- Add Playground option only if debug is true
-	-- if debug == true then
-		-- menu:addItem("Playground", function()
-		-- 	SaveSystem.reset()
-		-- 	Noble.transition(Floor101)  -- Direct transition to room 109
-		-- end)
-	-- end
+	--if debug == true then
+		menu:addItem("Playground", function()
+			SaveSystem.reset()
+			Noble.transition(TestScene)  -- Direct transition to room 109
+		end)
+	--end
 	
 	menu:select(playdate.file.exists('gameState.json') and "Continue" or "New Game")
 end

@@ -3,10 +3,15 @@ class("TestScene").extends(NobleScene)
 
 TestScene.backgroundColor = Graphics.kColorWhite
 
-import "entities/testEntity"
+import "entities/UI/battle/buttonPress"
+import "entities/UI/battle/hitZone"
+import "entities/UI/battle/playerDance"
+
 
 function TestScene:init()
 	TestScene.super.init(self)
+     bpm = 12
+    
     
 end
 
@@ -16,24 +21,24 @@ function TestScene:enter()
 
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
-
-    -- self:addSprite(player)
+    button = ButtonPress('upButton')
+    hitzone = HitZone(bpm)
+    playerDance = PlayerDance(bpm)
 end
 
 function TestScene:start()
 	TestScene.super.start(self)
 
-	-- menu:activate()
-	-- Noble.Input.setCrankIndicatorStatus(true)
+	
  
-    test = TestEntity(100,100, "hola")
+    
 
 end
 
 function TestScene:drawBackground()
 	TestScene.super.drawBackground(self)
-
-	-- background:draw(0, 0)
+    local background = Graphics.image.new('assets/test/testbg.png')
+	background:draw(0, 0)
 end
 
 function TestScene:update()

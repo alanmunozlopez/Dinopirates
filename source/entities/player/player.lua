@@ -93,7 +93,7 @@ function Player:collisionResponse(other)
       other:empty()
       --other.animation:setState('empty')  -- Set enemy animation to empty state
       --self.animation:setState('deadBrocolli')
-      return self:dead()
+      return self:fight()
     end
     
   elseif other:isa(CrewMember) then
@@ -186,6 +186,10 @@ function Player:sanityCheck()
   end
   playdate.timer.keyRepeatTimerWithDelay(2000, 2000, checkSanity)
     
+end
+
+function Player:fight()
+  Noble.transition(TestScene)
 end
 
 function Player:dead()

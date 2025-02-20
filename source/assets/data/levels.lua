@@ -788,14 +788,14 @@ levels = {
 				x = 294,
 				y = 169,
 				speed = 1.0,
-				id = 000
+				id = '000'
 			},
 			{
 				name = "brocorat",
 				x = 110,
 				y = 175,
 				speed = 1.0,
-				id = 001
+				id = '001'
 			}
 			},
 			props = {
