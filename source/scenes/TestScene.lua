@@ -10,7 +10,7 @@ import "entities/UI/battle/playerDance"
 
 function TestScene:init()
 	TestScene.super.init(self)
-     bpm = 12
+     bpm = 16
     
     
 end
@@ -21,7 +21,7 @@ function TestScene:enter()
 
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
-    button = ButtonPress('upButton')
+    button = ButtonPress('upButton', bpm)
     hitzone = HitZone(bpm)
     playerDance = PlayerDance(bpm)
 end
@@ -65,7 +65,7 @@ TestScene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
-        test:draw()
+        
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here

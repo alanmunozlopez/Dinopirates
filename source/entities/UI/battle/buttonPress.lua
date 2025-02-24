@@ -33,11 +33,23 @@ function ButtonPress:init(buttonKey, bpm)
 	self:add(250, 30)
 	
 end
-function ButtonPress:hit()
-	
+function ButtonPress:hit(movementX,movementY)
+	local actualX, actualY, collisions, lenght = self:checkCollisions(movementX, movementY)
+	if lenght > 0 then
+		for index, collision in pairs(collisions) do
+			local collideObject = collision['other']
+			if collideObject:isa(HitZone) then
+				print('hitzone')
+			end
+			if collideObject:isa(Player) then
+				print('hitplayer')
+			end
+		end
+	end
 end
 function ButtonPress:update()
-	self:moveBy(-1*bpm/2, 0)
+	self:moveBy(-0.5*bpm/3, 0)
+	self:hit(self.x, 0)
 	if self.x <= 64 then
 		self:moveTo(330, self.y)
 	end

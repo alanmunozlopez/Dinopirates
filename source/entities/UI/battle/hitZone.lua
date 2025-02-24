@@ -7,10 +7,10 @@ function HitZone:init(bpm)
 	if bpm == nil then
 		bpm = 6
 	end
-	
+	local frameduration = bpm
 	-- Mark: animation states
 	self.animation:addState('checker',1,8)
-	self.animation.checker.frameDuration = bpm
+	self.animation.checker.frameDuration = frameduration
 	
 	self.animation:setState('checker')
 	self.range = 100

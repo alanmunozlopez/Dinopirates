@@ -4,13 +4,13 @@ class('PlayerDance').extends(NobleSprite)
 function PlayerDance:init(bpm)
 	PlayerDance.super.init(self, 'assets/images/ui/battle/playerDance',true)
 	
-	if bpm == nil then
+	if bpm == nil or bpm == 0 then
 		bpm = 6
 	end
-	
+	frameduration = bpm
 	-- Mark: animation states
 	self.animation:addState('idle',1,2)
-	self.animation.idle.frameDuration = bpm/2
+	self.animation.idle.frameDuration = frameduration
 	
 	self.animation:setState('idle')
 	self:setSize(246, 214)
