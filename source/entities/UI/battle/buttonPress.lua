@@ -41,16 +41,13 @@ function ButtonPress:hit(movementX,movementY)
 			if collideObject:isa(HitZone) then
 				print('hitzone')
 			end
-			if collideObject:isa(Player) then
-				print('hitplayer')
-			end
 		end
 	end
 end
 function ButtonPress:update()
 	self:moveBy(-0.5*bpm/3, 0)
 	self:hit(self.x, 0)
-	if self.x <= 64 then
+	if self.x <= 60 then
 		self:moveTo(330, self.y)
 	end
 end

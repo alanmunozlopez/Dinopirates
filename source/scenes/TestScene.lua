@@ -10,8 +10,8 @@ import "entities/UI/battle/playerDance"
 
 function TestScene:init()
 	TestScene.super.init(self)
-     bpm = 16
-    
+    bpm = 16
+    local ButtonPress = nil
     
 end
 
@@ -96,6 +96,9 @@ TestScene.inputHandler = {
     --
     leftButtonDown = function()
         -- Your code here
+    if condition then
+            exprs
+        end
     end,
     leftButtonHold = function()
         -- Your code here
