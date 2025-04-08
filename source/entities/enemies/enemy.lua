@@ -47,7 +47,7 @@ function Enemy:moveCollision(movementX, movementY, player)
             if collideObject:isa(Player) then
                 if self.player.isAlive then
                     self.animation:setState('empty')
-                    self.player:dead()
+                   -- self.player:dead()
                 end
             end
             if collideObject:isa(PropItem) then

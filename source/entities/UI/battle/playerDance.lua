@@ -9,7 +9,7 @@ function PlayerDance:init(bpm)
 	end
 	frameduration = bpm
 	-- Mark: animation states
-	self.animation:addState('idle',1,2)
+	self.animation:addState('idle',1,5)
 	self.animation.idle.frameDuration = frameduration
 	
 	self.animation:setState('idle')

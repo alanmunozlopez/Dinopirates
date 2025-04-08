@@ -1,7 +1,7 @@
 TestScene = {}
 class("TestScene").extends(NobleScene)
 
-TestScene.backgroundColor = Graphics.kColorWhite
+--TestScene.backgroundColor = Graphics.kColorWhite
 
 import "entities/UI/battle/buttonPress"
 import "entities/UI/battle/hitZone"
@@ -18,25 +18,30 @@ end
 
 function TestScene:enter()
 	TestScene.super.enter(self)
-
+    
+    
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
-    button = ButtonPress('upButton', bpm)
+    
+    button = ButtonPress('aButton', bpm)
+    button2 = ButtonPress('bButton', bpm)
+    
     hitzone = HitZone(bpm)
     playerDance = PlayerDance(bpm)
+    
 end
 
 function TestScene:start()
 	TestScene.super.start(self)
-
-	
- 
+    button:movementDelay(0)
+    button2:movementDelay(300)
     
 
 end
 
 function TestScene:drawBackground()
 	TestScene.super.drawBackground(self)
+    -- por alguna razon el bg no se dibuja al entrar a una escena
     local background = Graphics.image.new('assets/test/testbg.png')
 	background:draw(0, 0)
 end
@@ -44,7 +49,11 @@ end
 function TestScene:update()
 	TestScene.super.update(self)
     
-end
+    
+    --button:hit(button.x, 0)
+    
+    
+    end
 
 function TestScene:exit()
 	TestScene.super.exit(self)
@@ -59,13 +68,17 @@ function TestScene:finish()
 	TestScene.super.finish(self)
 end
 
+function TestScene:checkButton(pressed, hitButton)
+    
+end
+
 TestScene.inputHandler = {
 
     -- A button
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
-        
+        button:hit(button.x,0,"aButton")
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
@@ -96,9 +109,9 @@ TestScene.inputHandler = {
     --
     leftButtonDown = function()
         -- Your code here
-    if condition then
-            exprs
-        end
+    -- if condition then
+    --         exprs
+    --     end
     end,
     leftButtonHold = function()
         -- Your code here

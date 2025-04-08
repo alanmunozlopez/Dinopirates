@@ -20,7 +20,7 @@ function HitZone:init(bpm)
 	
 end
 function HitZone:hit()
-	
+	-- aca deberia ir el check de button press
 end
 function HitZone:update()
 	
