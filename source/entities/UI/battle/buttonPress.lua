@@ -26,7 +26,6 @@ function ButtonPress:init(buttonKey, bpm)
 	
 	self.buttonKey = buttonKey
 	self.bpm = bpm
-	--self.delay = delay
 	self.active = false
 	self.animation:setState(buttonKey)
 	self.range = 100
@@ -35,18 +34,8 @@ function ButtonPress:init(buttonKey, bpm)
 	self:add(250, 30)
 	
 end
-function ButtonPress:hit(movementX,movementY,pressedButton)
-	local actualX, actualY, collisions, lenght = self:checkCollisions(movementX, movementY)
-	if lenght > 0 then
-		for index, collision in pairs(collisions) do
-			local collideObject = collision['other']
-			if collideObject:isa(HitZone) then 
-				if self.buttonKey == pressedButton then
-					print("it is")
-				end
-			end
-		end
-	end
+function ButtonPress:hit()
+	self:moveTo(330, self.y)
 end
 
 function ButtonPress:movementDelay(delay)
@@ -67,7 +56,5 @@ function ButtonPress:update()
 		end
 	end
     
-
-	--self:hit(self.x, 0, "up","down")
 	
 end

@@ -11,8 +11,8 @@ import "entities/UI/battle/playerDance"
 function TestScene:init()
 	TestScene.super.init(self)
     bpm = 16
-    local ButtonPress = nil
-    
+    ButtonPressed = nil
+    buttonText = "none"
 end
 
 
@@ -25,6 +25,8 @@ function TestScene:enter()
     
     button = ButtonPress('aButton', bpm)
     button2 = ButtonPress('bButton', bpm)
+    button3 = ButtonPress('upButton', bpm)
+    button4 = ButtonPress('leftButton', bpm)
     
     hitzone = HitZone(bpm)
     playerDance = PlayerDance(bpm)
@@ -33,9 +35,11 @@ end
 
 function TestScene:start()
 	TestScene.super.start(self)
+    
     button:movementDelay(0)
     button2:movementDelay(300)
-    
+    button3:movementDelay(600)
+    button4:movementDelay(900)
 
 end
 
@@ -50,7 +54,21 @@ function TestScene:update()
 	TestScene.super.update(self)
     
     
-    --button:hit(button.x, 0)
+    local collisions = hitzone:overlappingSprites()
+    if table.getsize(collisions) > 0 then
+        if ButtonPressed == nil then
+            buttonText = "miss"
+        elseif collisions[1].buttonKey == ButtonPressed then
+            buttonText = "right"
+            collisions[1]:hit()
+        else
+            buttonText = "wrong"
+            collisions[1]:hit()
+        end
+        ButtonPressed = nil
+    end
+    
+    Graphics.drawText(buttonText,300,90)
     
     
     end
@@ -68,9 +86,7 @@ function TestScene:finish()
 	TestScene.super.finish(self)
 end
 
-function TestScene:checkButton(pressed, hitButton)
-    
-end
+
 
 TestScene.inputHandler = {
 
@@ -78,7 +94,7 @@ TestScene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
-        button:hit(button.x,0,"aButton")
+        ButtonPressed = "aButton"
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
@@ -94,6 +110,7 @@ TestScene.inputHandler = {
     --
     BButtonDown = function()
         -- Your code here
+        ButtonPressed = "bButton"
     end,
     BButtonHeld = function()
         -- Your code here
@@ -109,9 +126,7 @@ TestScene.inputHandler = {
     --
     leftButtonDown = function()
         -- Your code here
-    -- if condition then
-    --         exprs
-    --     end
+        ButtonPressed = "leftButton"
     end,
     leftButtonHold = function()
         -- Your code here
@@ -124,6 +139,7 @@ TestScene.inputHandler = {
     --
     rightButtonDown = function()
         -- Your code here
+        ButtonPressed = "rightButton"
     end,
     rightButtonHold = function()
         -- Your code here
@@ -146,6 +162,7 @@ TestScene.inputHandler = {
     --
     downButtonDown = function()
         -- Your code here
+        ButtonPressed = "downButton"
     end,
     downButtonHold = function()
         -- Your code here
