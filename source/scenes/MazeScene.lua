@@ -301,6 +301,9 @@ function scene:exit()
 	end
 	
 	Graphics.sprite.removeAll()
+	
+	PlayerData.playerExit.x = player.x
+	PlayerData.playerExit.y = player.y
 end
 
 -- This runs once a transition to another scene completes.

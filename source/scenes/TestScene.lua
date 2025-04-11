@@ -1,80 +1,40 @@
 TestScene = {}
 class("TestScene").extends(NobleScene)
-
+local scene = TestScene
 --TestScene.backgroundColor = Graphics.kColorWhite
 
-import "entities/UI/battle/buttonPress"
-import "entities/UI/battle/hitZone"
-import "entities/UI/battle/playerDance"
-
-
-function TestScene:init()
-	TestScene.super.init(self)
-    bpm = 16
-    ButtonPressed = nil
-    buttonText = "none"
+function scene:init()
+	scene.super.init(self)
+    
 end
 
 
-function TestScene:enter()
-	TestScene.super.enter(self)
-    
-    
+function scene:enter()
+	scene.super.enter(self)
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
-	sequence:start()
-    
-    button = ButtonPress('aButton', bpm)
-    button2 = ButtonPress('bButton', bpm)
-    button3 = ButtonPress('upButton', bpm)
-    button4 = ButtonPress('leftButton', bpm)
-    
-    hitzone = HitZone(bpm)
-    playerDance = PlayerDance(bpm)
+	
     
 end
 
-function TestScene:start()
-	TestScene.super.start(self)
-    
-    button:movementDelay(0)
-    button2:movementDelay(300)
-    button3:movementDelay(600)
-    button4:movementDelay(900)
+function scene:start()
+	scene.super.start(self)
+
 
 end
 
-function TestScene:drawBackground()
-	TestScene.super.drawBackground(self)
-    -- por alguna razon el bg no se dibuja al entrar a una escena
+function scene:drawBackground()
+	scene.super.drawBackground(self)
     local background = Graphics.image.new('assets/test/testbg.png')
 	background:draw(0, 0)
 end
 
-function TestScene:update()
-	TestScene.super.update(self)
-    
-    
-    local collisions = hitzone:overlappingSprites()
-    if table.getsize(collisions) > 0 then
-        if ButtonPressed == nil then
-            buttonText = "miss"
-        elseif collisions[1].buttonKey == ButtonPressed then
-            buttonText = "right"
-            collisions[1]:hit()
-        else
-            buttonText = "wrong"
-            collisions[1]:hit()
-        end
-        ButtonPressed = nil
-    end
-    
-    Graphics.drawText(buttonText,300,90)
-    
-    
-    end
+function scene:update()
+	scene.super.update(self)
+   
+end
 
-function TestScene:exit()
-	TestScene.super.exit(self)
+function scene:exit()
+	scene.super.exit(self)
 
 	Noble.Input.setCrankIndicatorStatus(false)
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
@@ -82,19 +42,17 @@ function TestScene:exit()
 
 end
 
-function TestScene:finish()
-	TestScene.super.finish(self)
+function scene:finish()
+	scene.super.finish(self)
 end
 
 
-
-TestScene.inputHandler = {
+scene.inputHandler = {
 
     -- A button
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
-        ButtonPressed = "aButton"
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
@@ -110,7 +68,6 @@ TestScene.inputHandler = {
     --
     BButtonDown = function()
         -- Your code here
-        ButtonPressed = "bButton"
     end,
     BButtonHeld = function()
         -- Your code here
@@ -119,27 +76,23 @@ TestScene.inputHandler = {
         -- Your code here
     end,
     BButtonUp = function()
-       
     end,
 
     -- D-pad left
     --
     leftButtonDown = function()
         -- Your code here
-        ButtonPressed = "leftButton"
     end,
     leftButtonHold = function()
         -- Your code here
     end,
     leftButtonUp = function()
-        
     end,
 
     -- D-pad right
     --
     rightButtonDown = function()
         -- Your code here
-        ButtonPressed = "rightButton"
     end,
     rightButtonHold = function()
         -- Your code here
@@ -162,7 +115,6 @@ TestScene.inputHandler = {
     --
     downButtonDown = function()
         -- Your code here
-        ButtonPressed = "downButton"
     end,
     downButtonHold = function()
         -- Your code here

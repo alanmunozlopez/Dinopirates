@@ -88,7 +88,7 @@ function scene:init()
 	--if debug == true then
 		menu:addItem("Playground", function()
 			SaveSystem.reset()
-			Noble.transition(TestScene)  -- Direct transition to room 109
+			Noble.transition(DanceScene)  -- Direct transition to room 109
 		end)
 	--end
 	

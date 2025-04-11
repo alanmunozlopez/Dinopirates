@@ -90,10 +90,11 @@ function Player:collisionResponse(other)
   
   if other:isa(Enemy) then
     if other:isa(Brocorat) then
-      other:empty()
+      -- other:empty()
       --other.animation:setState('empty')  -- Set enemy animation to empty state
       --self.animation:setState('deadBrocolli')
-      return self:fight()
+      self:fight()
+      return 'overlap'
     end
     
   elseif other:isa(CrewMember) then

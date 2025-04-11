@@ -51,6 +51,7 @@ function ButtonPress:update()
 	
 	if self.active == true then
 		self:moveBy(-0.5*bpm/3, 0)
+		-- self:moveBy(-1, 0)
 		if self.x <= 60 then
 			self:moveTo(330, self.y)
 		end
