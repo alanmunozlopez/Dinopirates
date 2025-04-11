@@ -64,6 +64,9 @@ function Enemy:collisionResponse(other)
         return 'freeze'
     elseif other:isa(Enemy) then
         -- Empty condition
+    elseif other:isa(Player) then
+        -- Empty condition
+        return 'overlap'
     else
         return 'freeze'
     end

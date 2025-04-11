@@ -27,6 +27,10 @@ PlayerData = {
 	playerSpawn ={
 		x = 200,
 		y = 200,
+	},
+	playerExit ={
+		x = nil,
+		y = nil,
 	}
 }
 PlayerDataOriginal = {
@@ -58,5 +62,9 @@ PlayerDataOriginal = {
 	playerSpawn ={
 		x = 200,
 		y = 200,
+	},
+	playerExit ={
+		x = nil,
+		y = nil,
 	}
 }
