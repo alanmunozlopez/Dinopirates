@@ -11,7 +11,7 @@ import "entities/UI/battle/playerDance"
 function scene:init()
 	scene.super.init(self)
     
-    bpm = 16
+    self.bpm = 16
     self.ButtonPressed = nil
     self.buttonText = "none"
     self.accuracy = 0
@@ -35,10 +35,10 @@ function scene:enter()
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
     
-    button = ButtonPress('aButton', self.bpm)
-    button2 = ButtonPress('bButton', self.bpm)
-    button3 = ButtonPress('upButton', self.bpm)
-    button4 = ButtonPress('leftButton', self.pm)
+    button = ButtonPress(self.bpm)
+    button2 = ButtonPress(self.bpm)
+    button3 = ButtonPress(self.bpm)
+    button4 = ButtonPress(self.bpm)
     -- 
     hitzone = HitZone(self.bpm)
     playerDance = PlayerDance(self.bpm)
@@ -110,13 +110,11 @@ function scene:finish()
 end
 
 function scene:incrementCorrectPress(button)
-    print("Incrementing correct press for:", button)
     if self.correctButtonPresses[button] ~= nil then
         self.correctButtonPresses[button] += 1
     end
 end
 function scene:clearButton()
-    print("clear button press")
     self.ButtonPressed = nil
 end
 function scene:danceStep(inputStep)
