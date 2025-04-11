@@ -10,7 +10,9 @@ function ButtonPress:init(beats)
 		self.animation:addState(name, i, i)
 		self.animation[name].frameDuration = 6
 	end
-
+	self.animation:addState("empty", 8, 8)
+	self.animation.empty.frameDuration = 6
+	
 	self.bpm = beats
 	self.active = false
 	self.range = 100
@@ -23,27 +25,55 @@ function ButtonPress:init(beats)
 end
 
 function ButtonPress:hit()
+	self.buttonKey = "empty"
+	self.animation:setState(self.buttonKey)
+	self:tryMoveToFreePosition()
+	self:changeButtonSprite()
+end
+
+function ButtonPress:changeButtonSprite()
+	
 	local newKey
-	newKey = ButtonPress.getRandomButtonKey()
+	repeat
+		newKey = ButtonPress.getRandomButtonKey()
+	until newKey ~= self.buttonKey
 	self.buttonKey = newKey
 	self.animation:setState(self.buttonKey)
+end
 
-	-- Intentar mover a una nueva posición sin colisiones
+function ButtonPress:tryMoveToFreePosition()
 	local goalX = 330
 	local goalY = self.y
-	local actualX, actualY, collisions, count = self:checkCollisions(goalX, goalY)
 
-	if count == 0 then
+	local _, _, collisions, count = self:checkCollisions(goalX, goalY)
+
+	local collisionWithButtonPress = false
+	for i = 1, count do
+		if collisions[i].other:isa(ButtonPress) then
+			collisionWithButtonPress = true
+			break
+		end
+	end
+
+	if not collisionWithButtonPress then
 		self:moveTo(goalX, goalY)
 	else
-		-- Buscar una posición alternativa
 		local found = false
 		for dx = -10, 10, 5 do
 			for dy = -10, 10, 5 do
 				local testX = goalX + dx
 				local testY = goalY + dy
 				local _, _, testCollisions, testCount = self:checkCollisions(testX, testY)
-				if testCount == 0 then
+
+				local collisionWithButtonPress = false
+				for i = 1, testCount do
+					if testCollisions[i].other:isa(ButtonPress) then
+						collisionWithButtonPress = true
+						break
+					end
+				end
+
+				if not collisionWithButtonPress then
 					self:moveTo(testX, testY)
 					found = true
 					break
@@ -51,8 +81,9 @@ function ButtonPress:hit()
 			end
 			if found then break end
 		end
+
 		if not found then
-			-- Si no se encuentra una posición libre, mantener la posición actual o manejar según sea necesario
+			self:moveTo(360, self.y)
 		end
 	end
 end
@@ -78,7 +109,7 @@ function ButtonPress:update()
 		-- self:moveBy(-1, 0)
 		if self.x <= 60 then
 			self:moveTo(330, self.y)
-			-- self:hit()
+			self:changeButtonSprite()
 		end
 	end
     

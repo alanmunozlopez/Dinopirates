@@ -190,7 +190,7 @@ function Player:sanityCheck()
 end
 
 function Player:fight()
-  Noble.transition(TestScene)
+  Noble.transition(DanceScene)
 end
 
 function Player:dead()
