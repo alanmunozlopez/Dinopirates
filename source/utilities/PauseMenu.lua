@@ -65,42 +65,76 @@ function mapFillingAndChecking()
 		Graphics.popContext() 
 	end
 	
-	for i = 1, 15 do 
-		
+	function mapFillingAndChecking()
+		local alpha = 0.5
+		local roomSize = 7
+		local posX = 0
+		local posY = 0
+	
+		-- Fill first floor background (floor 1)
+		for i = 1, 15 do
 			posX = 40
 			posY = 26
-			
-		-- mark the position where the player actually is
-		if levels[i] ~= nil then
-			if levels[i].floor.visited == true and PlayerData.actualLevel == levels[i].floor.level and PlayerData.actualRoom == levels[i].floor.roomNumber and i == levels[i].floor.roomNumber then
-				col = (i - 1) % 5 --(01234)
-				row = math.floor((i - 1) / 5) --(012)
-				
-				Graphics.pushContext(menuImg)
-				
-				Graphics.setColor(Graphics.kColorWhite)
-				Graphics.fillRect(posX + 1 + (col * 6), posY + 1 + (row * 6), 5, 5)
-				
-				Graphics.setColor(Graphics.kColorBlack)
-				
-				Graphics.fillRect(posX + 2 + (col * 6), posY + 2 + (row * 6), 3, 3)
-				
-				Graphics.popContext() 
-				
-			-- clear the fog of a previously visited room		
-			elseif levels[i].floor.visited == true and i == levels[i].floor.roomNumber then
-				
-				col = (i - 1) % 5
-				row = math.floor((i - 1) / 5)
-				
-				Graphics.pushContext(menuImg)
-				Graphics.setColor(Graphics.kColorWhite)
-				Graphics.fillRect(posX + 1 + (col * 6), posY + 1 + (row * 6), 5, 5)
-				
-				Graphics.popContext() 
-			
-			end
+			local col = (i - 1) % 5
+			local row = math.floor((i - 1) / 5)
+	
+			Graphics.pushContext(menuImg)
+			Graphics.setColor(Graphics.kColorBlack)
+			Graphics.setDitherPattern(alpha, Graphics.image.kDitherTypeBayer8x8)
+			Graphics.fillRect(posX + (col * 6), posY + (row * 6), roomSize, roomSize)
+			Graphics.popContext() 
 		end
 	
+		-- Fill second floor background (floor 2)
+		for i = 1, 15 do
+			posX = 40
+			posY = 62
+			local col = (i - 1) % 5
+			local row = math.floor((i - 1) / 5)
+	
+			Graphics.pushContext(menuImg)
+			Graphics.setColor(Graphics.kColorBlack)
+			Graphics.setDitherPattern(alpha, Graphics.image.kDitherTypeBayer8x8)
+			Graphics.fillRect(posX + (col * 6), posY + (row * 6), roomSize, roomSize)
+			Graphics.popContext() 
+		end
+	
+		-- Iterate through all levels and mark visited rooms and player position
+		for _, level in ipairs(levels) do
+			local floor = level.floor
+			local roomNumber = floor.roomNumber
+	
+			local col = (roomNumber - 1) % 5
+			local row = math.floor((roomNumber - 1) / 5)
+	
+			-- Choose vertical offset depending on the floor number
+			if floor.level == 1 then
+				posY = 26
+			elseif floor.level == 2 then
+				posY = 62
+			end
+	
+			posX = 40
+	
+			if floor.visited then
+				Graphics.pushContext(menuImg)
+	
+				if PlayerData.actualLevel == floor.level and PlayerData.actualRoom == roomNumber then
+					-- Mark current player position
+					Graphics.setColor(Graphics.kColorWhite)
+					Graphics.fillRect(posX + 1 + (col * 6), posY + 1 + (row * 6), 5, 5)
+	
+					Graphics.setColor(Graphics.kColorBlack)
+					Graphics.fillRect(posX + 2 + (col * 6), posY + 2 + (row * 6), 3, 3)
+				else
+					-- Reveal visited room
+					Graphics.setColor(Graphics.kColorWhite)
+					Graphics.fillRect(posX + 1 + (col * 6), posY + 1 + (row * 6), 5, 5)
+				end
+	
+				Graphics.popContext()
+			end
+		end
 	end
+
 end
