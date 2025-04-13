@@ -35,10 +35,10 @@ function scene:enter()
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
     
-    button = ButtonPress(self.bpm,300)
-    button2 = ButtonPress(self.bpm,300)
-    button3 = ButtonPress(self.bpm,300)
-    button4 = ButtonPress(self.bpm,300)
+    button = ButtonPress(self.bpm,400)
+    button2 = ButtonPress(self.bpm,400)
+    button3 = ButtonPress(self.bpm,400)
+    button4 = ButtonPress(self.bpm,400)
     -- 
     hitzone = HitZone(self.bpm)
     playerDance = PlayerDance(self.bpm)
@@ -84,16 +84,27 @@ function scene:update()
     else
         self.accuracy = 0
     end
-    
-    Graphics.drawText(self.buttonText,290,70)
-    Graphics.drawText(self.accuracy,290,90)
-    Graphics.drawText(self.totalAccuracy,290,110)
-    
-    local y = 130
-    for btn, count in pairs(self.correctButtonPresses) do
-        Graphics.drawText(btn .. ": " .. count, 290, y)
-        y += 15
+    -- Mark: debug rendering
+if debug == true then
+        Graphics.drawText(self.buttonText,260,70)
+        Graphics.drawText(self.accuracy,260,90)
+        Graphics.drawText(self.totalAccuracy,260,110)
+        
+        local y = 130
+        for btn, count in pairs(self.correctButtonPresses) do
+            Graphics.drawText(btn .. ": " .. count, 260, y)
+            y += 15
+        end
     end
+    -- Mark: win condition
+if self.totalAccuracy > 20 then
+    printTable(PlayerData)
+    
+    PlayerData.playerSpawn = PlayerData.playerExit
+    self.returnRoom = RoomTranslate(PlayerData.saveLevel)
+        Noble.transition(self.returnRoom, 0.5, Noble.Transition.Default)  
+    end
+    
 end
 
 function scene:exit()

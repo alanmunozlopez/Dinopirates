@@ -72,16 +72,17 @@ function Door:prevRoom(direction)
 end
 
 function Door:collisionResponse(other)
-	if other.type == "player" then
-		if self.isOpen then
-			-- Save current state before transition
-			Noble.transition(MazeScene, {
-				nextLevel = self.nextLevel,
-				nextRoom = self.nextRoom,
-				enterDoor = self.doorID,
-				playerData = other:getPlayerData()
-			},0.3, Noble.Transition.MetroNexus)  
-		end
-	end
+  -- no use
+	-- if other.type == "player" then
+	-- 	if self.isOpen then
+	-- 		-- Save current state before transition
+	-- 		Noble.transition(MazeScene, {
+	-- 			nextLevel = self.nextLevel,
+	-- 			nextRoom = self.nextRoom,
+	-- 			enterDoor = self.doorID,
+	-- 			playerData = other:getPlayerData()
+	-- 		},0.3, Noble.Transition.MetroNexus)  
+	-- 	end
+	-- end
 	return "overlap"
 end

@@ -13,6 +13,7 @@
 MazeScene = {
 }
 class("MazeScene").extends(NobleScene)
+
 local scene = MazeScene
 local room = nil -- Level in table position
 
