@@ -50,7 +50,6 @@ function ButtonPress:tryMoveToFreePosition(movementX, movementY)
 		for index, collision in pairs(collisions) do
 			local collideObject = collision['other']
 			if collideObject:isa(ButtonPress) then
-				print("collision")
 			end
 		end
 	end
