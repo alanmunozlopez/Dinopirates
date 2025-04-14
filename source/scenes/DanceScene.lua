@@ -34,7 +34,7 @@ function scene:enter()
 
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
-    
+    --
     button = ButtonPress(self.bpm,400)
     button2 = ButtonPress(self.bpm,400)
     button3 = ButtonPress(self.bpm,400)
