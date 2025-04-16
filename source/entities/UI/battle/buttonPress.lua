@@ -14,7 +14,7 @@ function ButtonPress:init(beats,startPoint)
 	self.animation.empty.frameDuration = 6
 	
 	self.bpm = beats
-	self.startPoint = startPoint
+	self.startPoint = startPoint 
 	self.active = false
 	self.range = 100
 	self:setSize(32, 32)

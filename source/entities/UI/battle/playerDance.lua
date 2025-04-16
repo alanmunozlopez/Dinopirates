@@ -7,10 +7,17 @@ function PlayerDance:init(bpm)
 	if bpm == nil or bpm == 0 then
 		bpm = 6
 	end
-	frameduration = bpm
+	frameduration = bpm/2
 	-- Mark: animation states
-	self.animation:addState('idle',1,3)
+	self.animation:addState('idle', 1, 5)
 	self.animation.idle.frameDuration = frameduration
+	self.animation:addState('jump', 5, 9, 'idle')
+	self.animation.jump.frameDuration = frameduration
+	self.animation:addState('crouch', 11, 15, 'idle')
+	self.animation.crouch.frameDuration = frameduration
+	self.animation:addState('left', 16, 20, 'idle')
+	self.animation.left.frameDuration = frameduration
+	
 	
 	self.animation:setState('idle')
 	self:setSize(246, 214)
@@ -19,7 +26,18 @@ function PlayerDance:init(bpm)
 	self:add(0, 26)
 	
 end
+function PlayerDance:changeAnimation(input)
+	local animationMap = {
+		upButton = "jump",
+		downButton = "crouch",
+		leftButton = "left"
+	}
 
+	local newState = animationMap[input]
+	if newState then
+		self.animation:setState(newState)
+	end
+end
 function PlayerDance:update()
 	
 end
