@@ -20,7 +20,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.id = ID
 	self:setSize(32, 32)
 	self:moveTo(x, y)
-	self:setCollideRect(4, 8, 24, 24)
+	self:setCollideRect(0, 0, 32, 32)
 	
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
