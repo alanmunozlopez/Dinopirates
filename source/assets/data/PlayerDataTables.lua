@@ -31,6 +31,10 @@ PlayerData = {
 	playerExit ={
 		x = nil,
 		y = nil,
+	},
+	lastEnemyTouched ={
+		type = nil,
+		id = nil
 	}
 }
 PlayerDataOriginal = {
@@ -66,5 +70,9 @@ PlayerDataOriginal = {
 	playerExit ={
 		x = nil,
 		y = nil,
+	},
+	lastEnemyTouched={
+		type = nil,
+		id = nil
 	}
 }
