@@ -93,6 +93,8 @@ function Player:collisionResponse(other)
       -- other:empty()
       --other.animation:setState('empty')  -- Set enemy animation to empty state
       --self.animation:setState('deadBrocolli')
+      PlayerData.lastEnemyTouched.type = "Brocorat"
+      PlayerData.lastEnemyTouched.id = other.id
       self:fight()
       return 'overlap'
     end
