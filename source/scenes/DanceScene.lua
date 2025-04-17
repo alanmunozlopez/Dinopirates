@@ -75,7 +75,7 @@ function scene:update()
             self.buttonText = "right"
             self.totalAccuracy += self.accuracy
             
-            -- Mark: change animation
+            -- Mark: change animation player and enemies
             playerDance:changeAnimation(self.ButtonPressed)
             
             collisions[1]:hit()
@@ -113,7 +113,7 @@ function scene:update()
         
         
         -- Find an enemy and kill it
-        findEnemyById(PlayerData.lastEnemyTouched.id)
+        findAndKillEnemyById(PlayerData.lastEnemyTouched.id)
         -- captures player position and goes back to the original room
         PlayerData.playerSpawn.x = PlayerData.playerExit.x
         PlayerData.playerSpawn.y = PlayerData.playerExit.y
