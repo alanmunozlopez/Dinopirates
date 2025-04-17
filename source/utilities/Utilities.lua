@@ -128,3 +128,19 @@ function drawVersionNumber(x, y, alignment)
 	
 	Graphics.drawText(version, x, y)
 end 
+
+
+function findAndKillEnemyById(enemyId)
+	local room = PlayerData.floor
+	arrayData = levels[room].floor.enemies
+	
+	for _, enemyData in ipairs(arrayData) do
+		if enemyData.id == enemyId then
+		if enemyData.dead == nil then
+				enemyData.dead = true
+				enemyData.x = PlayerData.lastEnemyTouched.x
+				enemyData.y = PlayerData.lastEnemyTouched.y
+			end
+		end
+	end
+end

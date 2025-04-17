@@ -34,7 +34,9 @@ PlayerData = {
 	},
 	lastEnemyTouched ={
 		type = nil,
-		id = nil
+		id = nil,
+		x = nil,
+		y = nil
 	}
 }
 PlayerDataOriginal = {
@@ -71,8 +73,10 @@ PlayerDataOriginal = {
 		x = nil,
 		y = nil,
 	},
-	lastEnemyTouched={
+	lastEnemyTouched ={
 		type = nil,
-		id = nil
+		id = nil,
+		x = nil,
+		y = nil
 	}
 }

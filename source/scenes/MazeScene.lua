@@ -201,16 +201,22 @@ function scene:enter()
 	arrayData = levels[room].floor.enemies
 	
 	for _, enemyData in ipairs(arrayData) do
-		local name = enemyData.name
-		local x = enemyData.x
-		local y = enemyData.y
-		local speed = enemyData.speed
-		local id = enemyData.id
-		
-		if name == "brocorat" then
-			Brocorat(x, y, speed, ZIndex.enemy, player, id)
-		elseif name == "frogcolli" then
-			Frogcolli(x, y, speed, ZIndex.enemy, player, id)
+		if enemyData.dead == nil then
+			local name = enemyData.name
+			local x = enemyData.x
+			local y = enemyData.y
+			local speed = enemyData.speed
+			local id = enemyData.id
+			
+			if name == "brocorat" then
+				Brocorat(x, y, speed, ZIndex.enemy, player, id)
+			elseif name == "frogcolli" then
+				Frogcolli(x, y, speed, ZIndex.enemy, player, id)
+			end
+		else
+			local x = enemyData.x
+			local y = enemyData.y
+			PropItem(x, y, 'blood2', ZIndex.props, false)
 		end
 	end
 	
@@ -293,8 +299,6 @@ end
 function scene:exit()
 	scene.super.exit(self)
 	
-	--SaveGame()
-	
 	uiScreen:removeAll()
 	floor:remove()
 	if shadow then
@@ -305,6 +309,7 @@ function scene:exit()
 	
 	PlayerData.playerExit.x = player.x
 	PlayerData.playerExit.y = player.y
+	
 end
 
 -- This runs once a transition to another scene completes.

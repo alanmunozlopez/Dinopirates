@@ -95,6 +95,8 @@ function Player:collisionResponse(other)
       --self.animation:setState('deadBrocolli')
       PlayerData.lastEnemyTouched.type = "Brocorat"
       PlayerData.lastEnemyTouched.id = other.id
+      PlayerData.lastEnemyTouched.x = other.x
+      PlayerData.lastEnemyTouched.y = other.y
       self:fight()
       return 'overlap'
     end

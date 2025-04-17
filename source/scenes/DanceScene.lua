@@ -7,6 +7,7 @@ import "entities/UI/battle/buttonPress"
 import "entities/UI/battle/hitZone"
 import "entities/UI/battle/playerDance"
 
+local lifes = nil
 
 function scene:init()
 	scene.super.init(self)
@@ -16,7 +17,7 @@ function scene:init()
     self.buttonText = "none"
     self.accuracy = 0
     self.totalAccuracy = 0
-    
+    lifes = 3
     self.correctButtonPresses = {
         aButton = 0,
         bButton = 0,
@@ -31,14 +32,14 @@ end
 
 function scene:enter()
 	scene.super.enter(self)
-
+    local startPoint = 400
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
     --
-    button = ButtonPress(self.bpm,400)
-    button2 = ButtonPress(self.bpm,400)
-    button3 = ButtonPress(self.bpm,400)
-    button4 = ButtonPress(self.bpm,400)
+    button = ButtonPress(self.bpm,startPoint+self.bpm)
+    button2 = ButtonPress(self.bpm,startPoint+self.bpm)
+    button3 = ButtonPress(self.bpm,startPoint+self.bpm)
+    button4 = ButtonPress(self.bpm,startPoint+self.bpm)
     -- 
     hitzone = HitZone(self.bpm)
     playerDance = PlayerDance(self.bpm)
@@ -74,10 +75,16 @@ function scene:update()
             self.buttonText = "right"
             self.totalAccuracy += self.accuracy
             
+            -- Mark: change animation
+            playerDance:changeAnimation(self.ButtonPressed)
+            
             collisions[1]:hit()
+            
             self:incrementCorrectPress(self.ButtonPressed)
         else
             self.buttonText = "wrong"
+            -- Mark: change animation
+            
             collisions[1]:hit()
         end
         self.ButtonPressed = nil
@@ -85,23 +92,34 @@ function scene:update()
         self.accuracy = 0
     end
     -- Mark: debug rendering
-if debug == true then
-        Graphics.drawText(self.buttonText,260,70)
-        Graphics.drawText(self.accuracy,260,90)
-        Graphics.drawText(self.totalAccuracy,260,110)
+    debugTextX = 240
+    if debug == true then
+        Graphics.drawText(PlayerData.lastEnemyTouched.id,debugTextX,30)
+        Graphics.drawText(PlayerData.lastEnemyTouched.type,debugTextX+30,30)
+        Graphics.drawText(lifes,debugTextX,50)
+        Graphics.drawText(self.buttonText,debugTextX,70)
+        Graphics.drawText(self.accuracy,debugTextX,90)
+        Graphics.drawText(self.totalAccuracy,debugTextX,110)
         
         local y = 130
         for btn, count in pairs(self.correctButtonPresses) do
-            Graphics.drawText(btn .. ": " .. count, 260, y)
+            Graphics.drawText(btn .. ": " .. count, debugTextX, y)
             y += 15
         end
     end
     -- Mark: win condition
-if self.totalAccuracy > 20 then
-    printTable(PlayerData)
-    
-    PlayerData.playerSpawn = PlayerData.playerExit
-    self.returnRoom = RoomTranslate(PlayerData.saveLevel)
+    if self.totalAccuracy > 20 then
+        self.totalAccuracy = 0
+        
+        
+        -- Find an enemy and kill it
+        findEnemyById(PlayerData.lastEnemyTouched.id)
+        -- captures player position and goes back to the original room
+        PlayerData.playerSpawn.x = PlayerData.playerExit.x
+        PlayerData.playerSpawn.y = PlayerData.playerExit.y
+        
+        
+        self.returnRoom = RoomTranslate(PlayerData.saveLevel)
         Noble.transition(self.returnRoom, 0.5, Noble.Transition.Default)  
     end
     
@@ -113,7 +131,7 @@ function scene:exit()
 	Noble.Input.setCrankIndicatorStatus(false)
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
 	sequence:start();
-
+    SaveSystem.save()
 end
 
 function scene:finish()
