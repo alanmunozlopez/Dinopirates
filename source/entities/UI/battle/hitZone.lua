@@ -1,7 +1,7 @@
 HitZone ={}
 class('HitZone').extends(NobleSprite)
 
-function HitZone:init(bpm)
+function HitZone:init(x,y,bpm)
 	HitZone.super.init(self, 'assets/images/ui/battle/hitzone',true)
 	
 	if bpm == nil then
@@ -16,7 +16,7 @@ function HitZone:init(bpm)
 	self.range = 100
 	self:setSize(10, 40)
 	self:setCollideRect(0, 0, 10, 40)
-	self:add(64, 30)
+	self:add(x, y)
 	
 end
 function HitZone:hit(pressedButton)

@@ -6,6 +6,7 @@ local scene = DanceScene
 import "entities/UI/battle/buttonPress"
 import "entities/UI/battle/hitZone"
 import "entities/UI/battle/playerDance"
+import "entities/UI/battle/lifes"
 
 local lifes = nil
 
@@ -41,9 +42,9 @@ function scene:enter()
     button3 = ButtonPress(self.bpm,startPoint+self.bpm)
     button4 = ButtonPress(self.bpm,startPoint+self.bpm)
     -- 
-    hitzone = HitZone(self.bpm)
+    hitzone = HitZone(40,30, self.bpm)
     playerDance = PlayerDance(self.bpm)
-    
+    hearts = Lifes(50,60)
 end
 
 function scene:start()
@@ -86,11 +87,13 @@ function scene:update()
             -- Mark: change animation
             
             collisions[1]:hit()
+            lifes -= 1
         end
         self.ButtonPressed = nil
     else
         self.accuracy = 0
     end
+    hearts:checkHealth(lifes)
     -- Mark: debug rendering
     debugTextX = 240
     if debug == true then
@@ -107,6 +110,11 @@ function scene:update()
             y += 15
         end
     end
+    -- Mark: lose condition
+    if self.lifes == 0 then
+        
+    end
+    
     -- Mark: win condition
     if self.totalAccuracy > 20 then
         self.totalAccuracy = 0

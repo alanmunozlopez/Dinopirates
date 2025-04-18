@@ -87,8 +87,7 @@ function scene:init()
 	-- Add Playground option only if debug is true
 	if debug == true then
 		menu:addItem("Playground", function()
-			SaveSystem.reset()
-			Noble.transition(DanceScene)  -- Direct transition to room 109
+			SaveSystem.reset()  -- Direct transition to room 109
 		end)
 	end
 	
