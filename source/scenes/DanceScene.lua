@@ -1,11 +1,14 @@
 DanceScene = {}
 class("DanceScene").extends(NobleScene)
 local scene = DanceScene
---scene.backgroundColor = Graphics.kColorWhite
+scene.backgroundColor = Graphics.kColorBlack
 
 import "entities/UI/battle/buttonPress"
 import "entities/UI/battle/hitZone"
 import "entities/UI/battle/playerDance"
+import "entities/UI/battle/backgroundDance"
+import "entities/UI/battle/enemyDance"
+import "entities/UI/battle/buttonCover"
 import "entities/UI/battle/lifes"
 
 local lifes = nil
@@ -44,7 +47,10 @@ function scene:enter()
     -- 
     hitzone = HitZone(40,30, self.bpm)
     playerDance = PlayerDance(self.bpm)
+    enemyDance = EnemyDance(self.bpm)
     hearts = Lifes(50,60)
+    buttonCover = ButtonCover()
+    backgroundDance = BackgroundDance()
 end
 
 function scene:start()

@@ -18,6 +18,7 @@ function ButtonPress:init(beats,startPoint)
 	self.active = false
 	self.range = 100
 	self:setSize(32, 32)
+	self:setZIndex(4)
 	self:setCollideRect(0, 0, 32, 32)
 	self:add(startPoint, 30)
 

@@ -20,6 +20,7 @@ function PlayerDance:init(bpm)
 	
 	
 	self.animation:setState('idle')
+	self:setZIndex(6)
 	self:setSize(246, 214)
 	--self:setCollideRect(0, 0, 10, 40)
 	self:setCenter(0,0)

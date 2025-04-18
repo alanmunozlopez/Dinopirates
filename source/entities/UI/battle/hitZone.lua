@@ -15,6 +15,7 @@ function HitZone:init(x,y,bpm)
 	self.animation:setState('checker')
 	self.range = 100
 	self:setSize(10, 40)
+	self:setZIndex(5)
 	self:setCollideRect(0, 0, 10, 40)
 	self:add(x, y)
 	

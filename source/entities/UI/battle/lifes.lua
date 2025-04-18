@@ -16,6 +16,7 @@ function Lifes:init(x, y, amount)
 	self.animation:setState("full")
 	
 	self:setSize(72, 24)
+	self:setZIndex(5)
 	self:add(x, y)
 end
 
