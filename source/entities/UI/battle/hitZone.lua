@@ -20,22 +20,6 @@ function HitZone:init(x,y,bpm)
 	self:add(x, y)
 	
 end
-function HitZone:hit(pressedButton)
-	
-	-- local collisions = self:overlappingSprites()
-	-- if table.getsize(collisions) > 0 then
-	-- 	if pressedButton == nil then
-	-- 		buttonText = "miss"
-	-- 	elseif collisions[1].buttonKey == pressedButton then
-	-- 		buttonText = "right"
-	-- 	else
-	-- 		buttonText = "wrong"
-	-- 	end
-	-- end
-
-	
-
-end
 
 function HitZone:update()
 	
