@@ -21,6 +21,9 @@ function scene:init()
     self.buttonText = "none"
     self.accuracy = 0
     self.totalAccuracy = 0
+    self.enemyHP = 100
+    self.evadePower = 30
+    
     lifes = 3
     self.correctButtonPresses = {
         aButton = 0,
@@ -76,11 +79,30 @@ function scene:update()
     local collisions = hitzone:overlappingSprites()
     if table.getsize(collisions) > 0 then
         if self.ButtonPressed == nil then
+            
             self.accuracy += 1
             self.buttonText = "miss"
+            
         elseif collisions[1].buttonKey == self.ButtonPressed then
-            self.buttonText = "right"
-            self.totalAccuracy += self.accuracy
+            
+            if self.ButtonPressed == "aButton" then
+                print("A punch")
+                self.enemyHP -= 10
+            end
+            
+            if self.ButtonPressed == "bButton" then
+                print("b punch")
+                self.enemyHP -= 10
+            end
+            
+            if self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
+                print("evade")
+                
+                self.buttonText = "right"
+                self.totalAccuracy += self.accuracy
+                self.evadePower = self.totalAccuracy
+            end
+            
             
             -- Mark: change animation player and enemies
             playerDance:changeAnimation(self.ButtonPressed)
@@ -100,9 +122,12 @@ function scene:update()
         self.accuracy = 0
     end
     hearts:checkHealth(lifes)
+    
+    
     -- Mark: debug rendering
     debugTextX = 240
     if debug == true then
+        
         Graphics.drawText(PlayerData.lastEnemyTouched.id,debugTextX,30)
         Graphics.drawText(PlayerData.lastEnemyTouched.type,debugTextX+30,30)
         Graphics.drawText(lifes,debugTextX,50)
@@ -116,8 +141,14 @@ function scene:update()
             y += 15
         end
     end
+    
+    
     -- Mark: lose condition
     if self.lifes == 0 then
+        
+    end
+    
+    if self.evadePower == 0 then
         
     end
     
