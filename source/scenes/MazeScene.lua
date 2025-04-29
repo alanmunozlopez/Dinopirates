@@ -201,7 +201,7 @@ function scene:enter()
 	arrayData = levels[room].floor.enemies
 	
 	for _, enemyData in ipairs(arrayData) do
-		if enemyData.dead == nil then
+		if not enemyData.dead then
 			local name = enemyData.name
 			local x = enemyData.x
 			local y = enemyData.y
