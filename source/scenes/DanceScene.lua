@@ -68,7 +68,7 @@ end
 
 function scene:drawBackground()
 	scene.super.drawBackground(self)
-    local background = Graphics.image.new('assets/test/testbg.png')
+    -- local background = Graphics.image.new('assets/test/roomBg.png')
 	background:draw(0, 0)
 end
 
@@ -152,8 +152,8 @@ function scene:update()
         
     end
     
-    -- Mark: win condition
-    if self.totalAccuracy > 20 then
+    -- Mark: win condition TEST
+    if self.totalAccuracy > 20 and debug==true then
         self.totalAccuracy = 0
         
         
@@ -163,7 +163,7 @@ function scene:update()
         PlayerData.playerSpawn.x = PlayerData.playerExit.x
         PlayerData.playerSpawn.y = PlayerData.playerExit.y
         
-        
+        -- transition to the original room
         self.returnRoom = RoomTranslate(PlayerData.saveLevel)
         Noble.transition(self.returnRoom, 0.5, Noble.Transition.Default)  
     end
