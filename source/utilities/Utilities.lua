@@ -136,7 +136,7 @@ function findAndKillEnemyById(enemyId)
 	
 	for _, enemyData in ipairs(arrayData) do
 		if enemyData.id == enemyId then
-		if enemyData.dead == nil then
+		if enemyData.dead == nil or enemyData.dead == false then
 				enemyData.dead = true
 				enemyData.x = PlayerData.lastEnemyTouched.x
 				enemyData.y = PlayerData.lastEnemyTouched.y
