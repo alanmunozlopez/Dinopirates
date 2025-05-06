@@ -25,6 +25,7 @@ function scene:init()
     self.evadePower = 30
     
     lifes = 3
+    
     self.correctButtonPresses = {
         aButton = 0,
         bButton = 0,
@@ -33,6 +34,9 @@ function scene:init()
         upButton = 0,
         downButton = 0
     }
+    
+    self.balancePosition = 0 -- rango -max a +max
+    self.balanceMaxOffset = 50
     
 end
 
@@ -85,24 +89,16 @@ function scene:update()
             
         elseif collisions[1].buttonKey == self.ButtonPressed then
             
-            if self.ButtonPressed == "aButton" then
-                print("A punch")
+            if self.ButtonPressed == "aButton" or self.ButtonPressed == "bButton" then
+                print(self.ButtonPressed .. " punch")
                 self.enemyHP -= 10
-            end
-            
-            if self.ButtonPressed == "bButton" then
-                print("b punch")
-                self.enemyHP -= 10
-            end
-            
-            if self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
+                self.balancePosition += 5 -- punch empuja fuerte hacia la derecha
+            elseif self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
                 print("evade")
-                
-                self.buttonText = "right"
+                self.balancePosition += 1 
                 self.totalAccuracy += self.accuracy
-                self.evadePower = self.totalAccuracy
+                self.evadePower = self.totalAccuracy-- evade empuja más débilmente
             end
-            
             
             -- Mark: change animation player and enemies
             playerDance:changeAnimation(self.ButtonPressed)
@@ -112,15 +108,15 @@ function scene:update()
             self:incrementCorrectPress(self.ButtonPressed)
         else
             self.buttonText = "wrong"
-            -- Mark: change animation
-            
             collisions[1]:hit()
             lifes -= 1
+            self.balancePosition -= 5 -- fallo empuja fuerte hacia la izquierda
         end
         self.ButtonPressed = nil
     else
         self.accuracy = 0
     end
+    
     hearts:checkHealth(lifes)
     
     
@@ -167,6 +163,65 @@ function scene:update()
         self.returnRoom = RoomTranslate(PlayerData.saveLevel)
         Noble.transition(self.returnRoom, 0.5, Noble.Transition.Default)  
     end
+   
+   -- Balance bar: player life vs enemy HP
+   local screenCenterX = 200 -- assuming 400px wide screen
+   local barWidth = 20
+   local barHeight = 10
+   local barY = 50
+   
+   -- Normalize values (assume max enemy HP = 100, max lifes = 3)
+   local enemyFactor = (100 - self.enemyHP) / 100 -- closer to 1 as enemy weakens
+   local playerFactor = (3 - lifes) / 3           -- closer to 1 as player weakens
+   
+   -- Calculate final X offset: enemyFactor pulls right, playerFactor pulls left
+   local balanceOffset = (enemyFactor - playerFactor) * 50 -- range -50 to +50
+   
+   -- Clamp to -50, +50
+   balanceOffset = math.max(-50, math.min(50, balanceOffset))
+   
+   -- Draw anchors as images instead of circles
+   if not self.winIcon then
+       self.winIcon = Graphics.image.new(12, 12, Graphics.kColorWhite)
+       Graphics.pushContext(self.winIcon)
+           Graphics.setColor(Graphics.kColorBlack)
+           Graphics.fillCircleAtPoint(6, 6, 6)
+       Graphics.popContext()
+   end
+   
+   if not self.loseIcon then
+       self.loseIcon = Graphics.image.new(12, 12, Graphics.kColorWhite)
+       Graphics.pushContext(self.loseIcon)
+           Graphics.setColor(Graphics.kColorBlack)
+           Graphics.fillRect(2, 2, 8, 8)
+       Graphics.popContext()
+   end
+   
+   self.winIcon:draw(screenCenterX + 50 - 6, barY + barHeight / 2 - 6)
+   self.loseIcon:draw(screenCenterX - 50 - 6, barY + barHeight / 2 - 6)
+   
+   -- Generate balance bar image if needed
+   if not self.balanceBarImage then
+       self.balanceBarImage = Graphics.image.new(barWidth, barHeight, Graphics.kColorClear)
+       Graphics.pushContext(self.balanceBarImage)
+           Graphics.setColor(Graphics.kColorBlack)
+           Graphics.fillRoundRect(0, 0, barWidth, barHeight, 2)
+       Graphics.popContext()
+   end
+   -- Clamp balancePosition to max range
+   self.balancePosition = math.max(-self.balanceMaxOffset, math.min(self.balanceMaxOffset, self.balancePosition))
+   local balanceOffset = self.balancePosition
+   -- Draw the image-based bar instead of fillRect
+   self.balanceBarImage:draw(screenCenterX + balanceOffset - barWidth / 2, barY)
+   
+   -- Check win or lose condition based on position
+   if self.balancePosition >= self.balanceMaxOffset then
+       print("win")
+   end
+   
+   if self.balancePosition <= -self.balanceMaxOffset then
+       print("lose")
+   end
     
 end
 
