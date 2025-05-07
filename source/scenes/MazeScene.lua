@@ -202,7 +202,7 @@ function scene:enter()
 	
 	for _, enemyData in ipairs(arrayData) do
 		checkBool(enemyData.dead)
-		if enemyData.dead == false then
+		if enemyData.dead == false or enemyData.dead == nil then
 			local name = enemyData.name
 			local x = enemyData.x
 			local y = enemyData.y
