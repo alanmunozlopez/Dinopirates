@@ -9,7 +9,7 @@ import "entities/UI/battle/playerDance"
 import "entities/UI/battle/backgroundDance"
 import "entities/UI/battle/enemyDance"
 import "entities/UI/battle/buttonCover"
-import "entities/UI/battle/lifes"
+
 
 local lifes = nil
 
@@ -55,7 +55,6 @@ function scene:enter()
     hitzone = HitZone(40,30, self.bpm)
     playerDance = PlayerDance(self.bpm)
     enemyDance = EnemyDance(self.bpm)
-    hearts = Lifes(50,60)
     buttonCover = ButtonCover()
     backgroundDance = BackgroundDance()
 end
@@ -117,8 +116,6 @@ function scene:update()
         self.accuracy = 0
     end
     
-    hearts:checkHealth(lifes)
-    
     
     -- Mark: debug rendering
     debugTextX = 240
@@ -178,7 +175,7 @@ function scene:update()
    local balanceOffset = (enemyFactor - playerFactor) * 50 -- range -50 to +50
    
    -- Clamp to -50, +50
-   balanceOffset = math.max(-50, math.min(50, balanceOffset))
+   -- balanceOffset = math.max(-50, math.min(50, balanceOffset))
    
    -- Draw anchors as images instead of circles
    if not self.winIcon then
@@ -197,8 +194,8 @@ function scene:update()
        Graphics.popContext()
    end
    
-   self.winIcon:draw(screenCenterX + 50 - 6, barY + barHeight / 2 - 6)
-   self.loseIcon:draw(screenCenterX - 50 - 6, barY + barHeight / 2 - 6)
+   self.winIcon:draw(screenCenterX + self.balanceMaxOffset - 6, barY + barHeight / 2 - 6)
+   self.loseIcon:draw(screenCenterX - self.balanceMaxOffset - 6, barY + barHeight / 2 - 6)
    
    -- Generate balance bar image if needed
    if not self.balanceBarImage then
