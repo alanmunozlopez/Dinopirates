@@ -83,7 +83,10 @@ function scene:init()
 			Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus)
 		end)
 	end
-	
+	menu:addItem("Achievements", function()
+		Graphics.setImageDrawMode(Graphics.kDrawModeCopy) -- hotfix
+		achievements.viewer.launch()
+	end)
 	-- Add Playground option only if debug is true
 	if debug == true then
 		menu:addItem("Playground", function()

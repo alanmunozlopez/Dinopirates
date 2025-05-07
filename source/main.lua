@@ -1,8 +1,10 @@
 import 'libraries/noble/Noble'
 import 'libraries/panels/Panels'
+import 'achievements/all'
 
 import 'utilities/Utilities'
 import 'utilities/PauseMenu'
+
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/DanceScene'
@@ -10,9 +12,27 @@ import 'scenes/Floors'
 --import 'scenes/StarScene'
 import 'scenes/TestScene'
 import 'scenes/TitleScene'
+
 import 'assets/data/PlayerDataTables'
 import 'assets/data/levels'
 import 'assets/data/script'
+
+local achievementData = {
+	iconPath = "assets/launcher/icon", -- Update these paths to match your game’s file structure. See below for more details.
+	cardPath = "assets/launcher/card",
+	description = "The next (r)evolution in cranking technology.",
+	achievements = {
+		{
+			-- these are the only required fields for a basic achievement.
+			id = "my_achievement_1",
+			name = "Achievement 1",
+			description = "Achievement 1 Description",
+		},
+		
+	}
+}
+
+achievements.initialize(achievementData)
 
 Noble.Settings.setup({
 	Difficulty = "Medium",
