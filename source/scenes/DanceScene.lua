@@ -36,7 +36,7 @@ function scene:init()
     }
     
     self.balancePosition = 0 -- rango -max a +max
-    self.balanceMaxOffset = 50
+    self.balanceMaxOffset = self.enemyHP -- enemy life/difficulty
     
 end
 
@@ -140,7 +140,7 @@ function scene:update()
     
     
     -- Mark: lose condition
-    if self.lifes == 0 then
+    if lifes == 0 then
         
     end
     
