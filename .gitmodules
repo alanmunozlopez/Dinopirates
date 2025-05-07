@@ -2,3 +2,6 @@
 	path = source/libraries/noble
 	url = https://github.com/NobleRobot/NobleEngine/
 	branch = main
+[submodule "source/libraries/pdachievements"]
+	path = source/libraries/pdachievements
+	url = https://github.com/PlaydateSquad/pd-achievements.git

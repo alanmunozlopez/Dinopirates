@@ -71,7 +71,7 @@ end
 
 function scene:drawBackground()
 	scene.super.drawBackground(self)
-    -- local background = Graphics.image.new('assets/test/roomBg.png')
+    
 	background:draw(0, 0)
 end
 
@@ -91,12 +91,12 @@ function scene:update()
             if self.ButtonPressed == "aButton" or self.ButtonPressed == "bButton" then
                 print(self.ButtonPressed .. " punch")
                 self.enemyHP -= 10
-                self.balancePosition += 5 -- punch empuja fuerte hacia la derecha
+                self.balancePosition += 5 
             elseif self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
                 print("evade")
                 self.balancePosition += 1 
                 self.totalAccuracy += self.accuracy
-                self.evadePower = self.totalAccuracy-- evade empuja más débilmente
+                self.evadePower = self.totalAccuracy
             end
             
             -- Mark: change animation player and enemies
@@ -109,7 +109,7 @@ function scene:update()
             self.buttonText = "wrong"
             collisions[1]:hit()
             lifes -= 1
-            self.balancePosition -= 5 -- fallo empuja fuerte hacia la izquierda
+            self.balancePosition -= 5 
         end
         self.ButtonPressed = nil
     else
@@ -152,6 +152,7 @@ function scene:update()
         
         -- Find an enemy and kill it
         findAndKillEnemyById(PlayerData.lastEnemyTouched.id)
+        
         -- captures player position and goes back to the original room
         PlayerData.playerSpawn.x = PlayerData.playerExit.x
         PlayerData.playerSpawn.y = PlayerData.playerExit.y
@@ -174,8 +175,6 @@ function scene:update()
    -- Calculate final X offset: enemyFactor pulls right, playerFactor pulls left
    local balanceOffset = (enemyFactor - playerFactor) * 50 -- range -50 to +50
    
-   -- Clamp to -50, +50
-   -- balanceOffset = math.max(-50, math.min(50, balanceOffset))
    
    -- Draw anchors as images instead of circles
    if not self.winIcon then
