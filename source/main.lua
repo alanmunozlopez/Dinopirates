@@ -17,34 +17,8 @@ import 'assets/data/PlayerDataTables'
 import 'assets/data/levels'
 import 'assets/data/script'
 
-local achievementData = {
-	iconPath = "assets/launcher/icon", -- Update these paths to match your game’s file structure. See below for more details.
-	cardPath = "assets/launcher/card",
-	achievements = {
-		{
-			-- these are the only required fields for a basic achievement.
-			id = "wakeup",
-			name = "What a nap captn",
-			description = "Just a little nap and I continue working",
-			descriptionLocked = "secret"
-		},
-		{
-			-- these are the only required fields for a basic achievement.
-			id = "notebook",
-			name = "Dear diary",
-			description = "Its easier to navigate with a map",
-			isSecret = true,
-		},
-		{
-			-- these are the only required fields for a basic achievement.
-			id = "comms",
-			name = "Moshi moshi",
-			description = "Achievement 1 Description",
-			isSecret = true,
-		},
-		
-	}
-}
+local achievementData = import 'assets/data/achievements'
+local configToast = import 'assets/data/toastConfig'
 
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
@@ -56,7 +30,7 @@ local config = {
    -- ...
 }
 
-achievements.toasts.initialize(config)
+achievements.toasts.initialize(configToast)
 
 Noble.Settings.setup({
 	Difficulty = "Medium",
