@@ -197,7 +197,7 @@ function Player:fight()
   Noble.transition(DanceScene)
 end
 
-function Player:dead()
+function Player:dead() -- unused
   self.isAlive = false
   self.animation:setState('deadBrocolli')
   local function deathScreen()
@@ -326,4 +326,5 @@ end
 
 function Player:grabNotes()
   PlayerData.hasNotes = true
+  checkAndGrantAchievement("notebook")
 end

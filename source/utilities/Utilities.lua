@@ -144,3 +144,17 @@ function findAndKillEnemyById(enemyId)
 		end
 	end
 end
+
+function checkAndGrantAchievement(name)
+	if achievements.isGranted(name) == false then
+		achievements.grant(name)
+	end
+end
+function checkStoryAchievement(comic)
+	if comic == "intro" then
+		checkAndGrantAchievement("wakeup")
+	end
+	if comic == "pick-the-device" then
+		checkAndGrantAchievement("comms")
+	end
+end

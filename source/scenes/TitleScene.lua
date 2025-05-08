@@ -65,9 +65,7 @@ function scene:init()
 	end
 	
 	menu:addItem("New Game", function()
-		if achievements.isGranted("wakeup") == false then
-			achievements.grant("wakeup")
-		end
+	
 		SaveSystem.reset()
 		Noble.transition(
 			Floor107,

@@ -183,12 +183,13 @@ function scene:enter()
 				PlayerData.isCutscene = true
 				PlayerData.isGaming = false
 			end
-			
+			local comicName = arrayData.name
 			Panels.startCutscene(comicData, function()
 				
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
 				levels[room].floor.comic.wasPlayed = true
+				checkStoryAchievement(comicName)
 			end)
 		else
 			-- comic not found
