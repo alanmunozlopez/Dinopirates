@@ -81,6 +81,7 @@ function scene:init()
 	if playdate.file.exists('gameState.json') then
 		menu:addItem("Delete save", function() 
 			SaveSystem.delete()
+			deleteAllAchievements()
 			Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus)
 		end)
 	end

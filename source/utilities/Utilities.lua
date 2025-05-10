@@ -158,3 +158,8 @@ function checkStoryAchievement(comic)
 		checkAndGrantAchievement("comms")
 	end
 end
+function deleteAllAchievements()
+	achievements.revoke("wakeup")
+	achievements.revoke("comms")
+	achievements.revoke("notebook")
+end
