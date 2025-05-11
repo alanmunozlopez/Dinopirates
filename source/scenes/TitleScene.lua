@@ -6,7 +6,7 @@ local scene = TitleScene
 
 local menu
 local crankTick = 0
-local bg <const> = Graphics.image.new('assets/images/screens/title-screen.png')
+local bg <const> = Graphics.image.new('assets/images/screens/titlescreen.png')
 local background <const> = Graphics.sprite.new(bg)
 background:moveTo(200,120)
 
