@@ -1,10 +1,10 @@
-name=DinoPirates the game
+name=DinoPirates from inner space: Brocolation
 author=Tangara Studios
-description=Its Dinopirates against evilness from space
+description=Can you survive in space, alone, and with only brocolli
 bundleID=com.tangara.dinopirates
-version=0.6.1
+version=0.6.2
 buildNumber=124
 imagePath=/assets/launcher
 launchSoundPath=/assets/launcher
-contentWarning=This game contains dinosaurs.
-contentWarning2=This game contains brocolli
+contentWarning= This game contains dinosaurs and dances.
+contentWarning2= This game contains brocolli violence.
