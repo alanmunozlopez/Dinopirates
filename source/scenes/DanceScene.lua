@@ -21,7 +21,7 @@ function scene:init()
     self.buttonText = "none"
     self.accuracy = 0
     self.totalAccuracy = 0
-    self.enemyHP = 100
+    self.enemyHP = 50
     self.evadePower = 30
     
     lifes = 3
@@ -35,7 +35,7 @@ function scene:init()
         downButton = 0
     }
     
-    self.balancePosition = 0 -- rango -max a +max
+    self.balancePosition = 0 -- range -max a +max
     self.balanceMaxOffset = self.enemyHP -- enemy life/difficulty
     
 end
@@ -146,7 +146,7 @@ function scene:update()
     end
     
     -- Mark: win condition TEST
-    if self.totalAccuracy > 20 and debug==true then
+    if self.totalAccuracy > 20 and debug==false then
         self.totalAccuracy = 0
         
         

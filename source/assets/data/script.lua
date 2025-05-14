@@ -173,4 +173,42 @@ script = {
             
         }
     },
+    {
+        name = "thisDemo",
+        dialog = {
+            {
+        video = 'radioRing',
+        text = Graphics.getLocalizedText("thisdemo-01", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-02", "en"),
+    },
+                    {
+        video = 'playerWorry',
+        text = Graphics.getLocalizedText("thisdemo-03", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-04", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-05", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-06", "en"),
+    },
+                    {
+        video = 'playerWorry',
+        text = Graphics.getLocalizedText("thisdemo-07", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-08", "en"),
+    }
+            
+        }
+    },
 }
