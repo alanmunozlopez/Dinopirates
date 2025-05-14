@@ -174,6 +174,7 @@ function scene:enter()
 	else
 		--player:fillBattery() -- Mark: dunno why I was filling the battery instantly
 	end
+	
 	-- Mark: Comic
 	arrayData = levels[room].floor.comic
 	if arrayData ~= nil then
@@ -183,9 +184,10 @@ function scene:enter()
 				PlayerData.isCutscene = true
 				PlayerData.isGaming = false
 			end
+			
 			local comicName = arrayData.name
 			Panels.startCutscene(comicData, function()
-				
+				print(comicData)
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
 				levels[room].floor.comic.wasPlayed = true

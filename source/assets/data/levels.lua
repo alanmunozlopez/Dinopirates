@@ -824,9 +824,7 @@ levels = {
 			}
 			},
 			comic = {
-					wasPlayed = false,
-					name = "intro-comic",
-					play = "enter"
+					
 			},
 			items = {
 			{
@@ -843,7 +841,6 @@ levels = {
 				width = 60,
 				height = 30,
 				script = "thisDemo",
-						type = "cutscene"
 			}
 			},
 			enemies = {
