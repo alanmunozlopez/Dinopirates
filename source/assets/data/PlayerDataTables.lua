@@ -8,9 +8,11 @@ PlayerData = {
 	hasKey = false,
 	hasLamp = false,
 	hasRadio = false,
+	hasNotes = false,
 	sonarActive = false,
 	isActive = false,
 	isTalking = false,
+	isCutscene = false,
 	isFocused = false,
 	isCharging = false,
 	floor = 1,
@@ -25,6 +27,16 @@ PlayerData = {
 	playerSpawn ={
 		x = 200,
 		y = 200,
+	},
+	playerExit ={
+		x = nil,
+		y = nil,
+	},
+	lastEnemyTouched ={
+		type = nil,
+		id = nil,
+		x = nil,
+		y = nil
 	}
 }
 PlayerDataOriginal = {
@@ -37,9 +49,11 @@ PlayerDataOriginal = {
 	hasKey = false,
 	hasLamp = false,
 	hasRadio = false,
+	hasNotes = false,
 	sonarActive = false,
 	isActive = false,
 	isTalking = false,
+	isCutscene = false,
 	isFocused = false,
 	isCharging = false,
 	floor = 1,
@@ -54,5 +68,15 @@ PlayerDataOriginal = {
 	playerSpawn ={
 		x = 200,
 		y = 200,
+	},
+	playerExit ={
+		x = nil,
+		y = nil,
+	},
+	lastEnemyTouched ={
+		type = nil,
+		id = nil,
+		x = nil,
+		y = nil
 	}
 }

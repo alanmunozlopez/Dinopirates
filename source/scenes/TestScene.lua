@@ -1,48 +1,40 @@
 TestScene = {}
 class("TestScene").extends(NobleScene)
+local scene = TestScene
+--TestScene.backgroundColor = Graphics.kColorWhite
 
-TestScene.backgroundColor = Graphics.kColorWhite
-
-import "entities/testEntity"
-
-function TestScene:init()
-	TestScene.super.init(self)
+function scene:init()
+	scene.super.init(self)
     
 end
 
 
-function TestScene:enter()
-	TestScene.super.enter(self)
-
+function scene:enter()
+	scene.super.enter(self)
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
-	sequence:start()
-
-    -- self:addSprite(player)
-end
-
-function TestScene:start()
-	TestScene.super.start(self)
-
-	-- menu:activate()
-	-- Noble.Input.setCrankIndicatorStatus(true)
- 
-    test = TestEntity(100,100, "hola")
-
-end
-
-function TestScene:drawBackground()
-	TestScene.super.drawBackground(self)
-
-	-- background:draw(0, 0)
-end
-
-function TestScene:update()
-	TestScene.super.update(self)
+	
     
 end
 
-function TestScene:exit()
-	TestScene.super.exit(self)
+function scene:start()
+	scene.super.start(self)
+
+
+end
+
+function scene:drawBackground()
+	scene.super.drawBackground(self)
+    local background = Graphics.image.new('assets/test/testbg.png')
+	background:draw(0, 0)
+end
+
+function scene:update()
+	scene.super.update(self)
+   
+end
+
+function scene:exit()
+	scene.super.exit(self)
 
 	Noble.Input.setCrankIndicatorStatus(false)
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
@@ -50,17 +42,17 @@ function TestScene:exit()
 
 end
 
-function TestScene:finish()
-	TestScene.super.finish(self)
+function scene:finish()
+	scene.super.finish(self)
 end
 
-TestScene.inputHandler = {
+
+scene.inputHandler = {
 
     -- A button
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
-        test:draw()
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
@@ -84,7 +76,6 @@ TestScene.inputHandler = {
         -- Your code here
     end,
     BButtonUp = function()
-       
     end,
 
     -- D-pad left
@@ -96,7 +87,6 @@ TestScene.inputHandler = {
         -- Your code here
     end,
     leftButtonUp = function()
-        
     end,
 
     -- D-pad right

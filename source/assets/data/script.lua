@@ -1,111 +1,214 @@
 script = {
-	{
-		-- no door key 1
-		dialog = {
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("door", "en")
-			},
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("door2", "en")
-			},
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("door3", "en")
-			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("door4", "en")
-			},
-			{
-				video = 'radiopocket',
-				text = Graphics.getLocalizedText("door5", "en")
-			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("door6", "en")
-			},
-		}
-	},
-	{
-		-- trigger mess
-		dialog = {
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("mess", "en"),
-			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("mess2", "en"),
-			},
-			
-		}
-	},
-	{
-		-- trigger mess
-		dialog = {
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("chairs", "en")
-			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("chairs1", "en")
-			},
-			
-		}
-	},
-	{
-		-- trigger pickup radio
-		dialog = {
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("welcome", "en")
-			},
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("welcome1", "en"),
-				screen = Graphics.image.new('assets/images/ui/dialog/img/spaceship.png'),
-			},
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("welcome2", "en"),
-				screen = Graphics.image.new('assets/images/ui/dialog/img/spaceship.png'),
-			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("welcome3", "en")
-			},
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("welcome4", "en")
-			},
-		}
-	},
-	{
-		-- Kitchen
-		dialog = {
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("kitchen", "en")
-			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("kitchen2", "en"),
-				screen = Graphics.image.new('assets/images/ui/dialog/img/cristal.png'),
-			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("kitchen3", "en"),
-				screen = Graphics.image.new('assets/images/ui/dialog/img/cristal.png'),
-			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("kitchen4", "en"),
-			},
-			
-		}
-	},
-	
+    {
+        name = "wakeup",
+        dialog = {
+            {
+                video = 'playerSleepy',
+                text = Graphics.getLocalizedText("wakeup-01", "en"),
+            },
+            {
+                video = 'playerWorry',
+                text = Graphics.getLocalizedText("wakeup-02", "en"),
+            },
+            {
+                video = 'playerSurprise',
+                text = Graphics.getLocalizedText("wakeup-03", "en"),
+            }
+        }
+    },
+    {
+        name = "brocomess",
+        dialog = {
+            {
+                video = 'player',
+                text = Graphics.getLocalizedText("brocomess-01", "en"),
+            }
+        }
+    },
+    {
+        name = "microwaveBurn",
+        dialog = {
+            {
+                video = 'playerWorry',
+                text = Graphics.getLocalizedText("microwaveburn-01", "en"),
+            },
+            {
+                video = 'playerSurprise',
+                text = Graphics.getLocalizedText("microwaveburn-02", "en"),
+                screen = Graphics.image.new('assets/images/ui/dialog/img/microwaveBurn.png')
+            },
+            {
+                video = 'player',
+                text = Graphics.getLocalizedText("microwaveburn-03", "en"),
+            }
+        }
+    },
+    {
+        name = "someTrash",
+        dialog = {
+            {
+                video = 'player',
+                text = Graphics.getLocalizedText("sometrash-01", "en"),
+            }
+        }
+    },
+    {
+        name = "giftFor100",
+        dialog = {
+            {
+                video = 'playerHappy',
+                text = Graphics.getLocalizedText("giftfor100-01", "en"),
+            },
+            {
+                video = 'playerWorry',
+                text = Graphics.getLocalizedText("giftfor100-02", "en"),
+            }
+        }
+    },
+    {
+        name = "giftFor233",
+        dialog = {
+            {
+                video = 'playerHappy',
+                text = Graphics.getLocalizedText("giftfor233-01", "en"),
+            },
+            {
+                video = 'playerHappy',
+                text = Graphics.getLocalizedText("giftfor233-02", "en"),
+            },
+            {
+                video = 'playerWorry',
+                text = Graphics.getLocalizedText("giftfor233-03", "en"),
+            }
+        }
+    },
+    {
+        name = "kitchenWeapons",
+        dialog = {
+            {
+                video = 'player',
+                text = Graphics.getLocalizedText("kitchenweapons-02", "en"),
+                screen = Graphics.image.new('assets/images/ui/dialog/img/smallCutlerly.png')
+            }
+        }
+    },
+    {
+        name = "inneficientCutting",
+        dialog = {
+            {
+                video = 'playerSurprise',
+                text = Graphics.getLocalizedText("inneficientcutting-01", "en"),
+            },
+            {
+                video = 'player',
+                text = Graphics.getLocalizedText("inneficientcutting-02", "en"),
+            }
+        }
+    },
+    {
+        name = "entranceMess",
+        dialog = {
+            {
+                video = 'playerWorry',
+                text = Graphics.getLocalizedText("entrancemess-01", "en"),
+            },
+            {
+                video = 'player',
+                text = Graphics.getLocalizedText("entrancemess-02", "en"),
+            }
+        }
+    },
+    {
+        name = "justBoxes",
+        dialog = {
+            {
+                video = 'player',
+                text = Graphics.getLocalizedText("justboxes-01", "en"),
+            }
+        }
+    },
+    {
+        name = "notesLook",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = Graphics.getLocalizedText("noteslook-01", "en"),
+    },
+                    {
+        video = 'playerSurprise',
+        text = Graphics.getLocalizedText("noteslook-02", "en"),
+    },
+                    {
+        video = 'playerWorry',
+        text = Graphics.getLocalizedText("noteslook-03", "en"),
+    }
+            
+        }
+    },
+    {
+        name = "notesPickup",
+        dialog = {
+            {
+        video = 'playerSurprise',
+        text = Graphics.getLocalizedText("notespickup-01", "en"),
+    },
+                    {
+        video = 'playerHappy',
+        text = Graphics.getLocalizedText("notespickup-02", "en"),
+        
+    },
+                    {
+        video = 'notesHand',
+        text = Graphics.getLocalizedText("notespickup-03", "en"),
+        screen = Graphics.image.new('assets/images/ui/dialog/img/phototeam.png')
+    },
+                    {
+        video = 'playerWorry',
+        text = Graphics.getLocalizedText("notespickup-04", "en"),
+    },
+                    {
+        video = 'playerAngry',
+        text = Graphics.getLocalizedText("notespickup-05", "en"),
+    }
+            
+        }
+    },
+    {
+        name = "thisDemo",
+        dialog = {
+            {
+        video = 'radioRing',
+        text = Graphics.getLocalizedText("thisdemo-01", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-02", "en"),
+    },
+                    {
+        video = 'playerWorry',
+        text = Graphics.getLocalizedText("thisdemo-03", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-04", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-05", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-06", "en"),
+    },
+                    {
+        video = 'playerWorry',
+        text = Graphics.getLocalizedText("thisdemo-07", "en"),
+    },
+                    {
+        video = 'radioHand',
+        text = Graphics.getLocalizedText("thisdemo-08", "en"),
+    }
+            
+        }
+    },
 }

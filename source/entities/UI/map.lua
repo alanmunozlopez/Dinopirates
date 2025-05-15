@@ -1,7 +1,7 @@
 MapBG = {}
 class('MapBG').extends(Graphics.sprite)
 
-local maze <const> = Graphics.image.new("assets/images/ui/map.png")
+--local maze <const> = Graphics.image.new("assets/images/ui/map.png")
 local fog <const> = Graphics.image.new(27, 27)
 local yPos = nil
 

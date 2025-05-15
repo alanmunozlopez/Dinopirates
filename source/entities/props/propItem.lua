@@ -11,19 +11,31 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   self.animation:addState('trash', 4, 4)
   self.animation:addState('toxic', 5, 5)
   self.animation:addState('table', 6, 6)
-  self.animation:addState('blood', 7, 7)
-  self.animation:addState('blood2', 8, 8)
-  self.animation:addState('deadrat', 9, 9)
+  self.animation:addState('fellTable', 7, 7)
+  self.animation:addState('blood', 8,8)
+  self.animation:addState('blood2', 9, 9)
+  self.animation:addState('deadrat', 10, 10)
+  self.animation:addState('xtree-1', 11, 11)
+  self.animation:addState('xtree-2', 12, 12)
+  self.animation:addState('xtree-3', 13, 13)
+  self.animation:addState('xtree-4', 14, 14)
+  self.animation:addState('microwave', 15, 15)
+  self.animation:addState('gifts', 16, 16)
+  self.animation:addState('gift', 17, 17)
+  self.animation:addState('smallTable', 18, 18)
+  self.animation:addState('fridge1', 19, 19)
+  self.animation:addState('fridge2', 20, 20)
+  self.animation:addState('kitchenStorage', 21, 21)
+  self.animation:addState('pot', 22, 22)
+  self.animation:addState('knifeKettle', 23, 23)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(32, 32)
   if nocollide == nil then
-  self:setCollideRect(0,8, 32,24)
+    self:setCollideRect(0,8, 32,24)
   end
   self:setZIndex(zIndex)
-  
   self:setGroups(3)
-  
   self:add(x,y)
 end
 

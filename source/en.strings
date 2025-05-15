@@ -4,43 +4,71 @@
 "menuOptions" =			"Options"
 "menuCredits" =			"Credits"
 
--- floor 1 door closed
+"wakeup-01" = "wow that was a good *dino nap*, better than those beauty naps…"
 
-"door" = "duh! of course I need a *key card*, that probably *left somewhere*..."
+"wakeup-02" = "where's everybody? we were about to open the Dinomas gifts"
 
-"door2" = "... MR Jani...tor ...*key card*... safe on... ground... leave... *tidy and clean*..."
+"wakeup-03" = "where's my *captain hat*!? what kind of captain doesn't have a hat ahhh"
 
-"door3" = "... *thank you*... keep your hard work"
+"brocomess-01" = "is this… broccoli?"
 
-"door4" = "... *safe* ... *ground*, this *DR* are so unreliable"
+"microwaveburn-01" = "ohh that's our *party microwave*?"
 
-"door5" = "that will be *deducted from your next pay roll*"
+"microwaveburn-02" = "its totally destroyed!! and it was my mom's microwave!!"
 
-"door6" = "wait, they even pay me?"
+"microwaveburn-03" = "I should have agreed with Dino Resources about the *introduction to microwaves*…"
 
--- floor 1 mess
-"mess"="Ok, no more *Trex-tilas*, that welcome party was wild, and barely remember..."
+"sometrash-01" = "just some trash…"
 
-"mess2"="where is everyone? why it's such a big mess?"
+"giftfor100-01" = "for sure this one is mine…"
 
+"giftfor100-02" = "*it reads*: for crew member 100, our best 100 crew member."
 
--- floor 1 chair
+"giftfor233-01" = "as the younglings say *YOLO*, time to open some gifts…"
 
-"chairs"="wait the chairs are *glued to the floor*?"
+"giftfor233-02" = "obviously the big one is for me because I'm the best captain ever…"
 
-"chairs1"="what's that thing on the ground, it's like some kind of device"
+"giftfor233-03" = "*it reads*: for crew member 233, our best 233 member."
 
--- floor 1 welcome
+"kitchenweapons-02" = "Why we keep using human cutlery?, is too small for us, only *crew members* can use them…"
 
-"welcome"="*cof cof cof cof*"
-"welcome1"="Welcome to the *SS Waterqueen Super Ship type 2*... This is ... ..., from *Dinosaur Resources*...."
-"welcome2"="signal... watch for the...liens... rescue... es... shi...ife proceed, to the kitchen "
-"welcome3"="hello? how does this thing work.. *hellooooo* seems there's no signal, *call me... maybe?*"
-"welcome4"="... and, yes!, we glued the chairs and tables, for security reasons, trust *DR* "
+"inneficientcutting-01" = "jeez, this is the most inefficient way to cut some broccoli, looks more like a fight…"
 
--- Kitchen
+"inneficientcutting-02" = "…that's why we have tiny knives… maybe we need that  *Using knives* DR presentation…"
 
-"kitchen"="oh? what's this, I can't see, it's cold and round... "
-"kitchen2"="*CERVEZA CRISTAL, UNICA GRANDE Y NUESTRA...*"
-"kitchen3"="sweet, some *Chilean pee in a can* maybe I can use it later"
-"kitchen4"="just gonna keep walking straight, I really don't like dark places"
+"entrancemess-01" = "what happened here? another fight to enter first?, we have a line and waiting seats…"
+
+"entrancemess-02" = "we aren't animals in this ship, we are pirates but civilized."
+"justboxes-01" = "just boxes…"
+
+"noteslook-01" = "is that…"
+
+"noteslook-02" = "*My Super Dino Happy Cat Secret Captain Journal*!!!"
+
+"noteslook-03" = "all my secrets exposed…"
+
+"notespickup-01" = "Oh no it's all touched and filthy, my secrets…"
+
+"notespickup-02" = "aww my crew it's so lovely they leave me a picture and they wrote messages…"
+
+"notespickup-03" = "this is the *real meaning* of Dinomas, our friends are like our family…"
+
+"notespickup-04" = "*it reads*: To our former Captain, you were almost like a real Captain."
+
+"notespickup-05" = "what they mean with *former*, those idiots I'm gonna grab them one by one and slap them…"
+
+"thisdemo-01" = "*ring ring*"
+
+"thisdemo-02" = "Hello this a *META* call im the *developer* of the game…"
+
+"thisdemo-03" = "Whats a developer? you meant *Dinoloper*??"
+
+"thisdemo-04" = "no, im talking with the player. Mike, in this section u can try the feature of the lamp."
+
+"thisdemo-05" = "as u move the battery drains and the movement gets slower, also on the top right…"
+
+"thisdemo-06" = "theres a indicator(little brain) that shows the sanity level of the character…"
+
+"thisdemo-07" = "ahh I dont like darkness…."
+
+"thisdemo-08" = "that doesnt do anything yet, also ahead in this room are some enemies, also half baked. thanxs"

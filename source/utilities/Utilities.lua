@@ -111,22 +111,69 @@ function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
 end
-function SaveGame()
-	playdate.datastore.write(levels, 'levelSave', true)
-	playdate.datastore.write(PlayerData, 'playerSave', true)
+
+function drawVersionNumber(x, y, alignment)
+	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+	local version = "*" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
+	local versionWidth = Graphics.getTextSize(version)
+	
+	-- If no x position provided, default to right-aligned at 400 (screen width)
+	x = x or 400
+	-- If no y position provided, default to 2 (near top)
+	y = y or 2
+	-- If no alignment provided, default to right alignment with 4px padding
+	if alignment == nil then
+		x = x - versionWidth - 4
+	end
+	
+	Graphics.drawText(version, x, y)
+end 
+
+
+function findAndKillEnemyById(enemyId)
+	local room = PlayerData.floor
+	arrayData = levels[room].floor.enemies
+	
+	for _, enemyData in ipairs(arrayData) do
+		if enemyData.id == enemyId then
+		if enemyData.dead == nil or enemyData.dead == false then
+				enemyData.dead = true
+				enemyData.x = PlayerData.lastEnemyTouched.x
+				enemyData.y = PlayerData.lastEnemyTouched.y
+			end
+		end
+	end
 end
-function LoadGame()
-	PlayerData = playdate.datastore.read('playerSave')
-	levels = playdate.datastore.read('levelSave')
+
+function checkAndGrantAchievement(name)
+	if achievements.isGranted(name) == false then
+		achievements.grant(name)
+	end
 end
-function ResetGame()
-	PlayerData = json.decodeFile('playerOriginal.json')
-	PlayerData = PlayerDataOriginal
-	levels = playdate.datastore.read('levelOriginal')
+function checkStoryAchievement(comic)
+	if comic == "intro" then
+		checkAndGrantAchievement("wakeup")
+	end
+	if comic == "pick-the-device" then
+		checkAndGrantAchievement("comms")
+	end
 end
-function DeleteGame()
-	playdate.file.delete('playerSave.json')
-	playdate.file.delete('levelSave.json')
-	playdate.datastore.delete('playerSave.json')
-	playdate.datastore.delete('levelSave.json')
+function deleteAllAchievements()
+	achievements.revoke("wakeup")
+	achievements.revoke("comms")
+	achievements.revoke("notebook")
+end
+
+-- Dev Tools
+
+function printEnemues()
+	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
+		if enemy.type == "Enemy" then
+			print("x:", enemy.x)
+			print("y:", enemy.y)
+			print("Type:", enemy.type)
+			print("ID:", enemy.id)
+			print("----")
+		end
+	end
 end

@@ -13,9 +13,11 @@ function Items:init(x, y, type)
   self.animation.lamp.frameDuration = 8 
   self.animation:addState('radio', 26, 29)
   self.animation.radio.frameDuration = 8 
+  self.animation:addState('notes', 30, 33)
+  self.animation.notes.frameDuration = 8 
   self:setSize(48, 48)
   self:setCollideRect(8,8, 32,24)
-  self:setZIndex(ZIndex.props)
+  self:setZIndex(ZIndex.items)
   self.type = type
   self.animation:setState(type)
   sonar = FXsonar(self.x,self.y)

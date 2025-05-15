@@ -13,15 +13,24 @@
 MazeScene = {
 }
 class("MazeScene").extends(NobleScene)
+
 local scene = MazeScene
 local room = nil -- Level in table position
 
 import "entities/player/player"
-import "entities/enemies/enemy"
+
+import "assets/comics/comicsData"
+
+import "entities/enemies/brocorat"
+import "entities/enemies/frogcolli"
+import "entities/enemies/crewmember"
+
 import 'entities/props/propItem'
 import 'entities/props/door'
-import 'entities/items/Items'
 import 'entities/props/trigger'
+
+import 'entities/items/Items'
+
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
 
@@ -44,7 +53,6 @@ local shadow = nil
 local uiScreen = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
-
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
 
@@ -59,8 +67,16 @@ function scene:init()
 	-- Your code here
 	
 end
-function scene:setFloor(floor)
-	room = floor
+function scene:setFloor(floorNumber)
+	-- Find the level with matching roomNumber
+	for i, levelData in ipairs(levels) do
+		if levelData.floor.roomNumber == floorNumber then
+			room = i
+			return
+		end
+	end
+	-- If room not found, print warning
+	print("Warning: Room number " .. floorNumber .. " not found")
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -70,16 +86,16 @@ function scene:enter()
 	-- Your code here
 	
 	
-	PlayerData.isGaming = true
+	PlayerData.isGaming = false
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
-	PlayerData.room = levels[room].floor.floorNumber
+	PlayerData.room = levels[room].floor.roomNumber
 	PlayerData.isInDarkness = levels[room].floor.shadow
 	PlayerData.floor = room
 	
 	PlayerData.actualLevel = levels[room].floor.level
-	PlayerData.actualRoom = levels[room].floor.floorNumber
+	PlayerData.actualRoom = levels[room].floor.roomNumber
 	levels[room].floor.visited = true
 	
 	-- Mark: floor
@@ -109,35 +125,40 @@ function scene:enter()
 	
 	-- Mark: doors
 	local arrayData = levels[room].floor.doors -- Used several times to save variables
-	
-	for _, doorData in ipairs(arrayData) do
-		local direction = doorData.direction
-		local open = doorData.open
-		local leads = doorData.leadsTo
-	
-		Door(direction, open, leads, ZIndex.props)
+	if arrayData ~= nil then
+		for _, doorData in ipairs(arrayData) do
+			local direction = doorData.direction
+			local open = doorData.open
+			local leads = doorData.leadsTo
+		
+			Door(direction, open, leads, ZIndex.props)
+		end
 	end
 	
 	
 	-- Mark: Props 
 	arrayData = levels[room].floor.props
-	
-	for _, propData in ipairs(arrayData) do
-		local type = propData.type
-		local x = propData.x
-		local y = propData.y
-		local collide = propData.nocollide
-		PropItem(x, y, type, ZIndex.props, collide)
+	if arrayData ~= nil then
+		for _, propData in ipairs(arrayData) do
+			local type = propData.type
+			local x = propData.x
+			local y = propData.y
+			local collide = propData.nocollide
+			PropItem(x, y, type, ZIndex.props, collide)
+		end
 	end
 	
 	-- Mark: Items
 	arrayData = levels[room].floor.items
-	for _, itemData in ipairs(arrayData) do
-		local type = itemData.type
-		local x = itemData.x
-		local y = itemData.y
-		if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) then
-			Items(x, y, type)
+	if arrayData ~= nil then
+		for _, itemData in ipairs(arrayData) do
+			
+			local type = itemData.type
+			local x = itemData.x
+			local y = itemData.y
+			if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) or (type == 'notes' and PlayerData.hasNotes == false) then
+				Items(x, y, type)
+			end		
 		end
 	end
 	
@@ -151,25 +172,70 @@ function scene:enter()
 	if levels[room].floor.shadow == true then
 		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)
 	else
-		--player:fillBattery() -- Mark: dunno why I ws fillin the battery instantly
+		--player:fillBattery() -- Mark: dunno why I was filling the battery instantly
 	end
 	
+	-- Mark: Comic
+	arrayData = levels[room].floor.comic
+	if arrayData ~= nil then
+		local comicData = comics[arrayData.name]
+		if comicData then
+			if arrayData.play == "enter" and arrayData.wasPlayed == false then
+				PlayerData.isCutscene = true
+				PlayerData.isGaming = false
+			end
+			
+			local comicName = arrayData.name
+			Panels.startCutscene(comicData, function()
+				print(comicData)
+				PlayerData.isGaming = true
+				PlayerData.isCutscene = false
+				levels[room].floor.comic.wasPlayed = true
+				checkStoryAchievement(comicName)
+			end)
+		else
+			-- comic not found
+		end
+	end
 	-- Mark: UI
 	uiScreen = playerHud()
 	
-	-- Mark: Enemies 
+	-- Mark: Enemies
 	arrayData = levels[room].floor.enemies
 	
 	for _, enemyData in ipairs(arrayData) do
-		local name = enemyData.name
-		local x = enemyData.x
-		local y = enemyData.y
-		local speed = enemyData.speed
+		if enemyData.dead == false or enemyData.dead == nil then
+			local name = enemyData.name
+			local x = enemyData.x
+			local y = enemyData.y
+			local speed = enemyData.speed
+			local id = enemyData.id
+			
+			if name == "brocorat" then
+				Brocorat(x, y, speed, ZIndex.enemy, player, id)
+			elseif name == "frogcolli" then
+				Frogcolli(x, y, speed, ZIndex.enemy, player, id)
+			end
+		else
+			local x = enemyData.x
+			local y = enemyData.y
+			PropItem(x, y, 'blood2', ZIndex.props, false)
+		end
+	end
 	
-		if name == "brocorat" then
-			Brocorat(x, y, speed, ZIndex.enemy, player)
-		elseif name == "frogcolli" then
-			Frogcolli(x, y, speed, ZIndex.enemy, player)
+	-- Mark: Crew members 
+	arrayData = levels[room].floor.items
+	
+	for i, crewData in ipairs(arrayData) do
+		local type = crewData.type
+		local x = crewData.x
+		local y = crewData.y
+		local speed = crewData.speed
+		local crewId = crewData.crewId
+		if type == "crewmember" then
+			if crewData.taken == false then
+				CrewMember(x, y, speed, ZIndex.enemy, player, i ,room, crewId)
+			end
 		end
 	end
 	
@@ -183,15 +249,19 @@ function scene:enter()
 			local width = triggerData.width
 			local height = triggerData.height
 			local script = triggerData.script
-			Trigger(x,y,width,height,script, i, room)
+			local type = triggerData.type
+			Trigger(x,y,width,height,script, i, room, type)
 		end
 	end
+	
+	SaveSystem.save()
 end
 
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)
-	
+	self:setDiagonalMovement(diagonalMovement)
+	PlayerData.isGaming = true
 end
 
 -- This runs once per frame.
@@ -200,12 +270,25 @@ function scene:update()
 	-- Mark: cheat code
 	cheat:update()
 	
-	-- Mark: Crank notification
-	if PlayerData.battery == 0  and playdate.isCrankDocked() and PlayerData.hasLamp == true then
-		playdate.ui.crankIndicator:draw(0, 0)
+	-- Todo: make this a separate function
+	if PlayerData.isCutscene == true then
+		-- Disable game input handlers while cutscene is running
+		if Noble.Input.getEnabled() then
+			Noble.Input.setEnabled(false)
+		end
+		Panels.update()
+	else
+		-- Re-enable game input handlers when cutscene ends
+		if not Noble.Input.getEnabled() then
+			Noble.Input.setEnabled(true)
+		end
 	end
 	
-	
+	-- Mark: Crank notification
+	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) then
+		playdate.ui.crankIndicator:draw(0, 0)
+	end
+	print(PlayerData.sanity)
 end
 
 
@@ -219,10 +302,6 @@ end
 function scene:exit()
 	scene.super.exit(self)
 	
-	SaveGame()
-	
-
-	
 	uiScreen:removeAll()
 	floor:remove()
 	if shadow then
@@ -230,6 +309,10 @@ function scene:exit()
 	end
 	
 	Graphics.sprite.removeAll()
+	
+	PlayerData.playerExit.x = player.x
+	PlayerData.playerExit.y = player.y
+	
 end
 
 -- This runs once a transition to another scene completes.
@@ -242,11 +325,12 @@ end
 function scene:pause()
 	scene.super.pause(self)
 	-- Your code here
-	SaveGame()
+	SaveSystem.save()
 	
 end
+
 function scene:movePlayer(direction)
-	if PlayerData.isTalking == false then
+	if PlayerData.isTalking == false and PlayerData.isCutscene == false then
 		if player.isAlive == true then
 			player:move(direction)
 			if shadow  then
@@ -264,7 +348,6 @@ scene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
-		--print((script[1].dialog[1].text))
 		if PlayerData.isTalking == true then
 			player:displayDialog()
 		end
@@ -287,102 +370,131 @@ scene.inputHandler = {
 
 	-- B button
 	--
+
 	BButtonDown = function()
+		
+		printEnemues()
 	
 	end,
 	BButtonHeld = function()
-		
-		player.loadingPower = true
-		player:focus()
+		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
+			player.loadingPower = true
+			player:focus()
+		end
 	end,
 	BButtonHold = function()
+		
 	end,
 	BButtonUp = function()
-		player.loadingPower = false
-		player:deFocus()
+		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
+			player.loadingPower = false
+			player:deFocus()
+		end
 	end,
-
 	-- D-pad left
 	--
 	leftButtonDown = function()
-		
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'left'
+			scene:movePlayer('left')
+		end
 	end,
 	leftButtonHold = function()
-		scene:movePlayer('left')
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'left') then
+			scene:movePlayer('left')
+		end
 	end,
 	leftButtonUp = function()
-		player:idle()
-		if shadow then
-			shadow:refresh()
+		if currentMoveDirection == 'left' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
+			player:idle()
+			if shadow then
+				shadow:refresh()
+			end
 		end
 	end,
 
 	-- D-pad right
 	--
 	rightButtonDown = function()
-		
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'right'
+			scene:movePlayer('right')
+		end
 	end,
 	rightButtonHold = function()
-		scene:movePlayer('right')
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'right') then
+			scene:movePlayer('right')
+		end
 	end,
 	rightButtonUp = function()
-		player:idle()
-		if shadow then
-			shadow:refresh()
+		if currentMoveDirection == 'right' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
+			player:idle()
+			if shadow then
+				shadow:refresh()
+			end
 		end
 	end,
 
 	-- D-pad up
 	--
 	upButtonDown = function()
-
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'up'
+			scene:movePlayer('up')
+		end
 	end,
 	upButtonHold = function()
-		scene:movePlayer('up')
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'up') then
+			scene:movePlayer('up')
+		end
 	end,
 	upButtonUp = function()
-		player:idle()
-		if shadow then
-			shadow:refresh()
+		if currentMoveDirection == 'up' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
+			player:idle()
+			if shadow then
+				shadow:refresh()
+			end
 		end
 	end,
 
 	-- D-pad down
 	--
 	downButtonDown = function()
-
+		if isDiagonalMovementEnabled or not isPlayerMoving then
+			isPlayerMoving = true
+			currentMoveDirection = 'down'
+			scene:movePlayer('down')
+		end
 	end,
 	downButtonHold = function()
-		scene:movePlayer('down')
+		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'down') then
+			scene:movePlayer('down')
+		end
 	end,
 	downButtonUp = function()
-		player:idle()
-		if shadow then
-			shadow:refresh()
+		if currentMoveDirection == 'down' then
+			isPlayerMoving = false
+			currentMoveDirection = nil
+			player:idle()
+			if shadow then
+				shadow:refresh()
+			end
 		end
 	end,
 
 	-- Crank
 	--
-	cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
-		if player.isAlive then
-			-- TODO: turn this into a function
-			if playdate.getCrankTicks(3) > 0 then
-				if player.loadingPower == true then
-					print('powa') 
-				else
-					player:chargeBattery(1)
-					if shadow then
-						shadow:refresh()
-					end
-				end
-			end
-			if player.battery == 100 then
-				player:idle()
-			end
-			
-		end
-		
+	cranked = function(change, acceleratedChange)
+		scene:PowerCrank()
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
 	end,
@@ -390,3 +502,26 @@ scene.inputHandler = {
 		
 	end
 }
+
+function MazeScene:setDiagonalMovement(enabled)
+	isDiagonalMovementEnabled = enabled
+end
+
+function scene:PowerCrank()
+    if not player.isAlive then return end
+    
+    if playdate.getCrankTicks(3) > 0 then
+        if player.loadingPower then
+            print('powa')  -- Consider removing debug print
+        else
+            player:chargeBattery(1)
+            if shadow then
+                shadow:refresh()
+            end
+        end
+    end
+    
+    if player.battery == 100 then
+        player:idle()
+    end
+end

@@ -193,3 +193,16 @@ end
 function Floor115:exit()
 	Floor115.super.exit(self)
 end
+
+Floor116 = {}
+class("Floor116").extends(MazeScene)
+
+function Floor116:init()
+	self:setFloor(16)
+	Floor115.super.init(self)
+	PlayerData.saveLevel = 116
+end
+
+function Floor116:exit()
+	Floor115.super.exit(self)
+end

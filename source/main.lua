@@ -1,20 +1,41 @@
 import 'libraries/noble/Noble'
+import 'libraries/panels/Panels'
+import 'achievements/all'
 
 import 'utilities/Utilities'
 import 'utilities/PauseMenu'
+
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
+import 'scenes/DanceScene'
 import 'scenes/Floors'
 --import 'scenes/StarScene'
 import 'scenes/TestScene'
 import 'scenes/TitleScene'
-import 'assets/data/PlayerData'
+
+import 'assets/data/PlayerDataTables'
 import 'assets/data/levels'
 import 'assets/data/script'
+
+local achievementData = import 'assets/data/achievements'
+local configToast = import 'assets/data/toastConfig'
+
+achievements.initialize(achievementData)
+achievements.forceSaveOnGrantOrRevoke=true
+local config = {
+   toastOnGrant = true, -- automatically show toasts for granted achievements
+   miniMode = true, -- use tiny toasts to avoid blocking gameplay
+   toastFromTop = true,
+   -- renderMode = "sprite" -- show black cards with white text, for added contrast
+   -- ...
+}
+
+achievements.toasts.initialize(configToast)
 
 Noble.Settings.setup({
 	Difficulty = "Medium",
 })
+
 Noble.showFPS = false
 
 Noble.GameData.setup({
@@ -22,11 +43,15 @@ Noble.GameData.setup({
 })
 
 debug = false
+diagonalMovement = true -- TODO: fix movement stuck after entering a new room
+
+Panels.Settings.path = ""
 
 ZIndex = {
 	player = 4,
 	enemy = 3,
 	props = 3,
+	items = 4,
 	fx = 6,
 	ui = 10,
 	alert = 12
@@ -38,13 +63,13 @@ CollideGroups = {
 	items = 4,
 	wall = 5
 }
-playdate.datastore.write(levels, 'levelOriginal', true) -- DEBUG
+playdate.datastore.write(levels, 'levelOriginal', true) 
+playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)-- DEBUG
+
 local menu = playdate.getSystemMenu()
+
 local menuItem, error = menu:addMenuItem("Title", function()
-	Noble.transition(TitleScene)
-end)
-local menuItem, error = menu:addMenuItem("Delete Save", function()
-	DeleteGame()
+	Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus)
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
 	if debug == false then
@@ -56,7 +81,8 @@ local menuItem, error = menu:addMenuItem("debug", function()
 		Noble.showFPS = false
 	end
 end)
+
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
-Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK,{alwaysRedraw=true})
+Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus) --- TODO: add custom transition

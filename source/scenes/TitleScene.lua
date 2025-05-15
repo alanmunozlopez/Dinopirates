@@ -1,4 +1,4 @@
-
+import "utilities/SaveSystem"
 
 TitleScene = {}
 class("TitleScene").extends(NobleScene)
@@ -6,7 +6,7 @@ local scene = TitleScene
 
 local menu
 local crankTick = 0
-local bg <const> = Graphics.image.new('assets/images/screens/title-screen.png')
+local bg <const> = Graphics.image.new('assets/images/screens/titlescreen.png')
 local background <const> = Graphics.sprite.new(bg)
 background:moveTo(200,120)
 
@@ -39,33 +39,64 @@ TitleScene.inputHandler = {
 -- first thing that happens when transitining away from another scene.
 function scene:init()
 	scene.super.init(self)
-	-- Check save game
-	if playdate.file.exists('playerSave.json') == false then
-		playdate.datastore.write(levels, 'levelOriginal', true)
-		playdate.datastore.write(PlayerData, 'playerOriginal', true)
-	end
-	menu = Noble.Menu.new(
-			true,
-			Noble.Text.ALIGN_LEFT,
-			false,
-			nil,
-			2,16
-		)
 	
-		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
-		menu:addItem("New Game", function()
-			ResetGame()
-			Noble.transition(Floor107)--107 
-		 end)
-		
-		if playdate.file.exists('playerSave.json') == true then
-			LoadGame()
-			menu:addItem("Continue", function() 
-				Noble.transition(RoomTranslate(PlayerData.saveLevel)) 
-			end)
-		end
-		--menu:addItem("Test", function() Noble.transition(TestScene) end)
-		menu:select("New Game")
+	-- Initialize original state if needed
+	if not playdate.file.exists('levelOriginal.json') then
+		playdate.datastore.write(levels, 'levelOriginal', true)
+		playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
+	end
+	
+	menu = Noble.Menu.new(true, Noble.Text.ALIGN_LEFT, false, nil, 2, 16)
+
+	if playdate.file.exists('gameState.json') then
+		menu:addItem("Continue", function() 
+			SaveSystem.load()
+			Noble.transition(
+				RoomTranslate(PlayerData.saveLevel),
+				1, Noble.Transition.Spotlight, {
+				x = 200,
+				y = 120,
+				xExit = PlayerData.playerSpawn.x,
+				yExit = PlayerData.playerSpawn.y,
+				holdTime = 0.25,
+				ease = Ease.outInQuad}
+			) 
+		end)
+	end
+	
+	menu:addItem("New Game", function()
+	
+		SaveSystem.reset()
+		Noble.transition(
+			Floor107,
+			 1, Noble.Transition.Spotlight, {
+			x = 200,
+			y = 120,
+			xExit = PlayerData.playerSpawn.x,
+			yExit = PlayerData.playerSpawn.y,
+			holdTime = 0.25,
+			ease = Ease.outInQuad
+		})
+	end)
+	if playdate.file.exists('gameState.json') then
+		menu:addItem("Delete save", function() 
+			SaveSystem.delete()
+			deleteAllAchievements()
+			Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus)
+		end)
+	end
+	menu:addItem("Achievements", function()
+		Graphics.setImageDrawMode(Graphics.kDrawModeCopy) -- hotfix
+		achievements.viewer.launch()
+	end)
+	-- Add Playground option only if debug is true
+	if debug == true then
+		menu:addItem("Playground", function()
+			SaveSystem.reset()  -- Direct transition to room 109
+		end)
+	end
+	
+	menu:select(playdate.file.exists('gameState.json') and "Continue" or "New Game")
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -91,9 +122,7 @@ function scene:update()
 	scene.super.update(self)
 	-- Your code here
 	menu:draw(8, 120)
-	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	--Graphics.setColor(playdate.graphics.kColorWhite)
-	Graphics.drawText("*v 0.1*", 2, 2)
+	drawVersionNumber()
 end
 
 -- This runs once per frame, and is meant for drawing code.

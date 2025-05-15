@@ -23,8 +23,8 @@ function Player:init(x, y, speed, Zindex)
   self.animation:addState('up', 14, 16)
   self.animation.up.frameDuration = 12
   
-  self.animation:addState('dead', 17, 18)
-  self.animation.dead.frameDuration = 12
+  self.animation:addState('deadBrocolli', 17, 18)
+  self.animation.deadBrocolli.frameDuration = 12
   
   self.animation:addState('lampIdle', 19, 22)
   self.animation.lampIdle.frameDuration = 24
@@ -66,7 +66,7 @@ function Player:init(x, y, speed, Zindex)
   self.speed = speed
   self.initialSanity = PlayerData.sanity
   self.initialBattery = PlayerData.battery
-  self.sanityLoss = 10
+  self.sanityLoss = 1
   self.sanity = PlayerData.sanity
   
   PlayerData.isActive = false
@@ -89,12 +89,33 @@ end
 function Player:collisionResponse(other)
   
   if other:isa(Enemy) then
-    return self:dead()
+    if other:isa(Brocorat) then
+      -- other:empty()
+      --other.animation:setState('empty')  -- Set enemy animation to empty state
+      --self.animation:setState('deadBrocolli')
+      PlayerData.lastEnemyTouched.type = "Brocorat"
+      PlayerData.lastEnemyTouched.id = other.id
+      PlayerData.lastEnemyTouched.x = other.x
+      PlayerData.lastEnemyTouched.y = other.y
+      self:fight()
+      return 'overlap'
+    end
+    
+  elseif other:isa(CrewMember) then
+    other:taken() 
+    
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Trigger) then
+    if other.type == nil and other.type ~= "cutscene" then
       PlayerData.isTalking = true
       dialogUI:addScreen(other:returnScript(),other.sourceFeed)
+    end
+    if other.type == "cutscene" then
+      PlayerData.isCutscene = true
+      other:returnScript()
+      other:remove()
+    end
     return 'freeze'
   elseif other:isa(Items) and other.type == 'keycard' then
     other:removeAll()
@@ -107,6 +128,10 @@ function Player:collisionResponse(other)
   elseif other:isa(Items) and other.type == 'radio' then
     other:removeAll()
     self:grabRadio()
+    return 'overlap'
+  elseif other:isa(Items) and other.type == 'notes' then
+    other:removeAll()
+    self:grabNotes()
     return 'overlap'
   elseif other:isa(Door) then
     
@@ -134,7 +159,7 @@ end
 
 function Player:idle()
   if self.isAlive == true then
-    if PlayerData.hasLamp == true then
+    if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
       self.animation:setState('lampIdle')
     else
       self.animation:setState('idle')
@@ -156,7 +181,7 @@ function Player:sanityCheck()
     if PlayerData.sanity <= 0 then
       PlayerData.sanity = 0
     end
-    if PlayerData.battery > 50 then
+    if PlayerData.battery > 50 or PlayerData.isInDarkness == false then
       PlayerData.sanity += 2 * self.sanityLoss
     end
     if PlayerData.sanity >= 100 then
@@ -168,9 +193,13 @@ function Player:sanityCheck()
     
 end
 
-function Player:dead()
+function Player:fight()
+  Noble.transition(DanceScene)
+end
+
+function Player:dead() -- unused
   self.isAlive = false
-  self.animation:setState('dead')
+  self.animation:setState('deadBrocolli')
   local function deathScreen()
   
     Noble.transition(DeadScene)
@@ -228,7 +257,7 @@ end
 
 function Player:focus()
   if PlayerData.sanity > 0 then
-    PlayerData.sanity -= 10 
+    PlayerData.sanity -= 30 
     PlayerData.isFocused = true
   end
 end
@@ -258,29 +287,7 @@ end
 function Player:fillBattery()
     PlayerData.battery = 100
 end
-function Player:update()
-  -- Mark: save actual position
-  PlayerData.x = self.x
-  PlayerData.y = self.y
-  -- Mark: battery bounds
-  if PlayerData.battery < 0 then
-    PlayerData.battery = 0
-  elseif PlayerData.battery >= 100 then
-    PlayerData.battery = 100
-  end
-  -- Mark: Reduce speed in the dark
-  if PlayerData.hasLamp == true then
-    if PlayerData.battery < 20 then 
-      self.speed = 0.5 * self.initialSpeed
-    elseif PlayerData.battery > 20 then
-      self.speed = self.initialSpeed
-    end
-  end
-  if levels[PlayerData.floor].floor.shadow == true and PlayerData.hasLamp == false then
-    self.speed = 0.5 * self.initialSpeed
-  end
-  PlayerData.isActive = false
-end
+
 
 function Player:grabKey()
   PlayerData.hasKey = true
@@ -293,4 +300,33 @@ end
 
 function Player:grabRadio()
   PlayerData.hasRadio = true
+end
+
+function Player:grabNotes()
+  PlayerData.hasNotes = true
+  checkAndGrantAchievement("notebook")
+end
+
+function Player:update()
+  -- Mark: save actual position
+  PlayerData.x = self.x
+  PlayerData.y = self.y
+  -- Mark: battery bounds
+  if PlayerData.battery < 0 then
+    PlayerData.battery = 0
+  elseif PlayerData.battery >= 100 then
+    PlayerData.battery = 100
+  end
+  -- Mark: Reduce speed in the dark
+  if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+    if PlayerData.battery < 20 then 
+      self.speed = 0.5 * self.initialSpeed
+    elseif PlayerData.battery > 20 then
+      self.speed = self.initialSpeed
+    end
+  end
+  if PlayerData.isInDarkness == true and PlayerData.hasLamp == false then
+    self.speed = 0.5 * self.initialSpeed
+  end
+  PlayerData.isActive = false
 end
