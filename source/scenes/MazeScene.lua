@@ -283,12 +283,12 @@ function scene:update()
 			Noble.Input.setEnabled(true)
 		end
 	end
+	
 	-- Mark: Crank notification
 	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
-	
-	
+	print(PlayerData.sanity)
 end
 
 
@@ -373,15 +373,7 @@ scene.inputHandler = {
 
 	BButtonDown = function()
 		
-		for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
-			if enemy.type == "Enemy" then
-				print("x:", enemy.x)
-				print("y:", enemy.y)
-				print("Type:", enemy.type)
-				print("ID:", enemy.id)
-				print("----")
-		    end
-		end
+		printEnemues()
 	
 	end,
 	BButtonHeld = function()

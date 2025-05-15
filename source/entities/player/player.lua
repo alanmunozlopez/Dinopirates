@@ -66,7 +66,7 @@ function Player:init(x, y, speed, Zindex)
   self.speed = speed
   self.initialSanity = PlayerData.sanity
   self.initialBattery = PlayerData.battery
-  self.sanityLoss = 10
+  self.sanityLoss = 1
   self.sanity = PlayerData.sanity
   
   PlayerData.isActive = false
@@ -181,7 +181,7 @@ function Player:sanityCheck()
     if PlayerData.sanity <= 0 then
       PlayerData.sanity = 0
     end
-    if PlayerData.battery > 50 then
+    if PlayerData.battery > 50 or PlayerData.isInDarkness == false then
       PlayerData.sanity += 2 * self.sanityLoss
     end
     if PlayerData.sanity >= 100 then
@@ -257,7 +257,7 @@ end
 
 function Player:focus()
   if PlayerData.sanity > 0 then
-    PlayerData.sanity -= 10 
+    PlayerData.sanity -= 30 
     PlayerData.isFocused = true
   end
 end
@@ -287,6 +287,26 @@ end
 function Player:fillBattery()
     PlayerData.battery = 100
 end
+
+
+function Player:grabKey()
+  PlayerData.hasKey = true
+end
+
+function Player:grabLamp()
+  PlayerData.hasLamp = true
+  self:fillBattery()
+end
+
+function Player:grabRadio()
+  PlayerData.hasRadio = true
+end
+
+function Player:grabNotes()
+  PlayerData.hasNotes = true
+  checkAndGrantAchievement("notebook")
+end
+
 function Player:update()
   -- Mark: save actual position
   PlayerData.x = self.x
@@ -309,22 +329,4 @@ function Player:update()
     self.speed = 0.5 * self.initialSpeed
   end
   PlayerData.isActive = false
-end
-
-function Player:grabKey()
-  PlayerData.hasKey = true
-end
-
-function Player:grabLamp()
-  PlayerData.hasLamp = true
-  self:fillBattery()
-end
-
-function Player:grabRadio()
-  PlayerData.hasRadio = true
-end
-
-function Player:grabNotes()
-  PlayerData.hasNotes = true
-  checkAndGrantAchievement("notebook")
 end

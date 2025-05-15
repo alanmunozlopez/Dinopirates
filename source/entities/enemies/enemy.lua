@@ -51,7 +51,7 @@ function Enemy:moveCollision(movementX, movementY, player)
                 end
             end
             if collideObject:isa(PropItem) then
-                print("prop collision")
+                
             end
         end
     end
