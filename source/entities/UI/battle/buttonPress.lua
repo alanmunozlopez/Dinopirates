@@ -77,15 +77,15 @@ function ButtonPress:collisionResponse(other)
 end
 
 function ButtonPress:update()
-	
-	if self.active == true then
-		self:tryMoveToFreePosition((self.x - ( 0.5*self.bpm/3 )), self.y)
-		
-		if self.x <= 40 then
-			self:moveTo(self.startPoint, self.y)
-			self:changeButtonSprite()
+	if PlayerData.isDancing == true then
+		if self.active == true then
+			self:tryMoveToFreePosition((self.x - ( 0.5*self.bpm/3 )), self.y)
+			
+			if self.x <= 40 then
+				self:moveTo(self.startPoint, self.y)
+				self:changeButtonSprite()
+			end
 		end
 	end
-    
 	
 end

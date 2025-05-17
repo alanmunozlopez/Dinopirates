@@ -288,7 +288,7 @@ function scene:update()
 	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
-	print(PlayerData.sanity)
+	
 end
 
 
@@ -339,6 +339,18 @@ function scene:movePlayer(direction)
 		end
 	end
 end
+function playerFocus()
+	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
+		player.loadingPower = true
+		player:focus()
+	end
+end
+function playerDefocus()
+	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
+		player.loadingPower = false
+		player:deFocus()
+	end
+end
 -- Define the inputHander for this scene here, or use a previously defined inputHandler.
 
 -- scene.inputHandler = someOtherInputHandler
@@ -373,23 +385,18 @@ scene.inputHandler = {
 
 	BButtonDown = function()
 		
-		printEnemues()
+		playerFocus()
 	
 	end,
 	BButtonHeld = function()
-		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
-			player.loadingPower = true
-			player:focus()
-		end
+		
+		
 	end,
 	BButtonHold = function()
 		
 	end,
 	BButtonUp = function()
-		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
-			player.loadingPower = false
-			player:deFocus()
-		end
+		playerDefocus()
 	end,
 	-- D-pad left
 	--

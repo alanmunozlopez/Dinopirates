@@ -194,6 +194,8 @@ function Player:sanityCheck()
 end
 
 function Player:fight()
+  PlayerData.amountDances += 1
+  PlayerData.isDancing = true 
   Noble.transition(DanceScene)
 end
 
@@ -257,7 +259,7 @@ end
 
 function Player:focus()
   if PlayerData.sanity > 0 then
-    PlayerData.sanity -= 30 
+    PlayerData.sanity -= 20 
     PlayerData.isFocused = true
   end
 end
