@@ -1,7 +1,7 @@
 ButtonPress ={}
 class('ButtonPress').extends(NobleSprite)
 
-local BUTTON_KEYS = { "aButton", "bButton", "leftButton", "upButton", "rightButton", "downButton", "Break" }
+local BUTTON_KEYS = { "aButton", "bButton", "leftButton", "upButton", "rightButton", "downButton"}
 
 function ButtonPress:init(beats,startPoint)
 	ButtonPress.super.init(self, 'assets/images/ui/battle/button', true)
