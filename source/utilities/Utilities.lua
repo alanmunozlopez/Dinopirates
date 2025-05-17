@@ -166,7 +166,7 @@ end
 
 -- Dev Tools
 
-function printEnemues()
+function printEnemies()
 	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
 		if enemy.type == "Enemy" then
 			print("x:", enemy.x)
