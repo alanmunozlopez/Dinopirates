@@ -824,7 +824,6 @@ levels = {
 			}
 			},
 			comic = {
-					
 			},
 			items = {
 			{
@@ -836,31 +835,37 @@ levels = {
 			triggers = {
 			{
 				usedTrigger = false,
-				x = 109,
-				y = 72,
+				x = 136,
+				y = 37,
 				width = 60,
 				height = 30,
-				script = "thisDemo",
+				script = "thisDemo"
 			}
 			},
 			enemies = {
 			{
 				name = "brocorat",
-				x = 59,
-				y = 187,
-				speed = 1.0
+				x = 314,
+				y = 48,
+				speed = 1.0,
+				id = "0003",
+				
 			},
 			{
 				name = "brocorat",
-				x = 180,
-				y = 197,
-				speed = 1.0
+				x = 183,
+				y = 194,
+				speed = 1.0,
+				id = "0004",
+				
 			},
 			{
 				name = "brocorat",
-				x = 320,
-				y = 66,
-				speed = 1.0
+				x = 70,
+				y = 163,
+				speed = 1.0,
+				id = "0005",
+				
 			}
 			},
 			props = {
