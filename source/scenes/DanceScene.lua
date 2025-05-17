@@ -96,19 +96,19 @@ function scene:update()
         if self.ButtonPressed == nil then
             
             self.accuracy += 1
-            self.buttonText = "miss"
+            self.balancePosition -= 1 
             
         elseif collisions[1].buttonKey == self.ButtonPressed then
             
             if self.ButtonPressed == "aButton" or self.ButtonPressed == "bButton" then
                 
-                self.enemyHP -= 10
-                self.balancePosition += 5 
+               self.enemyHP -= 10
+               self.balancePosition += 5 
             elseif self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
                 
-                self.balancePosition += 1 
-                self.totalAccuracy += self.accuracy
-                self.evadePower = self.totalAccuracy
+               self.balancePosition += 1 
+               self.totalAccuracy += self.accuracy
+               self.evadePower = self.totalAccuracy
             end
             
             -- Mark: change animation player and enemies
@@ -118,10 +118,11 @@ function scene:update()
             
             self:incrementCorrectPress(self.ButtonPressed)
         else
+           
             self.buttonText = "wrong"
             collisions[1]:hit()
-            lifes -= 1
             self.balancePosition -= 5 
+            
         end
         self.ButtonPressed = nil
     else
@@ -164,9 +165,6 @@ function scene:update()
    end
     
     -- Mark: lose condition
-    if lifes == 0 then
-        
-    end
     
     if self.evadePower == 0 then
         
@@ -179,13 +177,9 @@ function scene:update()
    -- Calculate final X offset: enemyFactor pulls right, playerFactor pulls left
    local balanceOffset = (enemyFactor - playerFactor) * self.balanceMaxOffset -- range -50 to +50
    
-   
- 
-   
    -- Generate balance bar image if needed
    if not self.balanceBarImage then
        self.balanceBarImage = Graphics.image.new('assets/images/ui/battle/nudgeIndicator')
-
    end
    
    -- Clamp balancePosition to max range
@@ -199,7 +193,8 @@ function scene:update()
       
       resultsScreen:win()
       PlayerData.isDancing = false
-      condition = "win"        --maybe remove this 
+      condition = "win"  
+            
    end
    
    if self.balancePosition <= -self.balanceMaxOffset then

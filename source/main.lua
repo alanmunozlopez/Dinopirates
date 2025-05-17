@@ -17,7 +17,7 @@ import 'assets/data/PlayerDataTables'
 import 'assets/data/levels'
 import 'assets/data/script'
 
-local achievementData = import 'assets/data/achievements'
+achievementData = import 'assets/data/achievements'
 local configToast = import 'assets/data/toastConfig'
 
 achievements.initialize(achievementData)

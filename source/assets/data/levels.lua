@@ -57,19 +57,19 @@ levels = {
 			},
 			{
 				usedTrigger = false,
-				x = 44,
-				y = 36,
-				width = 56,
-				height = 31,
-				script = "microwaveBurn"
-			},
-			{
-				usedTrigger = false,
 				x = 282,
 				y = 34,
 				width = 42,
 				height = 31,
 				script = "someTrash"
+			},
+			{
+				usedTrigger = false,
+				x = 43,
+				y = 40,
+				width = 66,
+				height = 53,
+				script = "microwaveBurn"
 			}
 			},
 			enemies = {
@@ -848,22 +848,19 @@ levels = {
 				name = "brocorat",
 				x = 59,
 				y = 187,
-				speed = 1.0,
-				id = '003'
+				speed = 1.0
 			},
 			{
 				name = "brocorat",
 				x = 180,
 				y = 197,
-				speed = 1.0,
-				id = '004'
+				speed = 1.0
 			},
 			{
 				name = "brocorat",
-				x = 308,
-				y = 35,
-				speed = 1.0,
-				id = '005'
+				x = 320,
+				y = 66,
+				speed = 1.0
 			}
 			},
 			props = {

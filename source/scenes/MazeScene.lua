@@ -187,7 +187,6 @@ function scene:enter()
 			
 			local comicName = arrayData.name
 			Panels.startCutscene(comicData, function()
-				print(comicData)
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
 				levels[room].floor.comic.wasPlayed = true

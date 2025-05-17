@@ -116,6 +116,7 @@ function Player:collisionResponse(other)
       other:returnScript()
       other:remove()
     end
+    Utilities.grantAchievementIfNeeded(other.script)
     return 'freeze'
   elseif other:isa(Items) and other.type == 'keycard' then
     other:removeAll()

@@ -147,9 +147,16 @@ end
 
 -- Grants an achievement if it hasn't been granted yet
 function Utilities.grantAchievementIfNeeded(name)
-	if not achievements.isGranted(name) then
-		achievements.grant(name)
+	-- Check if the ID exists in achievementData
+	for _, data in ipairs(achievementData.achievements) do
+		if data.id == name then
+			if not achievements.isGranted(name) then
+				achievements.grant(name)
+			end
+			return -- Found and handled, exit function
+		end
 	end
+
 end
 
 -- Maps comics to achievements
@@ -169,6 +176,7 @@ end
 function Utilities.checkSanityAchievements()
 	local sanityAchievements = {
 		[2] = "sanityloss1",
+		[6] = "sanityloss2",
 		-- Future: add [5] = "sanityloss2", etc.
 	}
 	
@@ -180,11 +188,10 @@ end
 
 -- Bulk revoke (delete) achievements
 function Utilities.clearAllAchievements()
-	local allAchievements = {
-		"wakeup", "comms", "notebook", "sanityloss1"
-	}
-	for _, name in ipairs(allAchievements) do
-		achievements.revoke(name)
+	for _, data in ipairs(achievementData.achievements) do
+		if data.id then
+			achievements.revoke(data.id)
+		end
 	end
 end
 

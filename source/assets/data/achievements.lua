@@ -27,13 +27,19 @@ local achievementData = {
 			id = "sanityloss1",
 			name = "afraid of the dark?",
 			description = "too much time alone and in the darkness can make you crazy",
-			isSecret = false,
+			isSecret = true,
 		},
 		{
 			id = "sanityloss2",
-			name = "cucu",
-			description = "too much time alone and in the darkness can make you crazy",
-			isSecret = false,
+			name = "Hello darkness...",
+			description = "this is the first step into the abbyss",
+			isSecret = true,
+		},
+		{
+			id = "microwaveBurn",
+			name = "Hello darkness...",
+			description = "this is the first step into the abbyss",
+			isSecret = true,
 		},
 		
 	}
