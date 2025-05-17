@@ -171,9 +171,10 @@ end
 function Player:sanityCheck()
   -- Initialize the counter if it doesn't exist
 
-  local lastSanity = PlayerData.sanity -- Keep track of previous sanity to detect drop to zero
+  -- Keep track of previous sanity to detect drop to zero
 
   local function checkSanity()
+    local lastSanity = PlayerData.sanity 
     if PlayerData.battery < 20 and PlayerData.isInDarkness == true then 
       PlayerData.sanity -= 2 * self.sanityLoss
     elseif PlayerData.battery < 40 and PlayerData.isInDarkness == true then
