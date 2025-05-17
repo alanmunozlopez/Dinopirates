@@ -13,8 +13,9 @@ import "entities/UI/battle/winIndicator"
 import "entities/UI/battle/loseIndicator"
 
 local lifes = nil
+
 local screenCenterX = 200
-local barWidth = 20
+local barWidth = 8
 local barHeight = 10
 local barY = 56
 
@@ -62,8 +63,8 @@ function scene:enter()
     playerDance = PlayerDance(self.bpm)
     enemyDance = EnemyDance(self.bpm)
     buttonCover = ButtonCover()
-    winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset - 6, barY + barHeight / 2 - 6)
-    loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 6, barY + barHeight / 2 - 6)
+    winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
+    loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
     backgroundDance = BackgroundDance()
 end
 
@@ -142,7 +143,22 @@ function scene:update()
             y += 15
         end
     end
-    
+    -- Visualize win/lose threshold positions
+   if debug == true then
+       local loseX = screenCenterX - self.balanceMaxOffset - barWidth / 2
+       local winX = screenCenterX + self.balanceMaxOffset - barWidth / 2
+       local markerY = barY
+       local markerW = (self.balanceMaxOffset * 2) + barWidth
+       local markerH = barHeight
+   
+       -- Draw full range background (e.g., a faint filled rect behind the bar)
+       Graphics.setColor(Graphics.kColorBlack)
+       Graphics.drawRect(loseX, markerY, markerW, markerH)
+   
+       -- Optional: mark win and lose thresholds more visibly
+       Graphics.drawLine(winX + barWidth / 2, markerY, winX + barWidth / 2, markerY + markerH)
+       Graphics.drawLine(loseX + barWidth / 2, markerY, loseX + barWidth / 2, markerY + markerH)
+   end
     
     -- Mark: lose condition
     if lifes == 0 then
@@ -158,7 +174,7 @@ function scene:update()
    local playerFactor = (3 - lifes) / 3           -- closer to 1 as player weakens
    
    -- Calculate final X offset: enemyFactor pulls right, playerFactor pulls left
-   local balanceOffset = (enemyFactor - playerFactor) * 30 -- range -50 to +50
+   local balanceOffset = (enemyFactor - playerFactor) * self.balanceMaxOffset -- range -50 to +50
    
    
  
@@ -178,6 +194,7 @@ function scene:update()
    -- Check win or lose condition based on position
    if self.balancePosition >= self.balanceMaxOffset then
       print("win")
+      PlayerData.isDancing = false
        if self.totalAccuracy > 200 and debug == false then --maybe remove this
             self.totalAccuracy = 0
             
@@ -196,7 +213,8 @@ function scene:update()
    end
    
    if self.balancePosition <= -self.balanceMaxOffset then
-       print("lose")
+      PlayerData.isDancing = false
+      print("lose")
    end
     
 end
