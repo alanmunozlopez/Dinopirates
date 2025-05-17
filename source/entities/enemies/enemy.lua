@@ -47,7 +47,12 @@ function Enemy:moveCollision(movementX, movementY, player)
             if collideObject:isa(Player) then
                 if self.player.isAlive then
                     --self.animation:setState('empty')
-                   -- self.player:dead()
+                    print(self.id)
+                    PlayerData.lastEnemyTouched.type = "Brocorat"
+                    PlayerData.lastEnemyTouched.id = self.id
+                    PlayerData.lastEnemyTouched.x = self.x
+                    PlayerData.lastEnemyTouched.y = self.y
+                    self.player:fight()
                 end
             end
             if collideObject:isa(PropItem) then
