@@ -11,6 +11,7 @@ import "entities/UI/battle/enemyDance"
 import "entities/UI/battle/buttonCover"
 import "entities/UI/battle/winIndicator"
 import "entities/UI/battle/loseIndicator"
+import "entities/UI/battle/resultsScreen"
 
 local lifes = nil
 
@@ -18,7 +19,7 @@ local screenCenterX = 200
 local barWidth = 8
 local barHeight = 10
 local barY = 56
-
+local condition = nil
 function scene:init()
 	scene.super.init(self)
     
@@ -29,6 +30,7 @@ function scene:init()
     self.totalAccuracy = 0
     self.enemyHP = 50
     self.evadePower = 30
+    self.condition = nil
     
     lifes = 3
     
@@ -66,6 +68,7 @@ function scene:enter()
     winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
     backgroundDance = BackgroundDance()
+    resultsScreen = ResultsScreen()
 end
 
 function scene:start()
@@ -194,26 +197,16 @@ function scene:update()
    -- Check win or lose condition based on position
    if self.balancePosition >= self.balanceMaxOffset then
       print("win")
+      resultsScreen:win()
       PlayerData.isDancing = false
-       if self.totalAccuracy > 200 and debug == false then --maybe remove this
-            self.totalAccuracy = 0
-            
-            
-            -- Find an enemy and kill it
-            findAndKillEnemyById(PlayerData.lastEnemyTouched.id)
-            
-            -- captures player position and goes back to the original room
-            PlayerData.playerSpawn.x = PlayerData.playerExit.x
-            PlayerData.playerSpawn.y = PlayerData.playerExit.y
-            
-            -- transition to the original room
-            self.returnRoom = RoomTranslate(PlayerData.saveLevel)
-            Noble.transition(self.returnRoom, 0.5, Noble.Transition.Default)  
-        end
+      condition = "win"        --maybe remove this 
    end
    
    if self.balancePosition <= -self.balanceMaxOffset then
+      
+      resultsScreen:lose()
       PlayerData.isDancing = false
+      condition = "lose"
       print("lose")
    end
     
@@ -244,6 +237,27 @@ function scene:danceStep(inputStep)
     self.ButtonPressed = inputStep
 end
 
+function scene:checkDanceResults()
+   if condition == "win" then
+      self.totalAccuracy = 0
+            
+      -- Find an enemy and kill it
+      findAndKillEnemyById(PlayerData.lastEnemyTouched.id)
+      
+      -- captures player position and goes back to the original room
+      PlayerData.playerSpawn.x = PlayerData.playerExit.x
+      PlayerData.playerSpawn.y = PlayerData.playerExit.y
+      
+      -- transition to the original room
+      self.returnRoom = RoomTranslate(PlayerData.saveLevel)
+      Noble.transition(self.returnRoom, 0.5, Noble.Transition.Default)  
+      
+   elseif (condition == "lose") then
+      condition = nil
+      Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus) 
+   end   
+end
+
 scene.inputHandler = {
 
     -- A button
@@ -251,6 +265,7 @@ scene.inputHandler = {
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
         scene:danceStep("aButton")
+        scene:checkDanceResults()
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
