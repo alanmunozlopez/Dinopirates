@@ -101,11 +101,11 @@ function scene:update()
         elseif collisions[1].buttonKey == self.ButtonPressed then
             
             if self.ButtonPressed == "aButton" or self.ButtonPressed == "bButton" then
-                print(self.ButtonPressed .. " punch")
+                
                 self.enemyHP -= 10
                 self.balancePosition += 5 
             elseif self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
-                print("evade")
+                
                 self.balancePosition += 1 
                 self.totalAccuracy += self.accuracy
                 self.evadePower = self.totalAccuracy
@@ -196,7 +196,7 @@ function scene:update()
    
    -- Check win or lose condition based on position
    if self.balancePosition >= self.balanceMaxOffset then
-      print("win")
+      
       resultsScreen:win()
       PlayerData.isDancing = false
       condition = "win"        --maybe remove this 
@@ -207,7 +207,7 @@ function scene:update()
       resultsScreen:lose()
       PlayerData.isDancing = false
       condition = "lose"
-      print("lose")
+      
    end
     
 end
