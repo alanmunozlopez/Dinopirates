@@ -52,7 +52,7 @@ end
 function scene:enter()
 	scene.super.enter(self)
     local startPoint = 400
-
+    condition = nil
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
     --
@@ -96,7 +96,10 @@ function scene:update()
         if self.ButtonPressed == nil then
             
             self.accuracy += 1
-            self.balancePosition -= 1 
+            if self.accuracy > 5 then
+                self.balancePosition -= 0.3 
+            end
+            -- self.balancePosition -= 0.3 
             
         elseif collisions[1].buttonKey == self.ButtonPressed then
             
@@ -106,7 +109,7 @@ function scene:update()
                self.balancePosition += 5 
             elseif self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
                 
-               self.balancePosition += 1 
+               self.balancePosition += self.accuracy 
                self.totalAccuracy += self.accuracy
                self.evadePower = self.totalAccuracy
             end
@@ -234,6 +237,7 @@ end
 
 function scene:checkDanceResults()
    if condition == "win" then
+      condition = nil
       self.totalAccuracy = 0
             
       -- Find an enemy and kill it
@@ -245,7 +249,8 @@ function scene:checkDanceResults()
       
       -- transition to the original room
       self.returnRoom = RoomTranslate(PlayerData.saveLevel)
-      Noble.transition(self.returnRoom, 0.5, Noble.Transition.Default)  
+      
+      Noble.transition(self.returnRoom, 0.3, Noble.Transition.Default)  
       
    elseif (condition == "lose") then
       condition = nil
