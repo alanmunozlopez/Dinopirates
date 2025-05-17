@@ -23,6 +23,18 @@ local achievementData = {
 			description = "Achievement 1 Description",
 			isSecret = true,
 		},
+		{
+			id = "sanityloss1",
+			name = "afraid of the dark?",
+			description = "too much time alone and in the darkness can make you crazy",
+			isSecret = false,
+		},
+		{
+			id = "sanityloss2",
+			name = "cucu",
+			description = "too much time alone and in the darkness can make you crazy",
+			isSecret = false,
+		},
 		
 	}
 }

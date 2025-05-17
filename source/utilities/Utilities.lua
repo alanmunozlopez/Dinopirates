@@ -145,23 +145,48 @@ function findAndKillEnemyById(enemyId)
 	end
 end
 
-function checkAndGrantAchievement(name)
-	if achievements.isGranted(name) == false then
+-- Grants an achievement if it hasn't been granted yet
+function Utilities.grantAchievementIfNeeded(name)
+	if not achievements.isGranted(name) then
 		achievements.grant(name)
 	end
 end
-function checkStoryAchievement(comic)
-	if comic == "intro" then
-		checkAndGrantAchievement("wakeup")
-	end
-	if comic == "pick-the-device" then
-		checkAndGrantAchievement("comms")
+
+-- Maps comics to achievements
+local storyAchievements = {
+	intro = "wakeup",
+	["pick-the-device"] = "comms",
+}
+
+function Utilities.checkStoryAchievement(comic)
+	local achievement = storyAchievements[comic]
+	if achievement then
+		Utilities.grantAchievementIfNeeded(achievement)
 	end
 end
-function deleteAllAchievements()
-	achievements.revoke("wakeup")
-	achievements.revoke("comms")
-	achievements.revoke("notebook")
+
+-- Sanity-based achievements
+function Utilities.checkSanityAchievements()
+	print(PlayerData.sanityCounter)
+	local sanityAchievements = {
+		[2] = "sanityloss1",
+		-- Future: add [5] = "sanityloss2", etc.
+	}
+	
+	local achievement = sanityAchievements[PlayerData.sanityCounter]
+	if achievement then
+		Utilities.grantAchievementIfNeeded(achievement)
+	end
+end
+
+-- Bulk revoke (delete) achievements
+function Utilities.clearAllAchievements()
+	local allAchievements = {
+		"wakeup", "comms", "notebook", "sanityloss1"
+	}
+	for _, name in ipairs(allAchievements) do
+		achievements.revoke(name)
+	end
 end
 
 -- Dev Tools

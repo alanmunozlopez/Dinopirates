@@ -191,7 +191,7 @@ function scene:enter()
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
 				levels[room].floor.comic.wasPlayed = true
-				checkStoryAchievement(comicName)
+				Utilities.checkStoryAchievement(comicName)
 			end)
 		else
 			-- comic not found
