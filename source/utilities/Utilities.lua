@@ -175,8 +175,8 @@ end
 -- Sanity-based achievements
 function Utilities.checkSanityAchievements()
 	local sanityAchievements = {
-		[2] = "sanityloss1",
-		[6] = "sanityloss2",
+		[1] = "sanityloss1",
+		[3] = "sanityloss2",
 		-- Future: add [5] = "sanityloss2", etc.
 	}
 	

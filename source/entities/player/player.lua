@@ -287,9 +287,9 @@ function Player:drainBattery(amount)
 end
 
 function Player:chargeBattery(amount)
-  if PlayerData.battery < 100 then
+  if PlayerData.battery < 100 and PlayerData.hasLamp == true  then
     self.animation:setState('charge')
-  else
+  elseif (PlayerData.hasLamp == true) then
     self.animation:setState('lampIdle')
   end
   PlayerData.battery += amount

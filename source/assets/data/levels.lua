@@ -207,9 +207,6 @@ levels = {
 			}
 			},
 			comic = {
-					wasPlayed = false,
-					name = "intro-comic",
-					play = "enter"
 			},
 			items = {
 			{
@@ -817,11 +814,7 @@ levels = {
 				open = 'open',
 				leadsTo = 108
 			},
-			{
-				direction = 'left',
-				open = 'open',
-				leadsTo = 112
-			}
+			
 			},
 			comic = {
 			},

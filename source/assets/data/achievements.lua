@@ -37,8 +37,8 @@ local achievementData = {
 		},
 		{
 			id = "microwaveBurn",
-			name = "Hello darkness...",
-			description = "this is the first step into the abbyss",
+			name = "Was my mom's microwave",
+			description = "How are we gonna make tacos now?",
 			isSecret = true,
 		},
 		
