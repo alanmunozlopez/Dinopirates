@@ -806,7 +806,7 @@ levels = {
 			visited = false,
 			roomNumber = 13,
 			tile = 2,
-			light = 0.5,
+			light = 0.3,
 			shadow = true,
 			doors = {
 			{

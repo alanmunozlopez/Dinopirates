@@ -51,6 +51,7 @@ function FXshadow:refresh()
 	local maskSize = self.lightSize
 	local decreaseSize = maskSize / 10
 	local lightAmount = self.globalLightAmount
+	local globalDither = self.globalLightAmount
 	
 	-- Clear the shadow canvas before drawing
 	shadow:clear(Graphics.kColorClear)
@@ -109,31 +110,31 @@ function FXshadow:refresh()
 			lightAmount = 0.2
 			lightSourceSize = 35
 			lightSourceAmount = 0.1
-			self.globalLightAmount = 0.08
+			globalLightAmount = 0.08
 		elseif battery > 80 and battery <= 120 then
 			maskSize -= decreaseSize * 2
 			lightAmount = 0.5
 			lightSourceSize = 30
 			lightSourceAmount = 0.3
-			self.globalLightAmount = 0.06
+			globalLightAmount = 0.06
 		elseif battery > 40 and battery <= 80 then
 			maskSize -= decreaseSize * 3
 			lightAmount = 0.7
 			lightSourceSize = 25
 			lightSourceAmount = 0.0
-			self.globalLightAmount = 0.04
+			globalLightAmount = 0.04
 		elseif battery > 0 and battery <= 40 then
 			maskSize -= decreaseSize * 4
 			lightAmount = 0.9
 			lightSourceSize = 20
 			lightSourceAmount = 0.7
-			self.globalLightAmount = 0.02
+			globalLightAmount = 0.02
 		elseif battery <= 0 then
 			maskSize -= decreaseSize * 5
 			lightAmount = 1
 			lightSourceSize = 15
 			lightSourceAmount = 0.9
-			self.globalLightAmount = 0.01
+			globalLightAmount = 0.01
 		end
 	else
 		-- No lamp: minimal visibility
@@ -146,7 +147,7 @@ function FXshadow:refresh()
 	-- === Draw global shadow ===
 	Graphics.pushContext(shadow)
 		Graphics.setColor(Graphics.kColorBlack)
-		Graphics.setDitherPattern(self.globalLightAmount, Graphics.image.kDitherTypeBayer8x8)
+		Graphics.setDitherPattern(globalDither, Graphics.image.kDitherTypeBayer8x8)
 		Graphics.fillRect(0, 0, shadow:getSize()) -- Full screen darkness
 	Graphics.popContext()
 

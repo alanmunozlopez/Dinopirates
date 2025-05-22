@@ -170,7 +170,7 @@ function scene:enter()
 	PlayerData.direction = 'idle'
 	-- Mark: FX
 	if levels[room].floor.shadow == true then
-		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)
+				shadow = FXshadow(player, 70, levels[room].floor.light, ZIndex.fx)
 	else
 		--player:fillBattery() -- Mark: dunno why I was filling the battery instantly
 	end
