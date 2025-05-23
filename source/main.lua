@@ -34,19 +34,22 @@ achievements.toasts.initialize(configToast)
 
 Noble.Settings.setup({
 	Difficulty = "Medium",
+	playerSlot = 1
 })
 
 Noble.showFPS = false
 
 Noble.GameData.setup({
 	Score = 0,
-})
+	Lang = "eng",
+},1)
+
+Noble.GameData.set("Lang", "en", 1)
 
 debug = false
 diagonalMovement = true -- TODO: fix movement stuck after entering a new room
 
 Panels.Settings.path = ""
-
 ZIndex = {
 	player = 4,
 	enemy = 3,
