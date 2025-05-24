@@ -1,5 +1,8 @@
 local marginX = -8
 local marginY = -8
+
+
+
 pickDevice = {
     -- First sequence
     {
@@ -23,20 +26,29 @@ pickDevice = {
             },
             {
                 -- 2nd panel
+                renderFunction = Utilities.renderLangPanel,
                 layers = {
                     {
+                        name = "base",
                         image = "comics/pick-the-device/001",
                         x = marginX,
                         y = marginY
                     },
                     {
+                        name = "langTrue",
                         image = "comics/pick-the-device/002",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        name = "langFalse",
+                        image = "comics/pick-the-device/002jp",
                         x = marginX,
                         y = marginY
                     },
                 },
                 advanceControl = Panels.Input.A,
-                showControl = true
+                showAdvanceControl = true
             },
             {
                 -- 3rd panel

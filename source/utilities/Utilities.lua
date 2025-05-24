@@ -212,7 +212,21 @@ end
 function Utilities.switchLang()
 	if Noble.GameData.get("Lang") == "en" then
 		Noble.GameData.set("Lang","jp")
+		Panels.vars.lang = "jp"
 	else
 		Noble.GameData.set("Lang","en")
+		Panels.vars.lang = "en"
+	end
+end
+
+function Utilities.renderLangPanel(panel, offset)
+	for i, layer in ipairs(panel.layers) do
+		if layer.name == "base" then
+			Panels.renderLayerInPanel(layer, panel, offset)
+		elseif layer.name == "langTrue" and Panels.vars.lang == "en" then
+			Panels.renderLayerInPanel(layer, panel, offset)
+		elseif layer.name == "langFalse" and Panels.vars.lang == "jp" then
+			Panels.renderLayerInPanel(layer, panel, offset)
+		end
 	end
 end
