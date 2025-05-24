@@ -44,7 +44,7 @@ Noble.GameData.setup({
 	Lang = "en",
 },1)
 
-Noble.GameData.set("Lang", "jp", 1)
+Noble.GameData.set("Lang", "en", 1)
 
 debug = false
 diagonalMovement = true -- TODO: fix movement stuck after entering a new room

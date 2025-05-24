@@ -1,3 +1,5 @@
+-- crear una funcion que busque los dialogos por nombre
+
 script = {
     {
         name = "wakeup",
@@ -278,6 +280,15 @@ script = {
             {
                 video = 'radioPocket',
                 text = "boo-01",
+            }
+        }
+    },
+    {
+        name = "nokeys",
+        dialog = {
+            {
+                video = 'player',
+                text = "nokeys",
             }
         }
     },
