@@ -136,15 +136,10 @@ function Player:collisionResponse(other)
     return 'overlap'
   elseif other:isa(Door) then
     
-    -- other:prevRoom(other.direction)
-    -- other:goTo()
-    
     if (PlayerData.hasKey == true and other.status == 'closed') or other.status =='open' then
-      -- if PlayerData.hasKey == true then
-        other:prevRoom(other.direction)
-        other:goTo()
+      other:prevRoom(other.direction)
+      other:goTo()
       return 'overlap'
-      -- end
     else
       PlayerData.isTalking = true
       dialogUI:addScreen("nokeys")
