@@ -114,7 +114,7 @@ end
 
 function drawVersionNumber(x, y, alignment)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	local version = "*" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
+	local version = "*"..Noble.GameData.get("Lang").."* *" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
 	local versionWidth = Graphics.getTextSize(version)
 	
 	-- If no x position provided, default to right-aligned at 400 (screen width)

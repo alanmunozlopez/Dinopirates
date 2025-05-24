@@ -41,13 +41,15 @@ Noble.showFPS = false
 
 Noble.GameData.setup({
 	Score = 0,
-	Lang = "eng",
+	Lang = "en",
 },1)
 
-Noble.GameData.set("Lang", "en", 1)
+Noble.GameData.set("Lang", "jp", 1)
 
 debug = false
 diagonalMovement = true -- TODO: fix movement stuck after entering a new room
+shinonome = Graphics.font.new('assets/fonts/shinonome/JF-Dot-Shinonome16')
+Graphics.setFont(shinonome, 'normal')
 
 Panels.Settings.path = ""
 ZIndex = {

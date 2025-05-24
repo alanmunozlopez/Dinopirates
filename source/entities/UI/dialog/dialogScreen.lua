@@ -81,7 +81,8 @@ function dialogScreen:nextDialog()
 			end
 			
 			local lang = Noble.GameData.get("Lang")
-			
+			local shinonome = Graphics.font.new('assets/fonts/KH-Dot-Akihabara-16')
+			Graphics.setFont(shinonome, 'normal')
 			dialogtext:clear(Graphics.kColorClear)
 			Graphics.pushContext(dialogtext)
 				local textString = Graphics.getLocalizedText(script[dialogPosition].dialog[dialogcounter].text, lang)
