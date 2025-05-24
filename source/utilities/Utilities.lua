@@ -209,3 +209,10 @@ function printEnemies()
 	end
 end
 
+function Utilities.switchLang()
+	if Noble.GameData.get("Lang") == "en" then
+		Noble.GameData.set("Lang","jp")
+	else
+		Noble.GameData.set("Lang","en")
+	end
+end

@@ -60,8 +60,7 @@ scene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitioning away from another scene.
 function scene:init()
 	scene.super.init(self)
-	print(Noble.GameData.get("Lang"
-))
+	print(Noble.GameData.get("Lang"))
 	cheat.onComplete = function()
 	end
 	

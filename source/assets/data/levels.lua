@@ -584,13 +584,14 @@ levels = {
 			comic = {
 					wasPlayed = false,
 					name = "pick-the-device",
+					
 			},
 			items = {
-				{
-					type = 'radio',
-					x = 200,
-					y = 120
-				},
+			{
+				type = 'radio',
+				x = 200,
+				y = 120
+			}
 			},
 			triggers = {
 			{
@@ -604,6 +605,7 @@ levels = {
 			}
 			},
 			enemies = {
+	
 			},
 			props = {
 			{
@@ -749,6 +751,21 @@ levels = {
 				x = 28,
 				y = 79,
 						nocollide = true
+			},
+			{
+				type = "fellchair",
+				x = 69,
+				y = 153
+			},
+			{
+				type = "fellchair",
+				x = 144,
+				y = 158
+			},
+			{
+				type = "chair",
+				x = 105,
+				y = 166
 			}
 			}
 		}
@@ -806,7 +823,7 @@ levels = {
 			visited = false,
 			roomNumber = 13,
 			tile = 2,
-			light = 0.3,
+			light = 0.5,
 			shadow = true,
 			doors = {
 			{
@@ -814,52 +831,55 @@ levels = {
 				open = 'open',
 				leadsTo = 108
 			},
-			
+			{
+				direction = 'right',
+				open = 'closed',
+				leadsTo = 114
+			},
+			{
+				direction = 'left',
+				open = 'open',
+				leadsTo = 112
+			}
 			},
 			comic = {
+				
 			},
 			items = {
 			{
 				type = 'lamp',
-				x = 131,
-				y = 115
+				x = 339,
+				y = 41
 			}
 			},
 			triggers = {
 			{
 				usedTrigger = false,
-				x = 136,
-				y = 37,
+				x = 123,
+				y = 39,
 				width = 60,
 				height = 30,
-				script = "thisDemo"
+				script = "noLights"
+			},
+			{
+				usedTrigger = false,
+				x = 266,
+				y = 84,
+				width = 60,
+				height = 39,
+				script = "boo"
+			},
+			{
+				usedTrigger = false,
+				x = 198,
+				y = 200,
+				width = 60,
+				height = 39,
+				script = "chargeLamp"
 			}
 			},
 			enemies = {
-			{
-				name = "brocorat",
-				x = 314,
-				y = 48,
-				speed = 1.0,
-				id = "0003",
-				
-			},
-			{
-				name = "brocorat",
-				x = 183,
-				y = 194,
-				speed = 1.0,
-				id = "0004",
-				
-			},
-			{
-				name = "brocorat",
-				x = 70,
-				y = 163,
-				speed = 1.0,
-				id = "0005",
-				
-			}
+	
 			},
 			props = {
 			{
@@ -893,24 +913,69 @@ levels = {
 				y = 84
 			},
 			{
-				type = "table",
-				x = 125,
-				y = 157
-			},
-			{
-				type = "table",
-				x = 177,
-				y = 151
+				type = "fellTable",
+				x = 129,
+				y = 139
 			},
 			{
 				type = "box",
-				x = 225,
-				y = 151
+				x = 243,
+				y = 153
 			},
 			{
 				type = "box",
-				x = 265,
-				y = 81
+				x = 157,
+				y = 164
+			},
+			{
+				type = "fellchair",
+				x = 368,
+				y = 97
+			},
+			{
+				type = "fellchair",
+				x = 298,
+				y = 138
+			},
+			{
+				type = "table",
+				x = 371,
+				y = 176
+			},
+			{
+				type = "table",
+				x = 354,
+				y = 188
+			},
+			{
+				type = "table",
+				x = 341,
+				y = 208
+			},
+			{
+				type = "fellTable",
+				x = 366,
+				y = 200
+			},
+			{
+				type = "fellTable",
+				x = 371,
+				y = 207
+			},
+			{
+				type = "chair",
+				x = 203,
+				y = 161
+			},
+			{
+				type = "fellchair",
+				x = 298,
+				y = 106
+			},
+			{
+				type = "table",
+				x = 242,
+				y = 57
 			}
 			}
 		}

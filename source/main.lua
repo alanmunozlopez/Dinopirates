@@ -74,6 +74,9 @@ local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus)
 end)
+local menuItem, error = menu:addMenuItem("Lang", function()
+	Utilities.switchLang()
+end)
 local menuItem, error = menu:addMenuItem("debug", function()
 	if debug == false then
 		debug = true
