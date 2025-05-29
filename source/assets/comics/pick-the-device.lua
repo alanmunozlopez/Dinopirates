@@ -35,13 +35,13 @@ pickDevice = {
                         y = marginY
                     },
                     {
-                        name = "langTrue",
+                        name = "en",
                         image = "comics/pick-the-device/002",
                         x = marginX,
                         y = marginY
                     },
                     {
-                        name = "langFalse",
+                        name = "jp",
                         image = "comics/pick-the-device/002jp",
                         x = marginX,
                         y = marginY

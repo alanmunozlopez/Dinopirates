@@ -41,10 +41,8 @@ Noble.showFPS = false
 
 Noble.GameData.setup({
 	Score = 0,
-	Lang = "en",
 },1)
 
-Noble.GameData.set("Lang", "en", 1)
 Panels.vars.lang = "en"
 
 debug = false

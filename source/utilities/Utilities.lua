@@ -114,7 +114,7 @@ end
 
 function drawVersionNumber(x, y, alignment)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	local version = "*"..Noble.GameData.get("Lang").."* *" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
+	local version = "*"..Panels.vars.lang.."* *" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
 	local versionWidth = Graphics.getTextSize(version)
 	
 	-- If no x position provided, default to right-aligned at 400 (screen width)
@@ -210,11 +210,9 @@ function printEnemies()
 end
 
 function Utilities.switchLang()
-	if Noble.GameData.get("Lang") == "en" then
-		Noble.GameData.set("Lang","jp")
+	if Panels.vars.lang == "en" then
 		Panels.vars.lang = "jp"
 	else
-		Noble.GameData.set("Lang","en")
 		Panels.vars.lang = "en"
 	end
 end
@@ -223,9 +221,9 @@ function Utilities.renderLangPanel(panel, offset)
 	for i, layer in ipairs(panel.layers) do
 		if layer.name == "base" then
 			Panels.renderLayerInPanel(layer, panel, offset)
-		elseif layer.name == "langTrue" and Panels.vars.lang == "en" then
+		elseif layer.name == "en" and Panels.vars.lang == "en" then
 			Panels.renderLayerInPanel(layer, panel, offset)
-		elseif layer.name == "langFalse" and Panels.vars.lang == "jp" then
+		elseif layer.name == "jp" and Panels.vars.lang == "jp" then
 			Panels.renderLayerInPanel(layer, panel, offset)
 		end
 	end
