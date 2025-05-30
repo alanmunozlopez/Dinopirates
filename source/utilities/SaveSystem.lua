@@ -13,7 +13,9 @@ function SaveSystem.getLevelState()
             -- Save state of triggers (used/not used)
             triggers = {},
             -- Save state of enemies (defeated/position/etc)
-            enemies = {}
+            enemies = {},
+            -- Save state of comics
+            comicWasPlayed = level.floor.comic and level.floor.comic.wasPlayed or false,
         }
 
         -- Save items state
@@ -69,6 +71,11 @@ function SaveSystem.restoreLevelState(levelState)
                         levels[i].floor.items[j].collected = itemState.collected
                     end
                 end
+            end
+
+            -- Restore comics state
+            if levels[i].floor.comic then
+                levels[i].floor.comic.wasPlayed = state.comicWasPlayed or false
             end
 
             -- Restore triggers state
