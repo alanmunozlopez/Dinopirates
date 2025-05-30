@@ -280,6 +280,7 @@ script = {
             {
                 video = 'radioPocket',
                 text = "boo-01",
+                screen = Graphics.image.new('assets/images/ui/dialog/img/boo.png')
             }
         }
     },
@@ -289,6 +290,7 @@ script = {
             {
                 video = 'player',
                 text = "nokeys",
+                
             }
         }
     },
