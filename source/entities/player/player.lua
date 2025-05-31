@@ -99,6 +99,7 @@ function Player:collisionResponse(other)
       PlayerData.lastEnemyTouched.y = other.y
       self:fight()
       return 'overlap'
+      
     end
     
   elseif other:isa(CrewMember) then
@@ -107,16 +108,20 @@ function Player:collisionResponse(other)
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Trigger) then
+    
     if other.type == nil and other.type ~= "cutscene" then
       PlayerData.isTalking = true
       dialogUI:addScreen(other:returnScript(),other.sourceFeed)
     end
+    
     if other.type == "cutscene" then
       PlayerData.isCutscene = true
       other:returnScript()
       other:remove()
     end
+    
     Utilities.grantAchievementIfNeeded(other.script)
+    
     return 'freeze'
   elseif other:isa(Items) and other.type == 'keycard' then
     other:removeAll()
@@ -133,6 +138,9 @@ function Player:collisionResponse(other)
   elseif other:isa(Items) and other.type == 'notes' then
     other:removeAll()
     self:grabNotes()
+    return 'overlap'
+  elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
+    print('watch ouuuut')
     return 'overlap'
   elseif other:isa(Door) then
     
