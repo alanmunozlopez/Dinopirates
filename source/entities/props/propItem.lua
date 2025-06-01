@@ -31,17 +31,22 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   self.animation:addState('knifeKettle', 23, 23)
   self.animation:addState('holeLeft', 24, 24)
   self.animation:addState('holeRight', 25, 25)
+  self.animation:addState('holeTop', 26, 26)
+  self.animation:addState('holeDown', 27, 27)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(32, 32)
   if nocollide == nil then
     self:setCollideRect(0, 8, 32, 24)
   end
+  if type == 'holeDown' or type == 'holeTop' then
+    self:clearCollideRect()
+  end
   if type == 'holeLeft' then
-    self:setCollideRect(16, 0, 16, 16)
+    self:setCollideRect(10, 8, 22, 24)
   end
   if  type == 'holeRight' then
-    self:setCollideRect(0, 0, 16, 16)
+    self:setCollideRect(0, 8, 22, 24)
   end
   self:setZIndex(zIndex)
   self:setGroups(3)
