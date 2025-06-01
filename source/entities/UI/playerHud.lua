@@ -34,7 +34,7 @@ function playerHud:init()
 end
 
 function playerHud:update()
-	if PlayerData.hasLamp == true then
+	if PlayerData.hasLamp == true or PlayerData.hasBoots == true then
 		self.animation:setState('2item')
 	elseif (PlayerData.hasKey == true) then
 		self.animation:setState('3item')
