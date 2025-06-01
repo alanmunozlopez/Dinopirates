@@ -89,7 +89,7 @@ end
 function Player:collisionResponse(other)
   
   if other:isa(Enemy) then
-    if other:isa(Brocorat) then
+    if other:isa(Brocorat) then -- validate candance also
       -- other:empty()
       --other.animation:setState('empty')  -- Set enemy animation to empty state
       --self.animation:setState('deadBrocolli')
@@ -141,7 +141,14 @@ function Player:collisionResponse(other)
     return 'overlap'
   elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
     print('watch ouuuut')
+    if PlayerData.hasBoots == true then
+      self:drainBattery(1)
+      return 'overlap'
+    else
+      print('falling')
     return 'overlap'
+    end
+
   elseif other:isa(Door) then
     
     if (PlayerData.hasKey == true and other.status == 'closed') or other.status =='open' then
@@ -231,8 +238,9 @@ function Player:move(direction)
     self.direction = direction
     local movementX = 0
     local movementY = 0
-    
-    self:drainBattery(0.5)
+    if PlayerData.isInDarkness == true then
+      self:drainBattery(0.5)
+    end
     if (direction == "left") then
       if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
         self.animation:setState('lampLeft')
@@ -286,13 +294,11 @@ function Player:deFocus()
 end
 
 function Player:drainBattery(amount)
-  if levels[PlayerData.floor].floor.shadow == true then
-    PlayerData.battery -= amount
-  end
+  PlayerData.battery -= amount
 end
 
 function Player:chargeBattery(amount)
-  if PlayerData.battery < 100 and PlayerData.hasLamp == true  then
+  if PlayerData.battery < 100 and PlayerData.hasLamp == true then
     self.animation:setState('charge')
   elseif (PlayerData.hasLamp == true) then
     self.animation:setState('lampIdle')
@@ -305,6 +311,9 @@ function Player:fillBattery()
     PlayerData.battery = 100
 end
 
+function Player:grabBoots()
+  PlayerData.hasBoots = true
+end
 
 function Player:grabKey()
   PlayerData.hasKey = true
