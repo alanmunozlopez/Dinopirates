@@ -1,6 +1,6 @@
 local floorRanges = {
 	{ start = 101, stop = 120 },
-	{ start = 201, stop = 216 }
+	{ start = 201, stop = 220 }
 }
 
 for _, range in ipairs(floorRanges) do
@@ -10,7 +10,9 @@ for _, range in ipairs(floorRanges) do
 		class(className).extends(MazeScene)
 
 		_G[className].init = function(self)
-			self:setFloor((i % 100)) -- Gives 1–16
+			local level = math.floor(i / 100) -- 101 → 1, 220 → 2
+			local room = i % 100              -- 101 → 1, 220 → 20
+			self:setFloor(level, room)
 			_G[className].super.init(self)
 			PlayerData.saveLevel = i
 		end
