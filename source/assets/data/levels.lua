@@ -996,10 +996,16 @@ levels = {
 			}
 			},
 			comic = {
-
+				
 			},
 			items = {
-	
+			{
+				type = 'crewmember',
+				x = 87,
+				y = 68,
+	  taken = false,
+	  crewId = "100"
+			}
 			},
 			triggers = {
 	
@@ -1047,6 +1053,86 @@ levels = {
 				type = "table",
 				x = 242,
 				y = 176
+			},
+			{
+				type = "holeLeft",
+				x = 133,
+				y = 28
+			},
+			{
+				type = "holeLeft",
+				x = 133,
+				y = 56
+			},
+			{
+				type = "holeLeft",
+				x = 132,
+				y = 85
+			},
+			{
+				type = "holeLeft",
+				x = 131,
+				y = 114
+			},
+			{
+				type = "holeLeft",
+				x = 130,
+				y = 143
+			},
+			{
+				type = "holeLeft",
+				x = 131,
+				y = 171
+			},
+			{
+				type = "holeLeft",
+				x = 129,
+				y = 200
+			},
+			{
+				type = "holeLeft",
+				x = 130,
+				y = 210
+			},
+			{
+				type = "holeRight",
+				x = 162,
+				y = 27
+			},
+			{
+				type = "holeRight",
+				x = 162,
+				y = 57
+			},
+			{
+				type = "holeRight",
+				x = 162,
+				y = 85
+			},
+			{
+				type = "holeRight",
+				x = 163,
+				y = 115
+			},
+			{
+				type = "holeRight",
+				x = 162,
+				y = 141
+			},
+			{
+				type = "holeRight",
+				x = 161,
+				y = 171
+			},
+			{
+				type = "holeRight",
+				x = 161,
+				y = 199
+			},
+			{
+				type = "holeRight",
+				x = 161,
+				y = 210
 			}
 			}
 		}
