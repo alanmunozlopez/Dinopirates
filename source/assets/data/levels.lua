@@ -996,7 +996,7 @@ levels = {
 			}
 			},
 			comic = {
-				
+					
 			},
 			items = {
 			{
@@ -1055,84 +1055,88 @@ levels = {
 				y = 176
 			},
 			{
-				type = "holeLeft",
-				x = 133,
-				y = 28
-			},
-			{
-				type = "holeLeft",
-				x = 133,
-				y = 56
+				type = "holeTop",
+				x = 150,
+				y = 63
 			},
 			{
 				type = "holeLeft",
 				x = 132,
-				y = 85
+				y = 76
+			},
+			{
+				type = "holeRight",
+				x = 164,
+				y = 79
 			},
 			{
 				type = "holeLeft",
 				x = 131,
-				y = 114
-			},
-			{
-				type = "holeLeft",
-				x = 130,
-				y = 143
-			},
-			{
-				type = "holeLeft",
-				x = 131,
-				y = 171
-			},
-			{
-				type = "holeLeft",
-				x = 129,
-				y = 200
-			},
-			{
-				type = "holeLeft",
-				x = 130,
-				y = 210
-			},
-			{
-				type = "holeRight",
-				x = 162,
-				y = 27
-			},
-			{
-				type = "holeRight",
-				x = 162,
-				y = 57
-			},
-			{
-				type = "holeRight",
-				x = 162,
-				y = 85
+				y = 108
 			},
 			{
 				type = "holeRight",
 				x = 163,
-				y = 115
+				y = 108
 			},
 			{
-				type = "holeRight",
-				x = 162,
-				y = 141
+				type = "holeDown",
+				x = 143,
+				y = 122
 			},
 			{
-				type = "holeRight",
-				x = 161,
-				y = 171
+				type = "holeDown",
+				x = 150,
+				y = 123
+			}
+			}
+		}
+	},
+	{
+		floor = {
+			level = 2,
+			visited = false,
+			roomNumber = 20,
+			tile = 3,
+			light = 0.5,
+			shadow = false,
+			doors = {
+	
+			},
+			comic = {
+					wasPlayed = false,
+					name = "intro-comic",
+					play = "enter"
+			},
+			items = {
+	
+			},
+			triggers = {
+	
+			},
+			enemies = {
+	
+			},
+			props = {
+			{
+				type = "table",
+				x = 200,
+				y = 78
 			},
 			{
-				type = "holeRight",
-				x = 161,
-				y = 199
+				type = "table",
+				x = 140,
+				y = 120
 			},
 			{
-				type = "holeRight",
-				x = 161,
-				y = 210
+				type = "table",
+				x = 255,
+				y = 125
+			},
+			{
+				type = "table",
+				x = 201,
+				y = 159
 			}
 			}
 		}
