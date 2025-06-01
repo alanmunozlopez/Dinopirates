@@ -37,9 +37,11 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   if nocollide == nil then
     self:setCollideRect(0, 8, 32, 24)
   end
-  if type == 'holeLeft' or type == 'holeRight' then
-    print('hole')
-    self:setCollideRect(0, 0, 32, 32)
+  if type == 'holeLeft' then
+    self:setCollideRect(16, 0, 16, 16)
+  end
+  if  type == 'holeRight' then
+    self:setCollideRect(0, 0, 16, 16)
   end
   self:setZIndex(zIndex)
   self:setGroups(3)
@@ -47,4 +49,7 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   -- check type and add a flag to identify during collisions
 end
 
-
+function PropItem:destroyProp() 
+  self:clearCollideRect()
+  self.animation:setState('trash')
+end
