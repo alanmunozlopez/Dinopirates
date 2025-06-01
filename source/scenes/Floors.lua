@@ -1,5 +1,5 @@
 local floorRanges = {
-	{ start = 101, stop = 116 },
+	{ start = 101, stop = 120 },
 	{ start = 201, stop = 216 }
 }
 
