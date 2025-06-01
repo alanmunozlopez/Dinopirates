@@ -4,7 +4,7 @@
 "menuOptions" =			"Options"
 "menuCredits" =			"Credits"
 
-"nokeys" = "you dont have the key error"
+
 
 "wakeup-01" = "wow that was a good *dino nap*, better than those beauty naps.."
 
@@ -106,3 +106,14 @@
 "nolights-15" = "...."
 
 "boo-01" = "BOO!!! hahaha just joking, the lamp its ahead hahaha"
+-- non translated
+"nokeys" = "What? I need a keycard?"
+"chargelamp-01" = "Uh? it runs out of battery?"
+
+"chargelamp-02" = "I never said was a *brand new lamp*, you have to crank it to charge it.."
+
+"chargelamp-03" = "the bright side is that since is an old model we can customize it."
+
+"chargelamp-04" = "you mean stickers??"
+
+"chargelamp-05" = "better than that, gotta go byeeee"

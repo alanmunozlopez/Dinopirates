@@ -979,6 +979,77 @@ levels = {
 			}
 			}
 		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			roomNumber = 20,
+			tile = 1,
+			light = 0.5,
+			shadow = false,
+			doors = {
+			{
+				direction = 'left',
+				open = 'open',
+				leadsTo = 108
+			}
+			},
+			comic = {
+
+			},
+			items = {
+	
+			},
+			triggers = {
+	
+			},
+			enemies = {
+			{
+				name = "brocorat",
+				x = 301,
+				y = 71,
+				speed = 1.0,
+				id = "2FE144E4-0CF0-4658-9E72-84B68864D8CD"
+			},
+			{
+				name = "brocorat",
+				x = 301,
+				y = 121,
+				speed = 1.0,
+				id = "567584D3-46EE-4619-A156-EECE842132F6"
+			},
+			{
+				name = "brocorat",
+				x = 304,
+				y = 175,
+				speed = 1.0,
+				id = "1501CD68-22CF-4020-91AF-FBB5BE1BE0AF"
+			}
+			},
+			props = {
+			{
+				type = "table",
+				x = 242,
+				y = 31
+			},
+			{
+				type = "table",
+				x = 241,
+				y = 75
+			},
+			{
+				type = "table",
+				x = 243,
+				y = 124
+			},
+			{
+				type = "table",
+				x = 242,
+				y = 176
+			}
+			}
+		}
 	}
 
 }

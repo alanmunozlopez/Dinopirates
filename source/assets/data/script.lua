@@ -285,12 +285,37 @@ script = {
         }
     },
     {
+        name = "chargeLamp",
+        dialog = {
+            {
+        video = 'playerCry',
+        text = "chargelamp-01",
+    },
+                    {
+        video = 'radioPocket',
+        text = "chargelamp-02",
+    },
+                    {
+        video = 'radioHand',
+        text = "chargelamp-03",
+    },
+                    {
+        video = 'playerSurprise',
+        text = "chargelamp-04",
+    },
+                    {
+        video = 'radioHand',
+        text = "chargelamp-05",
+    }
+            
+        }
+    },
+    {
         name = "nokeys",
         dialog = {
             {
                 video = 'player',
                 text = "nokeys",
-                
             }
         }
     },
