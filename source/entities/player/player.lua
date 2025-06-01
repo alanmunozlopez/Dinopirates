@@ -140,12 +140,15 @@ function Player:collisionResponse(other)
     self:grabNotes()
     return 'overlap'
   elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
-    print('watch ouuuut')
-    if PlayerData.hasBoots == true then
-      self:drainBattery(1)
-      return 'overlap'
-    else
+    
+    if (PlayerData.hasBoots == true and PlayerData.battery == 0) or PlayerData.hasBoots == false  then
       print('falling')
+      self:fallBelow()
+      return 'overlap'
+    elseif PlayerData.hasBoots == true then
+      
+      self:drainBattery(1)
+      print('fly')
     return 'overlap'
     end
 
@@ -163,7 +166,19 @@ function Player:collisionResponse(other)
   
   end
   
-  
+end
+
+function Player:fallBelow()
+  local level = PlayerData.actualLevel + 1
+  local room = PlayerData.actualRoom
+  local sceneName = "Floor" .. tostring(level) .. tostring(room)
+  local nextScene = _G[sceneName]
+
+  if nextScene then
+    Noble.transition(nextScene, 1.5, Noble.Transition.Default)
+  else
+    print("Scene " .. sceneName .. " not found.")
+  end
 end
 
 function Player:displayDialog(script)
@@ -182,9 +197,6 @@ function Player:idle()
 end
 
 function Player:sanityCheck()
-  -- Initialize the counter if it doesn't exist
-
-  -- Keep track of previous sanity to detect drop to zero
 
   local function checkSanity()
     local lastSanity = PlayerData.sanity 
@@ -280,14 +292,14 @@ function Player:move(direction)
 end
 
 
-function Player:focus()
+function Player:focus() -- unused
   if PlayerData.sanity > 20 then
     PlayerData.sanity -= 20 
     PlayerData.isFocused = true
   end
 end
 
-function Player:deFocus()
+function Player:deFocus() -- unused
   if PlayerData.isFocused == true then
     PlayerData.isFocused = false
   end
