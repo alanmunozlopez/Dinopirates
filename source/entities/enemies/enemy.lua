@@ -60,8 +60,8 @@ function Enemy:moveCollision(movementX, movementY, player)
                 if collideObject:isa(Enemy) then
                     self.hitCounter += 1
                 end
-                if collideObject:isa(PropItem) and  self.hitCounter > 10 then
-                    collideObject:remove()
+                if collideObject:isa(PropItem) and self.hitCounter > 10 then
+                    collideObject:destroyProp() 
                 end
                 local normal = collision['normal']
                 if normal then
