@@ -14,7 +14,11 @@ function Items:init(x, y, type)
   self.animation:addState('radio', 26, 29)
   self.animation.radio.frameDuration = 8 
   self.animation:addState('notes', 30, 33)
-  self.animation.notes.frameDuration = 8 
+  self.animation.notes.frameDuration = 8
+  self.animation:addState('tools', 34, 37)
+  self.animation.tools.frameDuration = 8
+  self.animation:addState('bag', 38, 41)
+  self.animation.bag.frameDuration = 8    
   self:setSize(48, 48)
   self:setCollideRect(8,8, 32,24)
   self:setZIndex(ZIndex.items)

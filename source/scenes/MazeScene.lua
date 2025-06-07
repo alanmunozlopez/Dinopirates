@@ -153,7 +153,7 @@ function scene:enter()
 			local type = itemData.type
 			local x = itemData.x
 			local y = itemData.y
-			if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) or (type == 'notes' and PlayerData.hasNotes == false) then
+			if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) or (type == 'notes' and PlayerData.hasNotes == false) or type == 'bag' or type == 'tools' then
 				Items(x, y, type)
 			end		
 		end

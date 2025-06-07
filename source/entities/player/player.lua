@@ -139,6 +139,14 @@ function Player:collisionResponse(other)
     other:removeAll()
     self:grabNotes()
     return 'overlap'
+  elseif other:isa(Items) and other.type == 'bag' then
+    other:removeAll()
+    self:grabBag()
+    return 'overlap'
+  elseif other:isa(Items) and other.type == 'tools' then
+    other:removeAll()
+    self:grabTools()
+    return 'overlap'
   elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
     
     if (PlayerData.hasBoots == true and PlayerData.battery == 0) or PlayerData.hasBoots == false  then
@@ -325,6 +333,14 @@ end
 
 function Player:grabBoots()
   PlayerData.hasBoots = true
+end
+
+function Player:grabBag()
+  PlayerData.hasBag = true
+end
+
+function Player:grabTools()
+  PlayerData.hasTools = true
 end
 
 function Player:grabKey()
