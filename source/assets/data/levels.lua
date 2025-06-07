@@ -1005,6 +1005,21 @@ levels = {
 				y = 68,
 	  taken = false,
 	  crewId = "100"
+			},
+			{
+				type = 'keycard',
+				x = 70,
+				y = 154
+			},
+			{
+				type = 'bag',
+				x = 197,
+				y = 34
+			},
+			{
+				type = 'tools',
+				x = 51,
+				y = 100
 			}
 			},
 			triggers = {
@@ -1104,9 +1119,7 @@ levels = {
 	
 			},
 			comic = {
-					wasPlayed = false,
-					name = "intro-comic",
-					play = "enter"
+					
 			},
 			items = {
 	
