@@ -33,7 +33,7 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   self.animation:addState('holeRight', 25, 25)
   self.animation:addState('holeTop', 26, 26)
   self.animation:addState('holeDown', 27, 27)
-  self.animation:addState('debris', 27, 27)
+  self.animation:addState('debris', 28, 28)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(32, 32)
