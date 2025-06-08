@@ -79,9 +79,8 @@ local menuItem, error = menu:addMenuItem("Lang", function()
 	Utilities.switchLang()
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
-	if debug == false then
-		debug = true
-	end
+	debug = Utilities.toggle(debug)
+	checkBool(debug)
 	if Noble.showFPS == false then
 		Noble.showFPS = true
 	else 

@@ -228,3 +228,6 @@ function Utilities.renderLangPanel(panel, offset)
 		end
 	end
 end
+function Utilities.toggle(value)
+  return not value
+end
