@@ -20,6 +20,11 @@ import 'assets/data/script'
 achievementData = import 'assets/data/achievements'
 local configToast = import 'assets/data/toastConfig'
 
+-- TODO
+-- [] add id to every prop to manage "destruction"
+-- [] add boot item
+-- [] fix battery UI
+
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
 local config = {
