@@ -183,7 +183,12 @@ function Player:fallBelow()
   local nextScene = _G[sceneName]
 
   if nextScene then
-    Noble.transition(nextScene, 1.5, Noble.Transition.Default)
+    Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable,
+      {
+        imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
+        imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
+    })
+    -- Noble.transition(nextScene, 1.5, Noble.Transition.Default)
   else
     print("Scene " .. sceneName .. " not found.")
   end
