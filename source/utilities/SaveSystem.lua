@@ -134,7 +134,11 @@ end
 
 -- Delete save
 function SaveSystem.delete()
+    
     playdate.file.delete('gameState.json')
+
+    PlayerData = table.deepcopy(PlayerDataOriginal)
+    levels = playdate.datastore.read('levelOriginal')
 end
 
 return SaveSystem

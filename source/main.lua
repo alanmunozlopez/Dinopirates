@@ -24,6 +24,7 @@ local configToast = import 'assets/data/toastConfig'
 -- [] add id to every prop to manage "destruction"
 -- [] add boot item
 -- [] fix battery UI
+-- [] fix delete save func
 
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
