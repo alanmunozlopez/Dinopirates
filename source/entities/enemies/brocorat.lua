@@ -18,18 +18,20 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	
 	self.type = "Enemy"
 	self.id = ID
-	self:setSize(32, 32)
-	self:moveTo(x, y)
-	self:setCollideRect(0, 0, 32, 32)
 	
+	self.hitCounter = 0
+	self.stepCount = moveSpeed * 20
+	self.player = player
+	self.Zindex = Zindex
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
 	if moveSpeed == nil then
 		self.moveSpeed = 1
 	end
-	self.stepCount = moveSpeed * 20
-	self.player = player
-	self.Zindex = Zindex
+	
+	self:setSize(32, 32)
+	self:moveTo(x, y)
+	self:setCollideRect(0, 0, 32, 32)
 	self:setGroups(CollideGroups.enemy)
 	self:setCollidesWithGroups({
 		CollideGroups.player,
@@ -55,5 +57,5 @@ function Brocorat:update()
 	if PlayerData.isActive == true then
 		self:search(self.player)
 	end
-	self:sonar()
+	-- self:sonar()
 end

@@ -4,6 +4,7 @@ class('PropItem').extends(NobleSprite)
 
 function PropItem:init(x, y, type, zIndex, nocollide)
   PropItem.super.init(self,'assets/images/props/props', true)
+  self.type = type
   --- animation states
   self.animation:addState('chair', 1, 1)
   self.animation:addState('fellchair', 2, 2)
@@ -28,15 +29,33 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   self.animation:addState('kitchenStorage', 21, 21)
   self.animation:addState('pot', 22, 22)
   self.animation:addState('knifeKettle', 23, 23)
+  self.animation:addState('holeLeft', 24, 24)
+  self.animation:addState('holeRight', 25, 25)
+  self.animation:addState('holeTop', 26, 26)
+  self.animation:addState('holeDown', 27, 27)
+  self.animation:addState('debris', 28, 28)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(32, 32)
   if nocollide == nil then
-    self:setCollideRect(0,8, 32,24)
+    self:setCollideRect(0, 8, 32, 24)
+  end
+  if type == 'holeDown' or type == 'holeTop' then
+    self:clearCollideRect()
+  end
+  if type == 'holeLeft' then
+    self:setCollideRect(10, 8, 22, 24)
+  end
+  if  type == 'holeRight' then
+    self:setCollideRect(0, 8, 22, 24)
   end
   self:setZIndex(zIndex)
   self:setGroups(3)
   self:add(x,y)
+  -- check type and add a flag to identify during collisions
 end
 
-
+function PropItem:destroyProp() 
+  self:clearCollideRect()
+  self.animation:setState('debris')
+end

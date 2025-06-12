@@ -89,7 +89,7 @@ end
 function Player:collisionResponse(other)
   
   if other:isa(Enemy) then
-    if other:isa(Brocorat) then
+    if other:isa(Brocorat) then -- validate candance also
       -- other:empty()
       --other.animation:setState('empty')  -- Set enemy animation to empty state
       --self.animation:setState('deadBrocolli')
@@ -99,6 +99,7 @@ function Player:collisionResponse(other)
       PlayerData.lastEnemyTouched.y = other.y
       self:fight()
       return 'overlap'
+      
     end
     
   elseif other:isa(CrewMember) then
@@ -107,15 +108,20 @@ function Player:collisionResponse(other)
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Trigger) then
+    
     if other.type == nil and other.type ~= "cutscene" then
       PlayerData.isTalking = true
       dialogUI:addScreen(other:returnScript(),other.sourceFeed)
     end
+    
     if other.type == "cutscene" then
       PlayerData.isCutscene = true
       other:returnScript()
       other:remove()
     end
+    
+    Utilities.grantAchievementIfNeeded(other.script)
+    
     return 'freeze'
   elseif other:isa(Items) and other.type == 'keycard' then
     other:removeAll()
@@ -133,24 +139,59 @@ function Player:collisionResponse(other)
     other:removeAll()
     self:grabNotes()
     return 'overlap'
+  elseif other:isa(Items) and other.type == 'bag' then
+    other:removeAll()
+    self:grabBag()
+    return 'overlap'
+  elseif other:isa(Items) and other.type == 'tools' then
+    other:removeAll()
+    self:grabTools()
+    return 'overlap'
+  elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
+    
+    if (PlayerData.hasBoots == true and PlayerData.battery == 0) or PlayerData.hasBoots == false  then
+      print('falling')
+      self:fallBelow()
+      return 'overlap'
+    elseif PlayerData.hasBoots == true then
+      
+      self:drainBattery(1)
+      print('fly')
+    return 'overlap'
+    end
+
   elseif other:isa(Door) then
     
-    other:prevRoom(other.direction)
-    other:goTo()
-    
-    -- if (PlayerData.hasKey == true and other.status == 'closed') or other.status=='open'then
-    -- if PlayerData.hasKey == true then
-    --   other:prevRoom(other.direction)
-    --   other:goTo()
-    -- else
-    --   PlayerData.isTalking = true
-    --   dialogUI:addScreen(1)
-    --   return 'freeze'
-    -- end
-  return 'overlap'
+    if (PlayerData.hasKey == true and other.status == 'closed') or other.status =='open' then
+      other:prevRoom(other.direction)
+      other:goTo()
+      return 'overlap'
+    else
+      PlayerData.isTalking = true
+      dialogUI:addScreen("nokeys")
+      return 'freeze'
+    end
+  
   end
   
-  
+end
+
+function Player:fallBelow()
+  local level = PlayerData.actualLevel + 1
+  local room = PlayerData.actualRoom
+  local sceneName = "Floor" .. tostring(level) .. tostring(room)
+  local nextScene = _G[sceneName]
+
+  if nextScene then
+    Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable,
+      {
+        imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
+        imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
+    })
+    -- Noble.transition(nextScene, 1.5, Noble.Transition.Default)
+  else
+    print("Scene " .. sceneName .. " not found.")
+  end
 end
 
 function Player:displayDialog(script)
@@ -169,31 +210,39 @@ function Player:idle()
 end
 
 function Player:sanityCheck()
-  
+
   local function checkSanity()
-    
+    local lastSanity = PlayerData.sanity 
     if PlayerData.battery < 20 and PlayerData.isInDarkness == true then 
       PlayerData.sanity -= 2 * self.sanityLoss
     elseif PlayerData.battery < 40 and PlayerData.isInDarkness == true then
       PlayerData.sanity -= self.sanityLoss
     end
-    
-    if PlayerData.sanity <= 0 then
+
+    -- Check if sanity just reached zero
+    if PlayerData.sanity <= 0 and lastSanity > 0 then
+      PlayerData.sanityCounter += 1
       PlayerData.sanity = 0
     end
+
     if PlayerData.battery > 50 or PlayerData.isInDarkness == false then
       PlayerData.sanity += 2 * self.sanityLoss
     end
+
     if PlayerData.sanity >= 100 then
       PlayerData.sanity = 100
     end
-    
+
+    -- Update lastSanity for the next check
+    lastSanity = PlayerData.sanity
   end
+
   playdate.timer.keyRepeatTimerWithDelay(2000, 2000, checkSanity)
-    
 end
 
 function Player:fight()
+  PlayerData.amountDances += 1
+  PlayerData.isDancing = true 
   Noble.transition(DanceScene)
 end
 
@@ -214,8 +263,9 @@ function Player:move(direction)
     self.direction = direction
     local movementX = 0
     local movementY = 0
-    
-    self:drainBattery(0.5)
+    if PlayerData.isInDarkness == true then
+      self:drainBattery(0.5)
+    end
     if (direction == "left") then
       if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
         self.animation:setState('lampLeft')
@@ -255,29 +305,27 @@ function Player:move(direction)
 end
 
 
-function Player:focus()
-  if PlayerData.sanity > 0 then
-    PlayerData.sanity -= 30 
+function Player:focus() -- unused
+  if PlayerData.sanity > 20 then
+    PlayerData.sanity -= 20 
     PlayerData.isFocused = true
   end
 end
 
-function Player:deFocus()
+function Player:deFocus() -- unused
   if PlayerData.isFocused == true then
     PlayerData.isFocused = false
   end
 end
 
 function Player:drainBattery(amount)
-  if levels[PlayerData.floor].floor.shadow == true then
-    PlayerData.battery -= amount
-  end
+  PlayerData.battery -= amount
 end
 
 function Player:chargeBattery(amount)
-  if PlayerData.battery < 100 then
+  if PlayerData.battery < 100 and PlayerData.hasLamp == true then
     self.animation:setState('charge')
-  else
+  elseif (PlayerData.hasLamp == true) then
     self.animation:setState('lampIdle')
   end
   PlayerData.battery += amount
@@ -288,6 +336,17 @@ function Player:fillBattery()
     PlayerData.battery = 100
 end
 
+function Player:grabBoots()
+  PlayerData.hasBoots = true
+end
+
+function Player:grabBag()
+  PlayerData.hasBag = true
+end
+
+function Player:grabTools()
+  PlayerData.hasTools = true
+end
 
 function Player:grabKey()
   PlayerData.hasKey = true
@@ -304,7 +363,7 @@ end
 
 function Player:grabNotes()
   PlayerData.hasNotes = true
-  checkAndGrantAchievement("notebook")
+  Utilities.grantAchievementIfNeeded("notebook")
 end
 
 function Player:update()
@@ -329,4 +388,6 @@ function Player:update()
     self.speed = 0.5 * self.initialSpeed
   end
   PlayerData.isActive = false
+  Utilities.checkSanityAchievements()
 end
+

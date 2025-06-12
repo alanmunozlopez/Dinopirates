@@ -114,7 +114,7 @@ end
 
 function drawVersionNumber(x, y, alignment)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	local version = "*" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
+	local version = "*"..Panels.vars.lang.."* *" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
 	local versionWidth = Graphics.getTextSize(version)
 	
 	-- If no x position provided, default to right-aligned at 400 (screen width)
@@ -145,28 +145,59 @@ function findAndKillEnemyById(enemyId)
 	end
 end
 
-function checkAndGrantAchievement(name)
-	if achievements.isGranted(name) == false then
-		achievements.grant(name)
+-- Grants an achievement if it hasn't been granted yet
+function Utilities.grantAchievementIfNeeded(name)
+	-- Check if the ID exists in achievementData
+	for _, data in ipairs(achievementData.achievements) do
+		if data.id == name then
+			if not achievements.isGranted(name) then
+				achievements.grant(name)
+			end
+			return -- Found and handled, exit function
+		end
+	end
+
+end
+
+-- Maps comics to achievements
+local storyAchievements = {
+	intro = "wakeup",
+	["pick-the-device"] = "comms",
+}
+
+function Utilities.checkStoryAchievement(comic)
+	local achievement = storyAchievements[comic]
+	if achievement then
+		Utilities.grantAchievementIfNeeded(achievement)
 	end
 end
-function checkStoryAchievement(comic)
-	if comic == "intro" then
-		checkAndGrantAchievement("wakeup")
-	end
-	if comic == "pick-the-device" then
-		checkAndGrantAchievement("comms")
+
+-- Sanity-based achievements
+function Utilities.checkSanityAchievements()
+	local sanityAchievements = {
+		[1] = "sanityloss1",
+		[3] = "sanityloss2",
+		-- Future: add [5] = "sanityloss2", etc.
+	}
+	
+	local achievement = sanityAchievements[PlayerData.sanityCounter]
+	if achievement then
+		Utilities.grantAchievementIfNeeded(achievement)
 	end
 end
-function deleteAllAchievements()
-	achievements.revoke("wakeup")
-	achievements.revoke("comms")
-	achievements.revoke("notebook")
+
+-- Bulk revoke (delete) achievements
+function Utilities.clearAllAchievements()
+	for _, data in ipairs(achievementData.achievements) do
+		if data.id then
+			achievements.revoke(data.id)
+		end
+	end
 end
 
 -- Dev Tools
 
-function printEnemues()
+function printEnemies()
 	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
 		if enemy.type == "Enemy" then
 			print("x:", enemy.x)
@@ -176,4 +207,27 @@ function printEnemues()
 			print("----")
 		end
 	end
+end
+
+function Utilities.switchLang()
+	if Panels.vars.lang == "en" then
+		Panels.vars.lang = "jp"
+	else
+		Panels.vars.lang = "en"
+	end
+end
+
+function Utilities.renderLangPanel(panel, offset)
+	for i, layer in ipairs(panel.layers) do
+		if layer.name == "base" then
+			Panels.renderLayerInPanel(layer, panel, offset)
+		elseif layer.name == "en" and Panels.vars.lang == "en" then
+			Panels.renderLayerInPanel(layer, panel, offset)
+		elseif layer.name == "jp" and Panels.vars.lang == "jp" then
+			Panels.renderLayerInPanel(layer, panel, offset)
+		end
+	end
+end
+function Utilities.toggle(value)
+  return not value
 end

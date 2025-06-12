@@ -57,19 +57,19 @@ levels = {
 			},
 			{
 				usedTrigger = false,
-				x = 44,
-				y = 36,
-				width = 56,
-				height = 31,
-				script = "microwaveBurn"
-			},
-			{
-				usedTrigger = false,
 				x = 282,
 				y = 34,
 				width = 42,
 				height = 31,
 				script = "someTrash"
+			},
+			{
+				usedTrigger = false,
+				x = 43,
+				y = 40,
+				width = 66,
+				height = 53,
+				script = "microwaveBurn"
 			}
 			},
 			enemies = {
@@ -207,9 +207,6 @@ levels = {
 			}
 			},
 			comic = {
-					wasPlayed = false,
-					name = "intro-comic",
-					play = "enter"
 			},
 			items = {
 			{
@@ -587,13 +584,14 @@ levels = {
 			comic = {
 					wasPlayed = false,
 					name = "pick-the-device",
+					
 			},
 			items = {
-				{
-					type = 'radio',
-					x = 200,
-					y = 120
-				},
+			{
+				type = 'radio',
+				x = 200,
+				y = 120
+			}
 			},
 			triggers = {
 			{
@@ -607,6 +605,7 @@ levels = {
 			}
 			},
 			enemies = {
+	
 			},
 			props = {
 			{
@@ -752,6 +751,21 @@ levels = {
 				x = 28,
 				y = 79,
 						nocollide = true
+			},
+			{
+				type = "fellchair",
+				x = 69,
+				y = 153
+			},
+			{
+				type = "fellchair",
+				x = 144,
+				y = 158
+			},
+			{
+				type = "chair",
+				x = 105,
+				y = 166
 			}
 			}
 		}
@@ -818,53 +832,54 @@ levels = {
 				leadsTo = 108
 			},
 			{
+				direction = 'right',
+				open = 'closed',
+				leadsTo = 114
+			},
+			{
 				direction = 'left',
 				open = 'open',
 				leadsTo = 112
 			}
 			},
 			comic = {
-					
+				
 			},
 			items = {
 			{
 				type = 'lamp',
-				x = 131,
-				y = 115
+				x = 339,
+				y = 41
 			}
 			},
 			triggers = {
 			{
 				usedTrigger = false,
-				x = 109,
-				y = 72,
+				x = 123,
+				y = 39,
 				width = 60,
 				height = 30,
-				script = "thisDemo",
+				script = "noLights"
+			},
+			{
+				usedTrigger = false,
+				x = 266,
+				y = 84,
+				width = 60,
+				height = 39,
+				script = "boo"
+			},
+			{
+				usedTrigger = false,
+				x = 198,
+				y = 200,
+				width = 60,
+				height = 39,
+				script = "chargeLamp"
 			}
 			},
 			enemies = {
-			{
-				name = "brocorat",
-				x = 59,
-				y = 187,
-				speed = 1.0,
-				id = '003'
-			},
-			{
-				name = "brocorat",
-				x = 180,
-				y = 197,
-				speed = 1.0,
-				id = '004'
-			},
-			{
-				name = "brocorat",
-				x = 308,
-				y = 35,
-				speed = 1.0,
-				id = '005'
-			}
+	
 			},
 			props = {
 			{
@@ -898,24 +913,243 @@ levels = {
 				y = 84
 			},
 			{
-				type = "table",
-				x = 125,
-				y = 157
-			},
-			{
-				type = "table",
-				x = 177,
-				y = 151
+				type = "fellTable",
+				x = 129,
+				y = 139
 			},
 			{
 				type = "box",
-				x = 225,
-				y = 151
+				x = 243,
+				y = 153
 			},
 			{
 				type = "box",
-				x = 265,
-				y = 81
+				x = 157,
+				y = 164
+			},
+			{
+				type = "fellchair",
+				x = 368,
+				y = 97
+			},
+			{
+				type = "fellchair",
+				x = 298,
+				y = 138
+			},
+			{
+				type = "table",
+				x = 371,
+				y = 176
+			},
+			{
+				type = "table",
+				x = 354,
+				y = 188
+			},
+			{
+				type = "table",
+				x = 341,
+				y = 208
+			},
+			{
+				type = "fellTable",
+				x = 366,
+				y = 200
+			},
+			{
+				type = "fellTable",
+				x = 371,
+				y = 207
+			},
+			{
+				type = "chair",
+				x = 203,
+				y = 161
+			},
+			{
+				type = "fellchair",
+				x = 298,
+				y = 106
+			},
+			{
+				type = "table",
+				x = 242,
+				y = 57
+			}
+			}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			roomNumber = 20,
+			tile = 1,
+			light = 0.5,
+			shadow = false,
+			doors = {
+			{
+				direction = 'left',
+				open = 'open',
+				leadsTo = 108
+			}
+			},
+			comic = {
+					
+			},
+			items = {
+			{
+				type = 'crewmember',
+				x = 87,
+				y = 68,
+	  taken = false,
+	  crewId = "100"
+			},
+			{
+				type = 'keycard',
+				x = 70,
+				y = 154
+			},
+			{
+				type = 'bag',
+				x = 197,
+				y = 34
+			},
+			{
+				type = 'tools',
+				x = 51,
+				y = 100
+			}
+			},
+			triggers = {
+	
+			},
+			enemies = {
+			{
+				name = "brocorat",
+				x = 301,
+				y = 71,
+				speed = 1.0,
+				id = "2FE144E4-0CF0-4658-9E72-84B68864D8CD"
+			},
+			{
+				name = "brocorat",
+				x = 301,
+				y = 121,
+				speed = 1.0,
+				id = "567584D3-46EE-4619-A156-EECE842132F6"
+			},
+			{
+				name = "brocorat",
+				x = 304,
+				y = 175,
+				speed = 1.0,
+				id = "1501CD68-22CF-4020-91AF-FBB5BE1BE0AF"
+			}
+			},
+			props = {
+			{
+				type = "table",
+				x = 242,
+				y = 31
+			},
+			{
+				type = "table",
+				x = 241,
+				y = 75
+			},
+			{
+				type = "table",
+				x = 243,
+				y = 124
+			},
+			{
+				type = "table",
+				x = 242,
+				y = 176
+			},
+			{
+				type = "holeTop",
+				x = 150,
+				y = 63
+			},
+			{
+				type = "holeLeft",
+				x = 132,
+				y = 76
+			},
+			{
+				type = "holeRight",
+				x = 164,
+				y = 79
+			},
+			{
+				type = "holeLeft",
+				x = 131,
+				y = 108
+			},
+			{
+				type = "holeRight",
+				x = 163,
+				y = 108
+			},
+			{
+				type = "holeDown",
+				x = 143,
+				y = 122
+			},
+			{
+				type = "holeDown",
+				x = 150,
+				y = 123
+			}
+			}
+		}
+	},
+	{
+		floor = {
+			level = 2,
+			visited = false,
+			roomNumber = 20,
+			tile = 3,
+			light = 0.5,
+			shadow = false,
+			doors = {
+	
+			},
+			comic = {
+					
+			},
+			items = {
+	
+			},
+			triggers = {
+	
+			},
+			enemies = {
+	
+			},
+			props = {
+			{
+				type = "table",
+				x = 200,
+				y = 78
+			},
+			{
+				type = "table",
+				x = 140,
+				y = 120
+			},
+			{
+				type = "table",
+				x = 255,
+				y = 125
+			},
+			{
+				type = "table",
+				x = 201,
+				y = 159
 			}
 			}
 		}

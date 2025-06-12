@@ -17,7 +17,8 @@ function PlayerDance:init(bpm)
 	self.animation.crouch.frameDuration = frameduration
 	self.animation:addState('left', 16, 20, 'idle')
 	self.animation.left.frameDuration = frameduration
-	
+	self.animation:addState('right', 21, 24, 'idle')
+	self.animation.right.frameDuration = frameduration
 	
 	self.animation:setState('idle')
 	self:setZIndex(6)
@@ -31,7 +32,8 @@ function PlayerDance:changeAnimation(input)
 	local animationMap = {
 		upButton = "jump",
 		downButton = "crouch",
-		leftButton = "left"
+		leftButton = "left",
+		rightButton = "right"
 	}
 
 	local newState = animationMap[input]

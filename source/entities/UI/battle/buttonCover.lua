@@ -15,7 +15,7 @@ function ButtonCover:init()
 	self:setZIndex(9)
 	
 	self.animation:setState('cover')
-	self:setSize(78, 34)
+	self:setSize(78, 58)
 	self:add(361, 32)
 	
 end

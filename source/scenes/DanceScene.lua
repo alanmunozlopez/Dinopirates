@@ -9,10 +9,17 @@ import "entities/UI/battle/playerDance"
 import "entities/UI/battle/backgroundDance"
 import "entities/UI/battle/enemyDance"
 import "entities/UI/battle/buttonCover"
-
+import "entities/UI/battle/winIndicator"
+import "entities/UI/battle/loseIndicator"
+import "entities/UI/battle/resultsScreen"
 
 local lifes = nil
 
+local screenCenterX = 200
+local barWidth = 8
+local barHeight = 10
+local barY = 56
+local condition = nil
 function scene:init()
 	scene.super.init(self)
     
@@ -23,6 +30,7 @@ function scene:init()
     self.totalAccuracy = 0
     self.enemyHP = 50
     self.evadePower = 30
+    self.condition = nil
     
     lifes = 3
     
@@ -44,6 +52,7 @@ end
 function scene:enter()
 	scene.super.enter(self)
     local startPoint = 400
+    condition = nil
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
     --
@@ -56,7 +65,10 @@ function scene:enter()
     playerDance = PlayerDance(self.bpm)
     enemyDance = EnemyDance(self.bpm)
     buttonCover = ButtonCover()
+    winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
+    loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
     backgroundDance = BackgroundDance()
+    resultsScreen = ResultsScreen()
 end
 
 function scene:start()
@@ -84,19 +96,22 @@ function scene:update()
         if self.ButtonPressed == nil then
             
             self.accuracy += 1
-            self.buttonText = "miss"
+            if self.accuracy > 5 then
+                self.balancePosition -= 0.3 
+            end
+            -- self.balancePosition -= 0.3 
             
         elseif collisions[1].buttonKey == self.ButtonPressed then
             
             if self.ButtonPressed == "aButton" or self.ButtonPressed == "bButton" then
-                print(self.ButtonPressed .. " punch")
-                self.enemyHP -= 10
-                self.balancePosition += 5 
+                
+               self.enemyHP -= 10
+               self.balancePosition += 5 
             elseif self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
-                print("evade")
-                self.balancePosition += 1 
-                self.totalAccuracy += self.accuracy
-                self.evadePower = self.totalAccuracy
+                
+               self.balancePosition += self.accuracy 
+               self.totalAccuracy += self.accuracy
+               self.evadePower = self.totalAccuracy
             end
             
             -- Mark: change animation player and enemies
@@ -106,10 +121,11 @@ function scene:update()
             
             self:incrementCorrectPress(self.ButtonPressed)
         else
+           
             self.buttonText = "wrong"
             collisions[1]:hit()
-            lifes -= 1
             self.balancePosition -= 5 
+            
         end
         self.ButtonPressed = nil
     else
@@ -134,89 +150,62 @@ function scene:update()
             y += 15
         end
     end
-    
+    -- Visualize win/lose threshold positions
+   if debug == true then
+       local loseX = screenCenterX - self.balanceMaxOffset - barWidth / 2
+       local winX = screenCenterX + self.balanceMaxOffset - barWidth / 2
+       local markerY = barY
+       local markerW = (self.balanceMaxOffset * 2) + barWidth
+       local markerH = barHeight
+   
+       -- Draw full range background (e.g., a faint filled rect behind the bar)
+       Graphics.setColor(Graphics.kColorBlack)
+       Graphics.drawRect(loseX, markerY, markerW, markerH)
+   
+       -- Optional: mark win and lose thresholds more visibly
+       Graphics.drawLine(winX + barWidth / 2, markerY, winX + barWidth / 2, markerY + markerH)
+       Graphics.drawLine(loseX + barWidth / 2, markerY, loseX + barWidth / 2, markerY + markerH)
+   end
     
     -- Mark: lose condition
-    if lifes == 0 then
-        
-    end
     
     if self.evadePower == 0 then
         
     end
-    
-    -- Mark: win condition TEST
-    if self.totalAccuracy > 20 and debug==false then
-        self.totalAccuracy = 0
-        
-        
-        -- Find an enemy and kill it
-        findAndKillEnemyById(PlayerData.lastEnemyTouched.id)
-        
-        -- captures player position and goes back to the original room
-        PlayerData.playerSpawn.x = PlayerData.playerExit.x
-        PlayerData.playerSpawn.y = PlayerData.playerExit.y
-        
-        -- transition to the original room
-        self.returnRoom = RoomTranslate(PlayerData.saveLevel)
-        Noble.transition(self.returnRoom, 0.5, Noble.Transition.Default)  
-    end
-   
-   -- Balance bar: player life vs enemy HP
-   local screenCenterX = 200 -- assuming 400px wide screen
-   local barWidth = 20
-   local barHeight = 10
-   local barY = 50
-   
+
    -- Normalize values (assume max enemy HP = 100, max lifes = 3)
    local enemyFactor = (100 - self.enemyHP) / 100 -- closer to 1 as enemy weakens
    local playerFactor = (3 - lifes) / 3           -- closer to 1 as player weakens
    
    -- Calculate final X offset: enemyFactor pulls right, playerFactor pulls left
-   local balanceOffset = (enemyFactor - playerFactor) * 50 -- range -50 to +50
-   
-   
-   -- Draw anchors as images instead of circles
-   if not self.winIcon then
-       self.winIcon = Graphics.image.new(12, 12, Graphics.kColorWhite)
-       Graphics.pushContext(self.winIcon)
-           Graphics.setColor(Graphics.kColorBlack)
-           Graphics.fillCircleAtPoint(6, 6, 6)
-       Graphics.popContext()
-   end
-   
-   if not self.loseIcon then
-       self.loseIcon = Graphics.image.new(12, 12, Graphics.kColorWhite)
-       Graphics.pushContext(self.loseIcon)
-           Graphics.setColor(Graphics.kColorBlack)
-           Graphics.fillRect(2, 2, 8, 8)
-       Graphics.popContext()
-   end
-   
-   self.winIcon:draw(screenCenterX + self.balanceMaxOffset - 6, barY + barHeight / 2 - 6)
-   self.loseIcon:draw(screenCenterX - self.balanceMaxOffset - 6, barY + barHeight / 2 - 6)
+   local balanceOffset = (enemyFactor - playerFactor) * self.balanceMaxOffset -- range -50 to +50
    
    -- Generate balance bar image if needed
    if not self.balanceBarImage then
-       self.balanceBarImage = Graphics.image.new(barWidth, barHeight, Graphics.kColorClear)
-       Graphics.pushContext(self.balanceBarImage)
-           Graphics.setColor(Graphics.kColorBlack)
-           Graphics.fillRoundRect(0, 0, barWidth, barHeight, 2)
-       Graphics.popContext()
+       self.balanceBarImage = Graphics.image.new('assets/images/ui/battle/nudgeIndicator')
    end
+   
    -- Clamp balancePosition to max range
    self.balancePosition = math.max(-self.balanceMaxOffset, math.min(self.balanceMaxOffset, self.balancePosition))
    local balanceOffset = self.balancePosition
    -- Draw the image-based bar instead of fillRect
-   self.balanceBarImage:draw(screenCenterX + balanceOffset - barWidth / 2, barY)
+   self.balanceBarImage:drawCentered(screenCenterX + balanceOffset - barWidth / 2, barY)
    
    -- Check win or lose condition based on position
    if self.balancePosition >= self.balanceMaxOffset then
-       print("win")
+      
+      resultsScreen:win()
+      PlayerData.isDancing = false
+      condition = "win"  
+            
    end
    
    if self.balancePosition <= -self.balanceMaxOffset then
-       print("lose")
+      
+      resultsScreen:lose()
+      PlayerData.isDancing = false
+      condition = "lose"
+      
    end
     
 end
@@ -246,6 +235,29 @@ function scene:danceStep(inputStep)
     self.ButtonPressed = inputStep
 end
 
+function scene:checkDanceResults()
+   if condition == "win" then
+      condition = nil
+      self.totalAccuracy = 0
+            
+      -- Find an enemy and kill it
+      findAndKillEnemyById(PlayerData.lastEnemyTouched.id)
+      
+      -- captures player position and goes back to the original room
+      PlayerData.playerSpawn.x = PlayerData.playerExit.x
+      PlayerData.playerSpawn.y = PlayerData.playerExit.y
+      
+      -- transition to the original room
+      self.returnRoom = RoomTranslate(PlayerData.saveLevel)
+      
+      Noble.transition(self.returnRoom, 0.3, Noble.Transition.Default)  
+      
+   elseif (condition == "lose") then
+      condition = nil
+      Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus) 
+   end   
+end
+
 scene.inputHandler = {
 
     -- A button
@@ -253,6 +265,7 @@ scene.inputHandler = {
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
         scene:danceStep("aButton")
+        scene:checkDanceResults()
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here

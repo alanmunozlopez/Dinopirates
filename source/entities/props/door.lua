@@ -57,7 +57,12 @@ function Door:init(direction, status, nextRoom, zIndex)
 end
 
 function Door:goTo()
-  Noble.transition(self.nextRoom, 1, Noble.Transition.Default)
+  Noble.transition(self.nextRoom, 1.5, Noble.Transition.Default)
+
+  -- Noble.transition(self.nextRoom, 1.5, Noble.Transition.Imagetable,
+  --   {imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/testTransition')
+  -- })
+    
 end
 function Door:prevRoom(direction)
     PlayerData.lastRoom = direction

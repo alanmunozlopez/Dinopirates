@@ -60,23 +60,20 @@ scene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitioning away from another scene.
 function scene:init()
 	scene.super.init(self)
-	
 	cheat.onComplete = function()
+		
 	end
-	
 	-- Your code here
 	
 end
-function scene:setFloor(floorNumber)
-	-- Find the level with matching roomNumber
+function scene:setFloor(levelNumber, roomNumber)
 	for i, levelData in ipairs(levels) do
-		if levelData.floor.roomNumber == floorNumber then
+		if levelData.floor.level == levelNumber and levelData.floor.roomNumber == roomNumber then
 			room = i
 			return
 		end
 	end
-	-- If room not found, print warning
-	print("Warning: Room number " .. floorNumber .. " not found")
+	print("Warning: Level " .. levelNumber .. ", Room " .. roomNumber .. " not found")
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -156,9 +153,18 @@ function scene:enter()
 			local type = itemData.type
 			local x = itemData.x
 			local y = itemData.y
-			if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) or (type == 'notes' and PlayerData.hasNotes == false) then
-				Items(x, y, type)
-			end		
+			local itemRequirements = {
+			  keycard = "hasKey",
+			  lamp = "hasLamp",
+			  radio = "hasRadio",
+			  notes = "hasNotes",
+			  bag = "hasBag",
+			  tools = "hasTools"
+			}
+			
+			if itemRequirements[type] and PlayerData[itemRequirements[type]] == false then
+			  Items(x, y, type)
+			end	
 		end
 	end
 	
@@ -170,9 +176,10 @@ function scene:enter()
 	PlayerData.direction = 'idle'
 	-- Mark: FX
 	if levels[room].floor.shadow == true then
-		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)
+		shadow = FXshadow(player, 70, levels[room].floor.light, ZIndex.fx)
+		PlayerData.isInDarkness = true
 	else
-		--player:fillBattery() -- Mark: dunno why I was filling the battery instantly
+		PlayerData.isInDarkness = false
 	end
 	
 	-- Mark: Comic
@@ -187,11 +194,10 @@ function scene:enter()
 			
 			local comicName = arrayData.name
 			Panels.startCutscene(comicData, function()
-				print(comicData)
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
 				levels[room].floor.comic.wasPlayed = true
-				checkStoryAchievement(comicName)
+				Utilities.checkStoryAchievement(comicName)
 			end)
 		else
 			-- comic not found
@@ -288,7 +294,7 @@ function scene:update()
 	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
-	print(PlayerData.sanity)
+	
 end
 
 
@@ -339,6 +345,18 @@ function scene:movePlayer(direction)
 		end
 	end
 end
+function playerFocus()
+	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
+		player.loadingPower = true
+		player:focus()
+	end
+end
+function playerDefocus()
+	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
+		player.loadingPower = false
+		player:deFocus()
+	end
+end
 -- Define the inputHander for this scene here, or use a previously defined inputHandler.
 
 -- scene.inputHandler = someOtherInputHandler
@@ -373,23 +391,18 @@ scene.inputHandler = {
 
 	BButtonDown = function()
 		
-		printEnemues()
+		playerFocus()
 	
 	end,
 	BButtonHeld = function()
-		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
-			player.loadingPower = true
-			player:focus()
-		end
+		
+		
 	end,
 	BButtonHold = function()
 		
 	end,
 	BButtonUp = function()
-		if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
-			player.loadingPower = false
-			player:deFocus()
-		end
+		playerDefocus()
 	end,
 	-- D-pad left
 	--

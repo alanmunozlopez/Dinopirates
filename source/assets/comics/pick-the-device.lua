@@ -1,5 +1,8 @@
 local marginX = -8
 local marginY = -8
+
+
+
 pickDevice = {
     -- First sequence
     {
@@ -23,20 +26,29 @@ pickDevice = {
             },
             {
                 -- 2nd panel
+                renderFunction = Utilities.renderLangPanel,
                 layers = {
                     {
+                        name = "base",
                         image = "comics/pick-the-device/001",
                         x = marginX,
                         y = marginY
                     },
                     {
+                        name = "en",
                         image = "comics/pick-the-device/002",
+                        x = marginX,
+                        y = marginY
+                    },
+                    {
+                        name = "jp",
+                        image = "comics/pick-the-device/002jp",
                         x = marginX,
                         y = marginY
                     },
                 },
                 advanceControl = Panels.Input.A,
-                showControl = true
+                showAdvanceControl = true
             },
             {
                 -- 3rd panel
@@ -385,52 +397,6 @@ pickDevice = {
                 layers = {
                     {
                         image = "comics/pick-the-device/021",
-                        x = marginX,
-                        y = marginY
-                    },
-                },
-                advanceControl = Panels.Input.A,
-                showControl = true
-            },
-            {
-                -- 22th panel
-                layers = {
-                    {
-                        image = "comics/pick-the-device/024",
-                        x = marginX,
-                        y = marginY
-                    },
-                },
-                advanceControl = Panels.Input.A,
-                showControl = true
-            },
-            {
-                -- 23th panel
-                layers = {
-                    {
-                        image = "comics/pick-the-device/024",
-                        x = marginX,
-                        y = marginY
-                    },
-                    {
-                        image = "comics/pick-the-device/022",
-                        x = marginX,
-                        y = marginY
-                    },
-                },
-                advanceControl = Panels.Input.A,
-                showControl = true
-            },
-            {
-                -- 24th panel
-                layers = {
-                    {
-                        image = "comics/pick-the-device/024",
-                        x = marginX,
-                        y = marginY
-                    },
-                    {
-                        image = "comics/pick-the-device/023",
                         x = marginX,
                         y = marginY
                     },

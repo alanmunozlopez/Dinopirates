@@ -17,8 +17,14 @@ import 'assets/data/PlayerDataTables'
 import 'assets/data/levels'
 import 'assets/data/script'
 
-local achievementData = import 'assets/data/achievements'
+achievementData = import 'assets/data/achievements'
 local configToast = import 'assets/data/toastConfig'
+
+-- TODO
+-- [] add id to every prop to manage "destruction"
+-- [] add boot item
+-- [] fix battery UI
+-- [] fix delete save func
 
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
@@ -34,23 +40,27 @@ achievements.toasts.initialize(configToast)
 
 Noble.Settings.setup({
 	Difficulty = "Medium",
+	playerSlot = 1
 })
 
 Noble.showFPS = false
 
 Noble.GameData.setup({
 	Score = 0,
-})
+},1)
+
+Panels.vars.lang = "en"
 
 debug = false
 diagonalMovement = true -- TODO: fix movement stuck after entering a new room
+shinonome = Graphics.font.new('assets/fonts/shinonome/JF-Dot-Shinonome16')
+Graphics.setFont(shinonome, 'normal')
 
 Panels.Settings.path = ""
-
 ZIndex = {
 	player = 4,
 	enemy = 3,
-	props = 3,
+	props = 2,
 	items = 4,
 	fx = 6,
 	ui = 10,
@@ -71,10 +81,12 @@ local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus)
 end)
+local menuItem, error = menu:addMenuItem("Lang", function()
+	Utilities.switchLang()
+end)
 local menuItem, error = menu:addMenuItem("debug", function()
-	if debug == false then
-		debug = true
-	end
+	debug = Utilities.toggle(debug)
+	checkBool(debug)
 	if Noble.showFPS == false then
 		Noble.showFPS = true
 	else 

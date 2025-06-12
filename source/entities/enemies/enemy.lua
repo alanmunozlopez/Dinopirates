@@ -39,19 +39,37 @@ function Enemy:moveCollision(movementX, movementY, player)
     elseif PlayerData.battery > 60 and PlayerData.isInDarkness == true then
         self.moveSpeed = self.initialSpeed
     end
-    
-    local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY)
-    if lenght > 0 then
+
+    local actualX, actualY, collisions, length = self:moveWithCollisions(movementX, movementY)
+    local bounceFactor = 2
+    if length > 0 then
         for index, collision in pairs(collisions) do
             local collideObject = collision['other']
-            if collideObject:isa(Player) then
-                if self.player.isAlive then
-                    --self.animation:setState('empty')
-                   -- self.player:dead()
-                end
+            
+            if collideObject:isa(Player) and self.player.isAlive then
+                print(self.id)
+                PlayerData.lastEnemyTouched.type = "Brocorat"
+                PlayerData.lastEnemyTouched.id = self.id
+                PlayerData.lastEnemyTouched.x = self.x
+                PlayerData.lastEnemyTouched.y = self.y
+                self.player:fight()
             end
-            if collideObject:isa(PropItem) then
-                
+
+            -- 🟡 Bounce effect here
+            if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy)then
+                if collideObject:isa(Enemy) then
+                    self.hitCounter += 1
+                end
+                if collideObject:isa(PropItem) and self.hitCounter > 10 then
+                    collideObject:destroyProp() 
+                end
+                local normal = collision['normal']
+                if normal then
+                    -- Push back 5 pixels in the opposite direction
+                    local bounceX = self.x + (normal.dx * bounceFactor)
+                    local bounceY = self.y + (normal.dy * bounceFactor)
+                    self:moveTo(bounceX, bounceY)
+                end
             end
         end
     end

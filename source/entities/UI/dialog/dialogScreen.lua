@@ -80,9 +80,13 @@ function dialogScreen:nextDialog()
 				screenimg:remove()
 			end
 			
+			local lang = Panels.vars.lang
+			local shinonome = Graphics.font.new('assets/fonts/KH-Dot-Akihabara-16')
+			Graphics.setFont(shinonome, 'normal')
 			dialogtext:clear(Graphics.kColorClear)
 			Graphics.pushContext(dialogtext)
-				Graphics.drawTextInRect(script[dialogPosition].dialog[dialogcounter].text, 0, 0, 255, 78)
+				local textString = Graphics.getLocalizedText(script[dialogPosition].dialog[dialogcounter].text, lang)
+				Graphics.drawTextInRect(textString, 0, 0, 255, 78)
 			Graphics.popContext()
 			
 			self:add()
