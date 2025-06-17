@@ -137,11 +137,20 @@ function scene:enter()
 	arrayData = levels[room].floor.props
 	if arrayData ~= nil then
 		for _, propData in ipairs(arrayData) do
-			local type = propData.type
-			local x = propData.x
-			local y = propData.y
-			local collide = propData.nocollide
-			PropItem(x, y, type, ZIndex.props, collide)
+			if propData.destroyed == false or propData.destroyed == nil then
+				local type = propData.type
+				local x = propData.x
+				local y = propData.y
+				local collide = propData.nocollide
+				local id = propData.id
+				PropItem(x, y, type, ZIndex.props, collide, id)
+			else
+				local x = propData.x
+				local y = propData.y
+				local id = propData.id
+				PropItem(x, y, 'debris', ZIndex.props, true, id)
+			end
+			
 		end
 	end
 	
