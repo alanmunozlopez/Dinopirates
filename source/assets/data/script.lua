@@ -310,6 +310,32 @@ script = {
             
         }
     },
+   {
+       name = "darkest",
+       dialog = {
+           {
+       video = 'playerCry',
+       text = "darkest-01",
+   },
+                   {
+       video = 'radioRing',
+       text = "darkest-02",
+   },
+                   {
+       video = 'radioHand',
+       text = "darkest-03",
+   },
+                   {
+       video = 'playerSurprise',
+       text = "darkest-04",
+   },
+                   {
+       video = 'player',
+       text = "darkest-06",
+   }
+           
+       }
+   },
     {
         name = "nokeys",
         dialog = {
