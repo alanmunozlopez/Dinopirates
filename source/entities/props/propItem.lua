@@ -2,9 +2,10 @@
 PropItem = {}
 class('PropItem').extends(NobleSprite)
 
-function PropItem:init(x, y, type, zIndex, nocollide)
+function PropItem:init(x, y, type, zIndex, nocollide, id)
   PropItem.super.init(self,'assets/images/props/props', true)
   self.type = type
+  self.id = id
   --- animation states
   self.animation:addState('chair', 1, 1)
   self.animation:addState('fellchair', 2, 2)
@@ -55,7 +56,8 @@ function PropItem:init(x, y, type, zIndex, nocollide)
   -- check type and add a flag to identify during collisions
 end
 
-function PropItem:destroyProp() 
+function PropItem:destroyProp(id)
+  findAndDestroyPropById(id) 
   self:clearCollideRect()
   self.animation:setState('debris')
 end

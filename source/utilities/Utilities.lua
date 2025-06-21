@@ -129,7 +129,7 @@ function drawVersionNumber(x, y, alignment)
 	Graphics.drawText(version, x, y)
 end 
 
-
+-- finds and destroys a enemy
 function findAndKillEnemyById(enemyId)
 	local room = PlayerData.floor
 	arrayData = levels[room].floor.enemies
@@ -140,6 +140,20 @@ function findAndKillEnemyById(enemyId)
 				enemyData.dead = true
 				enemyData.x = PlayerData.lastEnemyTouched.x
 				enemyData.y = PlayerData.lastEnemyTouched.y
+			end
+		end
+	end
+end
+
+-- finds and destroys a prop
+function findAndDestroyPropById(propId)
+	local room = PlayerData.floor
+	arrayData = levels[room].floor.props
+	
+	for _, propData in ipairs(arrayData) do
+		if propData.id == propId then
+		if propData.destroyed == nil or propData.destroyed == false then
+				propData.destroyed = true
 			end
 		end
 	end
