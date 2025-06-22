@@ -331,7 +331,45 @@ script = {
    },
                    {
        video = 'player',
+       text = "darkest-05",
+   },
+                   {
+       video = 'player',
        text = "darkest-06",
+   },
+                   {
+       video = 'radioHand',
+       text = "darkest-07",
+   }
+           
+       }
+   },
+   {
+       name = "nicetobrocoliyou",
+       dialog = {
+           {
+       video = 'playerWorry',
+       text = "nicetobrocoliyou-01",
+   },
+                   {
+       video = 'playerSurprise',
+       text = "nicetobrocoliyou-02",
+   },
+                   {
+       video = 'playerHappy',
+       text = "nicetobrocoliyou-03",
+   },
+                   {
+       video = 'radioHand',
+       text = "nicetobrocoliyou-04",
+   },
+                   {
+       video = 'playerSurprise',
+       text = "nicetobrocoliyou-05",
+   },
+                   {
+       video = 'radioHand',
+       text = "nicetobrocoliyou-06",
    }
            
        }
