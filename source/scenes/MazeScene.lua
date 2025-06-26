@@ -33,6 +33,7 @@ import 'entities/items/Items'
 
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
+import "entities/UI/inGameMenu"
 
 -- It is recommended that you declare, but don't yet define,
 -- your scene-specific variables and methods here. Use "local" where possible.
@@ -48,9 +49,10 @@ import "entities/UI/playerHud"
 -- Mark: player related
 local player = nil
 local shadow = nil
-
+local inGameMenuActive = nil
 -- Mark: UI
 local uiScreen = nil
+local inGameEquip = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 -- This is the background color of this scene.
@@ -84,6 +86,7 @@ function scene:enter()
 	
 	
 	PlayerData.isGaming = false
+	PlayerData.isEquiping = false
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
@@ -214,7 +217,7 @@ function scene:enter()
 	end
 	-- Mark: UI
 	uiScreen = playerHud()
-	
+	inGameEquip = inGameMenu()
 	-- Mark: Enemies
 	arrayData = levels[room].floor.enemies
 	
@@ -303,7 +306,6 @@ function scene:update()
 	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
-	
 end
 
 
@@ -387,6 +389,10 @@ scene.inputHandler = {
 	end,
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
 		-- Your code here
+		if PlayerData.isGaming == true then
+			print("ready for menu")
+			inGameMenu:displayMenu()
+		end
 	end,
 	AButtonUp = function()				-- Runs once when button is released.
 		-- Your code here
@@ -399,7 +405,11 @@ scene.inputHandler = {
 	--
 
 	BButtonDown = function()
-		
+		if PlayerData.isGaming == false and PlayerData.isEquiping == true then
+			PlayerData.isGaming = true
+			PlayerData.isEquiping = false
+			print('closing menu')
+		end
 		playerFocus()
 	
 	end,
@@ -531,17 +541,18 @@ end
 
 function scene:PowerCrank()
     if not player.isAlive then return end
-    
-    if playdate.getCrankTicks(3) > 0 then
-        if player.loadingPower then
-            print('powa')  -- Consider removing debug print
-        else
-            player:chargeBattery(1)
-            if shadow then
-                shadow:refresh()
-            end
-        end
-    end
+    if PlayerData.isGaming == true then
+    	if playdate.getCrankTicks(3) > 0 then
+        	if player.loadingPower then
+            	print('powa')  -- Consider removing debug print
+        	else
+            	player:chargeBattery(1)
+            	if shadow then
+                	shadow:refresh()
+            	end
+        	end
+    	end
+	end
     
     if player.battery == 100 then
         player:idle()

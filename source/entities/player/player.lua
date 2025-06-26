@@ -110,11 +110,13 @@ function Player:collisionResponse(other)
   elseif other:isa(Trigger) then
     
     if other.type == nil and other.type ~= "cutscene" then
+      PlayerData.isGaming = false
       PlayerData.isTalking = true
       dialogUI:addScreen(other:returnScript(),other.sourceFeed)
     end
     
     if other.type == "cutscene" then
+      PlayerData.isGaming = false
       PlayerData.isCutscene = true
       other:returnScript()
       other:remove()
@@ -258,49 +260,51 @@ function Player:dead() -- unused
 end
 
 function Player:move(direction)
-  if self.isAlive == true and PlayerData.isCharging == false then
-    PlayerData.isActive = true
-    self.direction = direction
-    local movementX = 0
-    local movementY = 0
-    if PlayerData.isInDarkness == true then
-      self:drainBattery(0.5)
+  if PlayerData.isGaming == true then
+    if self.isAlive == true and PlayerData.isCharging == false then
+      PlayerData.isActive = true
+      self.direction = direction
+      local movementX = 0
+      local movementY = 0
+      if PlayerData.isInDarkness == true then
+        self:drainBattery(0.5)
+      end
+      if (direction == "left") then
+        if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+          self.animation:setState('lampLeft')
+        else
+          self.animation:setState('left')
+        end
+        movementX = self.x - self.speed
+        movementY = self.y
+      elseif (direction == "right") then
+        if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+          self.animation:setState('lampRight')
+        else
+          self.animation:setState('right')
+        end
+        movementX = self.x + self.speed
+        movementY = self.y
+      elseif (direction == "up") then
+        if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+          self.animation:setState('up')
+        else
+          self.animation:setState('up')
+        end
+        movementX = self.x 
+        movementY = self.y - self.speed
+      elseif (direction == "down") then
+        if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+          self.animation:setState('lampDown')
+        else
+          self.animation:setState('down')
+        end
+        movementX = self.x 
+        movementY = self.y + self.speed
+      end
+      local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
+      PlayerData.direction = direction
     end
-    if (direction == "left") then
-      if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
-        self.animation:setState('lampLeft')
-      else
-        self.animation:setState('left')
-      end
-      movementX = self.x - self.speed
-      movementY = self.y
-    elseif (direction == "right") then
-      if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
-        self.animation:setState('lampRight')
-      else
-        self.animation:setState('right')
-      end
-      movementX = self.x + self.speed
-      movementY = self.y
-    elseif (direction == "up") then
-      if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
-        self.animation:setState('up')
-      else
-        self.animation:setState('up')
-      end
-      movementX = self.x 
-      movementY = self.y - self.speed
-    elseif (direction == "down") then
-      if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
-        self.animation:setState('lampDown')
-      else
-        self.animation:setState('down')
-      end
-      movementX = self.x 
-      movementY = self.y + self.speed
-    end
-    local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
-    PlayerData.direction = direction
   end
 end
 

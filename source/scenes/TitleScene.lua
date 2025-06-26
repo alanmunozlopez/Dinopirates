@@ -92,7 +92,7 @@ function scene:init()
 	-- Add Playground option only if debug is true
 	if debug == true then
 		menu:addItem("Playground", function()
-			Noble.transition(Floor120,0.3, Noble.Transition.MetroNexus)  -- Direct transition to room 109
+			Noble.transition(Floor112,0.3, Noble.Transition.MetroNexus)  -- Direct transition to room 109
 		end)
 	end
 	

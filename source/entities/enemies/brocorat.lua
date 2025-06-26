@@ -20,7 +20,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.id = ID
 	
 	self.hitCounter = 0
-	self.stepCount = moveSpeed * 20
+	self.stepCount = moveSpeed * 20 -- if speed is below 0.5 the enemy doesnt move
 	self.player = player
 	self.Zindex = Zindex
 	self.moveSpeed = moveSpeed
