@@ -56,12 +56,15 @@ function Enemy:moveCollision(movementX, movementY, player)
             end
 
             --  Bounce effect here
-            if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy)then
+            if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy) then
+                
                 if collideObject:isa(Enemy) then
                     self.hitCounter += 1
                 end
-                if collideObject:isa(PropItem) and self.hitCounter > 10 then
-                    collideObject:destroyProp(collideObject.id) 
+                if collideObject:isa(PropItem) and collideObject.isEdible == true then
+                    if (collideObject.type ~= "holeLeft" ) and self.hitCounter > 10 then
+                        collideObject:destroyProp(collideObject.id) 
+                    end
                 end
                 local normal = collision['normal']
                 if normal then

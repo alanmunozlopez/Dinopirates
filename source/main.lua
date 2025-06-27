@@ -21,10 +21,11 @@ achievementData = import 'assets/data/achievements'
 local configToast = import 'assets/data/toastConfig'
 
 -- TODO
--- [] add id to every prop to manage "destruction"
--- [] add boot item
--- [] fix battery UI
--- [] fix delete save func
+-- [x] add id to every prop to manage "destruction"
+-- [x] add boot item
+-- [x] fix battery UI
+-- [x] fix delete save func
+-- [x] enemies eating the holes
 
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
