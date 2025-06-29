@@ -26,6 +26,8 @@ local configToast = import 'assets/data/toastConfig'
 -- [x] fix battery UI
 -- [x] fix delete save func
 -- [x] enemies eating the holes
+-- [x] player falling in random positions.
+-- [] ingame menu
 
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true

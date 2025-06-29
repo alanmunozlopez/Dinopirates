@@ -183,7 +183,9 @@ function Player:fallBelow()
   local room = PlayerData.actualRoom
   local sceneName = "Floor" .. tostring(level) .. tostring(room)
   local nextScene = _G[sceneName]
-
+  PlayerData.playerSpawn.x =  self.x
+  PlayerData.playerSpawn.y = self.y
+  
   if nextScene then
     Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable,
       {
@@ -192,7 +194,7 @@ function Player:fallBelow()
     })
     -- Noble.transition(nextScene, 1.5, Noble.Transition.Default)
   else
-    print("Scene " .. sceneName .. " not found.")
+    print("Scene " .. sceneName .. " not found. did you fall into the void")
   end
 end
 
@@ -342,14 +344,17 @@ end
 
 function Player:grabBoots()
   PlayerData.hasBoots = true
+  table.insert(PlayerData.items,"boots")
 end
 
 function Player:grabBag()
   PlayerData.hasBag = true
+  table.insert(PlayerData.items,"bag")
 end
 
 function Player:grabTools()
   PlayerData.hasTools = true
+  table.insert(PlayerData.items,"tools")
 end
 
 function Player:grabKey()
@@ -358,10 +363,12 @@ end
 
 function Player:grabLamp()
   PlayerData.hasLamp = true
+  table.insert(PlayerData.items,"lamp")
   self:fillBattery()
 end
 
 function Player:grabRadio()
+  
   PlayerData.hasRadio = true
 end
 

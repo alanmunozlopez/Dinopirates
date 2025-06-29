@@ -303,7 +303,7 @@ function scene:update()
 	end
 	
 	-- Mark: Crank notification
-	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) then
+	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 end
@@ -389,7 +389,7 @@ scene.inputHandler = {
 	end,
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
 		-- Your code here
-		if PlayerData.isGaming == true then
+		if PlayerData.isGaming == true and table.getSize(PlayerData.items) > 0  then
 			print("ready for menu")
 			inGameMenu:displayMenu()
 		end
@@ -411,7 +411,7 @@ scene.inputHandler = {
 			print('closing menu')
 		end
 		playerFocus()
-	
+		printTable(PlayerData.items)
 	end,
 	BButtonHeld = function()
 		
@@ -430,6 +430,9 @@ scene.inputHandler = {
 			isPlayerMoving = true
 			currentMoveDirection = 'left'
 			scene:movePlayer('left')
+		end
+		if PlayerData.isEquiping == true then
+			inGameEquip:prevItem()
 		end
 	end,
 	leftButtonHold = function()
@@ -455,6 +458,9 @@ scene.inputHandler = {
 			isPlayerMoving = true
 			currentMoveDirection = 'right'
 			scene:movePlayer('right')
+		end
+		if PlayerData.isEquiping == true then
+			inGameEquip:nextItem()
 		end
 	end,
 	rightButtonHold = function()

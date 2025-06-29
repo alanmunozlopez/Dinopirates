@@ -178,5 +178,5 @@ function FXshadow:refresh()
 end
 
 -- Placeholder for future idle lighting behavior
-function idleLight()
+function FXshadow:idleLight()
 end

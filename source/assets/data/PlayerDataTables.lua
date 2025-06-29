@@ -14,7 +14,7 @@ PlayerData = {
 	hasBag = false,
 	hasTools = false,
 	canDance = false,
-	activeItem = nil,
+	activeItem = 1,
 	sonarActive = false,
 	isActive = false,
 	isTalking = false,
@@ -46,6 +46,9 @@ PlayerData = {
 		id = nil,
 		x = nil,
 		y = nil
+	},
+	items={
+		"tools",
 	}
 }
 PlayerDataOriginal = {
@@ -64,7 +67,7 @@ PlayerDataOriginal = {
 	hasBag = false,
 	hasTools = false,
 	canDance = false,
-	activeItem = nil,
+	activeItem = 1,
 	sonarActive = false,
 	isActive = false,
 	isTalking = false,
@@ -96,5 +99,8 @@ PlayerDataOriginal = {
 		id = nil,
 		x = nil,
 		y = nil
+	},
+	items={
+		
 	}
 }
