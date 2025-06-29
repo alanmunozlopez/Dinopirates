@@ -11,8 +11,8 @@ function inGameMenu:init()
   if PlayerData.items == nil then
     
   end
-  firstItem = itemMenu("first",ZIndex.ui+1)
-  secondItem = itemMenu("second",ZIndex.ui+1)
+  lampItem = itemMenu("lamp",ZIndex.ui+1)
+  bootItem = itemMenu("boot",ZIndex.ui+1)
   self:add()
 end
 
@@ -33,6 +33,9 @@ function inGameMenu:shadow()
 end
 function inGameMenu:closeMenu()
     shadow:clear(Graphics.kColorClear)
+    lampItem:remove()
+    bootItem:remove()
+    print('closing menu')
     -- remove all the icons also
 end
 
@@ -47,20 +50,19 @@ function inGameMenu:nextItem()
 end
 
 function inGameMenu:update()
-
   if table.getSize(PlayerData.items) > 0 then
-      if PlayerData.activeItem <= 1 then
+      if PlayerData.activeItem < 1 then
         PlayerData.activeItem = table.getSize(PlayerData.items) 
+      end
+      if PlayerData.activeItem > table.getSize(PlayerData.items) then
+        PlayerData.activeItem = 1
       end
       if PlayerData.isEquiping == true then  
         self:shadow()
         
-        firstItem:show(30, 30)
-        secondItem:show(64, 30)
-      else
-        firstItem:remove()
-        secondItem:remove()
-        self:closeMenu()
+        lampItem:show(30, 30)
+        bootItem:show(64, 30)
+        
       end
   end
   

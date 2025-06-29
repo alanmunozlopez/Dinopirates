@@ -408,10 +408,9 @@ scene.inputHandler = {
 		if PlayerData.isGaming == false and PlayerData.isEquiping == true then
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
-			print('closing menu')
+			inGameMenu:closeMenu()
 		end
 		playerFocus()
-		printTable(PlayerData.items)
 	end,
 	BButtonHeld = function()
 		

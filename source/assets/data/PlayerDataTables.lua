@@ -48,7 +48,7 @@ PlayerData = {
 		y = nil
 	},
 	items={
-		"tools",
+		
 	}
 }
 PlayerDataOriginal = {
