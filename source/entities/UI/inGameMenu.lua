@@ -41,12 +41,10 @@ end
 
 function inGameMenu:prevItem()
     PlayerData.activeItem -= 1
-    print(PlayerData.activeItem)
 end
 
 function inGameMenu:nextItem()
     PlayerData.activeItem += 1
-    print(PlayerData.activeItem)
 end
 
 function inGameMenu:update()
