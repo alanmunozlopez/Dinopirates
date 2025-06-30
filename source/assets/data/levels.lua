@@ -774,53 +774,6 @@ levels = {
 		floor = {
 			level = 1,
 			visited = false,
-			roomNumber = 16,
-			tile = 2,
-			light = 0.5,
-			shadow = false,
-			doors = {
-			{
-				direction = 'top',
-				open = 'open',
-				leadsTo = 108
-			}
-			},
-			comic = {
-					wasPlayed = false,
-					name = "intro-comic",
-					play = "enter"
-			},
-			items = {
-	
-			},
-			triggers = {
-	
-			},
-			enemies = {
-			{
-				name = "brocorat",
-				x = 294,
-				y = 169,
-				speed = 1.0,
-				id = '000'
-			},
-			{
-				name = "brocorat",
-				x = 110,
-				y = 175,
-				speed = 1.0,
-				id = '001'
-			}
-			},
-			props = {
-	
-			}
-		}
-	},
-	{
-		floor = {
-			level = 1,
-			visited = false,
 			roomNumber = 13,
 			tile = 2,
 			light = 0.5,
@@ -976,6 +929,237 @@ levels = {
 				type = "table",
 				x = 242,
 				y = 57
+			}
+			}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			roomNumber = 12,
+			tile = 1,
+			light = 0.1,
+			shadow = true,
+			doors = {
+			{
+				direction = 'right',
+				open = 'open',
+				leadsTo = 113
+			},
+			{
+				direction = 'left',
+				open = 'open',
+				leadsTo = 101
+			}
+			},
+	
+			comic = {
+	 
+			},
+			items = {
+	
+			},
+			triggers = {
+			{
+				usedTrigger = false,
+				x = 316,
+				y = 119,
+				width = 20,
+				height = 200,
+				script = "darkest"
+			},
+			{
+				usedTrigger = false,
+				x = 181,
+				y = 166,
+				width = 166,
+				height = 78,
+				script = "nicetobrocoliyou"
+			}
+			},
+			enemies = {
+			{
+				name = "brocorat",
+				x = 188,
+				y = 203,
+				speed = 0.5,
+				id = "03B23829-2DF0-4459-9D7E-E7C8F236E8C3"
+			}
+			},
+			props = {
+			{
+				type = "chair",
+				x = 369,
+				y = 76,
+				id = "AC268256-C68F-4831-8931-3AD9B715D86E"
+			},
+			{
+				type = "chair",
+				x = 371,
+				y = 175,
+				id = "17A9F6BC-382A-4789-AE8F-0675FC56B058"
+			},
+			{
+				type = "blood2",
+				x = 295,
+				y = 151,
+						nocollide = true,
+				id = "61B46CE3-16CA-44B3-8ABF-36220812A0C6"
+			},
+			{
+				type = "blood",
+				x = 263,
+				y = 131,
+						nocollide = true,
+				id = "8F914DC5-7E67-4A98-B1CE-7807A2480A87"
+			},
+			{
+				type = "blood2",
+				x = 228,
+				y = 98,
+						nocollide = true,
+				id = "334890AC-7FC1-4932-AEC1-471D3639F3CC"
+			},
+			{
+				type = "deadrat",
+				x = 83,
+				y = 191,
+						nocollide = true,
+				id = "C59FF2D1-0C00-48BF-89C8-67B752E79947"
+			},
+			{
+				type = "deadrat",
+				x = 48,
+				y = 171,
+						nocollide = true,
+				id = "6E31F8B6-70D9-4A5B-AC91-EFB9A8417390"
+			},
+			{
+				type = "box",
+				x = 295,
+				y = 122,
+				id = "9B8EF8CC-F4CB-4946-9F20-85040EC41863"
+			},
+			{
+				type = "box",
+				x = 306,
+				y = 193,
+				id = "8AB39BCC-DBE3-4839-A0BC-F332A7E1F513"
+			},
+			{
+				type = "box",
+				x = 228,
+				y = 49,
+				id = "2E80325E-A653-4240-A172-8F4A218A7768"
+			},
+			{
+				type = "box",
+				x = 130,
+				y = 37,
+				id = "EE488F28-271E-40E1-AECF-865F927DA983"
+			},
+			{
+				type = "box",
+				x = 57,
+				y = 56,
+				id = "AA55EF2C-3C2C-4E4C-9191-3996AC6C7263"
+			},
+			{
+				type = "fellchair",
+				x = 147,
+				y = 105,
+				id = "23D9700F-1A5A-46D8-B1C6-82DBBC5959BF"
+			},
+			{
+				type = "fellTable",
+				x = 272,
+				y = 161,
+				id = "70D3C91C-785F-4131-A092-0B09A7BCE38E"
+			},
+			{
+				type = "toxic",
+				x = 307,
+				y = 25,
+				id = "CA530713-F50C-41FF-A7AE-B4E2B654586A"
+			},
+			{
+				type = "toxic",
+				x = 185,
+				y = 132,
+				id = "FB112CED-D7B0-4BC9-8FEB-08C14BC9001F"
+			},
+			{
+				type = "box",
+				x = 116,
+				y = 208,
+				id = "F6B532F8-00C4-4C8D-A14B-6798324FE417"
+			},
+			{
+				type = "box",
+				x = 253,
+				y = 208,
+				id = "F8B1B2EF-7559-4CA0-A3E9-87BACFD30118"
+			},
+			{
+				type = "box",
+				x = 234,
+				y = 173,
+				id = "D0D9E2C7-D6AD-4B74-9847-A1BBFD4C2E9A"
+			},
+			{
+				type = "box",
+				x = 201,
+				y = 153,
+				id = "9D6F6739-F4BC-498D-B015-EF53D4D4F95B"
+			},
+			{
+				type = "box",
+				x = 168,
+				y = 154,
+				id = "13291B51-27D6-4B90-98B3-6106EFD434CE"
+			},
+			{
+				type = "box",
+				x = 139,
+				y = 155,
+				id = "9A0783C8-9F8D-4E80-8A76-EA9F2BE150F9"
+			},
+			{
+				type = "box",
+				x = 120,
+				y = 179,
+				id = "295504BF-E871-4AA2-A9CA-AFAAFB23E5B6"
+			},
+			{
+				type = "fellchair",
+				x = 152,
+				y = 206,
+				id = "B7DA3E84-4C7F-4C5F-B95D-DFF662C026FC"
+			},
+			{
+				type = "fellchair",
+				x = 221,
+				y = 205,
+				id = "0935B8F6-6B27-4481-8CFD-36A1AACD4F5F"
+			},
+			{
+				type = "chair",
+				x = 186,
+				y = 166,
+				id = "2A23B09D-5D7F-4D85-A759-A5CBC1B41EEE"
+			},
+			{
+				type = "chair",
+				x = 150,
+				y = 168,
+				id = "1CAC1B0A-E403-42C7-8599-D84A93E2FF32"
+			},
+			{
+				type = "chair",
+				x = 219,
+				y = 170,
+				id = "FC760DE1-AE56-4D90-81C6-4117D24A27E1"
 			}
 			}
 		}

@@ -101,6 +101,7 @@ end
 
 function dialogScreen:removeAll()
 	PlayerData.isTalking = false
+	PlayerData.isGaming = true
 	videoActive = false
 	dialogbg:remove()
 	video:remove()

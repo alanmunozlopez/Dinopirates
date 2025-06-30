@@ -1,7 +1,7 @@
 PlayerData = {
 	x = 200,
 	y = 200, 
-	speed = 1.5,
+	speed = 1.7,
 	battery = 0, 
 	sanity = 100,
 	calories = 100,
@@ -14,12 +14,14 @@ PlayerData = {
 	hasBag = false,
 	hasTools = false,
 	canDance = false,
+	activeItem = 1,
 	sonarActive = false,
 	isActive = false,
 	isTalking = false,
 	isCutscene = false,
 	isFocused = false,
 	isCharging = false,
+	isEquiping = false,
 	floor = 1,
 	room = 1,
 	isGaming = false,
@@ -44,12 +46,15 @@ PlayerData = {
 		id = nil,
 		x = nil,
 		y = nil
+	},
+	items={
+		
 	}
 }
 PlayerDataOriginal = {
 	x = 200,
 	y = 200, 
-	speed = 1.5,
+	speed = 1.7,
 	battery = 0, 
 	sanity = 100,
 	calories = 100,
@@ -62,12 +67,14 @@ PlayerDataOriginal = {
 	hasBag = false,
 	hasTools = false,
 	canDance = false,
+	activeItem = 1,
 	sonarActive = false,
 	isActive = false,
 	isTalking = false,
 	isCutscene = false,
 	isFocused = false,
 	isCharging = false,
+	isEquiping = false,
 	floor = 1,
 	room = 1,
 	isGaming = false,
@@ -92,5 +99,8 @@ PlayerDataOriginal = {
 		id = nil,
 		x = nil,
 		y = nil
+	},
+	items={
+		
 	}
 }

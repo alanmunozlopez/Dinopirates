@@ -41,7 +41,7 @@ function Enemy:moveCollision(movementX, movementY, player)
     end
 
     local actualX, actualY, collisions, length = self:moveWithCollisions(movementX, movementY)
-    local bounceFactor = 2
+    local bounceFactor = 3
     if length > 0 then
         for index, collision in pairs(collisions) do
             local collideObject = collision['other']
@@ -55,13 +55,16 @@ function Enemy:moveCollision(movementX, movementY, player)
                 self.player:fight()
             end
 
-            -- 🟡 Bounce effect here
-            if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy)then
+            --  Bounce effect here
+            if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy) then
+                
                 if collideObject:isa(Enemy) then
                     self.hitCounter += 1
                 end
-                if collideObject:isa(PropItem) and self.hitCounter > 10 then
-                    collideObject:destroyProp() 
+                if collideObject:isa(PropItem) and collideObject.isEdible == true then
+                    if (collideObject.type ~= "holeLeft" ) and self.hitCounter > 10 then
+                        collideObject:destroyProp(collideObject.id) 
+                    end
                 end
                 local normal = collision['normal']
                 if normal then
