@@ -47,7 +47,6 @@ function Enemy:moveCollision(movementX, movementY, player)
             local collideObject = collision['other']
             
             if collideObject:isa(Player) and self.player.isAlive then
-                print(self.id)
                 PlayerData.lastEnemyTouched.type = "Brocorat"
                 PlayerData.lastEnemyTouched.id = self.id
                 PlayerData.lastEnemyTouched.x = self.x
@@ -60,6 +59,8 @@ function Enemy:moveCollision(movementX, movementY, player)
                 
                 if collideObject:isa(Enemy) then
                     self.hitCounter += 1
+                    
+                    -- add function to enemies be able to eat themselves
                 end
                 if collideObject:isa(PropItem) and collideObject.isEdible == true then
                     if (collideObject.type ~= "holeLeft" ) and self.hitCounter > 10 then

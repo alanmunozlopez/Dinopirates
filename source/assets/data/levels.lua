@@ -950,7 +950,7 @@ levels = {
 			{
 				direction = 'left',
 				open = 'open',
-				leadsTo = 101
+				leadsTo = 111
 			}
 			},
 	
@@ -971,20 +971,20 @@ levels = {
 			},
 			{
 				usedTrigger = false,
-				x = 181,
-				y = 166,
-				width = 166,
-				height = 78,
+				x = 182,
+				y = 143,
+				width = 167,
+				height = 71,
 				script = "nicetobrocoliyou"
 			}
 			},
 			enemies = {
 			{
 				name = "brocorat",
-				x = 188,
+				x = 185,
 				y = 203,
-				speed = 0.5,
-				id = "03B23829-2DF0-4459-9D7E-E7C8F236E8C3"
+				speed = 0.996612548828125,
+				id = "6CD0904B-5E6C-4656-AD72-A23A49EBD85B"
 			}
 			},
 			props = {
@@ -1164,6 +1164,197 @@ levels = {
 			}
 		}
 	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			roomNumber = 11,
+			tile = 2,
+			light = 0.2,
+			shadow = true,
+			doors = {
+			{
+				direction = 'right',
+				open = 'open',
+				leadsTo = 112
+			},
+			{
+				direction = 'left',
+				open = 'open',
+				leadsTo = 101
+			}
+			},
+	
+			comic = {
+	 
+			},
+			items = {
+	
+			},
+			triggers = {
+	
+			},
+			enemies = {
+			{
+				name = "brocorat",
+				x = 316,
+				y = 202,
+				speed = 1.0,
+				id = "2BC709ED-1D7F-474C-B7F5-912494BF748D"
+			},
+			{
+				name = "brocorat",
+				x = 359,
+				y = 205,
+				speed = 1.0,
+				id = "F0A65535-0362-493D-BDBC-0E7032A54AA6"
+			},
+			{
+				name = "brocorat",
+				x = 325,
+				y = 40,
+				speed = 1.0,
+				id = "1261A3B3-314A-44DB-A362-4F26127E8EA7"
+			},
+			{
+				name = "brocorat",
+				x = 367,
+				y = 48,
+				speed = 1.0,
+				id = "93F52253-93FB-4B72-A038-4F0CEC86B71E"
+			}
+			},
+			props = {
+			{
+				type = "fellchair",
+				x = 291,
+				y = 37,
+				id = "06A21F12-0639-4F55-85A4-4330F8730A91"
+			},
+			{
+				type = "table",
+				x = 348,
+				y = 173,
+				id = "B228B42D-7C7E-464A-B2FE-60E948AFDC0E"
+			},
+			{
+				type = "fellTable",
+				x = 301,
+				y = 172,
+				id = "D9A92C16-DDDD-4055-B271-4F64471833FE"
+			},
+			{
+				type = "fellTable",
+				x = 266,
+				y = 193,
+				id = "E57CD37C-30E9-432E-B29E-3290C567138B"
+			},
+			{
+				type = "fellTable",
+				x = 285,
+				y = 71,
+				id = "31601844-7613-404B-829B-4DADC766B11B"
+			},
+			{
+				type = "holeRight",
+				x = 77,
+				y = 178,
+				id = "6F9D97A8-BFD7-4B45-898B-FA425774F11B"
+			},
+			{
+				type = "holeRight",
+				x = 76,
+				y = 146,
+				id = "3F1419BD-E596-4D8D-9913-C8DFE9BA20A5"
+			},
+			{
+				type = "holeRight",
+				x = 76,
+				y = 114,
+				id = "DCC3ED24-2520-4B65-AF39-64B3A6264B2B"
+			},
+			{
+				type = "holeRight",
+				x = 77,
+				y = 82,
+				id = "CE4A0705-CA16-4578-BC90-2D3348B11073"
+			},
+			{
+				type = "holeRight",
+				x = 77,
+				y = 50,
+				id = "21C9051C-C422-4B05-8A7D-792D9468B990"
+			},
+			{
+				type = "holeTop",
+				x = 65,
+				y = 31,
+				id = "482B675E-D904-44A7-BDBF-2B4F1ADFA58A"
+			},
+			{
+				type = "holeDown",
+				x = 65,
+				y = 212,
+				id = "48B8067C-D3E7-4C72-8453-AAFDDACF70E5"
+			},
+			{
+				type = "holeRight",
+				x = 79,
+				y = 200,
+				id = "EEECD0EC-BCAB-4B9C-9E13-49597E320B4F"
+			},
+			{
+				type = "holeLeft",
+				x = 48,
+				y = 45,
+				id = "998E4F1C-9283-4051-8175-D020D39C8847"
+			},
+			{
+				type = "holeLeft",
+				x = 47,
+				y = 77,
+				id = "18AD7F50-85C0-4F66-9B45-DCFB62DB63DB"
+			},
+			{
+				type = "holeLeft",
+				x = 47,
+				y = 108,
+				id = "947AE7E2-3BB6-4FE2-9A60-42F89C1AE910"
+			},
+			{
+				type = "holeLeft",
+				x = 45,
+				y = 138,
+				id = "CCC2A2EC-F0B8-4E55-9B1F-85D42CAA59D1"
+			},
+			{
+				type = "holeLeft",
+				x = 45,
+				y = 166,
+				id = "D7FA0002-A43C-4DA3-AE24-D5C774AF7DA5"
+			},
+			{
+				type = "holeLeft",
+				x = 51,
+				y = 198,
+				id = "FDBF2FA6-B635-4D30-82BD-02D3AFAF3E1D"
+			},
+			{
+				type = "fellchair",
+				x = 323,
+				y = 80,
+				id = "384AD9C2-8B8A-4BCE-884B-3036F1DEDE32"
+			},
+			{
+				type = "fellchair",
+				x = 363,
+				y = 75,
+				id = "02B26B2C-B487-491A-8282-1FBA17EBAF20"
+			}
+			}
+		}
+	},
+	-- test levels
 	{
 		floor = {
 			level = 1,
