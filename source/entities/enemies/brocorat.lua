@@ -15,6 +15,8 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.animation.empty.frameDuration = 6
 	self.animation:addState('shine', 9, 14)
 	self.animation.shine.frameDuration = 6
+	self.animation:addState('eaten', 16, 16)
+	self.animation.eaten.frameDuration = 6
 	
 	self.type = "Enemy"
 	self.id = ID
@@ -23,11 +25,12 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.stepCount = moveSpeed * 20 -- if speed is below 0.5 the enemy doesnt move
 	self.player = player
 	self.Zindex = Zindex
+	if moveSpeed == nil then
+		self.moveSpeed = 0.6
+	end
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
-	if moveSpeed == nil then
-		self.moveSpeed = 1
-	end
+	
 	
 	self:setSize(32, 32)
 	self:moveTo(x, y)

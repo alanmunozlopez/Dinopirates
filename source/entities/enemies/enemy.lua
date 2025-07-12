@@ -35,7 +35,7 @@ end
 
 function Enemy:moveCollision(movementX, movementY, player)
     if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
-        self.moveSpeed = 0
+        self.moveSpeed = 0.5
     elseif PlayerData.battery > 60 and PlayerData.isInDarkness == true then
         self.moveSpeed = self.initialSpeed
     end
@@ -58,15 +58,16 @@ function Enemy:moveCollision(movementX, movementY, player)
             if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy) then
                 
                 if collideObject:isa(Enemy) then
-                    self.hitCounter += 1
-                    
                     -- add function to enemies be able to eat themselves
                 end
                 if collideObject:isa(PropItem) and collideObject.isEdible == true then
-                    if (collideObject.type ~= "holeLeft" ) and self.hitCounter > 10 then
+                    self.hitCounter += 1
+                    if (collideObject.type ~= "holeLeft" ) and self.hitCounter > 25 then
                         collideObject:destroyProp(collideObject.id) 
+                        self.hitCounter = 5
                     end
                 end
+                
                 local normal = collision['normal']
                 if normal then
                     -- Push back 5 pixels in the opposite direction

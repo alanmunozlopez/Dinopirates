@@ -1170,7 +1170,7 @@ levels = {
 			visited = false,
 			roomNumber = 11,
 			tile = 2,
-			light = 0.2,
+			light = 0.1,
 			shadow = true,
 			doors = {
 			{
@@ -1199,62 +1199,32 @@ levels = {
 				name = "brocorat",
 				x = 316,
 				y = 202,
-				speed = 1.0,
+				speed = 0.6,
 				id = "2BC709ED-1D7F-474C-B7F5-912494BF748D"
 			},
 			{
 				name = "brocorat",
-				x = 359,
-				y = 205,
-				speed = 1.0,
-				id = "F0A65535-0362-493D-BDBC-0E7032A54AA6"
-			},
-			{
-				name = "brocorat",
-				x = 325,
-				y = 40,
-				speed = 1.0,
-				id = "1261A3B3-314A-44DB-A362-4F26127E8EA7"
-			},
-			{
-				name = "brocorat",
 				x = 367,
-				y = 48,
-				speed = 1.0,
-				id = "93F52253-93FB-4B72-A038-4F0CEC86B71E"
+				y = 37,
+				speed = 0.6,
+				id = "221D5B06-36CC-4E73-950B-D9B3E46AAEBB"
+			},
+			{
+				name = "brocorat",
+				x = 286,
+				y = 39,
+				speed = 0.6,
+				id = "773FAADD-05B1-4A6E-8B9D-5C5077010164"
+			},
+			{
+				name = "brocorat",
+				x = 199,
+				y = 62,
+				speed = 0.6,
+				id = "79EA4061-1A37-4669-9223-C47122E88CBF"
 			}
 			},
 			props = {
-			{
-				type = "fellchair",
-				x = 291,
-				y = 37,
-				id = "06A21F12-0639-4F55-85A4-4330F8730A91"
-			},
-			{
-				type = "table",
-				x = 348,
-				y = 173,
-				id = "B228B42D-7C7E-464A-B2FE-60E948AFDC0E"
-			},
-			{
-				type = "fellTable",
-				x = 301,
-				y = 172,
-				id = "D9A92C16-DDDD-4055-B271-4F64471833FE"
-			},
-			{
-				type = "fellTable",
-				x = 266,
-				y = 193,
-				id = "E57CD37C-30E9-432E-B29E-3290C567138B"
-			},
-			{
-				type = "fellTable",
-				x = 285,
-				y = 71,
-				id = "31601844-7613-404B-829B-4DADC766B11B"
-			},
 			{
 				type = "holeRight",
 				x = 77,
@@ -1341,15 +1311,201 @@ levels = {
 			},
 			{
 				type = "fellchair",
-				x = 323,
-				y = 80,
-				id = "384AD9C2-8B8A-4BCE-884B-3036F1DEDE32"
+				x = 359,
+				y = 77,
+				id = "91475217-F343-40D3-930A-9ABB71FFF8B7"
 			},
 			{
 				type = "fellchair",
-				x = 363,
-				y = 75,
-				id = "02B26B2C-B487-491A-8282-1FBA17EBAF20"
+				x = 335,
+				y = 65,
+				id = "96A7A695-522D-4BDA-AAEA-3BA3B097F246"
+			},
+			{
+				type = "fellchair",
+				x = 329,
+				y = 33,
+				id = "5F321874-9203-4E95-838A-E7C985D3AA68"
+			},
+			{
+				type = "table",
+				x = 323,
+				y = 167,
+				id = "18904A2D-7890-444D-A463-9906FDBCFFCA"
+			},
+			{
+				type = "table",
+				x = 291,
+				y = 173,
+				id = "037F32C5-1809-4D55-BDB1-B9A8C7C3C477"
+			},
+			{
+				type = "table",
+				x = 280,
+				y = 204,
+				id = "4C5B9E86-48A5-41C5-83D4-83FA76FF8BEA"
+			},
+			{
+				type = "table",
+				x = 306,
+				y = 81,
+				id = "35F80FCA-BBAD-454F-9CF2-F4E11CCFA4C5"
+			},
+			{
+				type = "table",
+				x = 273,
+				y = 82,
+				id = "D2E4E1C1-B029-465D-8AAB-74226C11215B"
+			},
+			{
+				type = "table",
+				x = 235,
+				y = 82,
+				id = "3E8F5E6C-0E19-4716-A02C-43DDF75179F0"
+			},
+			{
+				type = "fellTable",
+				x = 253,
+				y = 173,
+				id = "13C19A16-1651-4EB2-9D41-325B20FF842A"
+			},
+			{
+				type = "fellTable",
+				x = 217,
+				y = 102,
+				id = "AE932C68-FA87-4E70-870C-DE3FAA85DBC4"
+			},
+			{
+				type = "fellTable",
+				x = 240,
+				y = 205,
+				id = "C1EF7186-A53A-4FC1-923C-513D934770CC"
+			},
+			{
+				type = "fellTable",
+				x = 242,
+				y = 47,
+				id = "9A9813DE-95D5-4756-A758-6C4758F02F65"
+			},
+			{
+				type = "fellTable",
+				x = 101,
+				y = 202,
+				id = "1D2D7155-6C64-499B-8B0D-9D1F2EE6EAF5"
+			},
+			{
+				type = "box",
+				x = 186,
+				y = 130,
+				id = "DD6420DB-5EB8-4083-9CA5-0DEC4A9E9E48"
+			},
+			{
+				type = "box",
+				x = 208,
+				y = 27,
+				id = "27CE799C-6C64-4725-8D70-49EEED5CBE9C"
+			},
+			{
+				type = "chair",
+				x = 140,
+				y = 31,
+				id = "31B3BCD5-F0F9-4BA7-B9AC-18F4DE558918"
+			},
+			{
+				type = "chair",
+				x = 109,
+				y = 43,
+				id = "A7966884-1778-4D04-9850-E780BF035E2E"
+			},
+			{
+				type = "fellchair",
+				x = 183,
+				y = 106,
+				id = "C6DE2425-D8FE-4220-9DEA-4ECF42D144A9"
+			},
+			{
+				type = "fellchair",
+				x = 156,
+				y = 54,
+				id = "2B6EDEB8-01A7-4193-A428-42FE068632C0"
+			},
+			{
+				type = "fellchair",
+				x = 190,
+				y = 147,
+				id = "D043F036-547E-41C8-8FE9-49F17519AEFA"
+			},
+			{
+				type = "fellchair",
+				x = 209,
+				y = 206,
+				id = "40902A2C-0232-4306-AC22-1BA8448ACB6F"
+			},
+			{
+				type = "fellTable",
+				x = 370,
+				y = 182,
+				id = "4DACBAD6-53DD-411F-851B-FF310A4762AB"
+			},
+			{
+				type = "fellTable",
+				x = 350,
+				y = 163,
+				id = "F978E508-750E-470A-A206-E4BB37767A87"
+			},
+			{
+				type = "fellTable",
+				x = 159,
+				y = 72,
+				id = "09027FE9-F3F9-49EC-AF62-9CF8AB47CAFF"
+			},
+			{
+				type = "table",
+				x = 156,
+				y = 79,
+				id = "DE2B8EC6-5609-4A17-9840-1F706E9580E7"
+			},
+			{
+				type = "table",
+				x = 289,
+				y = 153,
+				id = "91778947-0EFC-4839-9118-B1933C902FBC"
+			},
+			{
+				type = "fellTable",
+				x = 287,
+				y = 87,
+				id = "5DEF2A62-9770-49A0-846C-D660ABC81B01"
+			},
+			{
+				type = "fellTable",
+				x = 89,
+				y = 171,
+				id = "8EDC8695-407E-4F3C-8BF5-DAEF417ED857"
+			},
+			{
+				type = "fellTable",
+				x = 98,
+				y = 135,
+				id = "116C6C20-E576-47BD-8ACD-887317272E11"
+			},
+			{
+				type = "chair",
+				x = 171,
+				y = 106,
+				id = "4A0ACB77-8EFA-4407-9D89-96B345176A3C"
+			},
+			{
+				type = "table",
+				x = 176,
+				y = 156,
+				id = "26BAD5FD-BCB1-4A87-B00C-7F5D34E2A615"
+			},
+			{
+				type = "table",
+				x = 311,
+				y = 141,
+				id = "B361B8C3-FE23-4692-883C-ED09EE5FB6BC"
 			}
 			}
 		}

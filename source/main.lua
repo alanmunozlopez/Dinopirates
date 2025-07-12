@@ -74,7 +74,8 @@ CollideGroups = {
 	enemy = 2,
 	props = 3,
 	items = 4,
-	wall = 5
+	wall = 5,
+	noCollide = 6
 }
 playdate.datastore.write(levels, 'levelOriginal', true) 
 playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)-- DEBUG
