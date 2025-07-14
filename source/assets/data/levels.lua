@@ -1170,8 +1170,8 @@ levels = {
 			visited = false,
 			roomNumber = 11,
 			tile = 2,
-			light = 0.1,
-			shadow = true,
+			light = 0.3,
+			shadow = false,
 			doors = {
 			{
 				direction = 'right',
@@ -1192,35 +1192,50 @@ levels = {
 	
 			},
 			triggers = {
-	
+			{
+				usedTrigger = false,
+				x = 310,
+				y = 115,
+				width = 37,
+				height = 52,
+				script = "betterRun"
+			},
+			{
+				usedTrigger = false,
+				x = 92,
+				y = 85,
+				width = 22,
+				height = 74,
+				script = "justJump"
+			}
 			},
 			enemies = {
 			{
 				name = "brocorat",
 				x = 316,
 				y = 202,
-				speed = 0.6,
+				speed = 1.0,
 				id = "2BC709ED-1D7F-474C-B7F5-912494BF748D"
 			},
 			{
 				name = "brocorat",
 				x = 367,
 				y = 37,
-				speed = 0.6,
+				speed = 1.0,
 				id = "221D5B06-36CC-4E73-950B-D9B3E46AAEBB"
 			},
 			{
 				name = "brocorat",
 				x = 286,
 				y = 39,
-				speed = 0.6,
+				speed = 0.8272628784179688,
 				id = "773FAADD-05B1-4A6E-8B9D-5C5077010164"
 			},
 			{
 				name = "brocorat",
 				x = 199,
 				y = 62,
-				speed = 0.6,
+				speed = 0.8272628784179688,
 				id = "79EA4061-1A37-4669-9223-C47122E88CBF"
 			}
 			},
@@ -1506,6 +1521,87 @@ levels = {
 				x = 311,
 				y = 141,
 				id = "B361B8C3-FE23-4692-883C-ED09EE5FB6BC"
+			},
+			{
+				type = "fellTable",
+				x = 350,
+				y = 78,
+				id = "E2B3AA17-2314-4A60-B422-A2B0A5DCACA0"
+			},
+			{
+				type = "fellTable",
+				x = 318,
+				y = 76,
+				id = "75C90640-BC39-4C15-AC84-C625D5849EA5"
+			},
+			{
+				type = "fellTable",
+				x = 359,
+				y = 173,
+				id = "EC3B639F-4D6F-4CC4-BABB-5711BE0E4ED8"
+			},
+			{
+				type = "chair",
+				x = 206,
+				y = 98,
+				id = "24595F99-35B3-4E9C-BFA2-62EC44C24D2A"
+			},
+			{
+				type = "blood",
+				x = 246,
+				y = 132,
+						nocollide = true,
+				id = "D48F599B-0975-4C6E-A478-F443F9AE1AA0"
+			},
+			{
+				type = "blood",
+				x = 165,
+				y = 192,
+						nocollide = true,
+				id = "D0655AEB-DD6D-420C-9327-AE5C2F9D3783"
+			},
+			{
+				type = "blood2",
+				x = 118,
+				y = 85,
+						nocollide = true,
+				id = "6862A1F3-31AA-4842-80B7-B09E89C008CF"
+			},
+			{
+				type = "chair",
+				x = 164,
+				y = 88,
+				id = "EAEFEB89-6906-42F2-9BF5-DEAA302DF0D9"
+			},
+			{
+				type = "chair",
+				x = 252,
+				y = 72,
+				id = "C5C48D8A-C337-4B86-9A04-D0D3CE2C6011"
+			},
+			{
+				type = "chair",
+				x = 374,
+				y = 75,
+				id = "6067C653-1853-4B3D-B126-EC1AAEC1E434"
+			},
+			{
+				type = "chair",
+				x = 334,
+				y = 160,
+				id = "6B84ED7F-40C8-4106-A77C-424038113ACB"
+			},
+			{
+				type = "chair",
+				x = 268,
+				y = 188,
+				id = "E64D7B48-DD94-4E07-B3E0-949340D34973"
+			},
+			{
+				type = "chair",
+				x = 230,
+				y = 84,
+				id = "9EEEE9CA-1C1A-42EC-BF1E-968746720271"
 			}
 			}
 		}

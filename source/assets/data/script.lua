@@ -373,6 +373,72 @@ script = {
    }
            
        }
+   },{
+       name = "betterRun",
+       dialog = {
+           {
+       video = 'radioHand',
+       text = "betterrun-01",
+   },
+                   {
+       video = 'playerSurprise',
+       text = "betterrun-02",
+   },
+                   {
+       video = 'radioHand',
+       text = "betterrun-03",
+   },
+                   {
+       video = 'radioHand',
+       text = "betterrun-04",
+   },
+                   {
+       video = 'playerWorry',
+       text = "betterrun-05",
+   },
+                   {
+       video = 'radioHand',
+       text = "betterrun-06",
+   }
+           
+       }
+   },{
+       name = "justJump",
+       dialog = {
+           {
+       video = 'playerSurprise',
+       text = "justjump-01",
+   },
+                   {
+       video = 'radioPocket',
+       text = "justjump-02",
+   },
+                   {
+       video = 'playerWorry',
+       text = "justjump-03",
+   },
+                   {
+       video = 'radioHand',
+       text = "justjump-04",
+   },
+                   {
+       video = 'playerSurprise',
+       text = "justjump-05",
+   },
+                   {
+       video = 'radioHand',
+       text = "justjump-06",
+   },
+                   {
+       video = 'player',
+       text = "justjump-07",
+   },
+                   {
+       video = 'radioHand',
+       text = "justjump-08",
+   }
+           
+       }
    },
     {
         name = "nokeys",
