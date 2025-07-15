@@ -1170,8 +1170,8 @@ levels = {
 			visited = false,
 			roomNumber = 11,
 			tile = 2,
-			light = 0.3,
-			shadow = false,
+			light = 0.2,
+			shadow = true,
 			doors = {
 			{
 				direction = 'right',
@@ -1606,6 +1606,63 @@ levels = {
 			}
 		}
 	},
+	{
+		floor = {
+			level = 2,
+			visited = false,
+			roomNumber = 11,
+			tile = 3,
+			light = 0.1,
+			shadow = true,
+			doors = {
+	
+			},
+	
+			comic = {
+	 
+			},
+			items = {
+	
+			},
+			triggers = {
+			{
+				usedTrigger = false,
+				x = 210,
+				y = 119,
+				width = 33,
+				height = 200,
+				script = "thankyou"
+			},
+			{
+				usedTrigger = false,
+				x = 272,
+				y = 123,
+				width = 33,
+				height = 200,
+				script = "trytofight"
+			},
+			{
+				usedTrigger = false,
+				x = 16,
+				y = 121,
+				width = 20,
+				height = 200,
+				script = "nowayback"
+			}
+			},
+			enemies = {
+	
+			},
+			props = {
+			{
+				type = "chair",
+				x = 343,
+				y = 119,
+				id = "701B0812-EA23-42F1-8F38-E97A2E7314E2"
+			}
+			}
+		}
+	}, 
 	-- test levels
 	{
 		floor = {
