@@ -1795,7 +1795,7 @@ levels = {
 		floor = {
 			level = 2,
 			visited = false,
-			roomNumber = 20,
+			roomNumber = 22,
 			tile = 3,
 			light = 0.5,
 			shadow = false,
@@ -1837,6 +1837,93 @@ levels = {
 			}
 			}
 		}
+	},
+	--21
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			roomNumber = 21,
+			tile = 1,
+			light = 0.1,
+			shadow = true,
+			doors = {
+			{
+				direction = 'top',
+				open = 'open',
+				leadsTo = 101
+			},
+			},
+			comic = {
+			},
+			items = {
+				type = 'lamp',
+				x = 196,
+				y = 158
+			},
+			triggers = {
+	
+			},
+			enemies = {
+			{
+				name = "brocorat",
+				x = 342,
+				y = 39,
+				speed = 0.8,
+				id="99"
+			},
+			{
+				name = "brocorat",
+				x = 97,
+				y = 46,
+				speed = 0.6,
+				id="100"
+			}
+			},
+			props = {
+			{
+				type = "chair",
+				x = 196,
+				y = 158
+			},
+			{
+				type = "chair",
+				x = 63,
+				y = 71
+			},
+			{
+				type = "chair",
+				x = 115,
+				y = 88
+			},
+			{
+				type = "chair",
+				x = 181,
+				y = 59
+			},
+			{
+				type = "chair",
+				x = 290,
+				y = 30
+			},
+			{
+				type = "chair",
+				x = 346,
+				y = 89
+			},
+			{
+				type = "chair",
+				x = 269,
+				y = 94
+			},
+			{
+				type = "table",
+				x = 150,
+				y = 83
+			}
+			}
+		}
 	}
 
 }
+
