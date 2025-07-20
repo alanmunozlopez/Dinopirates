@@ -61,10 +61,10 @@ function Enemy:moveCollision(movementX, movementY, player)
                     -- add function to enemies be able to eat themselves
                 end
                 if collideObject:isa(PropItem) and collideObject.isEdible == true then
-                    self.hitCounter += 1
-                    if (collideObject.type ~= "holeLeft" ) and self.hitCounter > 25 then
+                    self.powerLevel += 1
+                    if (collideObject.type ~= "holeLeft" ) and self.powerLevel > 25 then
                         collideObject:destroyProp(collideObject.id) 
-                        self.hitCounter = 5
+                        self.powerLevel = 5
                     end
                 end
                 

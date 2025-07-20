@@ -29,8 +29,8 @@ local configToast = import 'assets/data/toastConfig'
 -- [x] player falling in random positions.
 -- [x] ingame menu
 -- [] remove all enemies and make just one big enemy:
-	-- [ ] enemy should move if you are not in range. and alter depending on the level can change the way it moves
-	-- [ ] when you win a fight the enemy get stunned
+	-- [x] enemy should move if you are not in range. and alter depending on the level can change the way it moves
+	-- [ ] when you win a fight the enemy get stunned (add the feature)
 	-- [ ] everytime it gets stunned its power goes up and maybe shoul be a way yo make it less powerful
 	-- [ ] also dependeing on how much props eats gets more powerful
 	-- [ ] the more powerful the more difficult its the dance

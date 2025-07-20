@@ -1846,7 +1846,7 @@ levels = {
 			roomNumber = 21,
 			tile = 1,
 			light = 0.1,
-			shadow = true,
+			shadow = false,
 			doors = {
 			{
 				direction = 'top',
@@ -1865,13 +1865,6 @@ levels = {
 	
 			},
 			enemies = {
-			{
-				name = "brocorat",
-				x = 342,
-				y = 39,
-				speed = 0.8,
-				id="99"
-			},
 			{
 				name = "brocorat",
 				x = 97,
