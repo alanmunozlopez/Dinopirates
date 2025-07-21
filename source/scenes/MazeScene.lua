@@ -63,7 +63,7 @@ scene.backgroundColor = Graphics.kColorWhite
 function scene:init()
 	scene.super.init(self)
 	cheat.onComplete = function()
-		
+		PlayerData.hasLamp = true
 	end
 	-- Your code here
 	

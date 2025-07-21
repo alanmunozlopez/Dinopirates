@@ -114,7 +114,9 @@ end
 
 function drawVersionNumber(x, y, alignment)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	local version = "*"..Panels.vars.lang.."* *" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
+	
+	-- local version = "*"..Panels.vars.lang.."* Demo*" .. playdate.metadata.version .. "*"
+	local version = "* Demo " .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
 	local versionWidth = Graphics.getTextSize(version)
 	
 	-- If no x position provided, default to right-aligned at 400 (screen width)

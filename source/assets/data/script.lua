@@ -373,6 +373,195 @@ script = {
    }
            
        }
+   },{
+       name = "betterRun",
+       dialog = {
+           {
+       video = 'radioHand',
+       text = "betterrun-01",
+   },
+                   {
+       video = 'playerSurprise',
+       text = "betterrun-02",
+   },
+                   {
+       video = 'radioHand',
+       text = "betterrun-03",
+   },
+                   {
+       video = 'radioHand',
+       text = "betterrun-04",
+   },
+                   {
+       video = 'playerWorry',
+       text = "betterrun-05",
+   },
+                   {
+       video = 'radioHand',
+       text = "betterrun-06",
+   }
+           
+       }
+   },{
+       name = "justJump",
+       dialog = {
+           {
+       video = 'playerSurprise',
+       text = "justjump-01",
+   },
+                   {
+       video = 'radioPocket',
+       text = "justjump-02",
+   },
+                   {
+       video = 'playerWorry',
+       text = "justjump-03",
+   },
+                   {
+       video = 'radioHand',
+       text = "justjump-04",
+   },
+                   {
+       video = 'playerSurprise',
+       text = "justjump-05",
+   },
+                   {
+       video = 'radioHand',
+       text = "justjump-06",
+   },
+                   {
+       video = 'player',
+       text = "justjump-07",
+   },
+                   {
+       video = 'radioHand',
+       text = "justjump-08",
+   }
+           
+       }
+   },{
+       name = "thankyou",
+       dialog = {
+           {
+       video = 'radioRing',
+       text = "thankyou-01",
+   },
+                   {
+       video = 'playerSleepy',
+       text = "thankyou-02",
+   },
+                   {
+       video = 'radioHand',
+       text = "thankyou-03",
+   },
+                   {
+       video = 'playerSurprise',
+       text = "thankyou-04",
+   },
+                   {
+       video = 'radioHand',
+       text = "thankyou-05",
+   },
+                   {
+       video = 'radioHand',
+       text = "thankyou-06",
+   },
+                   {
+       video = 'playerWorry',
+       text = "thankyou-07",
+   },
+                   {
+       video = 'radioHand',
+       text = "thankyou-08",
+   },
+                   {
+       video = 'radioHand',
+       text = "thankyou-09",
+   },
+                   {
+       video = 'radioHand',
+       text = "thankyou-10",
+   },
+                   {
+       video = 'playerWorry',
+       text = "thankyou-11",
+   },
+                   {
+       video = 'radioHand',
+       text = "thankyou-12",
+   },
+                   {
+       video = 'playerCry',
+       text = "thankyou-13",
+   }
+           
+       }
+   },{
+       name = "trytofight",
+       dialog = {
+           {
+       video = 'radioHand',
+       text = "trytofight-01",
+   },
+                   {
+       video = 'playerWorry',
+       text = "trytofight-02",
+   },
+                   {
+       video = 'radioPocket',
+       text = "trytofight-03",
+   },
+                   {
+       video = 'radioRing',
+       text = "trytofight-04",
+   }
+           
+       }
+   },{
+       name = "nowayback",
+       dialog = {
+           {
+       video = 'playerWorry',
+       text = "nowayback-01",
+   },
+                   {
+       video = 'radioPocket',
+       text = "nowayback-02",
+   },
+                   {
+       video = 'radioHand',
+       text = "nowayback-03",
+   },
+                   {
+       video = 'playerHappy',
+       text = "nowayback-04",
+   },
+                   {
+       video = 'radioHand',
+       text = "nowayback-05",
+   },
+                   {
+       video = 'radioHand',
+       text = "nowayback-06",
+   },
+                   {
+       video = 'playerWorry',
+       text = "nowayback-07",
+   },
+                   {
+       video = 'radioHand',
+       text = "nowayback-08",
+   },
+                   {
+       video = 'playerCry',
+       text = "nowayback-09",
+   },
+                   {
+       video = 'radioHand',
+       text = "nowayback-10",
+   }
+           
+       }
    },
     {
         name = "nokeys",

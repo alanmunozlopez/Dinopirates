@@ -104,7 +104,6 @@ function Player:collisionResponse(other)
     
   elseif other:isa(CrewMember) then
     other:taken() 
-    
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Trigger) then
