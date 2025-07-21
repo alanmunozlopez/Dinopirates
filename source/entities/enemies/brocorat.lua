@@ -30,7 +30,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	end
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
-	self.sightRadius = 50 + self.powerLevel*2 -- this should be calculated according to the level or power of the enemy.
+	self.sightRadius = 100 + self.powerLevel * 2 -- this should be calculated according to the level or power of the enemy.
 	
 	self:setSize(32, 32)
 	self:moveTo(x, y)

@@ -17,7 +17,7 @@ class("MazeScene").extends(NobleScene)
 local scene = MazeScene
 local room = nil -- Level in table position
 
-import "entities/player/player"
+import "entities/player/init"
 
 import "assets/comics/comicsData"
 
