@@ -1,10 +1,10 @@
 import 'enemy'
 
-Frogcolli = {}
-class('Frogcolli').extends('Enemy')
+bosscolli = {}
+class('bosscolli').extends('Enemy')
 
-function Frogcolli:init(x, y, moveSpeed, Zindex, player)
-	Brocorat.super.init(self, 'assets/images/enemies/frogcolli', true)
+function bosscolli:init(x, y, moveSpeed, Zindex, player)
+	Brocorat.super.init(self, 'assets/images/enemies/bosscolli', true)
 	
 	-- Mark: animation states
 	self.animation:addState('idle', 5, 6)
@@ -14,7 +14,7 @@ function Frogcolli:init(x, y, moveSpeed, Zindex, player)
 	self.animation:addState('empty', 11, 11)
 	self.animation.empty.frameDuration = 6
 	
-	self:setSize(40, 40)
+	self:setSize(48, 48)
 	self:moveTo(x, y)
 	self:setCollideRect(4, 8, 32, 32)
 	
@@ -33,15 +33,12 @@ function Frogcolli:init(x, y, moveSpeed, Zindex, player)
 	self:add(x, y)
 end
 
-function Frogcolli:search(player)
+function bosscolli:search(player)
 	self:linealSearch(player)
 end
 
-function Frogcolli:update()
+function bosscolli:update()
 	if PlayerData.isActive == true then
 		self:search(self.player)
-	end
-	if PlayerData.sonarActive == true then
-		self:sonar()
 	end
 end

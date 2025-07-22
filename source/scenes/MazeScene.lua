@@ -22,7 +22,7 @@ import "entities/player/init"
 import "assets/comics/comicsData"
 
 import "entities/enemies/brocorat"
-import "entities/enemies/frogcolli"
+import "entities/enemies/bosscolli"
 import "entities/enemies/crewmember"
 
 import 'entities/props/propItem'
@@ -231,8 +231,8 @@ function scene:enter()
 			
 			if name == "brocorat" then
 				Brocorat(x, y, speed, ZIndex.enemy, player, id)
-			elseif name == "frogcolli" then
-				Frogcolli(x, y, speed, ZIndex.enemy, player, id)
+			elseif name == "bosscolli" then
+				bosscolli(x, y, speed, ZIndex.enemy, player, id)
 			end
 		else
 			local x = enemyData.x
