@@ -551,7 +551,7 @@ function scene:PowerCrank()
         	if player.loadingPower then
             	print('powa')  -- Consider removing debug print
         	else
-            	player:chargeBattery(1)
+            	player:chargeBattery(3)
             	if shadow then
                 	shadow:refresh()
             	end
