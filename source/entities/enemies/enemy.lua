@@ -57,12 +57,12 @@ function Enemy:moveCollision(movementX, movementY, player)
             --  Bounce effect here
             if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy) then
                 
-                if collideObject:isa(Enemy) then
+                if collideObject:isa(Brocorat) then
                     -- add function to enemies be able to eat themselves
                 end
                 if collideObject:isa(PropItem) and collideObject.isEdible == true then
                     self.powerLevel += 1
-                    if (collideObject.type ~= "holeLeft" ) and self.powerLevel > 25 then
+                    if ((collideObject.type ~= "holeLeft" ) or (collideObject.type ~= "holeRight" ) or (collideObject.type ~= "holeDown" ) or (collideObject.type ~= "holeTop" )) and self.powerLevel > 25 then
                         collideObject:destroyProp(collideObject.id) 
                         -- self.powerLevel -= 5
                     end
