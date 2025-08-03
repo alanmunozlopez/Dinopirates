@@ -21,7 +21,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.type = "Enemy"
 	self.id = ID
 	
-	self.powerLevel = 0
+	self.powerLevel = PlayerData.EnemiesData.powerLevel + PlayerData.sanityCounter
 	self.stunProc = moveSpeed * 20 -- if speed is below 0.5 the enemy doesnt move
 	self.player = player
 	self.Zindex = Zindex
@@ -30,7 +30,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	end
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
-	self.sightRadius = 100 + self.powerLevel * 2 -- this should be calculated according to the level or power of the enemy.
+	self.sightRadius = PlayerData.EnemiesData.sightRadius + self.powerLevel * 2 -- this should be calculated according to the level or power of the enemy.
 	
 	self:setSize(32, 32)
 	self:moveTo(x, y)

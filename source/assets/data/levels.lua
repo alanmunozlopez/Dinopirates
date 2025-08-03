@@ -1687,8 +1687,8 @@ levels = {
 				type = 'crewmember',
 				x = 87,
 				y = 68,
-	  taken = false,
-	  crewId = "100"
+	  		  taken = false,
+	  		  crewId = "100"
 			},
 			{
 				type = 'keycard',
@@ -1857,9 +1857,13 @@ levels = {
 			comic = {
 			},
 			items = {
-				type = 'lamp',
-				x = 196,
-				y = 158
+				{
+					type = 'crewmember',
+					x = 287,
+					y = 268,
+					taken = false,
+					crewId = "100"
+				},
 			},
 			triggers = {
 	

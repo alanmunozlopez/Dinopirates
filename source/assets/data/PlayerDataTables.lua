@@ -49,10 +49,11 @@ PlayerData = {
 	},
 	items={
 		
+	},
+	EnemiesData ={
+		powerLevel = 0,
+		sightRadius = 10,
 	}
-}
-EnemyData = {
-	
 }
 
 PlayerDataOriginal = {
@@ -106,5 +107,8 @@ PlayerDataOriginal = {
 	},
 	items={
 		
+	},
+	EnemiesData ={
+		powerLevel = 0,
 	}
 }

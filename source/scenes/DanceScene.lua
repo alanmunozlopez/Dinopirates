@@ -167,7 +167,6 @@ function scene:update()
        Graphics.drawLine(loseX + barWidth / 2, markerY, loseX + barWidth / 2, markerY + markerH)
    end
     
-    -- Mark: lose condition
     
     if self.evadePower == 0 then
         
@@ -188,6 +187,7 @@ function scene:update()
    -- Clamp balancePosition to max range
    self.balancePosition = math.max(-self.balanceMaxOffset, math.min(self.balanceMaxOffset, self.balancePosition))
    local balanceOffset = self.balancePosition
+   
    -- Draw the image-based bar instead of fillRect
    self.balanceBarImage:drawCentered(screenCenterX + balanceOffset - barWidth / 2, barY)
    
@@ -246,6 +246,8 @@ function scene:checkDanceResults()
       -- captures player position and goes back to the original room
       PlayerData.playerSpawn.x = PlayerData.playerExit.x
       PlayerData.playerSpawn.y = PlayerData.playerExit.y
+      
+      -- Sets the power level of the enemies
       
       -- transition to the original room
       self.returnRoom = RoomTranslate(PlayerData.saveLevel)

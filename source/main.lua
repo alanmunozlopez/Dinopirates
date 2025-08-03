@@ -32,6 +32,8 @@ local configToast = import 'assets/data/toastConfig'
 	-- [ ] when you win a fight the counter of fight affect the enemy fights
 	-- [ ] the higher the wins the higher the chances of the enemy to evolve.
 	-- [ ] the more powerful the more difficult its the dance
+-- [ ] Create the speaker and the feature that hides the crew members but makes the radar area of the enemies bigger.
+-- Nice to have
 -- [ ] create the balance scene that can only be entered with certain amount of crew members
 
 
