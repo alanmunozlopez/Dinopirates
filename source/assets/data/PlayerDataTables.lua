@@ -5,6 +5,7 @@ PlayerData = {
 	battery = 0, 
 	sanity = 100,
 	calories = 100,
+	steps = 0,
 	sanityCounter = 0,
 	hasKey = false,
 	hasLamp = false,
@@ -63,6 +64,7 @@ PlayerDataOriginal = {
 	battery = 0, 
 	sanity = 100,
 	calories = 100,
+	steps = 0,
 	sanityCounter = 0,
 	hasKey = false,
 	hasLamp = false,
@@ -110,5 +112,6 @@ PlayerDataOriginal = {
 	},
 	EnemiesData ={
 		powerLevel = 0,
+		sightRadius = 10,
 	}
 }

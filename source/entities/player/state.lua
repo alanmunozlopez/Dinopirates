@@ -57,6 +57,9 @@ function Player:focus() -- unused
   end
 end
 
+function Player:pedometer()
+  print(PlayerData.steps)
+end
 function Player:deFocus() -- unused
   if PlayerData.isFocused == true then
     PlayerData.isFocused = false

@@ -248,6 +248,7 @@ function scene:checkDanceResults()
       PlayerData.playerSpawn.y = PlayerData.playerExit.y
       
       -- Sets the power level of the enemies
+      PlayerData.amountDances += 1
       
       -- transition to the original room
       self.returnRoom = RoomTranslate(PlayerData.saveLevel)
@@ -260,6 +261,9 @@ function scene:checkDanceResults()
    end   
 end
 
+function updateStats()
+   
+end
 scene.inputHandler = {
 
     -- A button
