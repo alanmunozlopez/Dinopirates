@@ -58,6 +58,24 @@ local cheat = CheatCode("up", "up", "up", "down")
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
 
+local tileMapData = {
+  {6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,3,10},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {2, 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,8},
+  {1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,3,3,3, 3, 3, 3, 3, 3, 3, 3, 3, 3,3,9},
+}
+
 -- This runs when your scene's object is created, which is the
 -- first thing that happens when transitioning away from another scene.
 function scene:init()
@@ -102,19 +120,18 @@ function scene:enter()
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
 	map = Graphics.tilemap.new()
 	map:setImageTable(tilesMap)
-	map:setSize(16,9)
+	-- map:setSize(16,9)
 	
 	-- Mark: floor 
-	for y = 1, 9 do
-		for x = 1, 16 do
-			map:setTileAtPosition(x, y, levels[room].floor.tile)
-		end
-	end
+	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
+	
+	renderTileMap(tileMapData, map)
 	
 	floor = Graphics.sprite.new()
 	floor:setZIndex(1)
 	floor:setTilemap(map)
-	floor:moveTo(200, 120)
+	floor:moveTo(0, 0) -- Top-left corner
+	floor:setCenter(0, 0) -- Anchor top-left instead of center
 	floor:add()
 	
 	--Mark: Walls (this can be optimized)

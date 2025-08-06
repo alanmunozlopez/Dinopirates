@@ -202,6 +202,17 @@ function Utilities.checkSanityAchievements()
 	end
 end
 
+function renderTileMap(tileData, tilemap)
+  local height = #tileData
+  local width = #tileData[1]
+  tilemap:setSize(width, height)
+  for y = 1, height do
+	for x = 1, width do
+	  tilemap:setTileAtPosition(x, y, tileData[y][x])
+	end
+  end
+end
+
 -- Bulk revoke (delete) achievements
 function Utilities.clearAllAchievements()
 	for _, data in ipairs(achievementData.achievements) do
