@@ -15,6 +15,7 @@ import 'scenes/TitleScene'
 
 import 'assets/data/PlayerDataTables'
 import 'assets/data/levels'
+import 'assets/data/tilemap'
 import 'assets/data/script'
 
 achievementData = import 'assets/data/achievements'
