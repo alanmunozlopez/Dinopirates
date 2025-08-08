@@ -63,7 +63,6 @@ function Player:move(direction)
       end
       local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
       PlayerData.direction = direction
-      PlayerData.steps += 0.5
       self:pedometer()
     end
   end

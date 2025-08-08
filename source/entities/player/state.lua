@@ -58,8 +58,18 @@ function Player:focus() -- unused
 end
 
 function Player:pedometer()
-  print(PlayerData.steps)
+  PlayerData.steps += 0.5
+  print("steps " .. PlayerData.steps .. "/  steps " .. PlayerData.totalSteps .."/ calories ".. PlayerData.calories)
+  if PlayerData.steps >= 200 then
+    PlayerData.totalSteps += PlayerData.steps
+    PlayerData.steps = 0
+    self:burnCalories(20)
+  end
 end
+function Player:burnCalories(calories)
+    PlayerData.calories -= calories 
+end
+
 function Player:deFocus() -- unused
   if PlayerData.isFocused == true then
     PlayerData.isFocused = false

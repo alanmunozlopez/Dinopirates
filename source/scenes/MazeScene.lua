@@ -531,6 +531,9 @@ scene.inputHandler = {
 	--
 	cranked = function(change, acceleratedChange)
 		scene:PowerCrank()
+		if playdate.getCrankTicks(2) > 0 then
+			player:burnCalories(5)
+		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
 	end,
@@ -546,7 +549,7 @@ end
 function scene:PowerCrank()
     if not player.isAlive then return end
     if PlayerData.isGaming == true then
-    	if playdate.getCrankTicks(3) > 0 then
+    	if playdate.getCrankTicks(4) > 0 then
         	if player.loadingPower then
             	print('powa')  -- Consider removing debug print
         	else
@@ -556,6 +559,7 @@ function scene:PowerCrank()
             	end
         	end
     	end
+		
 	end
     
     if player.battery == 100 then
