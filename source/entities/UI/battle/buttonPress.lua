@@ -77,15 +77,22 @@ function ButtonPress:collisionResponse(other)
 end
 
 function ButtonPress:update()
-	if PlayerData.isDancing == true then
-		if self.active == true then
-			self:tryMoveToFreePosition((self.x - ( 0.5*self.bpm/3 )), self.y)
-			
-			if self.x <= 40 then
-				self:moveTo(self.startPoint, self.y)
-				self:changeButtonSprite()
+	if PlayerData.isDancing and self.active then
+		-- Move left based on BPM (delta, not absolute position)
+		self:moveBy(-(0.5 * self.bpm / 3), 0)
+
+		-- Check if button passed the miss line
+		if self.x <= 40 then
+			-- Here you could register a miss in your scene logic
+			if not self.wasHit then
+				-- Call your miss handling function here if needed
+				print("Miss:", self.buttonKey)
 			end
+
+			-- Reset position and sprite
+			self:moveTo(self.startPoint, self.y)
+			self:changeButtonSprite()
+			self.wasHit = false
 		end
 	end
-	
 end

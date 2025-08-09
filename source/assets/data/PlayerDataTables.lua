@@ -7,7 +7,7 @@ PlayerData = {
 	calories = 100, -- top 500
 	steps = 0,
 	totalSteps = 0,
-	sanityCounter = 2, -- top 100
+	sanityCounter = 1, -- top 100
 	hasKey = false,
 	hasLamp = false,
 	hasRadio = false,
@@ -53,7 +53,7 @@ PlayerData = {
 		
 	},
 	EnemiesData ={
-		powerLevel = 1, -- top 20
+		powerLevel = 20, -- top 20
 		sightRadius = 50, 
 	}
 }

@@ -7,7 +7,7 @@ import "entities/UI/battle/buttonPress"
 import "entities/UI/battle/hitZone"
 import "entities/UI/battle/playerDance"
 import "entities/UI/battle/backgroundDance"
-import "entities/UI/battle/enemyDance"
+import "entities/UI/battle/enemyRatDance"
 import "entities/UI/battle/buttonCover"
 import "entities/UI/battle/winIndicator"
 import "entities/UI/battle/loseIndicator"
@@ -40,7 +40,7 @@ function scene:init()
     self.enemyHP = 50
     self.evadePower = 30
     self.condition = nil
-
+    self.enemyType = nil
     lifes = 3
 
     -- counters for correct presses
@@ -106,11 +106,13 @@ function scene:enter()
         self.bpm = 24
         self.numberOfButtons = 8
         print("Difficulty UPGRADED: bpm=" .. tostring(self.bpm) .. ", buttons=" .. tostring(self.numberOfButtons) .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
+        self.enemyType = "boss"
     else
         -- Keep defaults
         self.bpm = 16
         self.numberOfButtons = 4
         print("Difficulty KEPT: bpm=" .. tostring(self.bpm) .. ", buttons=" .. tostring(self.numberOfButtons) .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
+        self.enemyType = "rat"
     end
 
     -- Create ButtonPress instances dynamically according to numberOfButtons
@@ -133,7 +135,7 @@ function scene:enter()
     -- Other entities (unchanged)
     hitzone = HitZone(40,30, self.bpm)
     playerDance = PlayerDance(self.bpm)
-    enemyDance = EnemyDance(self.bpm)
+    enemyDance = EnemyRatDance(self.bpm, self.enemyType)
     buttonCover = ButtonCover()
     winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
@@ -258,7 +260,7 @@ function scene:update()
    self.balancePosition = math.max(-self.balanceMaxOffset, math.min(self.balanceMaxOffset, self.balancePosition))
    local balanceOffset = self.balancePosition
    
-   -- Draw the image-based bar instead of fillRect
+   -- Draw the image-based bar instead 
    self.balanceBarImage:drawCentered(screenCenterX + balanceOffset - barWidth / 2, barY)
    
    -- Check win or lose condition based on position
