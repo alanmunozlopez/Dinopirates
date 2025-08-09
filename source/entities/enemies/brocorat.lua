@@ -30,7 +30,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	end
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
-	self.sightRadius = PlayerData.EnemiesData.sightRadius + self.powerLevel * 2 -- this should be calculated according to the level or power of the enemy.
+	self.sightRadius = PlayerData.EnemiesData.sightRadius + self.powerLevel * 3 -- this should be calculated according to the level or power of the enemy.
 	
 	self:setSize(32, 32)
 	self:moveTo(x, y)
@@ -47,9 +47,10 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 end
 
 function Brocorat:search(player)
-	if self.stunProc > 10 then-- stun idea
-		if (player.x > self.x - self.sightRadius) and (player.x < self.x + self.sightRadius) and (player.y > self.y - self.sightRadius) and (player.y < self.y + self.sightRadius) then
-		self:blindSearch(player)
+	if self.stunProc > 1 then -- stun idea
+		if (player.x >= self.x - self.sightRadius) and (player.x <= self.x + self.sightRadius) and 
+		   (player.y >= self.y - self.sightRadius) and (player.y <= self.y + self.sightRadius) then
+			self:blindSearch(player)
 		end
 	end
 end
