@@ -21,8 +21,17 @@ local barHeight = 10
 local barY = 56
 local condition = nil
 function scene:init()
-	scene.super.init(self)
-    
+    scene.super.init(self)
+
+    -- Seed RNG with Playdate's current time in milliseconds (SDK 2.0+)
+    -- This makes the probability roll different each run.
+    if playdate and playdate.getCurrentTimeMilliseconds then
+        math.randomseed(playdate.getCurrentTimeMilliseconds())
+    else
+        math.randomseed(1) -- fallback: deterministic
+    end
+
+    -- default bpm, can be upgraded later
     self.bpm = 16
     self.ButtonPressed = nil
     self.buttonText = "none"
@@ -31,9 +40,10 @@ function scene:init()
     self.enemyHP = 50
     self.evadePower = 30
     self.condition = nil
-    
+
     lifes = 3
-    
+
+    -- counters for correct presses
     self.correctButtonPresses = {
         aButton = 0,
         bButton = 0,
@@ -42,25 +52,85 @@ function scene:init()
         upButton = 0,
         downButton = 0
     }
-    
-    self.balancePosition = 0 -- range -max a +max
+
+    self.balancePosition = 0 -- range -max to +max
     self.balanceMaxOffset = self.enemyHP -- enemy life/difficulty
-    
+
+    -- defaults for button count (may change on enter)
+    self.numberOfButtons = 4
 end
 
+-- Helper: calculate the probability (0-100) to upgrade difficulty
+function scene:determineDifficultyUpgrade()
+    -- Get safe values from PlayerData (use 0 as fallback)
+    local sanity = PlayerData.sanityCounter or 0
+    local power = (PlayerData.EnemiesData and PlayerData.EnemiesData.powerLevel) or 0
+    local calories = PlayerData.calories or 0
+
+    -- Normalize each input into [0,1] using assumed maxima.
+    -- Tweak these maxima to fit your game's real ranges for better results.
+    local sanityNorm = math.max(0, math.min(1, sanity / 100))   -- assumed max sanity 100
+    local powerNorm = math.max(0, math.min(1, power / 20))      -- assumed max powerLevel 20
+    local caloriesNorm = math.max(0, math.min(1, calories / 500)) -- assumed calories scale up to ~200
+
+    -- Weights: favor power and sanity a bit more than calories
+    local weightSanity = 0.35
+    local weightPower = 0.45
+    local weightCalories = 0.20
+
+    -- Combined normalized score
+    local normalizedScore = (sanityNorm * weightSanity) + (powerNorm * weightPower) + (caloriesNorm * weightCalories)
+
+    -- Convert to percentage probability
+    local probability = normalizedScore * 100
+
+    -- Clamp to [0,100]
+    probability = math.max(0, math.min(100, probability))
+
+    return probability
+end
 
 function scene:enter()
-	scene.super.enter(self)
+    scene.super.enter(self)
     local startPoint = 400
     condition = nil
-	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
-	sequence:start()
-    --
-    button = ButtonPress(self.bpm,startPoint+self.bpm)
-    button2 = ButtonPress(self.bpm,startPoint+self.bpm)
-    button3 = ButtonPress(self.bpm,startPoint+self.bpm)
-    button4 = ButtonPress(self.bpm,startPoint+self.bpm)
-    -- 
+    sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
+    sequence:start()
+
+    -- Decide whether to upgrade difficulty based on PlayerData
+    local chance = self:determineDifficultyUpgrade() -- number in [0,100]
+    local roll = math.random(0, 100)
+
+    if roll <= chance then
+        -- Upgrade triggered: increase bpm and button instances
+        self.bpm = 24
+        self.numberOfButtons = 8
+        print("Difficulty UPGRADED: bpm=" .. tostring(self.bpm) .. ", buttons=" .. tostring(self.numberOfButtons) .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
+    else
+        -- Keep defaults
+        self.bpm = 16
+        self.numberOfButtons = 4
+        print("Difficulty KEPT: bpm=" .. tostring(self.bpm) .. ", buttons=" .. tostring(self.numberOfButtons) .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
+    end
+
+    -- Create ButtonPress instances dynamically according to numberOfButtons
+    self.buttons = {}
+    for i = 1, self.numberOfButtons do
+        local b = ButtonPress(self.bpm, startPoint + self.bpm)
+        table.insert(self.buttons, b)
+    end
+
+    -- Keep backwards compatibility with existing single-named globals used elsewhere
+    button = self.buttons[1]
+    button2 = self.buttons[2]
+    button3 = self.buttons[3]
+    button4 = self.buttons[4]
+    button5 = self.buttons[5]
+    button6 = self.buttons[6]
+    button7 = self.buttons[7]
+    button8 = self.buttons[8]
+
+    -- Other entities (unchanged)
     hitzone = HitZone(40,30, self.bpm)
     playerDance = PlayerDance(self.bpm)
     enemyDance = EnemyDance(self.bpm)
@@ -72,13 +142,13 @@ function scene:enter()
 end
 
 function scene:start()
-	scene.super.start(self)
-    
-    button:movementDelay(0)
-    button2:movementDelay(300)
-    button3:movementDelay(600)
-    button4:movementDelay(900)
+    scene.super.start(self)
 
+    -- Stagger movement delays for all created buttons
+    local delayStep = 300
+    for i, btn in ipairs(self.buttons or {}) do
+        btn:movementDelay((i-1) * delayStep)
+    end
 end
 
 function scene:drawBackground()
@@ -264,6 +334,8 @@ end
 function updateStats()
    
 end
+
+
 scene.inputHandler = {
 
     -- A button

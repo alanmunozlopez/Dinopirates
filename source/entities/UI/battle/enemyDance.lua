@@ -1,7 +1,7 @@
 EnemyDance = {}
 class('EnemyDance').extends(NobleSprite)
 
-function EnemyDance:init(bpm)
+function EnemyDance:init(bpm, lvl)
 	EnemyDance.super.init(self, 'assets/images/ui/battle/enemyDance',true)
 	
 	if bpm == nil or bpm == 0 then
@@ -10,6 +10,8 @@ function EnemyDance:init(bpm)
 	frameduration = bpm/2
 	-- Mark: animation states
 	self.animation:addState('Brocoratidle', 1, 1)
+	self.animation.Brocoratidle.frameDuration = frameduration
+	self.animation:addState('BrocorKingidle', 2, 2)
 	self.animation.Brocoratidle.frameDuration = frameduration
 	
 	self.animation:setState('Brocoratidle')
