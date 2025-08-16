@@ -15,19 +15,22 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.animation.empty.frameDuration = 6
 	self.animation:addState('shine', 9, 14)
 	self.animation.shine.frameDuration = 6
+	self.animation:addState('eaten', 16, 16)
+	self.animation.eaten.frameDuration = 6
 	
 	self.type = "Enemy"
 	self.id = ID
 	
-	self.hitCounter = 0
-	self.stepCount = moveSpeed * 20 -- if speed is below 0.5 the enemy doesnt move
+	self.powerLevel = PlayerData.EnemiesData.powerLevel + PlayerData.sanityCounter
+	self.stunProc = moveSpeed * 20 -- if speed is below 0.5 the enemy doesnt move
 	self.player = player
 	self.Zindex = Zindex
+	if moveSpeed == nil then
+		self.moveSpeed = 0.6
+	end
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
-	if moveSpeed == nil then
-		self.moveSpeed = 1
-	end
+	self.sightRadius = PlayerData.EnemiesData.sightRadius + self.powerLevel * 3 -- this should be calculated according to the level or power of the enemy.
 	
 	self:setSize(32, 32)
 	self:moveTo(x, y)
@@ -44,8 +47,11 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 end
 
 function Brocorat:search(player)
-	if self.stepCount > 10 then -- stun idea
-		self:blindSearch(player)
+	if self.stunProc > 1 then -- stun idea
+		if (player.x >= self.x - self.sightRadius) and (player.x <= self.x + self.sightRadius) and 
+		   (player.y >= self.y - self.sightRadius) and (player.y <= self.y + self.sightRadius) then
+			self:blindSearch(player)
+		end
 	end
 end
 

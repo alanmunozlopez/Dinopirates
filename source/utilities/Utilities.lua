@@ -114,7 +114,9 @@ end
 
 function drawVersionNumber(x, y, alignment)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	local version = "*"..Panels.vars.lang.."* *" .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
+	
+	-- local version = "*"..Panels.vars.lang.."* Demo*" .. playdate.metadata.version .. "*"
+	local version = "* Demo " .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
 	local versionWidth = Graphics.getTextSize(version)
 	
 	-- If no x position provided, default to right-aligned at 400 (screen width)
@@ -198,6 +200,17 @@ function Utilities.checkSanityAchievements()
 	if achievement then
 		Utilities.grantAchievementIfNeeded(achievement)
 	end
+end
+
+function renderTileMap(tileData, tilemap)
+  local height = #tileData
+  local width = #tileData[1]
+  tilemap:setSize(width, height)
+  for y = 1, height do
+	for x = 1, width do
+	  tilemap:setTileAtPosition(x, y, tileData[y][x])
+	end
+  end
 end
 
 -- Bulk revoke (delete) achievements

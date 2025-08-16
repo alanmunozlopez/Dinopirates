@@ -35,7 +35,7 @@ end
 
 function Enemy:moveCollision(movementX, movementY, player)
     if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
-        self.moveSpeed = 0
+        self.moveSpeed = 0.5
     elseif PlayerData.battery > 60 and PlayerData.isInDarkness == true then
         self.moveSpeed = self.initialSpeed
     end
@@ -47,7 +47,6 @@ function Enemy:moveCollision(movementX, movementY, player)
             local collideObject = collision['other']
             
             if collideObject:isa(Player) and self.player.isAlive then
-                print(self.id)
                 PlayerData.lastEnemyTouched.type = "Brocorat"
                 PlayerData.lastEnemyTouched.id = self.id
                 PlayerData.lastEnemyTouched.x = self.x
@@ -58,14 +57,17 @@ function Enemy:moveCollision(movementX, movementY, player)
             --  Bounce effect here
             if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy) then
                 
-                if collideObject:isa(Enemy) then
-                    self.hitCounter += 1
+                if collideObject:isa(Brocorat) then
+                    -- add function to enemies be able to eat themselves
                 end
                 if collideObject:isa(PropItem) and collideObject.isEdible == true then
-                    if (collideObject.type ~= "holeLeft" ) and self.hitCounter > 10 then
+                    self.powerLevel += 1
+                    if ((collideObject.type ~= "holeLeft" ) or (collideObject.type ~= "holeRight" ) or (collideObject.type ~= "holeDown" ) or (collideObject.type ~= "holeTop" )) and self.powerLevel > 25 then
                         collideObject:destroyProp(collideObject.id) 
+                        self.powerLevel -= 5
                     end
                 end
+                
                 local normal = collision['normal']
                 if normal then
                     -- Push back 5 pixels in the opposite direction
@@ -84,9 +86,7 @@ function Enemy:collisionResponse(other)
     elseif other:isa(Box) or other:isa(PropItem) then
         return 'freeze'
     elseif other:isa(Enemy) then
-        -- Empty condition
     elseif other:isa(Player) then
-        -- Empty condition
         return 'overlap'
     else
         return 'freeze'

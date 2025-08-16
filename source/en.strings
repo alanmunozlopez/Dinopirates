@@ -119,17 +119,17 @@
 
 "chargelamp-05" = "better than that, gotta go byeeee"
 
-"nicetobrocoliyou-01" = "What’s that noise?"
+"nicetobrocoliyou-01" = "What's that noise?"
 
 "nicetobrocoliyou-02" = "something is moving behind those boxes?"
 
 "nicetobrocoliyou-03" = "Probably is a crew member, let me save you little one…"
 
-"nicetobrocoliyou-04" = "no, don’t make any noise, walk away from that room, I repeat WALK AWAY FROM THAT ROOM"
+"nicetobrocoliyou-04" = "no, don't make any noise, walk away from that room, I repeat WALK AWAY FROM THAT ROOM"
 
-"nicetobrocoliyou-05" = "what do you"
+"nicetobrocoliyou-05" = "what do you?"
 
-"nicetobrocoliyou-06" = "if you want to survive don’t let them touch you, run!!!"
+"nicetobrocoliyou-06" = "if you want to survive don't let them touch you, run!!!"
 "darkest-01" = "ahhh why keeps getting darker, we always pay the electricity bill on time."
 
 "darkest-02" = "Ring Ring"
@@ -138,8 +138,90 @@
 
 "darkest-04" = "WHAT?"
 
-"darkest-05" = "I keep saying, take care of the crew members they are very handy…"
+"darkest-05" = "I keep saying, take care of the crew members they are very handy..."
 
-"darkest-06" = "They clean, and do all the jobs we don’t know how to do… like… write emails and do calls."
+"darkest-06" = "They clean, and do all the jobs we don't know how to do... like... write emails and do calls."
 
 "darkest-07" = "and taxes!!"
+
+"betterrun-01" = "Run that room is infested!"
+
+"betterrun-02" = "ahhhh"
+
+"betterrun-03" = "They are blind, they won't see you if you move in the dark, but your lamp..."
+
+"betterrun-04" = "it makes noises while you charge it so be careful, try to escape to the next room..."
+
+"betterrun-05" = "oh no! and Im not fit enough yet to fight"
+
+"betterrun-06" = "yes just run, you are not READY YET!!"
+
+"justjump-01" = "hey what happened to the floor?"
+
+"justjump-02" = "Captain there's no time for taking care about the floor..."
+
+"justjump-03" = "What do you mean that floor was expensive."
+
+"justjump-04" = "you have to jump!"
+
+"justjump-05" = "but what's there?"
+
+"justjump-06" = "maybe less brocolites, maybe more..."
+
+"justjump-07" = "my level of confidence are very low now."
+
+"justjump-08" = "at least we fix the gravity compensator so you will fall slowly and gracefully..."
+
+"thankyou-01" = "Ring ring"
+
+"thankyou-02" = "that was a terrible landing, what happened with the “soft and gracefully”"
+
+"thankyou-03" = "ah no worry about that we will fix it in the next update"
+
+"thankyou-04" = "update? what are you talking about?"
+
+"thankyou-05" = "Im not talking to you im talking with the player"
+
+"thankyou-06" = "thank you for playing the early beta of Dinopirates  from inner space, Brocollation"
+
+"thankyou-07" = "OMG Im going crazy"
+
+"thankyou-08" = "in fact, yes you can go crazy if stay for longer periods in the darkness"
+
+"thankyou-09" = "which will affect the way you interact with the environment and of course your abilities"
+
+"thankyou-10" = "to survive and fight, did you tried to fight a Brocolite?"
+
+"thankyou-11" = "But someone told me they were dangerous"
+
+"thankyou-12" = "and you are a big HERVIBORE DINOSAUR, of course you can beat them, can you?"
+
+"thankyou-13" = "Im crazy"
+
+"trytofight-01" = "go start again, dont be afraid."
+
+"trytofight-02" = "ok enough communications"
+
+"trytofight-03" = "*THUCK*"
+
+"trytofight-04" = "Riiing ring riiiiiing"
+
+"nowayback-01" = "Im trap here?"
+
+"nowayback-02" = "Yes this is the end of the demo"
+
+"nowayback-03" = "but worry not my captain, there's a bunch of this being developed"
+
+"nowayback-04" = "Like a bunch of money and treasures for me?"
+
+"nowayback-05" = "hahaha not really, mostly more performance improvement, better animations,"
+
+"nowayback-06" = "a new INSANITY system, a few upgrades to the lamp, and sound, you aren't deaf"
+
+"nowayback-07" = "Insanity system? that doesn't sounds fun"
+
+"nowayback-08" = "oh you are right, definetely not fun for you"
+
+"nowayback-09" = "why?"
+
+"nowayback-10" = "again, *Thank you for playing*"

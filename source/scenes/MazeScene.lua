@@ -17,12 +17,12 @@ class("MazeScene").extends(NobleScene)
 local scene = MazeScene
 local room = nil -- Level in table position
 
-import "entities/player/player"
+import "entities/player/init"
 
 import "assets/comics/comicsData"
 
 import "entities/enemies/brocorat"
-import "entities/enemies/frogcolli"
+import "entities/enemies/bosscolli"
 import "entities/enemies/crewmember"
 
 import 'entities/props/propItem'
@@ -63,7 +63,7 @@ scene.backgroundColor = Graphics.kColorWhite
 function scene:init()
 	scene.super.init(self)
 	cheat.onComplete = function()
-		
+		PlayerData.hasLamp = true
 	end
 	-- Your code here
 	
@@ -102,19 +102,18 @@ function scene:enter()
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
 	map = Graphics.tilemap.new()
 	map:setImageTable(tilesMap)
-	map:setSize(16,9)
+	-- map:setSize(16,9)
 	
 	-- Mark: floor 
-	for y = 1, 9 do
-		for x = 1, 16 do
-			map:setTileAtPosition(x, y, levels[room].floor.tile)
-		end
-	end
+	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
+	
+	renderTileMap(tileMapData[1], map)
 	
 	floor = Graphics.sprite.new()
 	floor:setZIndex(1)
 	floor:setTilemap(map)
-	floor:moveTo(200, 120)
+	floor:moveTo(0, 0) -- Top-left corner
+	floor:setCenter(0, 0) -- Anchor top-left instead of center
 	floor:add()
 	
 	--Mark: Walls (this can be optimized)
@@ -231,8 +230,8 @@ function scene:enter()
 			
 			if name == "brocorat" then
 				Brocorat(x, y, speed, ZIndex.enemy, player, id)
-			elseif name == "frogcolli" then
-				Frogcolli(x, y, speed, ZIndex.enemy, player, id)
+			elseif name == "bosscolli" then
+				bosscolli(x, y, speed, ZIndex.enemy, player, id)
 			end
 		else
 			local x = enemyData.x
@@ -532,6 +531,9 @@ scene.inputHandler = {
 	--
 	cranked = function(change, acceleratedChange)
 		scene:PowerCrank()
+		if playdate.getCrankTicks(2) > 0 then
+			player:burnCalories(5)
+		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
 	end,
@@ -547,16 +549,17 @@ end
 function scene:PowerCrank()
     if not player.isAlive then return end
     if PlayerData.isGaming == true then
-    	if playdate.getCrankTicks(3) > 0 then
+    	if playdate.getCrankTicks(4) > 0 then
         	if player.loadingPower then
             	print('powa')  -- Consider removing debug print
         	else
-            	player:chargeBattery(1)
+            	player:chargeBattery(3)
             	if shadow then
                 	shadow:refresh()
             	end
         	end
     	end
+		
 	end
     
     if player.battery == 100 then

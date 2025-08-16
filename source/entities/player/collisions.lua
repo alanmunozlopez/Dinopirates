@@ -1,0 +1,90 @@
+function Player:collisionResponse(other)
+  
+  if other:isa(Enemy) then
+    if other:isa(Brocorat) then -- validate candance also
+      -- other:empty()
+      --other.animation:setState('empty')  -- Set enemy animation to empty state
+      --self.animation:setState('deadBrocolli')
+      PlayerData.lastEnemyTouched.type = "Brocorat"
+      PlayerData.lastEnemyTouched.id = other.id
+      PlayerData.lastEnemyTouched.x = other.x
+      PlayerData.lastEnemyTouched.y = other.y
+      self:fight()
+      return 'overlap'
+      
+    end
+    
+  elseif other:isa(CrewMember) then
+    other:taken() 
+  elseif other:isa(Box) then
+    return 'freeze' 
+  elseif other:isa(Trigger) then
+    
+    if other.type == nil and other.type ~= "cutscene" then
+      PlayerData.isGaming = false
+      PlayerData.isTalking = true
+      self.dialogUI:addScreen(other:returnScript(),other.sourceFeed)
+    end
+    
+    if other.type == "cutscene" then
+      PlayerData.isGaming = false
+      PlayerData.isCutscene = true
+      other:returnScript()
+      other:remove()
+    end
+    
+    Utilities.grantAchievementIfNeeded(other.script)
+    
+    return 'freeze'
+  elseif other:isa(Items) and other.type == 'keycard' then
+    other:removeAll()
+    self:grabKey()
+    return 'overlap'
+  elseif other:isa(Items) and other.type == 'lamp' then
+    other:removeAll()
+    self:grabLamp()
+    return 'overlap'
+  elseif other:isa(Items) and other.type == 'radio' then
+    other:removeAll()
+    self:grabRadio()
+    return 'overlap'
+  elseif other:isa(Items) and other.type == 'notes' then
+    other:removeAll()
+    self:grabNotes()
+    return 'overlap'
+  elseif other:isa(Items) and other.type == 'bag' then
+    other:removeAll()
+    self:grabBag()
+    return 'overlap'
+  elseif other:isa(Items) and other.type == 'tools' then
+    other:removeAll()
+    self:grabTools()
+    return 'overlap'
+  elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
+    
+    if (PlayerData.hasBoots == true and PlayerData.battery == 0) or PlayerData.hasBoots == false  then
+      print('falling')
+      self:fallBelow()
+      return 'overlap'
+    elseif PlayerData.hasBoots == true then
+      
+      self:drainBattery(1)
+      print('fly')
+    return 'overlap'
+    end
+
+  elseif other:isa(Door) then
+    
+    if (PlayerData.hasKey == true and other.status == 'closed') or other.status =='open' then
+      other:prevRoom(other.direction)
+      other:goTo()
+      return 'overlap'
+    else
+      PlayerData.isTalking = true
+      self.dialogUI:addScreen("nokeys")
+      return 'freeze'
+    end
+  
+  end
+  
+end

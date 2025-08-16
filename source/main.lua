@@ -15,6 +15,7 @@ import 'scenes/TitleScene'
 
 import 'assets/data/PlayerDataTables'
 import 'assets/data/levels'
+import 'assets/data/tilemap'
 import 'assets/data/script'
 
 achievementData = import 'assets/data/achievements'
@@ -27,7 +28,15 @@ local configToast = import 'assets/data/toastConfig'
 -- [x] fix delete save func
 -- [x] enemies eating the holes
 -- [x] player falling in random positions.
--- [] ingame menu
+-- [x] ingame menu
+	-- [x] enemy should move if you are not in range. and alter depending on the level can change the way it moves
+	-- [ ] when you win a fight the counter of fight affect the enemy fights
+	-- [ ] the higher the wins the higher the chances of the enemy to evolve.
+	-- [ ] the more powerful the more difficult its the dance
+-- [ ] Create the speaker and the feature that hides the crew members but makes the radar area of the enemies bigger.
+-- Nice to have
+-- [ ] create the balance scene that can only be entered with certain amount of crew members
+
 
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
@@ -74,7 +83,8 @@ CollideGroups = {
 	enemy = 2,
 	props = 3,
 	items = 4,
-	wall = 5
+	wall = 5,
+	noCollide = 6
 }
 playdate.datastore.write(levels, 'levelOriginal', true) 
 playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)-- DEBUG

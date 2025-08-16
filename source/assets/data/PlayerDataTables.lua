@@ -4,8 +4,10 @@ PlayerData = {
 	speed = 1.7,
 	battery = 0, 
 	sanity = 100,
-	calories = 100,
-	sanityCounter = 0,
+	calories = 100, -- top 500
+	steps = 0,
+	totalSteps = 0,
+	sanityCounter = 1, -- top 100
 	hasKey = false,
 	hasLamp = false,
 	hasRadio = false,
@@ -49,8 +51,13 @@ PlayerData = {
 	},
 	items={
 		
+	},
+	EnemiesData ={
+		powerLevel = 20, -- top 20
+		sightRadius = 50, 
 	}
 }
+
 PlayerDataOriginal = {
 	x = 200,
 	y = 200, 
@@ -58,6 +65,8 @@ PlayerDataOriginal = {
 	battery = 0, 
 	sanity = 100,
 	calories = 100,
+	steps = 0,
+	totalSteps = 0,
 	sanityCounter = 0,
 	hasKey = false,
 	hasLamp = false,
@@ -102,5 +111,9 @@ PlayerDataOriginal = {
 	},
 	items={
 		
+	},
+	EnemiesData ={
+		powerLevel = 1,
+		sightRadius = 50,
 	}
 }
