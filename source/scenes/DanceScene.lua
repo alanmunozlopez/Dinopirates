@@ -321,6 +321,7 @@ function scene:checkDanceResults()
       
       -- Sets the power level of the enemies
       PlayerData.amountDances += 1
+      PlayerData.calories += 60
       
       -- transition to the original room
       self.returnRoom = RoomTranslate(PlayerData.saveLevel)

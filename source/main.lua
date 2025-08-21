@@ -30,13 +30,14 @@ local configToast = import 'assets/data/toastConfig'
 -- [x] player falling in random positions.
 -- [x] ingame menu
 	-- [x] enemy should move if you are not in range. and alter depending on the level can change the way it moves
-	-- [ ] when you win a fight the counter of fight affect the enemy fights
-	-- [ ] the higher the wins the higher the chances of the enemy to evolve.
-	-- [ ] the more powerful the more difficult its the dance
--- [ ] Create the speaker and the feature that hides the crew members but makes the radar area of the enemies bigger.
+	-- [x] when you win a fight the counter of fight affect the enemy fights
+	-- [x] the higher the wins the higher the chances of the enemy to evolve.
+	-- [x] the more powerful the more difficult its the dance
+	-- [] make different levels of dificulty for the enemies, so theres 4 tiers of enemies and theres a chance to trigger any of them.
+	-- []add a flag so the player got a certain item it activates this feature.
 -- Nice to have
 -- [ ] create the balance scene that can only be entered with certain amount of crew members
-
+-- [ ] Create the speaker and the feature that hides the crew members but makes the radar area of the enemies bigger.
 
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
