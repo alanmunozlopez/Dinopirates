@@ -161,7 +161,11 @@ end
 
 function scene:update()
 	scene.super.update(self)
-    
+   if  PlayerData.isDancing == false then
+      resultsScreen:win()
+        print('waiting press')
+        return
+    end
     
     local collisions = hitzone:overlappingSprites()
     if table.getsize(collisions) > 0 then
@@ -334,8 +338,10 @@ function scene:checkDanceResults()
    end   
 end
 
-function updateStats()
-   
+function scene:startBattle()
+   resultsScreen:loadingScreen()
+   PlayerData.isDancing = true
+    
 end
 
 
@@ -345,6 +351,10 @@ scene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
+     if  PlayerData.isDancing == false then
+            scene:startBattle()
+            return
+        end
         scene:danceStep("aButton")
         scene:checkDanceResults()
     end,

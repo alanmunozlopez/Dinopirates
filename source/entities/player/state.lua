@@ -35,7 +35,6 @@ end
 
 function Player:fight()
   PlayerData.amountDances += 1
-  PlayerData.isDancing = true 
   Noble.transition(DanceScene)
 end
 

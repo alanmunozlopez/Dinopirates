@@ -30,3 +30,6 @@ end
 function ResultsScreen:lose()
 	self.animation:setState('lose')
 end
+function ResultsScreen:loadingScreen()
+	self.animation:setState('empty')
+end
