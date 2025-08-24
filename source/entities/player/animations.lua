@@ -1,35 +1,32 @@
 function Player:initAnimations()
-  self.animation:addState('idle', 1, 4)
+  self.animation:addState('idle', 41, 52)
   self.animation.idle.frameDuration = 24
   
-  self.animation:addState('right', 5, 7)
+  self.animation:addState('right', 11, 15)
   self.animation.right.frameDuration = 12
   
-  self.animation:addState('left', 8, 10)
+  self.animation:addState('left', 1, 5)
   self.animation.left.frameDuration = 12
   
-  self.animation:addState('down', 11, 13)
+  self.animation:addState('down', 26, 30)
   self.animation.down.frameDuration = 12
   
-  self.animation:addState('up', 14, 16)
+  self.animation:addState('up', 21, 25)
   self.animation.up.frameDuration = 12
   
-  self.animation:addState('deadBrocolli', 17, 18)
-  self.animation.deadBrocolli.frameDuration = 12
-  
-  self.animation:addState('lampIdle', 19, 22)
+  self.animation:addState('lampIdle', 53, 64)
   self.animation.lampIdle.frameDuration = 24
   
-  self.animation:addState('lampRight', 23, 25)
+  self.animation:addState('lampRight', 16, 20)
   self.animation.lampRight.frameDuration = 12
   
-  self.animation:addState('lampLeft', 26, 28)
+  self.animation:addState('lampLeft', 6, 10)
   self.animation.lampLeft.frameDuration = 12
   
-  self.animation:addState('lampDown', 29, 31)
+  self.animation:addState('lampDown', 31, 35)
   self.animation.lampDown.frameDuration = 12
   
-  self.animation:addState('charge', 32, 35)
+  self.animation:addState('charge', 36, 40)
   self.animation.charge.frameDuration = 12
   
   if (PlayerData.hasLamp == true and PlayerData.isInDarkness == true) then

@@ -40,7 +40,6 @@ end
 
 function Player:dead() -- unused
   self.isAlive = false
-  self.animation:setState('deadBrocolli')
   local function deathScreen()
   
     Noble.transition(DeadScene)

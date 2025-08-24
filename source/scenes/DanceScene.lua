@@ -162,8 +162,8 @@ end
 function scene:update()
 	scene.super.update(self)
    if  PlayerData.isDancing == false then
-      resultsScreen:win()
-        print('waiting press')
+      resultsScreen:loadingScreen()
+        
         return
     end
     
@@ -339,7 +339,7 @@ function scene:checkDanceResults()
 end
 
 function scene:startBattle()
-   resultsScreen:loadingScreen()
+   resultsScreen:empty()
    PlayerData.isDancing = true
     
 end
