@@ -161,7 +161,7 @@ end
 
 function scene:update()
 	scene.super.update(self)
-   if  PlayerData.isDancing == false then
+   if  PlayerData.isDancing == false and condition == nil then
       resultsScreen:loadingScreen()
         
         return
@@ -175,6 +175,8 @@ function scene:update()
             if self.accuracy > 5 then
                 self.balancePosition -= 0.3 
             end
+            enemyDance:changeAnimation(collisions[1].buttonKey)
+            
             -- self.balancePosition -= 0.3 
             
         elseif collisions[1].buttonKey == self.ButtonPressed then
@@ -182,7 +184,8 @@ function scene:update()
             if self.ButtonPressed == "aButton" or self.ButtonPressed == "bButton" then
                 
                self.enemyHP -= 10
-               self.balancePosition += 5 
+               self.balancePosition += 5
+                
             elseif self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
                 
                self.balancePosition += self.accuracy 
@@ -351,7 +354,7 @@ scene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
-     if  PlayerData.isDancing == false then
+        if  PlayerData.isDancing == false and condition == nil then
             scene:startBattle()
             return
         end
