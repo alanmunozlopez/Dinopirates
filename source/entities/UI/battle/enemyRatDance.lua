@@ -9,7 +9,7 @@ function EnemyRatDance:init(bpm)
 	end
 	local frameduration = bpm/2
 	-- Mark: animation states
-	self.animation:addState('idle', 1, 3)
+	self.animation:addState('idle', 1, 5)
 	self.animation.idle.frameDuration = frameduration
 	self.animation:addState('upAttack', 6, 9,'idle')
 	self.animation.upAttack.frameDuration = frameduration
@@ -19,7 +19,12 @@ function EnemyRatDance:init(bpm)
 	self.animation.rightAttack.frameDuration = frameduration
 	self.animation:addState('downAttack', 18, 21,'idle')
 	self.animation.downAttack.frameDuration = frameduration
-
+	self.animation:addState('bButton', 22, 25,'idle')
+	self.animation.bButton.frameDuration = 3
+	self.animation:addState('aButton', 26, 29,'idle')
+	self.animation.aButton.frameDuration = 3
+	self.animation:addState('evolving', 30, 33)
+	self.animation.evolving.frameDuration = frameduration
 	self.animation:setState('idle')
 	
 	
@@ -34,7 +39,24 @@ function EnemyRatDance:changeAnimation(input)
 		downButton = "upAttack",
 		upButton = "downAttack",
 		leftButton = "leftAttack",
-		rightButton = "rightAttack"
+		rightButton = "rightAttack",
+	}
+	
+	local newState = animationMap[input]
+	if newState then
+		self.animation:setState(newState)
+	end
+end
+function EnemyRatDance:evolving()
+	self.animation:setState('evolving')
+end
+function EnemyRatDance:setIdle()
+	self.animation:setState('idle')
+end
+function EnemyRatDance:attackAnimation(input)
+	local animationMap = {
+		aButton = 'aButton',
+		bButton = 'bButton'
 	}
 	
 	local newState = animationMap[input]

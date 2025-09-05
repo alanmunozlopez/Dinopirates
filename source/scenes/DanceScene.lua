@@ -107,6 +107,7 @@ function scene:enter()
         self.numberOfButtons = 8
         print("Difficulty UPGRADED: bpm=" .. tostring(self.bpm) .. ", buttons=" .. tostring(self.numberOfButtons) .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
         self.enemyType = "boss"
+        
     else
         -- Keep defaults
         self.bpm = 16
@@ -136,6 +137,9 @@ function scene:enter()
     hitzone = HitZone(40,30, self.bpm)
     playerDance = PlayerDance(self.bpm)
     enemyDance = EnemyRatDance(self.bpm, self.enemyType)
+    if self.enemyType == 'boss' then
+       enemyDance:evolving()
+    end
     buttonCover = ButtonCover()
     winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
@@ -164,7 +168,7 @@ function scene:update()
    if  PlayerData.isDancing == false and condition == nil then
       resultsScreen:loadingScreen()
         
-        return
+      return
     end
     
     local collisions = hitzone:overlappingSprites()
@@ -182,7 +186,7 @@ function scene:update()
         elseif collisions[1].buttonKey == self.ButtonPressed then
             
             if self.ButtonPressed == "aButton" or self.ButtonPressed == "bButton" then
-                
+               enemyDance:attackAnimation(collisions[1].buttonKey)
                self.enemyHP -= 10
                self.balancePosition += 5
                 
@@ -344,7 +348,7 @@ end
 function scene:startBattle()
    resultsScreen:empty()
    PlayerData.isDancing = true
-    
+   enemyDance:setIdle()
 end
 
 
