@@ -55,6 +55,7 @@ PlayerData = {
 	EnemiesData ={
 		powerLevel = 1, -- top 20
 		sightRadius = 50, 
+		isEvolved = false,
 	}
 }
 

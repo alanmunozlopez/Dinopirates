@@ -106,14 +106,14 @@ function scene:enter()
         self.bpm = 24
         self.numberOfButtons = 8
         print("Difficulty UPGRADED: bpm=" .. tostring(self.bpm) .. ", buttons=" .. tostring(self.numberOfButtons) .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
-        self.enemyType = "boss"
+        self.enemyType = "evolve"
         
     else
         -- Keep defaults
         self.bpm = 16
         self.numberOfButtons = 4
         print("Difficulty KEPT: bpm=" .. tostring(self.bpm) .. ", buttons=" .. tostring(self.numberOfButtons) .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
-        self.enemyType = "rat"
+        self.enemyType = "basic"
     end
 
     -- Create ButtonPress instances dynamically according to numberOfButtons

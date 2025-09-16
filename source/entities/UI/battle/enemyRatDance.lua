@@ -1,31 +1,36 @@
 EnemyRatDance = {}
 class('EnemyRatDance').extends(NobleSprite)
 
-function EnemyRatDance:init(bpm)
+function EnemyRatDance:init(bpm, evolveType)
 	EnemyRatDance.super.init(self, 'assets/images/ui/battle/enemyDance',true)
 	self.lvl = lvl
 	if bpm == nil or bpm == 0 then
 		bpm = 6
 	end
+	self.evolveType = evolveType
 	local frameduration = bpm/2
 	-- Mark: animation states
-	self.animation:addState('idle', 1, 5)
-	self.animation.idle.frameDuration = frameduration
-	self.animation:addState('upAttack', 6, 9,'idle')
-	self.animation.upAttack.frameDuration = frameduration
-	self.animation:addState('leftAttack', 10, 13,'idle')
-	self.animation.leftAttack.frameDuration = frameduration
-	self.animation:addState('rightAttack', 14, 17,'idle')
-	self.animation.rightAttack.frameDuration = frameduration
-	self.animation:addState('downAttack', 18, 21,'idle')
-	self.animation.downAttack.frameDuration = frameduration
-	self.animation:addState('bButton', 22, 25,'idle')
-	self.animation.bButton.frameDuration = 3
-	self.animation:addState('aButton', 26, 29,'idle')
-	self.animation.aButton.frameDuration = 3
 	self.animation:addState('evolving', 30, 33)
 	self.animation.evolving.frameDuration = frameduration
-	self.animation:setState('idle')
+	
+	if PlayerData.EnemiesData.powerLevel < 5 and self.evolveType == "basic" then
+		self.animation:addState('idle', 1, 5)
+		self.animation.idle.frameDuration = frameduration
+		self.animation:addState('upAttack', 6, 9,'idle')
+		self.animation.upAttack.frameDuration = frameduration
+		self.animation:addState('leftAttack', 10, 13,'idle')
+		self.animation.leftAttack.frameDuration = frameduration
+		self.animation:addState('rightAttack', 14, 17,'idle')
+		self.animation.rightAttack.frameDuration = frameduration
+		self.animation:addState('downAttack', 18, 21,'idle')
+		self.animation.downAttack.frameDuration = frameduration
+		self.animation:addState('bButton', 22, 25,'idle')
+		self.animation.bButton.frameDuration = 3
+		self.animation:addState('aButton', 26, 29,'idle')
+		self.animation.aButton.frameDuration = 3
+		
+		self.animation:setState('idle')
+	end
 	
 	
 	self:setZIndex(2)
