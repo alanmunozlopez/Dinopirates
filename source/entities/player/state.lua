@@ -35,13 +35,11 @@ end
 
 function Player:fight()
   PlayerData.amountDances += 1
-  PlayerData.isDancing = true 
   Noble.transition(DanceScene)
 end
 
 function Player:dead() -- unused
   self.isAlive = false
-  self.animation:setState('deadBrocolli')
   local function deathScreen()
   
     Noble.transition(DeadScene)
@@ -63,7 +61,7 @@ function Player:pedometer()
   if PlayerData.steps >= 200 then
     PlayerData.totalSteps += PlayerData.steps
     PlayerData.steps = 0
-    self:burnCalories(20)
+    self:burnCalories(10)
   end
 end
 function Player:burnCalories(calories)

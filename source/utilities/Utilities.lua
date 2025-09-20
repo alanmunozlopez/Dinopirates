@@ -107,6 +107,11 @@ function checkBool(bool)
 		print('false')
 	end
 end
+function printDebug(value)
+	if debug == true then
+		print(value)
+	end
+end
 function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
@@ -191,8 +196,8 @@ end
 -- Sanity-based achievements
 function Utilities.checkSanityAchievements()
 	local sanityAchievements = {
-		[1] = "sanityloss1",
-		[3] = "sanityloss2",
+		[2] = "sanityloss1",
+		[5] = "sanityloss2",
 		-- Future: add [5] = "sanityloss2", etc.
 	}
 	
@@ -223,7 +228,10 @@ function Utilities.clearAllAchievements()
 end
 
 -- Dev Tools
-
+function printDebug(value)
+	if debug == true then 
+		print(value)
+end
 function printEnemies()
 	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
 		if enemy.type == "Enemy" then
@@ -255,6 +263,7 @@ function Utilities.renderLangPanel(panel, offset)
 		end
 	end
 end
+
 function Utilities.toggle(value)
   return not value
 end

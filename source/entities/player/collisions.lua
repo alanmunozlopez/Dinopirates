@@ -2,9 +2,6 @@ function Player:collisionResponse(other)
   
   if other:isa(Enemy) then
     if other:isa(Brocorat) then -- validate candance also
-      -- other:empty()
-      --other.animation:setState('empty')  -- Set enemy animation to empty state
-      --self.animation:setState('deadBrocolli')
       PlayerData.lastEnemyTouched.type = "Brocorat"
       PlayerData.lastEnemyTouched.id = other.id
       PlayerData.lastEnemyTouched.x = other.x

@@ -286,7 +286,6 @@ function scene:update()
 	scene.super.update(self)
 	-- Mark: cheat code
 	cheat:update()
-	
 	-- Todo: make this a separate function
 	if PlayerData.isCutscene == true then
 		-- Disable game input handlers while cutscene is running
@@ -389,7 +388,6 @@ scene.inputHandler = {
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
 		-- Your code here
 		if PlayerData.isGaming == true and table.getSize(PlayerData.items) > 0  then
-			print("ready for menu")
 			-- inGameMenu:displayMenu()
 		end
 	end,
@@ -532,7 +530,7 @@ scene.inputHandler = {
 	cranked = function(change, acceleratedChange)
 		scene:PowerCrank()
 		if playdate.getCrankTicks(2) > 0 then
-			player:burnCalories(5)
+			player:burnCalories(1)
 		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.

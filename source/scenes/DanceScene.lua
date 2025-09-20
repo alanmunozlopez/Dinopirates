@@ -20,6 +20,54 @@ local barWidth = 8
 local barHeight = 10
 local barY = 56
 local condition = nil
+
+
+-- Enemy Pattern Profiles
+
+local EnemyPatterns = {
+    basic = {
+        weights = { arrows = 0.8, aButton = 0.2, bButton = 0.0 },
+        style = "arrow_heavy",
+        phaseLength = 10
+    },
+    evolve = {
+        weights = { arrows = 0.6, aButton = 0.2, bButton = 0.2 },
+        style = "mixed",
+        phaseLength = 10
+    },
+    badass = {
+         weights = { arrows = 0.4, aButton = 0.3, bButton = 0.3 },
+         style = "tough",
+         phaseLength = 8
+     },
+    boss = {
+        weights = { arrows = 0.2, aButton = 0.4, bButton = 0.4 },
+        style = "button_spam",
+        phaseLength = 6
+    }
+}
+
+-- Helper: pick next pattern key given a profile
+local function getPatternKey(profile)
+    local weights = profile.weights
+    local rand = math.random()
+    local sum = weights.arrows + weights.aButton + weights.bButton
+    local choice = rand * sum
+
+    if choice < weights.arrows then
+        local arrows = { "leftButton", "upButton", "rightButton", "downButton" }
+        local result = arrows[math.random(#arrows)]
+        printDebug("Pattern: ARROW -> " .. result)
+        return result
+    elseif choice < weights.arrows + weights.aButton then
+        printDebug("Pattern: A button")
+        return "aButton"
+    else
+        printDebug("Pattern: B button")
+        return "bButton"
+    end
+end
+
 function scene:init()
     scene.super.init(self)
 
@@ -41,6 +89,7 @@ function scene:init()
     self.evadePower = 30
     self.condition = nil
     self.enemyType = nil
+    self.enemyEvolving = nil
     lifes = 3
 
     -- counters for correct presses
@@ -98,29 +147,53 @@ function scene:enter()
     sequence:start()
 
     -- Decide whether to upgrade difficulty based on PlayerData
-    local chance = self:determineDifficultyUpgrade() -- number in [0,100]
+    local chance = self:determineDifficultyUpgrade()
     local roll = math.random(0, 100)
-
+    
     if roll <= chance then
-        -- Upgrade triggered: increase bpm and button instances
-        self.bpm = 24
-        self.numberOfButtons = 8
-        print("Difficulty UPGRADED: bpm=" .. tostring(self.bpm) .. ", buttons=" .. tostring(self.numberOfButtons) .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
-        self.enemyType = "boss"
+        -- Roll succeeded: upgrade enemy according to powerLevel
+        self.enemyType = self:determineEnemyType()
+    
+        -- Adjust bpm / buttons by enemy type
+        if self.enemyType == "basic" then
+            self.bpm = 16
+            self.numberOfButtons = 4
+        elseif self.enemyType == "evolve" then
+            self.bpm = 24
+            self.numberOfButtons = 6
+        elseif self.enemyType == "badass" then
+            self.bpm = 28
+            self.numberOfButtons = 8
+        elseif self.enemyType == "boss" then
+            self.bpm = 32
+            self.numberOfButtons = 12
+        end
+        self.enemyEvolving = true
+        print("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
+    
     else
-        -- Keep defaults
+        -- Roll failed: stay basic
+        self.enemyType = "basic"
+        self.enemyEvolving = false
         self.bpm = 16
         self.numberOfButtons = 4
-        print("Difficulty KEPT: bpm=" .. tostring(self.bpm) .. ", buttons=" .. tostring(self.numberOfButtons) .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
-        self.enemyType = "rat"
+    
+        print("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
     end
 
-    -- Create ButtonPress instances dynamically according to numberOfButtons
-    self.buttons = {}
-    for i = 1, self.numberOfButtons do
-        local b = ButtonPress(self.bpm, startPoint + self.bpm)
-        table.insert(self.buttons, b)
-    end
+   -- Create ButtonPress instances using enemy pattern profile
+   self.buttons = {}
+   local profile = EnemyPatterns[self.enemyType] or EnemyPatterns.basic
+   
+   -- define a provider function that always pulls from this profile
+   local function keyProvider()
+       return getPatternKey(profile)
+   end
+   
+   for i = 1, self.numberOfButtons do
+       local b = ButtonPress(self.bpm, startPoint + self.bpm, keyProvider)
+       table.insert(self.buttons, b)
+   end
 
     -- Keep backwards compatibility with existing single-named globals used elsewhere
     button = self.buttons[1]
@@ -135,7 +208,7 @@ function scene:enter()
     -- Other entities (unchanged)
     hitzone = HitZone(40,30, self.bpm)
     playerDance = PlayerDance(self.bpm)
-    enemyDance = EnemyRatDance(self.bpm, self.enemyType)
+    enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving)
     buttonCover = ButtonCover()
     winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
@@ -161,7 +234,11 @@ end
 
 function scene:update()
 	scene.super.update(self)
-    
+   if  PlayerData.isDancing == false and condition == nil then
+      resultsScreen:loadingScreen()
+        
+      return
+    end
     
     local collisions = hitzone:overlappingSprites()
     if table.getsize(collisions) > 0 then
@@ -171,14 +248,17 @@ function scene:update()
             if self.accuracy > 5 then
                 self.balancePosition -= 0.3 
             end
+            enemyDance:changeAnimation(collisions[1].buttonKey)
+            
             -- self.balancePosition -= 0.3 
             
         elseif collisions[1].buttonKey == self.ButtonPressed then
             
             if self.ButtonPressed == "aButton" or self.ButtonPressed == "bButton" then
-                
+               enemyDance:attackAnimation(collisions[1].buttonKey)
                self.enemyHP -= 10
-               self.balancePosition += 5 
+               self.balancePosition += 5
+                
             elseif self.ButtonPressed == "leftButton" or self.ButtonPressed == "rightButton" or self.ButtonPressed == "downButton" or self.ButtonPressed == "upButton" then
                 
                self.balancePosition += self.accuracy 
@@ -295,6 +375,22 @@ function scene:finish()
 	scene.super.finish(self)
 end
 
+function scene:determineEnemyType()
+    local pwr = PlayerData.EnemiesData.powerLevel
+
+    if pwr >= 1 and pwr <= 5 then
+        return "basic"
+    elseif pwr >= 6 and pwr <= 12 then
+        return "evolve"
+    elseif pwr >= 13 and pwr <= 19 then
+        return "badass"
+    elseif pwr == 20 then
+        return "boss"
+    else
+        return "basic" -- fallback safety
+    end
+end
+
 function scene:incrementCorrectPress(button)
     if self.correctButtonPresses[button] ~= nil then
         self.correctButtonPresses[button] += 1
@@ -321,6 +417,7 @@ function scene:checkDanceResults()
       
       -- Sets the power level of the enemies
       PlayerData.amountDances += 1
+      PlayerData.calories += 60
       
       -- transition to the original room
       self.returnRoom = RoomTranslate(PlayerData.saveLevel)
@@ -333,8 +430,10 @@ function scene:checkDanceResults()
    end   
 end
 
-function updateStats()
-   
+function scene:startBattle()
+   resultsScreen:empty()
+   PlayerData.isDancing = true
+   enemyDance:setIdle()
 end
 
 
@@ -344,6 +443,10 @@ scene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
+        if  PlayerData.isDancing == false and condition == nil then
+            scene:startBattle()
+            return
+        end
         scene:danceStep("aButton")
         scene:checkDanceResults()
     end,

@@ -15,6 +15,8 @@ function ResultsScreen:init()
 	self.animation.win.frameDuration = frameduration
 	self.animation:addState('lose',3,3)
 	self.animation.lose.frameDuration = frameduration
+	self.animation:addState('ready', 4,4)
+	self.animation.ready.frameDuration = frameduration
 	
 	self:setZIndex(10)
 	
@@ -29,4 +31,10 @@ function ResultsScreen:win()
 end
 function ResultsScreen:lose()
 	self.animation:setState('lose')
+end
+function ResultsScreen:loadingScreen()
+	self.animation:setState('ready')
+end
+function ResultsScreen:empty()
+	self.animation:setState('empty')
 end
