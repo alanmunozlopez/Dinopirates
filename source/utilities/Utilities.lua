@@ -228,7 +228,10 @@ function Utilities.clearAllAchievements()
 end
 
 -- Dev Tools
-
+function printDebug(value)
+	if debug == true then 
+		print(value)
+end
 function printEnemies()
 	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
 		if enemy.type == "Enemy" then
@@ -260,6 +263,7 @@ function Utilities.renderLangPanel(panel, offset)
 		end
 	end
 end
+
 function Utilities.toggle(value)
   return not value
 end

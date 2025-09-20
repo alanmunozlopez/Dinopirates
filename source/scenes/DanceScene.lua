@@ -57,13 +57,13 @@ local function getPatternKey(profile)
     if choice < weights.arrows then
         local arrows = { "leftButton", "upButton", "rightButton", "downButton" }
         local result = arrows[math.random(#arrows)]
-        print("Pattern: ARROW -> " .. result)
+        printDebug("Pattern: ARROW -> " .. result)
         return result
     elseif choice < weights.arrows + weights.aButton then
-        print("Pattern: A button")
+        printDebug("Pattern: A button")
         return "aButton"
     else
-        print("Pattern: B button")
+        printDebug("Pattern: B button")
         return "bButton"
     end
 end
