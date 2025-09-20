@@ -23,7 +23,9 @@ local configToast = import 'assets/data/toastConfig'
 
 -- TODO
 
-	-- [] make different levels of dificulty for the enemies, so theres 4 tiers of enemies and theres a chance to trigger any of them.
+	-- [x] make different levels of dificulty for the enemies, so theres 4 tiers of enemies and theres a chance to trigger any of them.
+	-- [] balance those levels
+	-- [] check bug of achievement in the dark getting triggered
 	-- []add a flag so the player got a certain item it activates this feature.
 -- Nice to have
 	-- [ ] create the balance scene that can only be entered with certain amount of crew members

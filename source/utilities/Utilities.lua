@@ -107,6 +107,11 @@ function checkBool(bool)
 		print('false')
 	end
 end
+function printDebug(value)
+	if debug == true then
+		print(value)
+	end
+end
 function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
