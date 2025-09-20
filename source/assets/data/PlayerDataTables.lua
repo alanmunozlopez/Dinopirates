@@ -53,8 +53,8 @@ PlayerData = {
 		
 	},
 	EnemiesData ={
-		powerLevel = 1, -- top 20
-		sightRadius = 50, 
+		powerLevel = 12, -- max 20
+		sightRadius = 50, -- min 50
 		isEvolved = false,
 	}
 }

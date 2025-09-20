@@ -1,18 +1,19 @@
 function Player:initAnimations()
+  local frameDurationWalk = 6
   self.animation:addState('idle', 41, 52)
   self.animation.idle.frameDuration = 24
   
   self.animation:addState('right', 11, 15)
-  self.animation.right.frameDuration = 12
+  self.animation.right.frameDuration = frameDurationWalk 
   
   self.animation:addState('left', 1, 5)
-  self.animation.left.frameDuration = 12
+  self.animation.left.frameDuration = frameDurationWalk 
   
   self.animation:addState('down', 26, 30)
-  self.animation.down.frameDuration = 12
+  self.animation.down.frameDuration = frameDurationWalk 
   
   self.animation:addState('up', 21, 25)
-  self.animation.up.frameDuration = 12
+  self.animation.up.frameDuration = frameDurationWalk 
   
   self.animation:addState('lampIdle', 53, 64)
   self.animation.lampIdle.frameDuration = 24
