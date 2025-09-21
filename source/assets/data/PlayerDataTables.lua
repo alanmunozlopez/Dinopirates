@@ -14,6 +14,7 @@ PlayerData = {
 	hasNotes = false,
 	hasBoots = false,
 	hasBag = false,
+	hasHonk = false,
 	hasTools = false,
 	canDance = false,
 	activeItem = 1,

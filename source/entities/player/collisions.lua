@@ -53,6 +53,10 @@ function Player:collisionResponse(other)
     other:removeAll()
     self:grabBag()
     return 'overlap'
+  elseif other:isa(Items) and other.type == 'honk' then
+    other:removeAll()
+    self:grabBag()
+  return 'overlap'
   elseif other:isa(Items) and other.type == 'tools' then
     other:removeAll()
     self:grabTools()
