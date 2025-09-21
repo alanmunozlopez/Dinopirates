@@ -231,6 +231,7 @@ end
 function printDebug(value)
 	if debug == true then 
 		print(value)
+	end
 end
 function printEnemies()
 	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
