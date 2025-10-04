@@ -90,12 +90,23 @@ function Player:update()
       for _, sprite in ipairs(self:overlappingSprites()) do
           if sprite == self.currentTrigger then
               stillInside = true
+  
+              -- Base position above the player
+              local hudX = self.x + self.playerUIX
+              local hudY = self.y - 40 -- normal default above player
+  
+              -- Adjust for top of screen
               if self.y < 50 then
-                self.uiHud:moveTo(self.x + self.playerUIX, self.y + self.playerUIY/3)
+                  hudY = self.y + 20 -- move down instead of above
               end
+  
+              -- Adjust for right edge
               if self.x > 350 then
-                self.uiHud:moveTo(self.x - self.playerUIX, self.y - self.playerUIY/3)
+                  hudX = self.x - self.playerUIX -- move to left of player
               end
+  
+              -- Move HUD once
+              self.uiHud:moveTo(hudX, hudY)
               self.uiHud:setVisible(true)
               break
           end
