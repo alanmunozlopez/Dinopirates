@@ -90,6 +90,12 @@ function Player:update()
       for _, sprite in ipairs(self:overlappingSprites()) do
           if sprite == self.currentTrigger then
               stillInside = true
+              if self.y < 50 then
+                self.uiHud:moveTo(self.x + self.playerUIX, self.y + self.playerUIY/3)
+              end
+              if self.x > 350 then
+                self.uiHud:moveTo(self.x - self.playerUIX, self.y - self.playerUIY/3)
+              end
               self.uiHud:setVisible(true)
               break
           end
