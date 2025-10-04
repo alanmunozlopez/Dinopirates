@@ -75,6 +75,28 @@ function Player:deFocus() -- unused
 end
 
 function Player:update()
+  -- Check for dialog activation (A button)
+  if self.currentTrigger and playdate.buttonJustPressed(playdate.kButtonA) then
+      local trigger = self.currentTrigger
+  
+      PlayerData.isGaming = false
+      PlayerData.isTalking = true
+      self.dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
+  
+      Utilities.grantAchievementIfNeeded(trigger.script)
+  end
+  if self.currentTrigger then
+      local stillInside = false
+      for _, sprite in ipairs(self:overlappingSprites()) do
+          if sprite == self.currentTrigger then
+              stillInside = true
+              break
+          end
+      end
+      if not stillInside then
+          self.currentTrigger = nil
+      end
+  end
   -- Mark: save actual position
   PlayerData.x = self.x
   PlayerData.y = self.y

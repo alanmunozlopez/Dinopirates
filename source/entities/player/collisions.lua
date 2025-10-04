@@ -16,23 +16,18 @@ function Player:collisionResponse(other)
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Trigger) then
-    
-    if other.type == nil and other.type ~= "cutscene" then
-      PlayerData.isGaming = false
-      PlayerData.isTalking = true
-      self.dialogUI:addScreen(other:returnScript(),other.sourceFeed)
-    end
-    
-    if other.type == "cutscene" then
+  if other.type == "cutscene" then
+      -- Cutscenes trigger automatically
       PlayerData.isGaming = false
       PlayerData.isCutscene = true
       other:returnScript()
       other:remove()
-    end
-    
-    Utilities.grantAchievementIfNeeded(other.script)
-    
-    return 'freeze'
+      Utilities.grantAchievementIfNeeded(other.script)
+  else
+      -- Normal dialog: only store for later activation
+      self.currentTrigger = other
+  end
+  return 'overlap'
   elseif other:isa(Items) and other.type == 'keycard' then
     other:removeAll()
     self:grabKey()
