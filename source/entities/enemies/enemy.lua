@@ -46,13 +46,13 @@ function Enemy:moveCollision(movementX, movementY, player)
         for index, collision in pairs(collisions) do
             local collideObject = collision['other']
             
-            if collideObject:isa(Player) and self.player.isAlive then
-                PlayerData.lastEnemyTouched.type = "Brocorat"
-                PlayerData.lastEnemyTouched.id = self.id
-                PlayerData.lastEnemyTouched.x = self.x
-                PlayerData.lastEnemyTouched.y = self.y
-                self.player:fight()
-            end
+            -- if collideObject:isa(Player) and self.player.isAlive then
+            --     PlayerData.lastEnemyTouched.type = "Brocorat"
+            --     PlayerData.lastEnemyTouched.id = self.id
+            --     PlayerData.lastEnemyTouched.x = self.x
+            --     PlayerData.lastEnemyTouched.y = self.y
+            --     self.player:fight()
+            -- end
 
             --  Bounce effect here
             if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy) then
@@ -85,7 +85,6 @@ function Enemy:collisionResponse(other)
         return 'overlap'
     elseif other:isa(Box) or other:isa(PropItem) then
         return 'freeze'
-    elseif other:isa(Enemy) then
     elseif other:isa(Player) then
         return 'overlap'
     else
