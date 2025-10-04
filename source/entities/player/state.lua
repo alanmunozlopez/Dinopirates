@@ -96,8 +96,8 @@ function Player:update()
               local hudY = self.y - 40 -- normal default above player
   
               -- Adjust for top of screen
-              if self.y < 50 then
-                  hudY = self.y + 20 -- move down instead of above
+              if self.y < 60 then
+                  hudY = self.y + self.playerUIY/2 -- move down instead of above
               end
   
               -- Adjust for right edge
