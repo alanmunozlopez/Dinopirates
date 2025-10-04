@@ -61,7 +61,11 @@ function Player:move(direction)
         movementX = self.x 
         movementY = self.y + self.speed
       end
+      
+      self.uiHud:moveTo(movementX + self.playerUIX, movementY - self.playerUIY)
+      
       local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
+      
       PlayerData.direction = direction
       self:pedometer()
     end

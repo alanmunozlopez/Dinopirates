@@ -90,10 +90,12 @@ function Player:update()
       for _, sprite in ipairs(self:overlappingSprites()) do
           if sprite == self.currentTrigger then
               stillInside = true
+              self.uiHud:setVisible(true)
               break
           end
       end
       if not stillInside then
+          self.uiHud:setVisible(false)
           self.currentTrigger = nil
       end
   end
