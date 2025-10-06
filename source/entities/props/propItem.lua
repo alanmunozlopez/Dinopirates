@@ -1,4 +1,4 @@
-
+import 'entities/props/propCollider'
 PropItem = {}
 class('PropItem').extends(NobleSprite)
 
@@ -42,7 +42,8 @@ function PropItem:init(x, y, type, zIndex, nocollide, id)
   self:setSize(32, 32)
   
   if nocollide == nil then
-    self:setCollideRect(0, 8, 32, 24)
+    self:setCollideRect(0, 0, 32, 32)
+    self.propcollider = PropCollider( x, y, 32, 24)
   end
   if type == 'holeDown' or type == 'holeTop' then
     self.isEdible = false

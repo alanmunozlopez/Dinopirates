@@ -40,7 +40,7 @@ levels = {
 			},
 			props = {
 			{
-				type = "chair",
+				type = "holeLeft",
 				x = 196,
 				y = 158
 			},

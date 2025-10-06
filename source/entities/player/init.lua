@@ -38,6 +38,7 @@ function Player:init(x, y, speed, Zindex)
   self.sanity = PlayerData.sanity
   self.playerUIX = 30
   self.playerUIY = 30
+  self.isBehind = false
   
   PlayerData.isActive = false
   self.loadingPower = false

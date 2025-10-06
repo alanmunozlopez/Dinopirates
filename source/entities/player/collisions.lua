@@ -55,7 +55,8 @@ function Player:collisionResponse(other)
   elseif other:isa(Items) and other.type == 'tools' then
     other:removeAll()
     self:grabTools()
-    return 'overlap'
+  return 'overlap'
+    
   elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
     
     if (PlayerData.hasBoots == true and PlayerData.battery == 0) or PlayerData.hasBoots == false  then
@@ -68,7 +69,11 @@ function Player:collisionResponse(other)
       print('fly')
     return 'overlap'
     end
-
+  elseif other:isa(PropItem) then
+      print('table!')
+      self.isBehind = true
+      self:setZIndex(1)
+  return 'overlap'
   elseif other:isa(Door) then
     
     if (PlayerData.hasKey == true and other.status == 'closed') or other.status =='open' then
