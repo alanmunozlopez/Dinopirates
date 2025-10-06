@@ -43,7 +43,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, id)
   
   if nocollide == nil then
     self:setCollideRect(0, 0, 32, 32)
-    self.propcollider = PropCollider( x, y, 32, 24)
+    self.propcollider = PropCollider( x, y, 32, 20)
   end
   if type == 'holeDown' or type == 'holeTop' then
     self.isEdible = false
