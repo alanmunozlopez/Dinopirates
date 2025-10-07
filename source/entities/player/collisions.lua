@@ -70,9 +70,6 @@ function Player:collisionResponse(other)
     return 'overlap'
     end
   elseif other:isa(PropItem) then
-      print('table!')
-      self.isBehind = true
-      self:setZIndex(1)
   return 'overlap'
   elseif other:isa(Door) then
     
