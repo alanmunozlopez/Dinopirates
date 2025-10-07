@@ -60,13 +60,11 @@ function Player:collisionResponse(other)
   elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
     
     if (PlayerData.hasBoots == true and PlayerData.battery == 0) or PlayerData.hasBoots == false  then
-      print('falling')
       self:fallBelow()
       return 'overlap'
     elseif PlayerData.hasBoots == true then
       
       self:drainBattery(1)
-      print('fly')
     return 'overlap'
     end
   elseif other:isa(PropItem) then
