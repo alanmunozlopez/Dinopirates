@@ -43,7 +43,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, id)
   
   if nocollide == nil then
     self:setCollideRect(0, 0, 32, 32)
-    self.propcollider = PropCollider( x, y, 32, 20)
+    self.propcollider = PropCollider( x, y, 28, 18)
   end
   if type == 'holeDown' or type == 'holeTop' then
     self.isEdible = false
@@ -52,16 +52,22 @@ function PropItem:init(x, y, type, zIndex, nocollide, id)
   if type == 'holeLeft' then
     self.isEdible = false
     self:setCollideRect(10, 8, 22, 24)
+    self.propcollider:remove()
   end
   if  type == 'holeRight' then
     self.isEdible = false
     self:setCollideRect(0, 8, 22, 24)
+    self.propcollider:remove()
   end
   
   self:setZIndex(zIndex)
   self:setGroups(3)
   self:add(x,y)
   -- check type and add a flag to identify during collisions
+end
+
+function PropItem:update()
+    self:setZIndex(self.y)
 end
 
 function PropItem:destroyProp(id)

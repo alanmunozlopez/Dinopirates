@@ -75,6 +75,7 @@ function Player:deFocus() -- unused
 end
 
 function Player:update()
+  self:setZIndex(self.y)
   -- Check for dialog activation (A button)
   if self.currentTrigger and playdate.buttonJustPressed(playdate.kButtonA) then
       local trigger = self.currentTrigger
