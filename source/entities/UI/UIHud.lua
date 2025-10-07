@@ -10,7 +10,7 @@ function UIHud:init(x,y)
     self.animation:setState('pressA')
     -- Mark: properties (since are the sames from the sonar hud maybe this should be just a class)
     self:setSize(22,37)
-    self:setZIndex(ZIndex.ui+2000)
+    self:setZIndex(ZIndex.ui)
     self:add(x + 30,y - 30)
     self:setVisible(false)
 end

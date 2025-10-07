@@ -71,7 +71,7 @@ ZIndex = {
 	props = 2,
 	items = 4,
 	fx = 6,
-	ui = 10,
+	ui = 2000,
 	alert = 12
 }
 CollideGroups = {
