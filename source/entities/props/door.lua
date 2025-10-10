@@ -9,8 +9,8 @@ local animationStates = {
 }
 
 local positions = {
-  right = {x = 397, y = 130},
-  left = {x = 3, y = 130},
+  right = {x = 393, y = 130},
+  left = {x = 10, y = 130},
   down = {x = 205, y = 232},
   top = {x = 205, y = 10}
 }
@@ -19,8 +19,8 @@ local function setRectValues(direction)
   local rectValues = {
     down = {8, -4, 36, 12},
     top = {4, 8, 36, 12},
-    left = {6, 8, 12, 36},
-    right = {-8, 8, 12, 36}
+    left = {0, 8, 12, 36},
+    right = {-4, 8, 12, 36}
   }
   return table.unpack(rectValues[direction])
 end
