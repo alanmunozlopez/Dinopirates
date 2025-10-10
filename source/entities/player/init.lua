@@ -19,7 +19,7 @@ function Player:init(x, y, speed, Zindex)
   self:setSize(48, 52)
   self:setZIndex(Zindex)
   self:moveTo(x,y)
-  self:setCollideRect(10, 24, 30, 24)
+  self:setCollideRect(8, 24, 30, 20)
   self:setCollidesWithGroups(
     {
       CollideGroups.enemy,

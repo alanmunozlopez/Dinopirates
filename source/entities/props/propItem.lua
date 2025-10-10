@@ -40,7 +40,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, id)
   self.isEdible = true
   -- position and z-index
   self:setSize(32, 32)
-  
+  self.nocollide = nocollide
   if nocollide == nil then
     self:setCollideRect(0, 0, 32, 32)
     self.propcollider = PropCollider( x, y, 28, 18)
@@ -67,7 +67,11 @@ function PropItem:init(x, y, type, zIndex, nocollide, id)
 end
 
 function PropItem:update()
+  if self.nocollide == true then
+    self:setZIndex(ZIndex.props)
+  else
     self:setZIndex(self.y)
+  end
 end
 
 function PropItem:destroyProp(id)

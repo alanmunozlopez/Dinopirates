@@ -236,7 +236,7 @@ function scene:enter()
 		else
 			local x = enemyData.x
 			local y = enemyData.y
-			PropItem(x, y, 'blood2', ZIndex.props, false)
+			PropItem(x, y, 'blood2', ZIndex.props, true)
 		end
 	end
 	

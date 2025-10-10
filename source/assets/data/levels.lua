@@ -45,9 +45,10 @@ levels = {
 				y = 158
 			},
 			{
-				type = "chair",
+				type = "blood",
 				x = 63,
-				y = 71
+				y = 71, 
+				nocollide = true
 			},
 			{
 				type = "chair",
