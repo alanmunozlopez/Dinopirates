@@ -1,88 +1,96 @@
 levels = {
-	--21
+	--Playground
 	{
 		floor = {
 			level = 1,
 			visited = false,
-			roomNumber = 21,
+			roomNumber = 20,
 			tile = 1,
-			light = 0.1,
+			light = 0.5,
 			shadow = false,
 			doors = {
 			{
 				direction = 'top',
 				open = 'open',
-				leadsTo = 101
+				leadsTo = 120
 			},
+			{
+				direction = 'right',
+				open = 'open',
+				leadsTo = 120
 			},
+			{
+				direction = 'down',
+				open = 'open',
+				leadsTo = 120
+			},
+			{
+				direction = 'left',
+				open = 'open',
+				leadsTo = 120
+			}
+			},
+	
 			comic = {
+	 
 			},
 			items = {
-				{
-					type = 'crewmember',
-					x = 287,
-					y = 68,
-					taken = false,
-					crewId = "100"
-				},
-			},
-			triggers = {
 	
 			},
-			enemies = {
+			triggers = {
 			{
-				name = "brocorat",
-				x = 97,
-				y = 46,
-				speed = 0.6,
-				id= "100"
+				usedTrigger = false,
+				x = 237,
+				y = 94,
+				width = 60,
+				height = 30,
+				script = "investigation",
+						type = "search"
+			},
+			{
+				usedTrigger = false,
+				x = 350,
+				y = 37,
+				width = 60,
+				height = 30,
+				script = "phonecall",
+						type = "call"
 			}
+			},
+			enemies = {
+	
 			},
 			props = {
 			{
-				type = "holeLeft",
-				x = 196,
-				y = 158
-			},
-			{
-				type = "blood",
-				x = 63,
-				y = 71, 
-				nocollide = true
-			},
-			{
 				type = "chair",
-				x = 115,
-				y = 88
+				x = 59,
+				y = 49,
+				id = "39C3534C-5AB6-4667-B959-AFD633C42AEC"
 			},
 			{
-				type = "chair",
-				x = 181,
-				y = 59
+				type = "toxic",
+				x = 304,
+				y = 77,
+				id = "8DFCFDA0-44D4-4F96-8088-F8E48827CA57"
 			},
 			{
-				type = "chair",
-				x = 290,
-				y = 30
+				type = "blood2",
+				x = 138,
+				y = 115,
+						nocollide = true,
+				id = "91BDD708-1682-4C93-AF4A-7E04C8201938"
 			},
 			{
-				type = "chair",
-				x = 346,
-				y = 89
-			},
-			{
-				type = "chair",
-				x = 269,
-				y = 94
-			},
-			{
-				type = "table",
-				x = 150,
-				y = 83
+				type = "blood2",
+				x = 239,
+				y = 89,
+						nocollide = true,
+				id = "4A75AB06-5117-4AB2-B20A-0D3BFF0E4590"
 			}
 			}
 		}
-	},
+	}
+	,
 	{
 		floor = {
 			level = 1,

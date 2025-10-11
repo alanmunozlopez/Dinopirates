@@ -72,7 +72,7 @@ ZIndex = {
 	items = 4,
 	fx = 6,
 	ui = 2000,
-	alert = 12
+	alert = 2100
 }
 CollideGroups = {
 	player = 1,

@@ -109,6 +109,11 @@ function Player:update()
               -- Move HUD once
               self.uiHud:moveTo(hudX, hudY)
               self.uiHud:setVisible(true)
+              if self.currentTrigger.type == 'call' then
+                self.uiHud:setRing()
+              elseif self.currentTrigger.type == 'search' then
+                self.uiHud:setPressA()
+              end
               break
           end
       end

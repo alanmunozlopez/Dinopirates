@@ -572,4 +572,28 @@ script = {
             }
         }
     },
+    {
+        name = "phonecall",
+        dialog = {
+            {
+        video = 'radioHand',
+        text = "phonecall-01",
+    },
+                    {
+        video = 'playerWorry',
+        text = "phonecall-02",
+    }
+            
+        }
+    },
+    {
+        name = "investigation",
+        dialog = {
+            {
+        video = 'playerSurprise',
+        text = "investigation-01",
+    }
+            
+        }
+    },
 }
