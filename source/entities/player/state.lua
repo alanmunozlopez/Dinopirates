@@ -98,7 +98,7 @@ function Player:update()
   
               -- Adjust for top of screen
               if self.y < 60 then
-                  hudY = self.y + self.playerUIY/2 -- move down instead of above
+                  hudY = self.y + self.playerUIY / 2 -- move down instead of above
               end
   
               -- Adjust for right edge
@@ -106,20 +106,27 @@ function Player:update()
                   hudX = self.x - self.playerUIX -- move to left of player
               end
   
-              -- Move HUD once
               self.uiHud:moveTo(hudX, hudY)
               self.uiHud:setVisible(true)
-              if self.currentTrigger.type == 'call' then
-                self.uiHud:setRing()
-              elseif self.currentTrigger.type == 'search' then
-                self.uiHud:setPressA()
+  
+              -- Solo se activa una vez cuando el jugador entra en el trigger
+              if not self.triggerEnteredOnce then
+                  if self.currentTrigger.type == "call" then
+                      self.uiHud:setRing()
+                  elseif self.currentTrigger.type == "search" then
+                      self.uiHud:setPressA()
+                  end
+                  self.triggerEnteredOnce = true -- Marca que ya se ejecutó
               end
+  
               break
           end
       end
+  
       if not stillInside then
           self.uiHud:setVisible(false)
           self.currentTrigger = nil
+          self.triggerEnteredOnce = false -- Reset para el próximo trigger
       end
   end
   -- Mark: save actual position

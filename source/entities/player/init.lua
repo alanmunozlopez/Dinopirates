@@ -39,6 +39,7 @@ function Player:init(x, y, speed, Zindex)
   self.playerUIX = 30
   self.playerUIY = 30
   self.isBehind = false
+  self.triggerEnteredOnce = false
   
   PlayerData.isActive = false
   self.loadingPower = false

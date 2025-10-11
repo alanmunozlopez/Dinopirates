@@ -4,10 +4,19 @@ class("UIHud").extends(NobleSprite)
 function UIHud:init(x,y)
     UIHud.super.init(self,'assets/images/ui/interaction.png', true)
     -- Mark: animation states
+    local ringDuration = 3
     self.animation:addState('pressA', 1, 6)
     self.animation.pressA.frameDuration = 6
-    self.animation:addState('ring', 7, 8, 'answer')
-    self.animation.ring.frameDuration = 6
+    self.animation:addState('ring', 7, 8, 'ring2')
+    self.animation.ring.frameDuration = ringDuration
+    self.animation:addState('ring2', 7, 8, 'ring3')
+    self.animation.ring2.frameDuration = ringDuration
+    self.animation:addState('ring3', 7, 8, 'ring4')
+    self.animation.ring3.frameDuration = ringDuration
+    self.animation:addState('ring4', 7, 8, 'ring5')
+    self.animation.ring4.frameDuration = ringDuration
+    self.animation:addState('ring5', 7, 8, 'answer')
+    self.animation.ring5.frameDuration = ringDuration
     self.animation:addState('answer', 9, 14)
     self.animation.answer.frameDuration = 6
     
