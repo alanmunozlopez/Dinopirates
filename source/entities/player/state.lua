@@ -18,7 +18,7 @@ function Player:fallBelow()
   end
 end
 
-function Player:displayDialog(script)
+function Player:displayDialog()
   self.dialogUI:nextDialog()
 end
 
@@ -133,8 +133,10 @@ end
 
 function Player:update()
   self:setZIndex(self.y)
+  self:checkTrigger()
+  
   if PlayerData.storyCounter == 4 then
-      print("ready to call")
+  PlayerData.isRinging = true 
   end
   
   

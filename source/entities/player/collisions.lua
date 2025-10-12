@@ -29,7 +29,7 @@ function Player:collisionResponse(other)
       -- Normal dialog: only store for later activation
       self.currentTrigger = other
   elseif other.type == "call" then
-  self.currentTrigger = other
+      self.currentTrigger = other
   elseif other.type == "counter" then
       PlayerData.storyCounter += 1
       other:remove()
