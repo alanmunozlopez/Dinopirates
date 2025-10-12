@@ -45,7 +45,7 @@ levels = {
 				width = 60,
 				height = 30,
 				script = "investigation",
-						type = "search"
+				type = "search"
 			},
 			{
 				usedTrigger = false,
@@ -54,43 +54,43 @@ levels = {
 				width = 60,
 				height = 30,
 				script = "phonecall",
-						type = "call"
+				type = "call"
 			},
 			{
 				usedTrigger = false,
-				x = 85,
-				y = 210,
-				width = 60,
-				height = 30,
-				script = "counter",
-						type = "search"
-			},
-			{
-				usedTrigger = false,
-				x = 360,
-				y = 40,
-				width = 60,
-				height = 30,
-				script = "counter",
-						type = "search"
-			},
-			{
-				usedTrigger = false,
-				x = 359,
+				x = 93,
 				y = 206,
 				width = 60,
 				height = 30,
 				script = "counter",
-						type = "search"
+						type = "counter"
 			},
 			{
 				usedTrigger = false,
-				x = 39,
-				y = 30,
+				x = 346,
+				y = 208,
 				width = 60,
 				height = 30,
 				script = "counter",
-						type = "search"
+						type = "counter"
+			},
+			{
+				usedTrigger = false,
+				x = 350,
+				y = 37,
+				width = 60,
+				height = 30,
+				script = "counter",
+						type = "counter"
+			},
+			{
+				usedTrigger = false,
+				x = 43,
+				y = 34,
+				width = 60,
+				height = 30,
+				script = "counter",
+						type = "counter"
 			}
 			},
 			enemies = {

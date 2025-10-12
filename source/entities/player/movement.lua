@@ -49,6 +49,7 @@ function Player:move(direction)
       PlayerData.direction = direction
       self:pedometer()
       self:checkTrigger()
+      print(PlayerData.storyCounter)
     end
   end
 end

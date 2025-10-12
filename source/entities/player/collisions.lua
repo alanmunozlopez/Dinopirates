@@ -13,8 +13,10 @@ function Player:collisionResponse(other)
     
   elseif other:isa(CrewMember) then
     other:taken() 
+    
   elseif other:isa(Box) then
     return 'freeze' 
+    
   elseif other:isa(Trigger) then
   if other.type == "cutscene" then
       -- Cutscenes trigger automatically
@@ -23,35 +25,47 @@ function Player:collisionResponse(other)
       other:returnScript()
       other:remove()
       Utilities.grantAchievementIfNeeded(other.script)
-  else
+  elseif other.type == "search" then
       -- Normal dialog: only store for later activation
       self.currentTrigger = other
+  elseif other.type == "call" then
+  self.currentTrigger = other
+  elseif other.type == "counter" then
+      PlayerData.storyCounter += 1
+      other:remove()
   end
   return 'overlap'
+  
   elseif other:isa(Items) and other.type == 'keycard' then
     other:removeAll()
     self:grabKey()
     return 'overlap'
+    
   elseif other:isa(Items) and other.type == 'lamp' then
     other:removeAll()
     self:grabLamp()
     return 'overlap'
+    
   elseif other:isa(Items) and other.type == 'radio' then
     other:removeAll()
     self:grabRadio()
     return 'overlap'
+    
   elseif other:isa(Items) and other.type == 'notes' then
     other:removeAll()
     self:grabNotes()
     return 'overlap'
+    
   elseif other:isa(Items) and other.type == 'bag' then
     other:removeAll()
     self:grabBag()
     return 'overlap'
+    
   elseif other:isa(Items) and other.type == 'honk' then
     other:removeAll()
     self:grabBag()
   return 'overlap'
+  
   elseif other:isa(Items) and other.type == 'tools' then
     other:removeAll()
     self:grabTools()

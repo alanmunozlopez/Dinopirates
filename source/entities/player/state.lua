@@ -133,6 +133,10 @@ end
 
 function Player:update()
   self:setZIndex(self.y)
+  if PlayerData.storyCounter == 4 then
+      print("ready to call")
+  end
+  
   
   -- Mark: save actual position
   PlayerData.x = self.x
