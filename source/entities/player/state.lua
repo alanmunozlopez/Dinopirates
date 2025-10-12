@@ -115,6 +115,8 @@ function Player:checkTrigger()
                 self.uiHud:setRing()
               elseif self.currentTrigger.type == "search" then
                 self.uiHud:setPressA()
+              elseif self.currentTrigger.type == nil then
+              self.uiHud:setPressA()
               end
               self.triggerEnteredOnce = true -- Marca que ya se ejecutó
             end
@@ -135,9 +137,9 @@ function Player:update()
   self:setZIndex(self.y)
   self:checkTrigger()
   
-  if PlayerData.storyCounter == 4 then
-  PlayerData.isRinging = true 
-  end
+  -- if PlayerData.storyCounter == 4 then
+  -- PlayerData.isRinging = true 
+  -- end
   
   
   -- Mark: save actual position

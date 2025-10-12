@@ -26,13 +26,14 @@ function Player:collisionResponse(other)
       other:remove()
       Utilities.grantAchievementIfNeeded(other.script)
   elseif other.type == "search" then
-      -- Normal dialog: only store for later activation
       self.currentTrigger = other
   elseif other.type == "call" then
       self.currentTrigger = other
-  elseif other.type == "counter" then
-      PlayerData.storyCounter += 1
-      other:remove()
+  elseif other.type == nil then
+      self.currentTrigger = other
+  -- elseif other.type == "counter" then
+  --     PlayerData.storyCounter += 1
+  --     other:remove()
   end
   return 'overlap'
   

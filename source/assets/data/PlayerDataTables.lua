@@ -83,7 +83,6 @@ PlayerDataOriginal = {
 	activeItem = 1,
 	sonarActive = false,
 	storyCounter = 0,
-	isRinging = false,
 	isActive = false,
 	isTalking = false,
 	isCutscene = false,
