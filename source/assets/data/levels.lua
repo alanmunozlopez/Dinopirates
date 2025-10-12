@@ -40,8 +40,8 @@ levels = {
 			triggers = {
 			{
 				usedTrigger = false,
-				x = 237,
-				y = 94,
+				x = 251,
+				y = 125,
 				width = 60,
 				height = 30,
 				script = "investigation",
@@ -49,12 +49,48 @@ levels = {
 			},
 			{
 				usedTrigger = false,
-				x = 350,
-				y = 37,
+				x = 82,
+				y = 75,
 				width = 60,
 				height = 30,
 				script = "phonecall",
 						type = "call"
+			},
+			{
+				usedTrigger = false,
+				x = 85,
+				y = 210,
+				width = 60,
+				height = 30,
+				script = "counter",
+						type = "search"
+			},
+			{
+				usedTrigger = false,
+				x = 360,
+				y = 40,
+				width = 60,
+				height = 30,
+				script = "counter",
+						type = "search"
+			},
+			{
+				usedTrigger = false,
+				x = 359,
+				y = 206,
+				width = 60,
+				height = 30,
+				script = "counter",
+						type = "search"
+			},
+			{
+				usedTrigger = false,
+				x = 39,
+				y = 30,
+				width = 60,
+				height = 30,
+				script = "counter",
+						type = "search"
 			}
 			},
 			enemies = {
@@ -63,29 +99,29 @@ levels = {
 			props = {
 			{
 				type = "chair",
-				x = 59,
-				y = 49,
-				id = "39C3534C-5AB6-4667-B959-AFD633C42AEC"
+				x = 302,
+				y = 70,
+				id = "3807E51A-5F9B-4734-95DE-2EFBFA629314"
 			},
 			{
-				type = "toxic",
-				x = 304,
-				y = 77,
-				id = "8DFCFDA0-44D4-4F96-8088-F8E48827CA57"
+				type = "table",
+				x = 86,
+				y = 183,
+				id = "AA589283-E787-4DD6-A4A7-830CE2F00B8E"
+			},
+			{
+				type = "blood",
+				x = 251,
+				y = 123,
+						nocollide = true,
+				id = "FCDD3C77-100F-4063-B8DA-55F24A53C4FD"
 			},
 			{
 				type = "blood2",
-				x = 138,
-				y = 115,
+				x = 83,
+				y = 76,
 						nocollide = true,
-				id = "91BDD708-1682-4C93-AF4A-7E04C8201938"
-			},
-			{
-				type = "blood2",
-				x = 239,
-				y = 89,
-						nocollide = true,
-				id = "4A75AB06-5117-4AB2-B20A-0D3BFF0E4590"
+				id = "0CD8D1CE-4BA6-484D-B02D-C5E7625205FC"
 			}
 			}
 		}

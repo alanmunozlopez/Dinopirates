@@ -26,10 +26,9 @@ local configToast = import 'assets/data/toastConfig'
 	-- [x] make different levels of dificulty for the enemies, so theres 4 tiers of enemies and theres a chance to trigger any of them.
 	-- [] balance those levels
 	-- [] check bug of achievement in the dark getting triggered
-	-- [] remove panels and add a new trigger category to have investigations and calls
-	-- [] rebuild level generator to create the new levels
-	-- [] change triggers and dialogs to be able to only show images without dialog and dialog without owner
-	-- [] add a flag so the player got a certain item it activates this feature.
+	-- [x] remove panels and add a new trigger category to have investigations and calls
+	-- [x] rebuild level generator to create the new levels
+	-- [x] change triggers and dialogs to be able to only show images without dialog and dialog without owner
 -- Nice to have
 	-- [ ] create the balance scene that can only be entered with certain amount of crew members
 	-- [ ] Create the speaker and the feature that hides the crew members but makes the radar area of the enemies bigger.
@@ -70,7 +69,7 @@ ZIndex = {
 	enemy = 3,
 	props = 2,
 	items = 4,
-	fx = 6,
+	fx = 1999,
 	ui = 2000,
 	alert = 2100
 }

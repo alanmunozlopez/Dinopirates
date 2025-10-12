@@ -1,23 +1,3 @@
-function Player:fallBelow()
-  local level = PlayerData.actualLevel + 1
-  local room = PlayerData.actualRoom
-  local sceneName = "Floor" .. tostring(level) .. tostring(room)
-  local nextScene = _G[sceneName]
-  PlayerData.playerSpawn.x =  self.x
-  PlayerData.playerSpawn.y = self.y
-  
-  if nextScene then
-    Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable,
-      {
-        imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
-        imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
-    })
-    -- Noble.transition(nextScene, 1.5, Noble.Transition.Default)
-  else
-    print("Scene " .. sceneName .. " not found. did you fall into the void")
-  end
-end
-
 function Player:move(direction)
   if PlayerData.isGaming == true then
     if self.isAlive == true and PlayerData.isCharging == false then
@@ -68,6 +48,7 @@ function Player:move(direction)
       
       PlayerData.direction = direction
       self:pedometer()
+      self:checkTrigger()
     end
   end
 end
