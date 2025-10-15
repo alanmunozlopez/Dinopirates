@@ -6,7 +6,7 @@ import 'entities/UI/batteryCanister'
 function Battery:init(x, y, player, Zindex)
     self.player = player
     batteryCanister = BatteryCanister(x,y,Zindex)
-    self:setZIndex(Zindex-1)
+    self:setZIndex(Zindex)
     self:moveTo(x,y)
     self:add(0,0)
 end
