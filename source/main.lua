@@ -21,18 +21,6 @@ import 'assets/data/script'
 achievementData = import 'assets/data/achievements'
 local configToast = import 'assets/data/toastConfig'
 
--- TODO
-
-	-- [x] make different levels of dificulty for the enemies, so theres 4 tiers of enemies and theres a chance to trigger any of them.
-	-- [] balance those levels
-	-- [] check bug of achievement in the dark getting triggered
-	-- [x] remove panels and add a new trigger category to have investigations and calls
-	-- [x] rebuild level generator to create the new levels
-	-- [] change triggers and dialogs to be able to only show images without dialog and dialog without owner
--- Nice to have
-	-- [ ] create the balance scene that can only be entered with certain amount of crew members
-	-- [ ] Create the speaker and the feature that hides the crew members but makes the radar area of the enemies bigger.
-
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
 local config = {
