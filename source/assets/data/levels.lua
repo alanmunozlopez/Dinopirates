@@ -80,8 +80,8 @@ levels = {
 				y = 37,
 				width = 60,
 				height = 30,
-				script = "counter",
-						type = "counter"
+				script = "brocomess",
+				type = "story"
 			},
 			{
 				usedTrigger = false,

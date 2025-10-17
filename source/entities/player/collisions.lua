@@ -29,11 +29,15 @@ function Player:collisionResponse(other)
       self.currentTrigger = other
   elseif other.type == "call" then
       self.currentTrigger = other
+  elseif other.type == "story" then
+      PlayerData.isGaming = false
+      PlayerData.isTalking = true
+      self.dialogUI:addScreen(other:returnScript(),other.sourceFeed)
   elseif other.type == nil then
       self.currentTrigger = other
-  -- elseif other.type == "counter" then
-  --     PlayerData.storyCounter += 1
-  --     other:remove()
+  elseif other.type == "counter" then
+      PlayerData.storyCounter += 1
+      other:remove()
   end
   return 'overlap'
   
