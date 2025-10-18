@@ -32,7 +32,8 @@ levels = {
 			},
 	
 			comic = {
-	 
+	 	   	wasPlayed = false,
+			name = "pick-the-device",
 			},
 			items = {
 	
@@ -40,57 +41,57 @@ levels = {
 			triggers = {
 			{
 				usedTrigger = false,
-				x = 251,
-				y = 125,
-				width = 60,
-				height = 30,
-				script = "investigation",
-				type = "search"
-			},
-			{
-				usedTrigger = false,
-				x = 82,
-				y = 75,
-				width = 60,
-				height = 30,
-				script = "phonecall",
-				type = "call"
-			},
-			{
-				usedTrigger = false,
-				x = 93,
-				y = 206,
-				width = 60,
-				height = 30,
-				script = "counter",
-						type = "counter"
-			},
-			{
-				usedTrigger = false,
-				x = 346,
-				y = 208,
-				width = 60,
-				height = 30,
-				script = "counter",
-						type = "counter"
-			},
-			{
-				usedTrigger = false,
-				x = 350,
-				y = 37,
+				x = 84,
+				y = 77,
 				width = 60,
 				height = 30,
 				script = "brocomess",
-				type = "story"
+						type = "search"
 			},
 			{
 				usedTrigger = false,
-				x = 43,
-				y = 34,
+				x = 301,
+				y = 71,
+				width = 60,
+				height = 30,
+				script = "noLights",
+						type = "call"
+			},
+			{
+				usedTrigger = false,
+				x = 95,
+				y = 172,
+				width = 60,
+				height = 30,
+				script = "boo",
+						type = "search"
+			},
+			{
+				usedTrigger = false,
+				x = 329,
+				y = 193,
 				width = 60,
 				height = 30,
 				script = "counter",
 						type = "counter"
+			},
+			{
+				usedTrigger = false,
+				x = 252,
+				y = 120,
+				width = 60,
+				height = 30,
+				script = "counter",
+						type = "counter"
+			},
+			{
+				usedTrigger = false,
+				x = 199,
+				y = 42,
+				width = 60,
+				height = 30,
+				script = "pick-the-device",
+						type = "cutscene"
 			}
 			},
 			enemies = {
