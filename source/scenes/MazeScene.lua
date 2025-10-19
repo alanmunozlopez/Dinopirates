@@ -107,7 +107,7 @@ function scene:enter()
 	-- Mark: floor 
 	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
 	
-	renderTileMap(tileMapData[1], map)
+	renderTileMap(tileMapData[levels[room].floor.tile], map)
 	
 	floor = Graphics.sprite.new()
 	floor:setZIndex(1)
