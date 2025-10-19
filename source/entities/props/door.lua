@@ -8,7 +8,7 @@ local animationStates = {
   reverseOpen = 1
 }
 
-local positions = {
+local positions = { -- art
   right = {x = 393, y = 130},
   left = {x = 10, y = 130},
   down = {x = 205, y = 232},
@@ -18,7 +18,7 @@ local positions = {
 local function setRectValues(direction)
   local rectValues = {
     down = {8, -4, 36, 12},
-    top = {4, 8, 36, 12},
+    top = {4, 4, 36, 12},
     left = {0, 8, 12, 36},
     right = {-4, 8, 12, 36}
   }
