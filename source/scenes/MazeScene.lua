@@ -96,6 +96,7 @@ function scene:enter()
 	
 	PlayerData.actualLevel = levels[room].floor.level
 	PlayerData.actualRoom = levels[room].floor.roomNumber
+	PlayerData.actualTilemap = levels[room].floor.tile
 	levels[room].floor.visited = true
 	
 	-- Mark: floor
@@ -107,7 +108,7 @@ function scene:enter()
 	-- Mark: floor 
 	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
 	
-	renderTileMap(tileMapData[1], map)
+	renderTileMap(tileMapData[levels[room].floor.tile], map)
 	
 	floor = Graphics.sprite.new()
 	floor:setZIndex(1)
@@ -236,7 +237,7 @@ function scene:enter()
 		else
 			local x = enemyData.x
 			local y = enemyData.y
-			PropItem(x, y, 'blood2', ZIndex.props, false)
+			PropItem(x, y, 'blood2', ZIndex.props, true)
 		end
 	end
 	
@@ -354,7 +355,7 @@ function scene:movePlayer(direction)
 		end
 	end
 end
-function playerFocus()
+function playerFocus()-- improve this with more constrains.
 	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
 		player.loadingPower = true
 		player:focus()
@@ -407,6 +408,7 @@ scene.inputHandler = {
 			PlayerData.isEquiping = false
 			--inGameMenu:closeMenu()
 		end
+		--CurrentTile() for testing
 		playerFocus()
 	end,
 	BButtonHeld = function()

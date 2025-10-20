@@ -1,6 +1,7 @@
 Player = {}
 class('Player').extends(NobleSprite)
 import "entities/UI/dialog/dialogScreen"
+import "entities/UI/UIHud"
 
 import "entities/player/animations"
 import "entities/player/collisions"
@@ -9,6 +10,7 @@ import "entities/player/sanity"
 import "entities/player/items"
 import "entities/player/state"
 local dialogUI = nil
+local uiHud = nil
 
 function Player:init(x, y, speed, Zindex)
   Player.super.init(self,'assets/images/player/player', true)
@@ -17,7 +19,7 @@ function Player:init(x, y, speed, Zindex)
   self:setSize(48, 52)
   self:setZIndex(Zindex)
   self:moveTo(x,y)
-  self:setCollideRect(10, 24, 30, 24)
+  self:setCollideRect(8, 24, 30, 24)
   self:setCollidesWithGroups(
     {
       CollideGroups.enemy,
@@ -34,6 +36,10 @@ function Player:init(x, y, speed, Zindex)
   self.initialBattery = PlayerData.battery
   self.sanityLoss = 1
   self.sanity = PlayerData.sanity
+  self.playerUIX = 30
+  self.playerUIY = 30
+  self.isBehind = false
+  self.triggerEnteredOnce = false
   
   PlayerData.isActive = false
   self.loadingPower = false
@@ -47,6 +53,7 @@ function Player:init(x, y, speed, Zindex)
   
   -- Mark: add to scene
   self.dialogUI = dialogScreen()
+  self.uiHud = UIHud(x,y)
   self:sanityCheck()
   self:add(x, y)   
   

@@ -21,16 +21,6 @@ import 'assets/data/script'
 achievementData = import 'assets/data/achievements'
 local configToast = import 'assets/data/toastConfig'
 
--- TODO
-
-	-- [x] make different levels of dificulty for the enemies, so theres 4 tiers of enemies and theres a chance to trigger any of them.
-	-- [] balance those levels
-	-- [] check bug of achievement in the dark getting triggered
-	-- []add a flag so the player got a certain item it activates this feature.
--- Nice to have
-	-- [ ] create the balance scene that can only be entered with certain amount of crew members
-	-- [ ] Create the speaker and the feature that hides the crew members but makes the radar area of the enemies bigger.
-
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
 local config = {
@@ -67,9 +57,9 @@ ZIndex = {
 	enemy = 3,
 	props = 2,
 	items = 4,
-	fx = 6,
-	ui = 10,
-	alert = 12
+	fx = 1999,
+	ui = 2000,
+	alert = 2100
 }
 CollideGroups = {
 	player = 1,
@@ -100,7 +90,7 @@ local menuItem, error = menu:addMenuItem("debug", function()
 	end
 end)
 
-playdate.display.setRefreshRate(50)
+playdate.display.setRefreshRate(46)
 timers = playdate.timer
 
 Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus) --- TODO: add custom transition

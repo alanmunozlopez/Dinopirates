@@ -1,87 +1,133 @@
 levels = {
-	--21
+	--Playground
 	{
 		floor = {
 			level = 1,
 			visited = false,
-			roomNumber = 21,
-			tile = 1,
-			light = 0.1,
+			roomNumber = 1,
+			tile = 2,
+			light = 0.5,
 			shadow = false,
 			doors = {
 			{
 				direction = 'top',
 				open = 'open',
-				leadsTo = 101
+				leadsTo = 120
 			},
+			{
+				direction = 'right',
+				open = 'open',
+				leadsTo = 120
 			},
+			{
+				direction = 'down',
+				open = 'open',
+				leadsTo = 120
+			},
+			{
+				direction = 'left',
+				open = 'open',
+				leadsTo = 120
+			}
+			},
+	
 			comic = {
+	 	   	wasPlayed = false,
+			name = "pick-the-device",
 			},
 			items = {
-				{
-					type = 'crewmember',
-					x = 287,
-					y = 68,
-					taken = false,
-					crewId = "100"
-				},
-			},
-			triggers = {
 	
 			},
-			enemies = {
+			triggers = {
 			{
-				name = "brocorat",
-				x = 97,
-				y = 46,
-				speed = 0.6,
-				id= "100"
+				usedTrigger = false,
+				x = 84,
+				y = 77,
+				width = 60,
+				height = 30,
+				script = "brocomess",
+						type = "search"
+			},
+			{
+				usedTrigger = false,
+				x = 301,
+				y = 71,
+				width = 60,
+				height = 30,
+				script = "noLights",
+						type = "call"
+			},
+			{
+				usedTrigger = false,
+				x = 95,
+				y = 172,
+				width = 60,
+				height = 30,
+				script = "boo",
+						type = "search"
+			},
+			{
+				usedTrigger = false,
+				x = 329,
+				y = 193,
+				width = 60,
+				height = 30,
+				script = "counter",
+						type = "counter"
+			},
+			{
+				usedTrigger = false,
+				x = 252,
+				y = 120,
+				width = 60,
+				height = 30,
+				script = "counter",
+						type = "counter"
+			},
+			{
+				usedTrigger = false,
+				x = 199,
+				y = 42,
+				width = 60,
+				height = 30,
+				script = "pick-the-device",
+						type = "cutscene"
 			}
+			},
+			enemies = {
+	
 			},
 			props = {
 			{
 				type = "chair",
-				x = 196,
-				y = 158
-			},
-			{
-				type = "chair",
-				x = 63,
-				y = 71
-			},
-			{
-				type = "chair",
-				x = 115,
-				y = 88
-			},
-			{
-				type = "chair",
-				x = 181,
-				y = 59
-			},
-			{
-				type = "chair",
-				x = 290,
-				y = 30
-			},
-			{
-				type = "chair",
-				x = 346,
-				y = 89
-			},
-			{
-				type = "chair",
-				x = 269,
-				y = 94
+				x = 302,
+				y = 70,
+				id = "3807E51A-5F9B-4734-95DE-2EFBFA629314"
 			},
 			{
 				type = "table",
-				x = 150,
-				y = 83
+				x = 86,
+				y = 183,
+				id = "AA589283-E787-4DD6-A4A7-830CE2F00B8E"
+			},
+			{
+				type = "blood",
+				x = 251,
+				y = 123,
+						nocollide = true,
+				id = "FCDD3C77-100F-4063-B8DA-55F24A53C4FD"
+			},
+			{
+				type = "blood2",
+				x = 83,
+				y = 76,
+						nocollide = true,
+				id = "0CD8D1CE-4BA6-484D-B02D-C5E7625205FC"
 			}
 			}
 		}
-	},
+	}
+	,
 	{
 		floor = {
 			level = 1,

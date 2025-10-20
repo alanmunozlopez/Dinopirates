@@ -268,3 +268,36 @@ end
 function Utilities.toggle(value)
   return not value
 end
+
+local TILE_SIZE = 16
+
+function CurrentTile()
+	local floor = PlayerData.actualTilemap
+	local x = PlayerData.x
+	local y = PlayerData.y
+
+	-- Convertir coordenadas de píxeles a coordenadas de tile
+	local tileX = math.floor(x / TILE_SIZE) + 1
+	local tileY = math.floor(y / TILE_SIZE) + 1
+
+	-- Obtener referencias seguras
+	local floorData = tileMapData[floor]
+	if not floorData then
+		print("⚠️ Piso no encontrado:", floor)
+		return
+	end
+
+	local row = floorData[tileY]
+	if not row then
+		print(string.format("⚠️ Fuera del rango vertical (tileY=%d)", tileY))
+		return
+	end
+
+	local tileNumber = row[tileX] -- this is the number
+	if not tileNumber then
+		print(string.format("⚠️ Fuera del rango horizontal (tileX=%d)", tileX))
+		return
+	end
+
+	print(string.format("🧭 Piso %d | Tile (%d, %d) = %d", floor, tileX, tileY, tileNumber))
+end

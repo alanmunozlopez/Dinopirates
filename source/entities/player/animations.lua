@@ -1,7 +1,7 @@
 function Player:initAnimations()
   local frameDurationWalk = 6
   self.animation:addState('idle', 41, 52)
-  self.animation.idle.frameDuration = 24
+  self.animation.idle.frameDuration = 12
   
   self.animation:addState('right', 11, 15)
   self.animation.right.frameDuration = frameDurationWalk 

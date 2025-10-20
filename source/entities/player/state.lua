@@ -18,7 +18,7 @@ function Player:fallBelow()
   end
 end
 
-function Player:displayDialog(script)
+function Player:displayDialog()
   self.dialogUI:nextDialog()
 end
 
@@ -74,7 +74,74 @@ function Player:deFocus() -- unused
   end
 end
 
+function Player:checkTrigger()
+    -- Check for dialog activation (A button)
+    if self.currentTrigger and playdate.buttonJustPressed(playdate.kButtonA) then
+        local trigger = self.currentTrigger
+    
+        PlayerData.isGaming = false
+        PlayerData.isTalking = true
+        self.dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
+    
+        Utilities.grantAchievementIfNeeded(trigger.script)
+    end
+    
+    if self.currentTrigger then
+      local stillInside = false
+      for _, sprite in ipairs(self:overlappingSprites()) do
+          if sprite == self.currentTrigger then
+            stillInside = true
+
+            -- Base position above the player
+            local hudX = self.x + self.playerUIX
+            local hudY = self.y - 40 -- normal default above player
+
+            -- Adjust for top of screen
+            if self.y < 60 then
+              hudY = self.y + self.playerUIY / 2 -- move down instead of above
+            end
+
+            -- Adjust for right edge
+            if self.x > 350 then
+                hudX = self.x - self.playerUIX -- move to left of player
+            end
+
+            self.uiHud:moveTo(hudX, hudY)
+            self.uiHud:setVisible(true)
+
+            -- Solo se activa una vez cuando el jugador entra en el trigger
+            if not self.triggerEnteredOnce then
+              if self.currentTrigger.type == "call" then
+                self.uiHud:setRing()
+              elseif self.currentTrigger.type == "search" then
+                self.uiHud:setPressA()
+              elseif self.currentTrigger.type == nil then
+              self.uiHud:setPressA()
+              end
+              self.triggerEnteredOnce = true -- Marca que ya se ejecutó
+            end
+
+            break
+          end
+        end
+    
+        if not stillInside then
+            self.uiHud:setVisible(false)
+            self.currentTrigger = nil
+            self.triggerEnteredOnce = false -- Reset para el próximo trigger
+        end
+    end
+end
+
 function Player:update()
+  self:setZIndex(self.y)
+  self:checkTrigger()
+  
+  -- if PlayerData.storyCounter == 4 then
+  -- PlayerData.isRinging = true 
+  -- end
+  
+  
   -- Mark: save actual position
   PlayerData.x = self.x
   PlayerData.y = self.y
