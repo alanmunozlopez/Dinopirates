@@ -69,13 +69,19 @@ function scene:init()
 	
 end
 function scene:setFloor(levelNumber, roomNumber)
-	for i, levelData in ipairs(levels) do
-		if levelData.floor.level == levelNumber and levelData.floor.roomNumber == roomNumber then
+	for i, levelData in ipairs(levelsLDTK) do
+		print(i)
+		print(levelData.customFields.level)
+		print(levelData.customFields.roomNumber)
+		if levelData.customFields.level == levelNumber and levelData.customFields.roomNumber == roomNumber then
 			room = i
+			print(levelData.customFields.level)
 			return
 		end
 	end
 	print("Warning: Level " .. levelNumber .. ", Room " .. roomNumber .. " not found")
+	print(room)
+	
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -90,25 +96,28 @@ function scene:enter()
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
-	PlayerData.room = levels[room].floor.roomNumber
-	PlayerData.isInDarkness = levels[room].floor.shadow
+	PlayerData.room = levelsLDTK[room].customFields.roomNumber
+	PlayerData.isInDarkness = levelsLDTK[room].customFields.shadow
 	PlayerData.floor = room
 	
-	PlayerData.actualLevel = levels[room].floor.level
-	PlayerData.actualRoom = levels[room].floor.roomNumber
-	PlayerData.actualTilemap = levels[room].floor.tile
+	PlayerData.actualLevel = levelsLDTK[room].customFields.level
+	PlayerData.actualRoom = levelsLDTK[room].customFields.roomNumber
+	PlayerData.actualTilemap = levelsLDTK[room].customFields.tile -- aca tengo que ver como conectar el tile con el csv
 	levels[room].floor.visited = true
 	
 	-- Mark: floor
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
 	map = Graphics.tilemap.new()
-	map:setImageTable(tilesMap)
+	map:setImageTable(tilesMap) 
 	-- map:setSize(16,9)
 	
+	-- Mark: UI
+	uiScreen = playerHud()
+	inGameEquip = inGameMenu()
 	-- Mark: floor 
 	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
 	
-	renderTileMap(tileMapData[levels[room].floor.tile], map)
+	renderTileMap(tileMapData[PlayerData.actualTilemap], map)
 	
 	floor = Graphics.sprite.new()
 	floor:setZIndex(1)
@@ -137,49 +146,54 @@ function scene:enter()
 	
 	
 	-- Mark: Props 
-	arrayData = levels[room].floor.props
-	if arrayData ~= nil then
-		for _, propData in ipairs(arrayData) do
-			if propData.destroyed == false or propData.destroyed == nil then
-				local type = propData.type
-				local x = propData.x
-				local y = propData.y
-				local collide = propData.nocollide
-				local id = propData.id
-				PropItem(x, y, type, ZIndex.props, collide, id)
-			else
-				local x = propData.x
-				local y = propData.y
-				local id = propData.id
-				PropItem(x, y, 'debris', ZIndex.props, true, id)
+	local entities = levelsLDTK[room].entities
+	
+	if entities ~= nil then
+		for entityType, entitiesList in pairs(entities) do
+			for _, prop in ipairs(entitiesList) do
+				local cf = prop.customFields or {}
+	
+				if cf.destroyed ~= nil or cf.nocollider ~= nil then
+					local x, y, id = prop.x, prop.y, prop.id
+	
+					if cf.destroyed == false or cf.destroyed == nil then
+						PropItem(x, y, cf.type , ZIndex.props, cf.nocollide, id)
+					else
+						PropItem(x, y, "debris", ZIndex.props, true, id)
+					end
+				end
 			end
-			
 		end
 	end
 	
 	-- Mark: Items
-	arrayData = levels[room].floor.items
-	if arrayData ~= nil then
-		for _, itemData in ipairs(arrayData) do
-			
-			local type = itemData.type
-			local x = itemData.x
-			local y = itemData.y
-			local itemRequirements = {
-			  keycard = "hasKey",
-			  lamp = "hasLamp",
-			  radio = "hasRadio",
-			  notes = "hasNotes",
-			  bag = "hasBag",
-			  tools = "hasTools"
-			}
-			
-			if itemRequirements[type] and PlayerData[itemRequirements[type]] == false then
-			  Items(x, y, type)
-			end	
+	if entities ~= nil then
+		for entityType, entitiesList in pairs(entities) do
+			for _, item in ipairs(entitiesList) do
+				local cf = item.customFields or {}
+	
+				-- Detectar si pertenece a la capa Items o si es un tipo de ítem
+				if item.layer == "Items" or cf.isItem == true then
+					local x, y = item.x, item.y
+					local type = cf.type or entityType:lower() -- usa el tipo definido o el nombre de la entidad
+					
+					local itemRequirements = {
+						keycard = "hasKey",
+						lamp = "hasLamp",
+						radio = "hasRadio",
+						notes = "hasNotes",
+						bag = "hasBag",
+						tools = "hasTools"
+					}
+					
+					-- Si el jugador no tiene este ítem, lo genera
+					if itemRequirements[type] and PlayerData[itemRequirements[type]] == false then
+						Items(x, y, type)
+					end
+				end
+			end
 		end
 	end
-	
 	-- Mark: Player
 	local spawnPoint = PlayerData.playerSpawn
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
@@ -215,9 +229,8 @@ function scene:enter()
 			-- comic not found
 		end
 	end
-	-- Mark: UI
-	uiScreen = playerHud()
-	inGameEquip = inGameMenu()
+	
+	
 	-- Mark: Enemies
 	arrayData = levels[room].floor.enemies
 	

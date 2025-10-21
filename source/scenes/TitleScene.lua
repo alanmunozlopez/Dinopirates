@@ -92,10 +92,10 @@ function scene:init()
 	-- Add Playground option only if debug is true
 	
 		menu:addItem("Playground", function()
-			PlayerData.hasLamp= true
+			
 			PlayerData.playerSpawn.x = 200
 			PlayerData.playerSpawn.y = 200
-			Noble.transition(Floor120,0.3, Noble.Transition.MetroNexus)  -- Direct transition to room 109
+			Noble.transition(Floor120,0.3, Noble.Transition.MetroNexus)  -- Direct transition to room 120
 		end)
 	
 	
