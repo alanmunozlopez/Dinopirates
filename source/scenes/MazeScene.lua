@@ -157,9 +157,9 @@ function scene:enter()
 					local x, y, id = prop.x, prop.y, prop.id
 	
 					if cf.destroyed == false or cf.destroyed == nil then
-						PropItem(x, y, cf.type , ZIndex.props, cf.nocollide, id)
+						PropItem(x, y, cf.type , ZIndex.props, cf.nocollider,cf.destroyed, id)
 					else
-						PropItem(x, y, "debris", ZIndex.props, true, id)
+						PropItem(x, y, "debris", ZIndex.props, true, cf.destroyed , id)
 					end
 				end
 			end
@@ -200,9 +200,13 @@ function scene:enter()
 	PlayerData.x = player.x
 	PlayerData.y = player.y
 	PlayerData.direction = 'idle'
+	
 	-- Mark: FX
-	if levels[room].floor.shadow == true then
-		shadow = FXshadow(player, 70, levels[room].floor.light, ZIndex.fx)
+	local cf = levelsLDTK[room].customFields or {}
+	
+	if cf.shadow == true then
+		local lightLevel = cf.light or 0
+		shadow = FXshadow(player, 70, lightLevel, ZIndex.fx)
 		PlayerData.isInDarkness = true
 	else
 		PlayerData.isInDarkness = false
@@ -232,25 +236,26 @@ function scene:enter()
 	
 	
 	-- Mark: Enemies
-	arrayData = levels[room].floor.enemies
+	if entities ~= nil then
+		for entityType, entitiesList in pairs(entities) do
+			if entityType == "Brocorat" or entityType == "Bosscolli" then
+				for _, enemy in ipairs(entitiesList) do
+					local cf = enemy.customFields or {}
+					local x, y, id = enemy.x, enemy.y, enemy.id
+					local speed = cf.speed or 1
+					local dead = cf.dead or false
 	
-	for _, enemyData in ipairs(arrayData) do
-		if enemyData.dead == false or enemyData.dead == nil then
-			local name = enemyData.name
-			local x = enemyData.x
-			local y = enemyData.y
-			local speed = enemyData.speed
-			local id = enemyData.id
-			
-			if name == "brocorat" then
-				Brocorat(x, y, speed, ZIndex.enemy, player, id)
-			elseif name == "bosscolli" then
-				bosscolli(x, y, speed, ZIndex.enemy, player, id)
+					if not dead then
+						if entityType == "Brocorat" then
+							Brocorat(x, y, speed, ZIndex.enemy, player, id)
+						elseif entityType == "Bosscolli" then
+							bosscolli(x, y, speed, ZIndex.enemy, player, id)
+						end
+					else
+						PropItem(x, y, "blood2", ZIndex.props, true)
+					end
+				end
 			end
-		else
-			local x = enemyData.x
-			local y = enemyData.y
-			PropItem(x, y, 'blood2', ZIndex.props, true)
 		end
 	end
 	

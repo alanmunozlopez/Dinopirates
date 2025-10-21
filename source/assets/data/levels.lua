@@ -140,14 +140,15 @@ levelsLDTK = {
 	  bgColor = "#696A79",
 	  neighbourLevels = { },
 	  customFields = {
-		shadow = true,
+		shadow = false,
 		light = 0.2,
 		visited = false,
 		comic_name = nil,
 		comic_wasPlayed = false,
 		level = 1,
 		roomNumber = 20,
-		tile = 2
+		tile = 2,
+		play = nil
 	  },
 	  layers = { "Tilemap.png" },
 	  entities = {
@@ -164,10 +165,10 @@ levelsLDTK = {
 		} },
 		CrewMember = { {
 		  id = "CrewMember",
-		  iid = "846b54c0-ac70-11f0-9560-61581de3b74a",
+		  iid = "658c1c40-ac70-11f0-997a-b986e024e071",
 		  layer = "CrewMembers",
-		  ["x"] = 232,
-		  ["y"] = 96,
+		  ["x"] = 148,
+		  ["y"] = 36,
 		  width = 48,
 		  height = 48,
 		  color = 14984818,
@@ -178,12 +179,12 @@ levelsLDTK = {
 		} },
 		Triggers = { {
 		  id = "Triggers",
-		  iid = "de47bed0-ac70-11f0-9560-316b244cc13c",
+		  iid = "6cc79ca0-ac70-11f0-997a-113babec8821",
 		  layer = "Triggers",
-		  ["x"] = 264,
-		  ["y"] = 64,
-		  width = 72,
-		  height = 32,
+		  ["x"] = 340,
+		  ["y"] = 156,
+		  width = 48,
+		  height = 24,
 		  color = 16711748,
 		  customFields = {
 			type = nil
@@ -254,17 +255,44 @@ levelsLDTK = {
 			type = "tools"
 		  }
 		} },
+		Bag = { {
+		  id = "Bag",
+		  iid = "9ad22e50-ac70-11f0-997a-d162f0474b38",
+		  layer = "Items",
+		  ["x"] = 140,
+		  ["y"] = 172,
+		  width = 48,
+		  height = 48,
+		  color = 15389866,
+		  customFields = {
+			type = "bag"
+		  }
+		} },
 		Brocorat = { {
 		  id = "Brocorat",
 		  iid = "56bc30e0-ac70-11f0-9560-d934ba0d0ba8",
 		  layer = "Enemies",
-		  ["x"] = 160,
-		  ["y"] = 72,
+		  ["x"] = 264,
+		  ["y"] = 40,
 		  width = 32,
 		  height = 32,
 		  color = 14120515,
 		  customFields = {
-			speed = 1.05
+			speed = 1.05,
+			dead = false
+		  }
+		}, {
+		  id = "Brocorat",
+		  iid = "d7d16a50-ac70-11f0-997a-ab7ad2c74c17",
+		  layer = "Enemies",
+		  ["x"] = 340,
+		  ["y"] = 36,
+		  width = 32,
+		  height = 32,
+		  color = 14120515,
+		  customFields = {
+			speed = 0.5,
+			dead = false
 		  }
 		} },
 		Chair = { {
@@ -277,7 +305,7 @@ levelsLDTK = {
 		  height = 32,
 		  color = 12470831,
 		  customFields = {
-			nocollider = true,
+			nocollider = false,
 			destroyed = false,
 			type = "chair"
 		  }
@@ -335,6 +363,34 @@ levelsLDTK = {
 		  customFields = {
 			nocollider = false,
 			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "68d10e10-ac70-11f0-997a-29034fba84bb",
+		  layer = "Props",
+		  ["x"] = 244,
+		  ["y"] = 76,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "69670c80-ac70-11f0-997a-adc433a419e5",
+		  layer = "Props",
+		  ["x"] = 284,
+		  ["y"] = 76,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = true,
 			type = "chair"
 		  }
 		} }

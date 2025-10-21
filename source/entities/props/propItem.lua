@@ -2,7 +2,7 @@ import 'entities/props/propCollider'
 PropItem = {}
 class('PropItem').extends(NobleSprite)
 
-function PropItem:init(x, y, type, zIndex, nocollide, id)
+function PropItem:init(x, y, type, zIndex, nocollide,isDestroyed, id)
   PropItem.super.init(self,'assets/images/props/props', true)
   self.type = type
   self.id = id
@@ -41,10 +41,12 @@ function PropItem:init(x, y, type, zIndex, nocollide, id)
   -- position and z-index
   self:setSize(32, 32)
   self.nocollide = nocollide
-  if nocollide == nil then
+  self.isDestroyed = isDestroyed
+  if nocollide == false then
     self:setCollideRect(0, 0, 32, 32)
     self.propcollider = PropCollider( x, y, 28, 18)
   end
+  
   if type == 'holeDown' or type == 'holeTop' then
     self.isEdible = false
     self:clearCollideRect()
@@ -67,7 +69,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, id)
 end
 
 function PropItem:update()
-  if self.nocollide == true then
+  if self.nocollide == true or isDestroyed == true then
     self:setZIndex(ZIndex.props)
   else
     self:setZIndex(self.y)
@@ -77,5 +79,6 @@ end
 function PropItem:destroyProp(id)
   findAndDestroyPropById(id) 
   self:clearCollideRect()
+  self.propcollider:remove()
   self.animation:setState('debris')
 end

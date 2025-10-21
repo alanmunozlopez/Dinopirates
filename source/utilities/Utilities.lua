@@ -155,12 +155,25 @@ end
 -- finds and destroys a prop
 function findAndDestroyPropById(propId)
 	local room = PlayerData.floor
-	arrayData = levels[room].floor.props
-	
-	for _, propData in ipairs(arrayData) do
-		if propData.id == propId then
-		if propData.destroyed == nil or propData.destroyed == false then
-				propData.destroyed = true
+	local entities = levelsLDTK[room].entities
+
+	if not entities then
+		print("⚠️ No entities found in room:", room)
+		return
+	end
+
+	for entityType, entitiesList in pairs(entities) do
+		for _, prop in ipairs(entitiesList) do
+			local cf = prop.customFields or {}
+			-- Detectar si es un prop por tener 'destroyed' o 'nocollider'
+			if cf.destroyed ~= nil or cf.nocollider ~= nil then
+				if prop.id == propId then
+					if not cf.destroyed then
+						cf.destroyed = true
+						print("💥 Prop destroyed:", propId, "in", entityType)
+					end
+					return
+				end
 			end
 		end
 	end
