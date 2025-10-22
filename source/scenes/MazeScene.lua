@@ -80,8 +80,6 @@ function scene:setFloor(levelNumber, roomNumber)
 		end
 	end
 	print("Warning: Level " .. levelNumber .. ", Room " .. roomNumber .. " not found")
-	print(room)
-	
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -154,7 +152,7 @@ function scene:enter()
 				local cf = prop.customFields or {}
 	
 				if cf.destroyed ~= nil or cf.nocollider ~= nil then
-					local x, y, id = prop.x, prop.y, prop.id
+					local x, y, id = prop.x, prop.y, prop.iid
 	
 					if cf.destroyed == false or cf.destroyed == nil then
 						PropItem(x, y, cf.type , ZIndex.props, cf.nocollider,cf.destroyed, id)
@@ -241,7 +239,7 @@ function scene:enter()
 			if entityType == "Brocorat" or entityType == "Bosscolli" then
 				for _, enemy in ipairs(entitiesList) do
 					local cf = enemy.customFields or {}
-					local x, y, id = enemy.x, enemy.y, enemy.id
+					local x, y, id = enemy.x, enemy.y, enemy.iid
 					local speed = cf.speed or 1
 					local dead = cf.dead or false
 	
@@ -260,20 +258,36 @@ function scene:enter()
 	end
 	
 	-- Mark: Crew members 
-	arrayData = levels[room].floor.items
 	
-	for i, crewData in ipairs(arrayData) do
-		local type = crewData.type
-		local x = crewData.x
-		local y = crewData.y
-		local speed = crewData.speed
-		local crewId = crewData.crewId
-		if type == "crewmember" then
-			if crewData.taken == false then
-				CrewMember(x, y, speed, ZIndex.enemy, player, i ,room, crewId)
+	local entities = levelsLDTK[room].entities
+	
+	if entities and entities.CrewMember then
+		for i, crewData in ipairs(entities.CrewMember) do
+			local cf = crewData.customFields or {}
+			local x, y = crewData.x, crewData.y
+			local speed = cf.speed or 1
+			local crewId = cf.crewID or i
+			local taken = cf.isTaken or false
+	
+			if not taken then
+				CrewMember(x, y, speed, ZIndex.enemy, player, i, room, crewId)
 			end
 		end
 	end
+	-- arrayData = levels[room].floor.items
+	-- 
+	-- for i, crewData in ipairs(arrayData) do
+	-- 	local type = crewData.type
+	-- 	local x = crewData.x
+	-- 	local y = crewData.y
+	-- 	local speed = crewData.speed
+	-- 	local crewId = crewData.crewId
+	-- 	if type == "crewmember" then
+	-- 		if crewData.taken == false then
+	-- 			CrewMember(x, y, speed, ZIndex.enemy, player, i ,room, crewId)
+	-- 		end
+	-- 	end
+	-- end
 	
 	-- Mark: dialog triggers
 	

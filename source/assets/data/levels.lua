@@ -12,119 +12,16 @@ levels = {
 			{
 				direction = 'left',
 				open = 'open',
-				leadsTo = 108
+				leadsTo = 120
 			}
 			},
 			comic = {
 					
 			},
-			items = {
-			{
-				type = 'crewmember',
-				x = 87,
-				y = 68,
-	  		  taken = false,
-	  		  crewId = "100"
-			},
-			{
-				type = 'keycard',
-				x = 70,
-				y = 154
-			},
-			{
-				type = 'bag',
-				x = 197,
-				y = 34
-			},
-			{
-				type = 'tools',
-				x = 51,
-				y = 100
-			}
-			},
-			triggers = {
-	
-			},
-			enemies = {
-			{
-				name = "brocorat",
-				x = 301,
-				y = 71,
-				speed = 1.0,
-				id = "2FE144E4-0CF0-4658-9E72-84B68864D8CD"
-			},
-			{
-				name = "brocorat",
-				x = 301,
-				y = 121,
-				speed = 1.0,
-				id = "567584D3-46EE-4619-A156-EECE842132F6"
-			},
-			{
-				name = "brocorat",
-				x = 304,
-				y = 175,
-				speed = 1.0,
-				id = "1501CD68-22CF-4020-91AF-FBB5BE1BE0AF"
-			}
-			},
-			props = {
-			{
-				type = "table",
-				x = 242,
-				y = 31
-			},
-			{
-				type = "table",
-				x = 241,
-				y = 75
-			},
-			{
-				type = "table",
-				x = 243,
-				y = 124
-			},
-			{
-				type = "table",
-				x = 242,
-				y = 176
-			},
-			{
-				type = "holeTop",
-				x = 150,
-				y = 63
-			},
-			{
-				type = "holeLeft",
-				x = 132,
-				y = 76
-			},
-			{
-				type = "holeRight",
-				x = 164,
-				y = 79
-			},
-			{
-				type = "holeLeft",
-				x = 131,
-				y = 108
-			},
-			{
-				type = "holeRight",
-				x = 163,
-				y = 108
-			},
-			{
-				type = "holeDown",
-				x = 143,
-				y = 122
-			},
-			{
-				type = "holeDown",
-				x = 150,
-				y = 123
-			}
-			}
+			items = {},
+			triggers = {},
+			enemies = {},
+			props = {}
 		}
 	},
 }
@@ -174,7 +71,7 @@ levelsLDTK = {
 		  color = 14984818,
 		  customFields = {
 			isTaken = false,
-			crewID = nil
+			crewID = "100"
 		  }
 		} },
 		Triggers = { {
@@ -390,7 +287,7 @@ levelsLDTK = {
 		  color = 12470831,
 		  customFields = {
 			nocollider = false,
-			destroyed = true,
+			destroyed = false,
 			type = "chair"
 		  }
 		} }

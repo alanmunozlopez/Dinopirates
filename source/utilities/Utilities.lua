@@ -136,17 +136,33 @@ function drawVersionNumber(x, y, alignment)
 	Graphics.drawText(version, x, y)
 end 
 
--- finds and destroys a enemy
+-- Finds and kills an enemy by its unique ID (LDtk version)
 function findAndKillEnemyById(enemyId)
 	local room = PlayerData.floor
-	arrayData = levels[room].floor.enemies
-	
-	for _, enemyData in ipairs(arrayData) do
-		if enemyData.id == enemyId then
-		if enemyData.dead == nil or enemyData.dead == false then
-				enemyData.dead = true
-				enemyData.x = PlayerData.lastEnemyTouched.x
-				enemyData.y = PlayerData.lastEnemyTouched.y
+	local entities = levelsLDTK[room].entities
+
+	if not entities then
+		print("⚠️ No entities found in room:", room)
+		return
+	end
+
+	for entityType, entitiesList in pairs(entities) do
+		-- Buscar dentro de tipos de enemigos conocidos
+		if entityType == "Brocorat" or entityType == "Bosscolli" then
+			for _, enemy in ipairs(entitiesList) do
+				if enemy.iid == enemyId then
+					local cf = enemy.customFields or {}
+					if cf.dead == false or cf.dead == nil then
+						cf.dead = true
+						-- Actualizamos su posición a donde fue derrotado
+						if PlayerData.lastEnemyTouched then
+							enemy.x = PlayerData.lastEnemyTouched.x
+							enemy.y = PlayerData.lastEnemyTouched.y
+						end
+						print("💀 Enemy killed:", enemyId, "in", entityType)
+					end
+					return
+				end
 			end
 		end
 	end
@@ -167,7 +183,7 @@ function findAndDestroyPropById(propId)
 			local cf = prop.customFields or {}
 			-- Detectar si es un prop por tener 'destroyed' o 'nocollider'
 			if cf.destroyed ~= nil or cf.nocollider ~= nil then
-				if prop.id == propId then
+				if prop.iid == propId then
 					if not cf.destroyed then
 						cf.destroyed = true
 						print("💥 Prop destroyed:", propId, "in", entityType)
