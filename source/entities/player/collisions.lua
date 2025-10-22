@@ -12,6 +12,7 @@ function Player:collisionResponse(other)
     end
     
   elseif other:isa(CrewMember) then
+    -- validar tener la bolsa de captura
     other:taken() 
     
   elseif other:isa(Box) then

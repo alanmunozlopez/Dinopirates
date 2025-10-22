@@ -267,10 +267,11 @@ function scene:enter()
 			local x, y = crewData.x, crewData.y
 			local speed = cf.speed or 1
 			local crewId = cf.crewID or i
+			local crewIid = crewData.iid
 			local taken = cf.isTaken or false
 	
 			if not taken then
-				CrewMember(x, y, speed, ZIndex.enemy, player, i, room, crewId)
+				CrewMember(x, y, speed, ZIndex.enemy, player, crewIid, room, crewId)
 			end
 		end
 	end
