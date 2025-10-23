@@ -300,18 +300,24 @@ function scene:enter()
 		end
 	end
 	
-	-- Mark: dialog triggers
 	
-	arrayData = levels[room].floor.triggers
-	for i, triggerData in ipairs(arrayData) do
-		if triggerData.usedTrigger == false then
-			local x = triggerData.x
-			local y = triggerData.y
-			local width = triggerData.width
-			local height = triggerData.height
-			local script = triggerData.script
-			local type = triggerData.type
-			Trigger(x,y,width,height,script, i, room, type)
+-- Mark: Dialog triggers
+	local entities = levelsLDTK[room].entities
+	
+	if entities and entities.Triggers then
+		for i, triggerData in ipairs(entities.Triggers) do
+			local cf = triggerData.customFields or {}
+			local x, y = triggerData.x, triggerData.y
+			local width, height = triggerData.width, triggerData.height
+			local script = cf.script or nil
+			local triggerType = cf.type
+			local usedTrigger = cf.usedTrigger or false
+			local triggerIid = triggerData.iid -- ✅ usamos el IID único de LDtk
+	
+			if not usedTrigger then
+				local trigger = Trigger(x, y, width, height, script, i, room, triggerType)
+				trigger.iid = triggerIid -- ✅ guardamos el IID en el objeto Trigger
+			end
 		end
 	end
 	

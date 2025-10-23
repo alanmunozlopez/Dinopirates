@@ -93,8 +93,8 @@ levelsLDTK = {
 		  height = 24,
 		  color = 16711748,
 		  customFields = {
-			type = nil,
-			script = nil
+			type = "call",
+			script = "brocomess"
 		  }
 		} },
 		Lamp = { {
@@ -316,7 +316,7 @@ levelsLDTK = {
 		dir = "s"
 	  } },
 	  customFields = {
-		shadow = true,
+		shadow = false,
 		light = 0,
 		visited = false,
 		comic_name = nil,
