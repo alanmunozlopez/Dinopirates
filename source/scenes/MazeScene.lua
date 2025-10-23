@@ -235,20 +235,20 @@ function scene:enter()
 	end
 	
 	-- Mark: Comic
-	arrayData = levels[room].floor.comic
+	arrayData = levelsLDTK[room].customFields
 	if arrayData ~= nil then
-		local comicData = comics[arrayData.name]
+		local comicData = comics[arrayData.comic_name]
 		if comicData then
-			if arrayData.play == "enter" and arrayData.wasPlayed == false then
+			if arrayData.play == "enter" and arrayData.comic_wasPlayed == false then
 				PlayerData.isCutscene = true
 				PlayerData.isGaming = false
 			end
 			
-			local comicName = arrayData.name
+			local comicName = arrayData.comic_name
 			Panels.startCutscene(comicData, function()
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
-				levels[room].floor.comic.wasPlayed = true
+				levelsLDTK[room].customFields.comic_wasPlayed = true
 				Utilities.checkStoryAchievement(comicName)
 			end)
 		else

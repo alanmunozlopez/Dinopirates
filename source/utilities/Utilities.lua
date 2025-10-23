@@ -133,11 +133,11 @@ function ConvertLDTKDirection(dir)
 	if dir == ">" then
 		result = "up"  -- Escalera hacia arriba
 	elseif dir == "<" then
-		result = "down"  -- Escalera hacia abajo
+		result = "bottom"  -- Escalera hacia abajo
 	elseif dir == "n" then
 		result = "top"  -- Puerta arriba
 	elseif dir == "s" then
-		result = "bottom"  -- Puerta abajo
+		result = "down"  -- Puerta abajo
 	elseif dir == "e" then
 		result = "right"  -- Puerta derecha
 	elseif dir == "w" or dir == "o" then
