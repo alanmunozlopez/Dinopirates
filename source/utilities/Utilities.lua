@@ -116,6 +116,134 @@ function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
 end
+function FindRoomByIid(iid)
+	print("🔍 Buscando room con iid:", iid)
+	for i, room in ipairs(levelsLDTK) do
+		if room.uniqueIdentifer == iid then
+			print("✅ Room encontrado:", room.identifier)
+			return room
+		end
+	end
+	print("❌ Room NO encontrado con iid:", iid)
+	return nil
+end
+function ConvertLDTKDirection(dir)
+	print("🧭 Convirtiendo dirección:", dir)
+	local result
+	if dir == ">" then
+		result = "up"  -- Escalera hacia arriba
+	elseif dir == "<" then
+		result = "down"  -- Escalera hacia abajo
+	elseif dir == "n" then
+		result = "top"  -- Puerta arriba
+	elseif dir == "s" then
+		result = "bottom"  -- Puerta abajo
+	elseif dir == "e" then
+		result = "right"  -- Puerta derecha
+	elseif dir == "w" or dir == "o" then
+		result = "left"  -- Puerta izquierda
+	else
+		result = dir
+	end
+	print("   → Resultado:", result)
+	return result
+end
+
+function CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRoom)
+	print("🎯 Calculando leadsTo:")
+	print("   Current Level:", currentLevel)
+	print("   Current Room:", currentRoomNumber)
+	print("   Direction:", direction)
+	
+	local fullCurrentRoom = currentLevel * 100 + currentRoomNumber
+	print("   Full Current Room:", fullCurrentRoom)
+	
+	local result
+	if direction == ">" then
+		-- Piso superior: 120 -> 220
+		result = (currentLevel + 1) * 100 + currentRoomNumber
+		print("   → Escalera ARRIBA a:", result)
+	elseif direction == "<" then
+		-- Piso inferior: 120 -> 020
+		result = (currentLevel - 1) * 100 + currentRoomNumber
+		print("   → Escalera ABAJO a:", result)
+	else
+		-- Puerta normal: usa el level y roomNumber del vecino
+		local neighborLevel = neighborRoom.customFields.level or 1
+		local neighborRoomNum = neighborRoom.customFields.roomNumber or 0
+		result = neighborLevel * 100 + neighborRoomNum
+		print("   → Puerta NORMAL a:", result, "(nivel:", neighborLevel, "room:", neighborRoomNum, ")")
+	end
+	return result
+end
+
+function CreateDoorsFromLDTK(currentRoom)
+	print("🚪 ===== CREANDO PUERTAS =====")
+	print("📍 Room actual:", currentRoom.identifier)
+	
+	local neighbourLevels = currentRoom.neighbourLevels
+	if neighbourLevels == nil or #neighbourLevels == 0 then
+		print("⚠️  No hay neighbourLevels en esta habitación")
+		return
+	end
+	
+	print("📊 Total de vecinos:", #neighbourLevels)
+	
+	local currentLevel = currentRoom.customFields.level or 1
+	local currentRoomNumber = currentRoom.customFields.roomNumber or 0
+	
+	print("🏢 Nivel actual:", currentLevel, "| Habitación:", currentRoomNumber)
+	
+	for i, neighbor in ipairs(neighbourLevels) do
+		print("")
+		print("--- Procesando vecino", i, "---")
+		print("   levelIid:", neighbor.levelIid)
+		print("   dir:", neighbor.dir)
+		
+		local neighborRoom = FindRoomByIid(neighbor.levelIid)
+		
+		if neighborRoom then
+			print("✅ Vecino encontrado:", neighborRoom.identifier)
+			
+			local direction = ConvertLDTKDirection(neighbor.dir)
+			local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, neighborRoom)
+			local open = "open"
+			
+			print("🔧 Creando puerta:")
+			print("   direction:", direction)
+			print("   open:", open)
+			print("   leadsTo:", leadsTo)
+			print("   ZIndex:", ZIndex.props)
+			
+			-- Crea la puerta
+			Door(direction, open, leadsTo, ZIndex.props)
+			print("✅ Puerta creada exitosamente")
+		else
+			print("❌ ERROR: No se encontró el vecino")
+		end
+	end
+	
+	print("🚪 ===== FIN CREACIÓN PUERTAS =====")
+	print("")
+end
+
+function GetRoomByNumber(roomNumber)
+	local level = math.floor(roomNumber / 100)
+	local room = roomNumber % 100
+	
+	print("🔍 Buscando room por número:", roomNumber, "(nivel:", level, "room:", room, ")")
+	
+	for _, roomData in ipairs(levelsLDTK) do
+		if roomData.customFields.level == level and 
+		   roomData.customFields.roomNumber == room then
+			print("✅ Room encontrado:", roomData.identifier)
+			return roomData
+		end
+	end
+	
+	print("❌ Room NO encontrado")
+	return nil
+end
 
 function drawVersionNumber(x, y, alignment)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)

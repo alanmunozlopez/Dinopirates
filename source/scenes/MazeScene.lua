@@ -101,7 +101,7 @@ function scene:enter()
 	PlayerData.actualLevel = levelsLDTK[room].customFields.level
 	PlayerData.actualRoom = levelsLDTK[room].customFields.roomNumber
 	PlayerData.actualTilemap = levelsLDTK[room].customFields.tile -- aca tengo que ver como conectar el tile con el csv
-	levels[room].floor.visited = true
+	levelsLDTK[room].customFields.visited = true
 	
 	-- Mark: floor
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
@@ -131,15 +131,39 @@ function scene:enter()
 	wallRight = Box(388, 12, 12, 216)
 	
 	-- Mark: doors
-	local arrayData = levels[room].floor.doors -- Used several times to save variables
-	if arrayData ~= nil then
-		for _, doorData in ipairs(arrayData) do
-			local direction = doorData.direction
-			local open = doorData.open
-			local leads = doorData.leadsTo
+	print("======================")
+	print("🏠 Room index:", room)
+	print("📋 levelsLDTK tiene", #levelsLDTK, "habitaciones")
+	
+	if room and levelsLDTK[room] then
+		local currentRoom = levelsLDTK[room]
+		print("✅ CurrentRoom:", currentRoom.identifier)
+		print("📍 Level:", currentRoom.customFields.level)
+		print("📍 RoomNumber:", currentRoom.customFields.roomNumber)
 		
-			Door(direction, open, leads, ZIndex.props)
+		if currentRoom.neighbourLevels then
+			print("👥 Vecinos encontrados:", #currentRoom.neighbourLevels)
+			for i, n in ipairs(currentRoom.neighbourLevels) do
+				print("  Vecino", i, "- iid:", n.levelIid, "dir:", n.dir)
+			end
+		else
+			print("❌ neighbourLevels es nil")
 		end
+		
+		CreateDoorsFromLDTK(currentRoom)
+	else
+		print("❌ ERROR: room es", room, "o levelsLDTK[room] es nil")
+	end
+	print("======================")
+	
+	-- Mark: doors
+	print("🏠 Room index:", room)
+	local currentRoom = levelsLDTK[room]
+	if currentRoom then
+		print("✅ CurrentRoom válido:", currentRoom.identifier)
+		CreateDoorsFromLDTK(currentRoom)
+	else
+		print("❌ ERROR: currentRoom es nil")
 	end
 	
 	
@@ -275,20 +299,6 @@ function scene:enter()
 			end
 		end
 	end
-	-- arrayData = levels[room].floor.items
-	-- 
-	-- for i, crewData in ipairs(arrayData) do
-	-- 	local type = crewData.type
-	-- 	local x = crewData.x
-	-- 	local y = crewData.y
-	-- 	local speed = crewData.speed
-	-- 	local crewId = crewData.crewId
-	-- 	if type == "crewmember" then
-	-- 		if crewData.taken == false then
-	-- 			CrewMember(x, y, speed, ZIndex.enemy, player, i ,room, crewId)
-	-- 		end
-	-- 	end
-	-- end
 	
 	-- Mark: dialog triggers
 	

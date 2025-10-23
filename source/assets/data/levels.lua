@@ -35,17 +35,26 @@ levelsLDTK = {
 	  width = 400,
 	  height = 240,
 	  bgColor = "#696A79",
-	  neighbourLevels = { },
+	  neighbourLevels = { {
+		levelIid = "dbefef90-ac70-11f0-997a-b7159accfa8a",
+		dir = ">"
+	  }, {
+		levelIid = "94aa6430-ac70-11f0-997a-1d1b08457bc3",
+		dir = "<"
+	  }, {
+		levelIid = "ae5a31c0-ac70-11f0-9560-a1abd660ccf1",
+		dir = "n"
+	  } },
 	  customFields = {
 		shadow = false,
 		light = 0.2,
 		visited = false,
-		comic_name = nil,
+		comic_name = "intro",
 		comic_wasPlayed = false,
 		level = 1,
 		roomNumber = 20,
 		tile = 2,
-		play = nil
+		play = "enter"
 	  },
 	  layers = { "Tilemap.png" },
 	  entities = {
@@ -84,7 +93,8 @@ levelsLDTK = {
 		  height = 24,
 		  color = 16711748,
 		  customFields = {
-			type = nil
+			type = nil,
+			script = nil
 		  }
 		} },
 		Lamp = { {
@@ -282,6 +292,286 @@ levelsLDTK = {
 		  layer = "Props",
 		  ["x"] = 284,
 		  ["y"] = 76,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		} }
+	  }
+	},
+	{
+	  identifier = "Room_21",
+	  uniqueIdentifer = "ae5a31c0-ac70-11f0-9560-a1abd660ccf1",
+	  ["x"] = 0,
+	  ["y"] = 16,
+	  width = 400,
+	  height = 240,
+	  bgColor = "#696A79",
+	  neighbourLevels = { {
+		levelIid = "69eb2d80-ac70-11f0-989f-95306126bd74",
+		dir = "s"
+	  } },
+	  customFields = {
+		shadow = true,
+		light = 0,
+		visited = false,
+		comic_name = nil,
+		comic_wasPlayed = false,
+		level = 1,
+		roomNumber = 21,
+		tile = 2,
+		play = nil
+	  },
+	  layers = { "Tilemap.png" },
+	  entities = {
+		Chair = { {
+		  id = "Chair",
+		  iid = "e34540a0-ac70-11f0-9560-596aec79f978",
+		  layer = "Props",
+		  ["x"] = 136,
+		  ["y"] = 192,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "e37f6370-ac70-11f0-9560-418f240ff1f4",
+		  layer = "Props",
+		  ["x"] = 136,
+		  ["y"] = 176,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "e68e9f40-ac70-11f0-9560-3d419f3ad8e3",
+		  layer = "Props",
+		  ["x"] = 136,
+		  ["y"] = 144,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "e6cedc90-ac70-11f0-9560-5387985a4fa9",
+		  layer = "Props",
+		  ["x"] = 136,
+		  ["y"] = 120,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "e708ff60-ac70-11f0-9560-1b3975dde215",
+		  layer = "Props",
+		  ["x"] = 136,
+		  ["y"] = 88,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "e752b290-ac70-11f0-9560-3502bcb3e130",
+		  layer = "Props",
+		  ["x"] = 136,
+		  ["y"] = 72,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "e78d71a0-ac70-11f0-9560-b1bfe3ef25bf",
+		  layer = "Props",
+		  ["x"] = 136,
+		  ["y"] = 40,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "e7e618f0-ac70-11f0-9560-f113e8acdcb8",
+		  layer = "Props",
+		  ["x"] = 136,
+		  ["y"] = 24,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "e89d0ce0-ac70-11f0-9560-7d41f22b153d",
+		  layer = "Props",
+		  ["x"] = 136,
+		  ["y"] = 16,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "eea4ef40-ac70-11f0-9560-71e4246befc6",
+		  layer = "Props",
+		  ["x"] = 240,
+		  ["y"] = 192,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "eedf8740-ac70-11f0-9560-f94bf2644517",
+		  layer = "Props",
+		  ["x"] = 240,
+		  ["y"] = 168,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "ef19d120-ac70-11f0-9560-8b4a973c79e3",
+		  layer = "Props",
+		  ["x"] = 240,
+		  ["y"] = 136,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "ef56b310-ac70-11f0-9560-5fe2a202a9b4",
+		  layer = "Props",
+		  ["x"] = 248,
+		  ["y"] = 112,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "efe7cf80-ac70-11f0-9560-679ed99272c7",
+		  layer = "Props",
+		  ["x"] = 240,
+		  ["y"] = 88,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "f02cc7c0-ac70-11f0-9560-17596a0457d9",
+		  layer = "Props",
+		  ["x"] = 224,
+		  ["y"] = 64,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "f06eb2c0-ac70-11f0-9560-99336f9cd46a",
+		  layer = "Props",
+		  ["x"] = 248,
+		  ["y"] = 48,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "f0d69c50-ac70-11f0-9560-d5532c89dceb",
+		  layer = "Props",
+		  ["x"] = 240,
+		  ["y"] = 32,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "f1166470-ac70-11f0-9560-77a6a5c15104",
+		  layer = "Props",
+		  ["x"] = 240,
+		  ["y"] = 16,
 		  width = 32,
 		  height = 32,
 		  color = 12470831,
