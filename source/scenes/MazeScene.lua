@@ -131,9 +131,7 @@ function scene:enter()
 	wallRight = Box(388, 12, 12, 216)
 	
 	-- Mark: doors
-	print("======================")
-	print("🏠 Room index:", room)
-	print("📋 levelsLDTK tiene", #levelsLDTK, "habitaciones")
+
 	
 	if room and levelsLDTK[room] then
 		local currentRoom = levelsLDTK[room]

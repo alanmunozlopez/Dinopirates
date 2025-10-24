@@ -116,6 +116,7 @@ function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
 end
+-- door utilities
 function FindRoomByIid(iid)
 	print("🔍 Buscando room con iid:", iid)
 	for i, room in ipairs(levelsLDTK) do
@@ -131,9 +132,9 @@ function ConvertLDTKDirection(dir)
 	print("🧭 Convirtiendo dirección:", dir)
 	local result
 	if dir == ">" then
-		result = "up"  -- Escalera hacia arriba
+		result = "down"  -- Escalera hacia arriba (visualmente está abajo en la pantalla)
 	elseif dir == "<" then
-		result = "bottom"  -- Escalera hacia abajo
+		result = "top"  -- Escalera hacia abajo (visualmente está arriba en la pantalla)
 	elseif dir == "n" then
 		result = "top"  -- Puerta arriba
 	elseif dir == "s" then
@@ -169,10 +170,15 @@ function CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRo
 		print("   → Escalera ABAJO a:", result)
 	else
 		-- Puerta normal: usa el level y roomNumber del vecino
-		local neighborLevel = neighborRoom.customFields.level or 1
-		local neighborRoomNum = neighborRoom.customFields.roomNumber or 0
-		result = neighborLevel * 100 + neighborRoomNum
-		print("   → Puerta NORMAL a:", result, "(nivel:", neighborLevel, "room:", neighborRoomNum, ")")
+		if neighborRoom then
+			local neighborLevel = neighborRoom.customFields.level or 1
+			local neighborRoomNum = neighborRoom.customFields.roomNumber or 0
+			result = neighborLevel * 100 + neighborRoomNum
+			print("   → Puerta NORMAL a:", result, "(nivel:", neighborLevel, "room:", neighborRoomNum, ")")
+		else
+			print("   ⚠️  neighborRoom es nil, no se puede calcular")
+			result = fullCurrentRoom -- Fallback a la misma habitación
+		end
 	end
 	return result
 end
@@ -191,8 +197,10 @@ function CreateDoorsFromLDTK(currentRoom)
 	
 	local currentLevel = currentRoom.customFields.level or 1
 	local currentRoomNumber = currentRoom.customFields.roomNumber or 0
+	local doorsConnection = currentRoom.customFields.DoorsConnection or {}
 	
 	print("🏢 Nivel actual:", currentLevel, "| Habitación:", currentRoomNumber)
+	print("🔑 Puertas permitidas:", table.concat(doorsConnection, ", "))
 	
 	for i, neighbor in ipairs(neighbourLevels) do
 		print("")
@@ -200,26 +208,61 @@ function CreateDoorsFromLDTK(currentRoom)
 		print("   levelIid:", neighbor.levelIid)
 		print("   dir:", neighbor.dir)
 		
-		local neighborRoom = FindRoomByIid(neighbor.levelIid)
+		local direction = ConvertLDTKDirection(neighbor.dir)
 		
-		if neighborRoom then
-			print("✅ Vecino encontrado:", neighborRoom.identifier)
-			
-			local direction = ConvertLDTKDirection(neighbor.dir)
-			local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, neighborRoom)
-			local open = "open"
-			
-			print("🔧 Creando puerta:")
-			print("   direction:", direction)
-			print("   open:", open)
-			print("   leadsTo:", leadsTo)
-			print("   ZIndex:", ZIndex.props)
-			
-			-- Crea la puerta
-			Door(direction, open, leadsTo, ZIndex.props)
-			print("✅ Puerta creada exitosamente")
+		-- Validar si esta puerta está permitida en DoorsConnection
+		local isAllowed = false
+		local directionCapitalized = direction:sub(1,1):upper() .. direction:sub(2):lower()
+		
+		for _, allowedDir in ipairs(doorsConnection) do
+			if allowedDir:lower() == direction:lower() then
+				isAllowed = true
+				break
+			end
+		end
+		
+		if not isAllowed then
+			print("🚫 Puerta NO permitida (no está en DoorsConnection):", direction)
 		else
-			print("❌ ERROR: No se encontró el vecino")
+			print("✅ Puerta permitida:", direction)
+			
+			local neighborRoom = FindRoomByIid(neighbor.levelIid)
+			
+			-- Para escaleras (> y <), no necesitamos que el vecino exista
+			if neighbor.dir == ">" or neighbor.dir == "<" then
+				print("⚡ Es una ESCALERA, no se requiere vecino cargado")
+				
+				local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, nil)
+				local open = "open"
+				
+				print("🔧 Creando escalera:")
+				print("   direction:", direction)
+				print("   open:", open)
+				print("   leadsTo:", leadsTo)
+				print("   ZIndex:", ZIndex.props)
+				
+				-- Crea la escalera
+				Door(direction, open, leadsTo, ZIndex.props)
+				print("✅ Escalera creada exitosamente")
+				
+			elseif neighborRoom then
+				print("✅ Vecino encontrado:", neighborRoom.identifier)
+				
+				local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, neighborRoom)
+				local open = "open"
+				
+				print("🔧 Creando puerta:")
+				print("   direction:", direction)
+				print("   open:", open)
+				print("   leadsTo:", leadsTo)
+				print("   ZIndex:", ZIndex.props)
+				
+				-- Crea la puerta
+				Door(direction, open, leadsTo, ZIndex.props)
+				print("✅ Puerta creada exitosamente")
+			else
+				print("⚠️  ADVERTENCIA: Vecino no cargado (probablemente la habitación no existe aún)")
+			end
 		end
 	end
 	

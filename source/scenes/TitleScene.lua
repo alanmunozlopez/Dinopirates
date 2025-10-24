@@ -68,7 +68,7 @@ function scene:init()
 	
 		SaveSystem.reset()
 		Noble.transition(
-			Floor107,
+			Floor207,
 			 1, Noble.Transition.Spotlight, {
 			x = 200,
 			y = 120,
@@ -91,12 +91,12 @@ function scene:init()
 	end)
 	-- Add Playground option only if debug is true
 	
-		menu:addItem("Playground", function()
-			
-			PlayerData.playerSpawn.x = 200
-			PlayerData.playerSpawn.y = 200
-			Noble.transition(Floor120,0.3, Noble.Transition.MetroNexus)  -- Direct transition to room 120
-		end)
+		-- menu:addItem("Playground", function()
+		-- 	
+		-- 	PlayerData.playerSpawn.x = 200
+		-- 	PlayerData.playerSpawn.y = 200
+		-- 	Noble.transition(Floor120,0.3, Noble.Transition.MetroNexus)  -- Direct transition to room 120
+		-- end)
 	
 	
 	menu:select(playdate.file.exists('gameState.json') and "Continue" or "New Game")
