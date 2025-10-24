@@ -232,25 +232,21 @@ function scene:enter()
 		PlayerData.isInDarkness = false
 	end
 	
-	-- Mark: Comic
-	arrayData = levelsLDTK[room].customFields
-	if arrayData ~= nil then
-		local comicData = comics[arrayData.comic_name]
+	local cf = levelsLDTK[room].customFields
+	if cf.comic_name then
+		local comicData = comics[cf.comic_name]
 		if comicData then
-			if arrayData.play == "enter" and arrayData.comic_wasPlayed == false then
+			if cf.play == "enter" and cf.comic_wasPlayed == false then
 				PlayerData.isCutscene = true
 				PlayerData.isGaming = false
 			end
 			
-			local comicName = arrayData.comic_name
 			Panels.startCutscene(comicData, function()
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
 				levelsLDTK[room].customFields.comic_wasPlayed = true
-				Utilities.checkStoryAchievement(comicName)
+				Utilities.checkStoryAchievement(cf.comic_name)
 			end)
-		else
-			-- comic not found
 		end
 	end
 	
@@ -299,29 +295,28 @@ function scene:enter()
 	end
 	
 	
--- Mark: Dialog triggers
+-- Mark: dialog triggers
 	local entities = levelsLDTK[room].entities
 	
 	if entities and entities.Triggers then
 		for i, triggerData in ipairs(entities.Triggers) do
 			local cf = triggerData.customFields or {}
-			local x, y = triggerData.x, triggerData.y
-			local width, height = triggerData.width, triggerData.height
-			local script = cf.script or nil
-			local triggerType = cf.type
-			local usedTrigger = cf.usedTrigger or false
-			local triggerIid = triggerData.iid -- ✅ usamos el IID único de LDtk
-	
-			if not usedTrigger then
-				local trigger = Trigger(x, y, width, height, script, i, room, triggerType)
-				trigger.iid = triggerIid -- ✅ guardamos el IID en el objeto Trigger
+			local used = cf.used or false
+			
+			if not used then
+				local x = triggerData.x
+				local y = triggerData.y
+				local width = triggerData.width
+				local height = triggerData.height
+				local script = cf.script
+				local type = cf.type
+				
+				-- Pasar el iid en lugar del índice
+				Trigger(x, y, width, height, script, triggerData.iid, room, type)
 			end
 		end
 	end
-	
-	SaveSystem.save()
 end
-
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)

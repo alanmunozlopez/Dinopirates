@@ -73,6 +73,8 @@ CollideGroups = {
 playdate.datastore.write(levels, 'levelOriginal', true) 
 playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)-- DEBUG
 
+SaveSystem.createOriginalBackup()
+
 local menu = playdate.getSystemMenu()
 
 local menuItem, error = menu:addMenuItem("Title", function()

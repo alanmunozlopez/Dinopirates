@@ -35,3 +35,17 @@ function Trigger:returnScript()
 
   return self.script
 end
+
+function Trigger:markAsUsed()
+    local entities = levelsLDTK[self.room].entities
+    
+    if entities and entities.Triggers then
+        for _, trigger in ipairs(entities.Triggers) do
+            if trigger.iid == self.id then  -- Ahora self.id es el iid
+                trigger.customFields.used = true
+                print("✅ Trigger marcado como usado:", self.id)
+                return
+            end
+        end
+    end
+end
