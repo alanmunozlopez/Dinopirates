@@ -11,7 +11,11 @@ levelsLDTK = {
 	  neighbourLevels = { {
 		levelIid = "69eb2d80-ac70-11f0-989f-95306126bd74",
 		dir = "nw"
-	  }, {
+	  }, 
+	  {
+		  levelIid= "abdd36b0-ac70-11f0-998c-673887a050e6",
+		  dir ="<"
+	  },{
 		levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
 		dir = "n"
 	  }, {
@@ -43,7 +47,7 @@ levelsLDTK = {
 		roomNumber = 7,
 		tile = 2,
 		play = nil,
-		DoorsConnection = { "Top" }
+		DoorsConnection = { "Top", "Lower" }
 	  },
 	  layers = { "Tilemap.png" },
 	  entities = {

@@ -117,6 +117,7 @@ function RoomTranslate(roomNumber)
 	return _G[floorClass]
 end
 -- door utilities
+-- Función para encontrar una habitación por su uniqueIdentifer (iid)
 function FindRoomByIid(iid)
 	print("🔍 Buscando room con iid:", iid)
 	for i, room in ipairs(levelsLDTK) do
@@ -128,6 +129,8 @@ function FindRoomByIid(iid)
 	print("❌ Room NO encontrado con iid:", iid)
 	return nil
 end
+
+-- Función para convertir dirección LDTK a dirección de puerta
 function ConvertLDTKDirection(dir)
 	print("🧭 Convirtiendo dirección:", dir)
 	local result
@@ -150,6 +153,7 @@ function ConvertLDTKDirection(dir)
 	return result
 end
 
+-- Función para calcular el número de habitación destino
 function CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRoom)
 	print("🎯 Calculando leadsTo:")
 	print("   Current Level:", currentLevel)
@@ -183,6 +187,7 @@ function CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRo
 	return result
 end
 
+-- Función principal: genera las puertas desde levelsLDTK
 function CreateDoorsFromLDTK(currentRoom)
 	print("🚪 ===== CREANDO PUERTAS =====")
 	print("📍 Room actual:", currentRoom.identifier)
@@ -268,6 +273,155 @@ function CreateDoorsFromLDTK(currentRoom)
 	
 	print("🚪 ===== FIN CREACIÓN PUERTAS =====")
 	print("")
+end
+
+-- Función para encontrar el vecino por dirección
+function FindNeighborByDirection(currentRoom, direction)
+	print("🔍 Buscando vecino con dirección:", direction)
+	
+	if not currentRoom.neighbourLevels then
+		print("❌ No hay neighbourLevels")
+		return nil
+	end
+	
+	for _, neighbor in ipairs(currentRoom.neighbourLevels) do
+		if neighbor.dir == direction then
+			print("✅ Vecino encontrado con dir:", direction)
+			return neighbor
+		end
+	end
+	
+	print("❌ No se encontró vecino con dir:", direction)
+	return nil
+end
+
+-- Función para validar si se puede caer/subir en una dirección
+function CanMoveVertically(currentRoom, direction)
+	-- direction: "<" para caer (bajar), ">" para subir
+	local doorsConnection = currentRoom.customFields.DoorsConnection or {}
+	
+	-- Mapeo de direcciones verticales a nombres en DoorsConnection
+	local directionMap = {
+		["<"] = "lower",  -- Caer hacia abajo
+		[">"] = "upper"   -- Subir hacia arriba
+	}
+	
+	local requiredConnection = directionMap[direction]
+	if not requiredConnection then
+		print("⚠️  Dirección vertical no reconocida:", direction)
+		return false
+	end
+	
+	-- Verificar si está permitido en DoorsConnection
+	for _, allowed in ipairs(doorsConnection) do
+		if allowed:lower() == requiredConnection:lower() then
+			return true
+		end
+	end
+	
+	return false
+end
+
+-- Función para obtener la habitación inferior (caer)
+function GetLowerRoom(currentRoomIndex)
+	print("⬇️  === BUSCANDO HABITACIÓN INFERIOR ===")
+	local currentRoom = levelsLDTK[currentRoomIndex]
+	
+	if not currentRoom then
+		print("❌ currentRoom no válido")
+		return nil
+	end
+	
+	-- Validar si se puede caer
+	if not CanMoveVertically(currentRoom, "<") then
+		print("🚫 No se puede caer desde esta habitación (no tiene 'lower' en DoorsConnection)")
+		return nil
+	end
+	
+	-- Buscar el vecino con dirección "<" (piso inferior)
+	local lowerNeighbor = FindNeighborByDirection(currentRoom, "<")
+	
+	if not lowerNeighbor then
+		print("❌ No hay habitación inferior definida en neighbourLevels")
+		return nil
+	end
+	
+	-- Buscar la habitación por su iid
+	local lowerRoom = FindRoomByIid(lowerNeighbor.levelIid)
+	
+	if lowerRoom then
+		local level = lowerRoom.customFields.level or 0
+		local roomNum = lowerRoom.customFields.roomNumber or 0
+		local roomNumber = level * 100 + roomNum
+		
+		print("✅ Habitación inferior encontrada:")
+		print("   identifier:", lowerRoom.identifier)
+		print("   level:", level)
+		print("   roomNumber:", roomNum)
+		print("   fullRoomNumber:", roomNumber)
+		
+		return roomNumber, lowerRoom
+	else
+		print("⚠️  Habitación inferior no está cargada en levelsLDTK")
+		-- Calcular el número esperado aunque no esté cargada
+		local currentLevel = currentRoom.customFields.level or 1
+		local currentRoomNum = currentRoom.customFields.roomNumber or 0
+		local expectedRoom = (currentLevel - 1) * 100 + currentRoomNum
+		
+		print("📊 Habitación esperada (calculada):", expectedRoom)
+		return expectedRoom, nil
+	end
+end
+
+-- Función para obtener la habitación superior (subir)
+function GetUpperRoom(currentRoomIndex)
+	print("⬆️  === BUSCANDO HABITACIÓN SUPERIOR ===")
+	local currentRoom = levelsLDTK[currentRoomIndex]
+	
+	if not currentRoom then
+		print("❌ currentRoom no válido")
+		return nil
+	end
+	
+	-- Validar si se puede subir
+	if not CanMoveVertically(currentRoom, ">") then
+		print("🚫 No se puede subir desde esta habitación (no tiene 'upper' en DoorsConnection)")
+		return nil
+	end
+	
+	-- Buscar el vecino con dirección ">" (piso superior)
+	local upperNeighbor = FindNeighborByDirection(currentRoom, ">")
+	
+	if not upperNeighbor then
+		print("❌ No hay habitación superior definida en neighbourLevels")
+		return nil
+	end
+	
+	-- Buscar la habitación por su iid
+	local upperRoom = FindRoomByIid(upperNeighbor.levelIid)
+	
+	if upperRoom then
+		local level = upperRoom.customFields.level or 0
+		local roomNum = upperRoom.customFields.roomNumber or 0
+		local roomNumber = level * 100 + roomNum
+		
+		print("✅ Habitación superior encontrada:")
+		print("   identifier:", upperRoom.identifier)
+		print("   level:", level)
+		print("   roomNumber:", roomNum)
+		print("   fullRoomNumber:", roomNumber)
+		
+		return roomNumber, upperRoom
+	else
+		print("⚠️  Habitación superior no está cargada en levelsLDTK")
+		-- Calcular el número esperado aunque no esté cargada
+		local currentLevel = currentRoom.customFields.level or 1
+		local currentRoomNum = currentRoom.customFields.roomNumber or 0
+		local expectedRoom = (currentLevel + 1) * 100 + currentRoomNum
+		
+		print("📊 Habitación esperada (calculada):", expectedRoom)
+		return expectedRoom, nil
+	end
 end
 
 function GetRoomByNumber(roomNumber)
