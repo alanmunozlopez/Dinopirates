@@ -34,7 +34,7 @@ function PropItem:init(x, y, type, zIndex, nocollide,isDestroyed, id)
   self.animation:addState('holeRight', 25, 25)
   self.animation:addState('holeTop', 26, 26)
   self.animation:addState('holeDown', 27, 27)
-  self.animation:addState('debris', 28, 28)
+  self.animation:addState('debris', 33, 33)
   self.animation:setState(type)
   -- is edible
   self.isEdible = true
