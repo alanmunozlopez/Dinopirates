@@ -472,9 +472,9 @@ end
 local TILE_SIZE = 16
 
 function CurrentTile()
-	local floor = PlayerData.actualTilemap
-	local x = PlayerData.x
-	local y = PlayerData.y
+	local floor = PlayerData.actualTilemap or 1
+	local x = tonumber(PlayerData.x) or 0
+	local y = tonumber(PlayerData.y) or 0
 
 	-- Convertir coordenadas de píxeles a coordenadas de tile
 	local tileX = math.floor(x / TILE_SIZE) + 1
@@ -489,15 +489,19 @@ function CurrentTile()
 
 	local row = floorData[tileY]
 	if not row then
-		print(string.format("⚠️ Fuera del rango vertical (tileY=%d)", tileY))
+		print(string.format("⚠️ Fuera del rango vertical (tileY=%.2f)", tileY))
 		return
 	end
 
-	local tileNumber = row[tileX] -- this is the number
+	local tileNumber = row[tileX]
 	if not tileNumber then
-		print(string.format("⚠️ Fuera del rango horizontal (tileX=%d)", tileX))
+		print(string.format("⚠️ Fuera del rango horizontal (tileX=%.2f)", tileX))
 		return
 	end
 
-	print(string.format("🧭 Piso %d | Tile (%d, %d) = %d", floor, tileX, tileY, tileNumber))
+	-- ✅ Usa %.2f para floats y %d solo para enteros seguros
+	print(string.format(
+		"🧭 Piso %d | Player (%.1f, %.1f) | Tile (%d, %d) = %d",
+		floor, x, y, tileX, tileY, tileNumber
+	))
 end

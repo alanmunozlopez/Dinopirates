@@ -203,7 +203,7 @@ levelsLDTK = {
 		  customFields = {
 			nocollider = false,
 			destroyed = false,
-			type = "chair"
+			type = "holeLeft"
 		  }
 		}, {
 		  id = "Chair",

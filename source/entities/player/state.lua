@@ -1,7 +1,7 @@
 function Player:fallBelow()
-  local level = PlayerData.actualLevel + 1
+  local level = PlayerData.actualLevel - 1
   local room = PlayerData.actualRoom
-  local sceneName = "Floor" .. tostring(level) .. tostring(room)
+  local sceneName = "Floor" .. tostring(level*10) .. tostring(room)
   local nextScene = _G[sceneName]
   PlayerData.playerSpawn.x =  self.x
   PlayerData.playerSpawn.y = self.y

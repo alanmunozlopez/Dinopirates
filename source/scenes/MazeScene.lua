@@ -455,7 +455,7 @@ scene.inputHandler = {
 			PlayerData.isEquiping = false
 			--inGameMenu:closeMenu()
 		end
-		--CurrentTile() for testing
+		-- CurrentTile() --for testing
 		playerFocus()
 	end,
 	BButtonHeld = function()
