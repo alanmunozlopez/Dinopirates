@@ -9,9 +9,6 @@ levelsLDTK = {
 	  height = 240,
 	  bgColor = "#696A79",
 	  neighbourLevels = { {
-		levelIid = "abdd36b0-ac70-11f0-998c-673887a050e6",
-		dir = "<"
-	  }, {
 		levelIid = "69eb2d80-ac70-11f0-989f-95306126bd74",
 		dir = "nw"
 	  }, {
@@ -50,6 +47,66 @@ levelsLDTK = {
 	  },
 	  layers = { "Tilemap.png" },
 	  entities = {
+		HoleTopLeft = { {
+		  id = "HoleTopLeft",
+		  iid = "828cf9b0-ac70-11f0-998c-0f4425e4dc9d",
+		  layer = "Holes",
+		  ["x"] = 324,
+		  ["y"] = 44,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "holeTopLeft",
+			nocollider = false,
+			destroyed = false
+		  }
+		} },
+		HoleTopRight = { {
+		  id = "HoleTopRight",
+		  iid = "8a5ccad0-ac70-11f0-998c-412eece8a49a",
+		  layer = "Holes",
+		  ["x"] = 356,
+		  ["y"] = 44,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "holeTopRight",
+			nocollider = false,
+			destroyed = false
+		  }
+		} },
+		HoleBottomRight = { {
+		  id = "HoleBottomRight",
+		  iid = "95daafd0-ac70-11f0-998c-2f6f84534e50",
+		  layer = "Holes",
+		  ["x"] = 356,
+		  ["y"] = 76,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "holeBottomRight",
+			nocollider = false,
+			destroyed = false
+		  }
+		} },
+		HoleBottomLeft = { {
+		  id = "HoleBottomLeft",
+		  iid = "99d1b390-ac70-11f0-998c-6db52001a97a",
+		  layer = "Holes",
+		  ["x"] = 324,
+		  ["y"] = 76,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "holeBottomLeft",
+			nocollider = false,
+			destroyed = false
+		  }
+		} },
 		Player = { {
 		  id = "Player",
 		  iid = "cf8f2162-ac70-11f0-997a-7beb907c527d",
@@ -60,21 +117,6 @@ levelsLDTK = {
 		  height = 48,
 		  color = 7552569,
 		  customFields = { }
-		} },
-		Triggers = { {
-		  id = "Triggers",
-		  iid = "cf8f2166-ac70-11f0-997a-7bd6b4bce539",
-		  layer = "Triggers",
-		  ["x"] = 340,
-		  ["y"] = 156,
-		  width = 48,
-		  height = 24,
-		  color = 16711748,
-		  customFields = {
-			type = "call",
-			script = "brocomess",
-			usedTrigger = false
-		  }
 		} },
 		Table = { {
 		  id = "Table",
@@ -151,19 +193,136 @@ levelsLDTK = {
 			destroyed = false
 		  }
 		} },
-		Box = { {
-		  id = "Box",
-		  iid = "5f7adab0-ac70-11f0-998c-85e0a6812ebe",
+		Fellchair = { {
+		  id = "Fellchair",
+		  iid = "0ed6cca0-ac70-11f0-998c-190c98df712f",
 		  layer = "Props",
-		  ["x"] = 172,
-		  ["y"] = 156,
+		  ["x"] = 132,
+		  ["y"] = 196,
 		  width = 32,
 		  height = 32,
 		  color = 12470831,
 		  customFields = {
 			nocollider = false,
 			destroyed = false,
-			type = "box"
+			type = "fellchair"
+		  }
+		}, {
+		  id = "Fellchair",
+		  iid = "10f58df0-ac70-11f0-998c-5fc4edf5150a",
+		  layer = "Props",
+		  ["x"] = 252,
+		  ["y"] = 172,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "fellchair"
+		  }
+		}, {
+		  id = "Fellchair",
+		  iid = "1190bc80-ac70-11f0-998c-15b931855a0f",
+		  layer = "Props",
+		  ["x"] = 260,
+		  ["y"] = 204,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "fellchair"
+		  }
+		} },
+		Chair = { {
+		  id = "Chair",
+		  iid = "14287e60-ac70-11f0-998c-21453d332481",
+		  layer = "Props",
+		  ["x"] = 148,
+		  ["y"] = 164,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		}, {
+		  id = "Chair",
+		  iid = "188c9bd0-ac70-11f0-998c-f32534555b1a",
+		  layer = "Props",
+		  ["x"] = 228,
+		  ["y"] = 164,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		} },
+		Trash = { {
+		  id = "Trash",
+		  iid = "1f856de0-ac70-11f0-998c-cb325d1d5bee",
+		  layer = "Props",
+		  ["x"] = 156,
+		  ["y"] = 52,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "trash"
+		  }
+		} },
+		Microwave = { {
+		  id = "Microwave",
+		  iid = "219b7ca0-ac70-11f0-998c-d52c97594911",
+		  layer = "Props",
+		  ["x"] = 36,
+		  ["y"] = 28,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "microwave",
+			nocollider = false,
+			destroyed = false
+		  }
+		} },
+		Blood = { {
+		  id = "Blood",
+		  iid = "2c74e440-ac70-11f0-998c-e525c83a34b9",
+		  layer = "Props",
+		  ["x"] = 220,
+		  ["y"] = 124,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "blood",
+			nocollider = true,
+			destroyed = false
+		  }
+		} },
+		Blood2 = { {
+		  id = "Blood2",
+		  iid = "341fc840-ac70-11f0-998c-6fae40278bec",
+		  layer = "Props",
+		  ["x"] = 148,
+		  ["y"] = 124,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "blood2",
+			nocollider = true,
+			destroyed = false
 		  }
 		} }
 	  }
