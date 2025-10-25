@@ -40,12 +40,12 @@ levelsLDTK = {
 		shadow = false,
 		light = 0,
 		visited = false,
-		comic_name = "intro",
+		comic_name = nil,
 		comic_wasPlayed = false,
 		level = 2,
 		roomNumber = 7,
 		tile = 2,
-		play = "enter",
+		play = nil,
 		DoorsConnection = { "Top" }
 	  },
 	  layers = { "Tilemap.png" },
@@ -72,7 +72,8 @@ levelsLDTK = {
 		  color = 16711748,
 		  customFields = {
 			type = "call",
-			script = "brocomess"
+			script = "brocomess",
+			usedTrigger = false
 		  }
 		} },
 		Table = { {
@@ -148,6 +149,21 @@ levelsLDTK = {
 			type = "xtree-4",
 			nocollider = false,
 			destroyed = false
+		  }
+		} },
+		Box = { {
+		  id = "Box",
+		  iid = "5f7adab0-ac70-11f0-998c-85e0a6812ebe",
+		  layer = "Props",
+		  ["x"] = 172,
+		  ["y"] = 156,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "box"
 		  }
 		} }
 	  }

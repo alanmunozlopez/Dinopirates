@@ -24,6 +24,15 @@ function Player:collisionResponse(other)
       PlayerData.isGaming = false
       PlayerData.isCutscene = true
       other:returnScript()
+      -- ⭐ DEBUG: Verificar que se marcó como usado
+      print("🔍 Verificando trigger después de usar:")
+      local roomData = levelsLDTK[PlayerData.floor]
+      for _, t in ipairs(roomData.entities.Triggers) do
+          if t.iid == other.iid then
+              print("   usedTrigger:", t.customFields.usedTrigger)
+              break
+          end
+      end
       other:remove()
       Utilities.grantAchievementIfNeeded(other.script)
   elseif other.type == "search" then

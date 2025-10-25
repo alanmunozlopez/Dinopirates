@@ -301,7 +301,7 @@ function scene:enter()
 	if entities and entities.Triggers then
 		for i, triggerData in ipairs(entities.Triggers) do
 			local cf = triggerData.customFields or {}
-			local used = cf.used or false
+			local used = cf.usedTrigger or false
 			
 			if not used then
 				local x = triggerData.x
