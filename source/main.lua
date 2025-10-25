@@ -5,6 +5,7 @@ import 'achievements/all'
 
 import 'utilities/Utilities'
 import 'utilities/PauseMenu'
+import 'utilities/SaveSystem'  -- ⭐ AGREGAR ESTA LÍNEA
 
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
@@ -25,11 +26,9 @@ local configToast = import 'assets/data/toastConfig'
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
 local config = {
-   toastOnGrant = true, -- automatically show toasts for granted achievements
-   miniMode = true, -- use tiny toasts to avoid blocking gameplay
+   toastOnGrant = true,
+   miniMode = true,
    toastFromTop = true,
-   -- renderMode = "sprite" -- show black cards with white text, for added contrast
-   -- ...
 }
 
 achievements.toasts.initialize(configToast)
@@ -48,7 +47,7 @@ Noble.GameData.setup({
 Panels.vars.lang = "en"
 
 debug = false
-diagonalMovement = true -- TODO: fix movement stuck after entering a new room
+diagonalMovement = true
 shinonome = Graphics.font.new('assets/fonts/shinonome/JF-Dot-Shinonome16')
 Graphics.setFont(shinonome, 'normal')
 
@@ -70,9 +69,12 @@ CollideGroups = {
 	wall = 5,
 	noCollide = 6
 }
-playdate.datastore.write(levels, 'levelOriginal', true) 
-playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)-- DEBUG
 
+-- ⭐ CAMBIAR ESTAS LÍNEAS:
+-- Solo guardar PlayerData original (levels legacy ya no es necesario)
+playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
+
+-- ⭐ IMPORTANTE: Crear backup de levelsLDTK ANTES de que se modifique
 SaveSystem.createOriginalBackup()
 
 local menu = playdate.getSystemMenu()
@@ -96,4 +98,4 @@ end)
 playdate.display.setRefreshRate(46)
 timers = playdate.timer
 
-Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus) --- TODO: add custom transition
+Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus)

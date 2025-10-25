@@ -378,6 +378,7 @@ function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
 	PlayerData.isGaming = false
+	SaveSystem.save()
 end
 
 function scene:pause()

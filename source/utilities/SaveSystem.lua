@@ -165,15 +165,15 @@ function SaveSystem.load()
             PlayerData = saveData.player
             SaveSystem.restoreLevelState(saveData.levelState)
             print("✅ Save loaded (LDTK format)")
-            return true
+            return true, saveData.player.saveLevel  -- Retornar también el nivel guardado
         else
             print("⚠️  Old save format detected, migration needed")
             -- Aquí podrías agregar lógica para migrar saves antiguos
-            return false
+            return false, nil
         end
     end
     print("📭 No save file found")
-    return false
+    return false, nil
 end
 
 -- Reset game state
