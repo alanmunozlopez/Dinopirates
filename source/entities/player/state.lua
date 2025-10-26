@@ -147,9 +147,9 @@ function Player:checkTrigger()
 
             -- Solo se activa una vez cuando el jugador entra en el trigger
             if not self.triggerEnteredOnce then
-              if self.currentTrigger.type == "call" then
+              if self.currentTrigger.type == "Call" then
                 self.uiHud:setRing()
-              elseif self.currentTrigger.type == "search" then
+              elseif self.currentTrigger.type == "Search" then
                 self.uiHud:setPressA()
               elseif self.currentTrigger.type == nil then
               self.uiHud:setPressA()

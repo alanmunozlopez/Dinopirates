@@ -19,7 +19,7 @@ function Player:collisionResponse(other)
     return 'freeze' 
     
   elseif other:isa(Trigger) then
-  if other.type == "cutscene" then
+  if other.type == "Cutscene" then
       -- Cutscenes trigger automatically
       PlayerData.isGaming = false
       PlayerData.isCutscene = true
@@ -35,17 +35,17 @@ function Player:collisionResponse(other)
       end
       other:remove()
       Utilities.grantAchievementIfNeeded(other.script)
-  elseif other.type == "search" then
+  elseif other.type == "Search" then
       self.currentTrigger = other
-  elseif other.type == "call" then
+  elseif other.type == "Call" then
       self.currentTrigger = other
-  elseif other.type == "story" then
+  elseif other.type == "Story" then
       PlayerData.isGaming = false
       PlayerData.isTalking = true
       self.dialogUI:addScreen(other:returnScript(),other.sourceFeed)
   elseif other.type == nil then
       self.currentTrigger = other
-  elseif other.type == "counter" then
+  elseif other.type == "Counter" then
       PlayerData.storyCounter += 1
       other:remove()
   end

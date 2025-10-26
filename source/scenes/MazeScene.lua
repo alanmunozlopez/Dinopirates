@@ -236,7 +236,7 @@ function scene:enter()
 	if cf.comic_name then
 		local comicData = comics[cf.comic_name]
 		if comicData then
-			if cf.play == "enter" and cf.comic_wasPlayed == false then
+			if cf.play == "Enter" and cf.comic_wasPlayed == false then
 				PlayerData.isCutscene = true
 				PlayerData.isGaming = false
 			end
