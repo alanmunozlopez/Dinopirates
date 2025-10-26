@@ -86,16 +86,18 @@ function Player:collisionResponse(other)
     self:grabTools()
   return 'overlap'
     
-  elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
-    
-    if (PlayerData.hasBoots == true and PlayerData.battery == 0) or PlayerData.hasBoots == false  then
+  elseif other:isa(PropItem) and other.isHole then
+  -- ⭐ Manejar TODOS los tipos de agujeros
+  
+  -- Si el jugador tiene botas con batería, puede caminar sobre el agujero
+  if PlayerData.hasBoots == true and PlayerData.battery > 0 then
+      self:drainBattery(1)
+      return 'overlap'
+  else
+      -- Sin botas o sin batería = caer
       self:fallBelow()
       return 'overlap'
-    elseif PlayerData.hasBoots == true then
-      
-      self:drainBattery(1)
-    return 'overlap'
-    end
+  end
   elseif other:isa(PropItem) then
   return 'overlap'
   elseif other:isa(Door) then
