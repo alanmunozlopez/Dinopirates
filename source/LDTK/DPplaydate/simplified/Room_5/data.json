@@ -32,7 +32,7 @@
 		"comic_wasPlayed": false,
 		"level": 4,
 		"roomNumber": 5,
-		"tile": 2,
+		"tile": 5,
 		"DoorsConnection": [
 			"Left",
 			"Down"

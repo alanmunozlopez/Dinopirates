@@ -40,7 +40,7 @@
 		"comic_wasPlayed": false,
 		"level": 4,
 		"roomNumber": 4,
-		"tile": 2,
+		"tile": 4,
 		"DoorsConnection": [
 			"Right",
 			"Down"
