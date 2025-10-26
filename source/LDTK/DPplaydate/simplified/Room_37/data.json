@@ -37,23 +37,5 @@
 	"layers": [
 		"Tilemap.png"
 	],
-	"entities": {
-		"Triggers": [
-			{
-				"id": "Triggers",
-				"iid": "1b0bb084-ac70-11f0-998c-63f6259ab656",
-				"layer": "Triggers",
-				"x": 340,
-				"y": 156,
-				"width": 48,
-				"height": 24,
-				"color": 16711748,
-				"customFields": {
-					"script": "brocomess",
-					"usedTrigger": false,
-					"type": null
-				}
-			}
-		]
-	}
+	"entities" : {}
 }
