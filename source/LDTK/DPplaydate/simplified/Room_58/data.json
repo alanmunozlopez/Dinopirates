@@ -1,0 +1,71 @@
+{
+	"identifier": "Room_58",
+	"uniqueIdentifer": "f887f9f0-ac70-11f0-998c-736fb053fbe2",
+	"x": 2000,
+	"y": 720,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "476aadb7-ac70-11f0-998c-fff2bd68db1f",
+			"dir": "<"
+		},
+		{
+			"levelIid": "d138f520-ac70-11f0-998c-e18e7b9af98b",
+			"dir": "nw"
+		},
+		{
+			"levelIid": "d44fd210-ac70-11f0-998c-bfaaf93876b9",
+			"dir": "n"
+		},
+		{
+			"levelIid": "f62f15d0-ac70-11f0-998c-272ed2400e64",
+			"dir": "w"
+		},
+		{
+			"levelIid": "06a51ae0-ac70-11f0-998c-23322af608c3",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "092758f0-ac70-11f0-998c-45ad9bb75ba5",
+			"dir": "s"
+		}
+	],
+	"customFields": {
+		"shadow": false,
+		"light": 0,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 2,
+		"roomNumber": 32,
+		"tile": 2,
+		"DoorsConnection": [
+			"Top"
+		],
+		"play": null
+	},
+	"layers": [
+		"Tilemap.png"
+	],
+	"entities": {
+		"Triggers": [
+			{
+				"id": "Triggers",
+				"iid": "f887f9f4-ac70-11f0-998c-4b9912b0120f",
+				"layer": "Triggers",
+				"x": 340,
+				"y": 156,
+				"width": 48,
+				"height": 24,
+				"color": 16711748,
+				"customFields": {
+					"script": "brocomess",
+					"usedTrigger": false,
+					"type": null
+				}
+			}
+		]
+	}
+}

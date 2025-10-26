@@ -1,0 +1,87 @@
+{
+	"identifier": "Room_22",
+	"uniqueIdentifer": "3b081ff0-ac70-11f0-998c-67e6b510262c",
+	"x": 400,
+	"y": 240,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
+			"dir": ">"
+		},
+		{
+			"levelIid": "23b93777-ac70-11f0-998c-8fe9cae02b21",
+			"dir": "<"
+		},
+		{
+			"levelIid": "abdd36b0-ac70-11f0-998c-673887a050e6",
+			"dir": "n"
+		},
+		{
+			"levelIid": "2dc4bd30-ac70-11f0-998c-2ba6c3750080",
+			"dir": "ne"
+		},
+		{
+			"levelIid": "37dad4d0-ac70-11f0-998c-e3c63970ecdd",
+			"dir": "w"
+		},
+		{
+			"levelIid": "3d752854-ac70-11f0-998c-5dddbfac239d",
+			"dir": "e"
+		},
+		{
+			"levelIid": "46b2e150-ac70-11f0-998c-232538b976f9",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "4a0bd050-ac70-11f0-998c-b14d359446e6",
+			"dir": "s"
+		},
+		{
+			"levelIid": "4cf534a4-ac70-11f0-998c-6712312c62dc",
+			"dir": "se"
+		},
+		{
+			"levelIid": "ae5a31c0-ac70-11f0-9560-a1abd660ccf1",
+			"dir": "nw"
+		}
+	],
+	"customFields": {
+		"shadow": false,
+		"light": 0,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 3,
+		"roomNumber": 22,
+		"tile": 2,
+		"DoorsConnection": [
+			"Top"
+		],
+		"play": null
+	},
+	"layers": [
+		"Tilemap.png"
+	],
+	"entities": {
+		"Triggers": [
+			{
+				"id": "Triggers",
+				"iid": "3b081ff4-ac70-11f0-998c-0974a63ecbb7",
+				"layer": "Triggers",
+				"x": 340,
+				"y": 156,
+				"width": 48,
+				"height": 24,
+				"color": 16711748,
+				"customFields": {
+					"script": "brocomess",
+					"usedTrigger": false,
+					"type": null
+				}
+			}
+		]
+	}
+}
