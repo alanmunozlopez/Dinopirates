@@ -68,8 +68,15 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
     holeBottomRight = { isHole = true, collideRect = nil, removePropCollider = true },
     
     -- Edge holes with partial collision
-    holeLeft = { isHole = true, collideRect = {10, 8, 22, 24}, removePropCollider = true },
-    holeRight = { isHole = true, collideRect = {0, 8, 22, 24}, removePropCollider = true },
+    holeLeft = { isHole = true, collideRect = {10, 0, 22, 32}, removePropCollider = true },
+    holeRight = { isHole = true, collideRect = {0, 0, 22, 32}, removePropCollider = true },
+    holeCenter = { isHole = true, collideRect = {0, 0, 32, 32}, removePropCollider = true },
+    holeTopLeft = { isHole = true, collideRect = {10, 10, 22, 22}, removePropCollider = true },
+    holeTop = { isHole = true, collideRect = {0, 10, 32, 22}, removePropCollider = true },
+    holeTopRight = { isHole = true, collideRect = {0, 10, 22, 22}, removePropCollider = true },
+    holeBottomRight = { isHole = true, collideRect = {0, 0, 22, 22}, removePropCollider = true },
+    holeBottom = { isHole = true, collideRect = {0, 0, 32, 22}, removePropCollider = true },
+    holeBottomLeft = { isHole = true, collideRect = {10, 0, 22, 22}, removePropCollider = true },
   }
   
   -- Apply hole configuration
@@ -93,6 +100,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
     end
     
     print("🕳️  Hole created:", type, "at", x, y)
+    
   end
   
   self:setZIndex(zIndex)
