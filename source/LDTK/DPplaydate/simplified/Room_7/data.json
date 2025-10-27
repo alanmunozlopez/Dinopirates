@@ -379,6 +379,38 @@
 					"type": "box"
 				}
 			}
+		],
+		"Fellchair": [
+			{
+				"id": "Fellchair",
+				"iid": "0d7905b0-ac70-11f0-985a-d1c872a5fc59",
+				"layer": "Props",
+				"x": 164,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "fellchair"
+				}
+			},
+			{
+				"id": "Fellchair",
+				"iid": "1022f000-ac70-11f0-985a-9b3988f2af57",
+				"layer": "Props",
+				"x": 372,
+				"y": 12,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "fellchair"
+				}
+			}
 		]
 	}
 }
