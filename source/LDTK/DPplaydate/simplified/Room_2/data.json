@@ -51,6 +51,98 @@
 		"Tilemap.png"
 	],
 	"entities": {
+		"Triggers": [
+			{
+				"id": "Triggers",
+				"iid": "04803a80-ac70-11f0-ae64-7fad2120052d",
+				"layer": "Triggers",
+				"x": 172,
+				"y": 100,
+				"width": 40,
+				"height": 40,
+				"color": 16711748,
+				"customFields": {
+					"script": "giftFor100",
+					"usedTrigger": false,
+					"type": "Search"
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "0f48b230-ac70-11f0-ae64-49bfdc9ab6ce",
+				"layer": "Triggers",
+				"x": 220,
+				"y": 92,
+				"width": 40,
+				"height": 40,
+				"color": 16711748,
+				"customFields": {
+					"script": "giftFor233",
+					"usedTrigger": false,
+					"type": "Search"
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "2f45fa10-ac70-11f0-ae64-251f699f3ce2",
+				"layer": "Triggers",
+				"x": 180,
+				"y": 148,
+				"width": 176,
+				"height": 48,
+				"color": 16711748,
+				"customFields": {
+					"script": "notesLook",
+					"usedTrigger": false,
+					"type": "Story"
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "537f8180-ac70-11f0-ae64-49446dfe4c17",
+				"layer": "Triggers",
+				"x": 76,
+				"y": 100,
+				"width": 48,
+				"height": 48,
+				"color": 16711748,
+				"customFields": {
+					"script": "notesPickup",
+					"usedTrigger": false,
+					"type": "Story"
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "7d672b30-ac70-11f0-ae64-79d729daa857",
+				"layer": "Triggers",
+				"x": 316,
+				"y": 180,
+				"width": 88,
+				"height": 88,
+				"color": 16711748,
+				"customFields": {
+					"script": "entranceMess",
+					"usedTrigger": false,
+					"type": "Search"
+				}
+			}
+		],
+		"Notes": [
+			{
+				"id": "Notes",
+				"iid": "44544bf0-ac70-11f0-ae64-63dd0bc57344",
+				"layer": "Items",
+				"x": 76,
+				"y": 100,
+				"width": 48,
+				"height": 48,
+				"color": 15389866,
+				"customFields": {
+					"type": "notes"
+				}
+			}
+		],
 		"Xtree1": [
 			{
 				"id": "Xtree1",
@@ -292,6 +384,21 @@
 					"nocollider": false,
 					"destroyed": false
 				}
+			},
+			{
+				"id": "Table",
+				"iid": "6d93cec0-ac70-11f0-ae64-1be5800770cc",
+				"layer": "Props",
+				"x": 300,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "table",
+					"nocollider": false,
+					"destroyed": false
+				}
 			}
 		],
 		"FellTable": [
@@ -354,6 +461,21 @@
 					"nocollider": false,
 					"destroyed": false
 				}
+			},
+			{
+				"id": "FellTable",
+				"iid": "6ed6af00-ac70-11f0-ae64-f7bb28f9916d",
+				"layer": "Props",
+				"x": 340,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "fellTable",
+					"nocollider": false,
+					"destroyed": false
+				}
 			}
 		],
 		"Fellchair": [
@@ -400,6 +522,38 @@
 					"nocollider": false,
 					"destroyed": false,
 					"type": "fellchair"
+				}
+			},
+			{
+				"id": "Fellchair",
+				"iid": "722d2d00-ac70-11f0-ae64-d9f2ef5111fe",
+				"layer": "Props",
+				"x": 324,
+				"y": 164,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "fellchair"
+				}
+			}
+		],
+		"Chair": [
+			{
+				"id": "Chair",
+				"iid": "7626a1c0-ac70-11f0-ae64-a5338e4e288e",
+				"layer": "Props",
+				"x": 364,
+				"y": 164,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "chair"
 				}
 			}
 		]

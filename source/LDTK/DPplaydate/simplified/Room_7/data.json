@@ -68,8 +68,8 @@
 				"iid": "c7870a30-ac70-11f0-998c-2944db77c3b4",
 				"layer": "Triggers",
 				"x": 204,
-				"y": 44,
-				"width": 56,
+				"y": 132,
+				"width": 88,
 				"height": 40,
 				"color": 16711748,
 				"customFields": {
@@ -80,113 +80,32 @@
 			},
 			{
 				"id": "Triggers",
-				"iid": "c54e62d0-ac70-11f0-998c-0166ef37c2ee",
+				"iid": "cc4b57d0-ac70-11f0-ae64-f1a43cc2526b",
 				"layer": "Triggers",
-				"x": 92,
-				"y": 36,
+				"x": 292,
+				"y": 140,
 				"width": 40,
 				"height": 40,
 				"color": 16711748,
 				"customFields": {
-					"script": "microwaveBurn",
+					"script": "someTrash",
 					"usedTrigger": false,
 					"type": "Search"
 				}
-			}
-		],
-		"FellTable": [
+			},
 			{
-				"id": "FellTable",
-				"iid": "531e0b20-ac70-11f0-998c-a53f87908c3b",
-				"layer": "Props",
+				"id": "Triggers",
+				"iid": "04397810-ac70-11f0-ae64-891aa0cc0d18",
+				"layer": "Triggers",
 				"x": 36,
-				"y": 28,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
+				"y": 140,
+				"width": 48,
+				"height": 40,
+				"color": 16711748,
 				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "FellTable",
-				"iid": "850b9170-ac70-11f0-998c-afc1a9873d1e",
-				"layer": "Props",
-				"x": 156,
-				"y": 172,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "FellTable",
-				"iid": "87335370-ac70-11f0-998c-972d0c2d0afa",
-				"layer": "Props",
-				"x": 244,
-				"y": 164,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Blood2": [
-			{
-				"id": "Blood2",
-				"iid": "6499e770-ac70-11f0-998c-df9d2763bfd7",
-				"layer": "Props",
-				"x": 60,
-				"y": 28,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood2",
-				"iid": "945f3690-ac70-11f0-998c-c1bfd067cd84",
-				"layer": "Props",
-				"x": 356,
-				"y": 188,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Microwave": [
-			{
-				"id": "Microwave",
-				"iid": "68e6fa70-ac70-11f0-998c-b10c54278d00",
-				"layer": "Props",
-				"x": 92,
-				"y": 28,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "microwave",
-					"nocollider": false,
-					"destroyed": false
+					"script": "justBoxes",
+					"usedTrigger": false,
+					"type": "Search"
 				}
 			}
 		],
@@ -250,6 +169,68 @@
 					"nocollider": false,
 					"destroyed": false
 				}
+			},
+			{
+				"id": "Smalltable",
+				"iid": "a99b3a10-ac70-11f0-ae64-bbea47082fb4",
+				"layer": "Props",
+				"x": 36,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "smallTable",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"FellTable": [
+			{
+				"id": "FellTable",
+				"iid": "850b9170-ac70-11f0-998c-afc1a9873d1e",
+				"layer": "Props",
+				"x": 156,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "fellTable",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "FellTable",
+				"iid": "87335370-ac70-11f0-998c-972d0c2d0afa",
+				"layer": "Props",
+				"x": 244,
+				"y": 164,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "fellTable",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "FellTable",
+				"iid": "9a8dc5b0-ac70-11f0-ae64-330b96106ce8",
+				"layer": "Props",
+				"x": 92,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "fellTable",
+					"nocollider": false,
+					"destroyed": false
+				}
 			}
 		],
 		"Trash": [
@@ -296,6 +277,68 @@
 				"color": 12470831,
 				"customFields": {
 					"type": "blood",
+					"nocollider": true,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Blood",
+				"iid": "9d6f61d0-ac70-11f0-ae64-e33789cc7e0e",
+				"layer": "Props",
+				"x": 76,
+				"y": 76,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood",
+					"nocollider": true,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Blood",
+				"iid": "f186f080-ac70-11f0-ae64-a96276b15936",
+				"layer": "Props",
+				"x": 148,
+				"y": 76,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood",
+					"nocollider": true,
+					"destroyed": false
+				}
+			}
+		],
+		"Blood2": [
+			{
+				"id": "Blood2",
+				"iid": "945f3690-ac70-11f0-998c-c1bfd067cd84",
+				"layer": "Props",
+				"x": 356,
+				"y": 188,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood2",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Blood2",
+				"iid": "ee1103a0-ac70-11f0-ae64-453fe6771b29",
+				"layer": "Props",
+				"x": 260,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood2",
 					"nocollider": true,
 					"destroyed": false
 				}
