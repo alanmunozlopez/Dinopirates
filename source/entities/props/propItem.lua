@@ -53,10 +53,16 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   -- Default collider setup
   if nocollide == false then
     self:setCollideRect(0, 0, 32, 32)
-    self.propcollider = PropCollider(x, y, 28, 18)
+    if type == "xtree-1" or type == "xtree-2" then
+      self.propcollider = PropCollider(x, y+16, 28, 4)
+    else
+      self.propcollider = PropCollider(x, y, 28, 18)
+    end
   end
+  -- Default collider setup
   
-  -- ⭐ HOLE TYPES CONFIGURATION
+  
+  -- HOLE TYPES CONFIGURATION
   local holeTypes = {
     -- Holes where player falls through (no collision, no prop collider)
     holeTop = { isHole = true, collideRect = nil, removePropCollider = true },
