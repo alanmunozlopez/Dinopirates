@@ -22,6 +22,78 @@ function Box:init(x, y, width, height)
 	self:setGroups(CollideGroups.wall)
 end
 
+-- wall creator
+function CreateWallsFromLDTK(currentRoom)
+	print("🧱 ===== CREANDO PAREDES =====")
+
+	if not currentRoom or not currentRoom.neighbourLevels then
+		print("❌ ERROR: currentRoom o neighbourLevels es nil")
+		return
+	end
+
+	local neighbours = {}
+	for _, n in ipairs(currentRoom.neighbourLevels) do
+		if n.dir then
+			neighbours[n.dir] = true
+		end
+	end
+
+	print("👀 Analizando vecinos:")
+	for dir, _ in pairs(neighbours) do
+		print("   🔹 Vecino en dirección:", dir)
+	end
+
+	-- Base wall positions
+	local wallTopY = 0
+	local wallBottomY = 228
+	local wallLeftX = 0
+	local wallRightX = 388
+
+	-- Movement offsets
+	local offset = 16
+
+	-- NORTH (no n, nw, ne)
+	if not (neighbours["n"] or neighbours["nw"] or neighbours["ne"]) then
+		print("⬆️ No hay vecino al norte → moviendo pared superior +Y")
+		wallTopY = wallTopY + offset
+	end
+
+	-- SOUTH (no s, sw, se)
+	if not (neighbours["s"] or neighbours["sw"] or neighbours["se"]) then
+		print("⬇️ No hay vecino al sur → moviendo pared inferior -Y")
+		wallBottomY = wallBottomY - offset
+	end
+
+	-- WEST (no w, nw, sw)
+	if not (neighbours["w"] or neighbours["nw"] or neighbours["sw"]) then
+		print("⬅️ No hay vecino al oeste → moviendo pared izquierda +X")
+		wallLeftX = wallLeftX + offset
+	end
+
+	-- EAST (no e, ne, se)
+	if not (neighbours["e"] or neighbours["ne"] or neighbours["se"]) then
+		print("➡️ No hay vecino al este → moviendo pared derecha -X")
+		wallRightX = wallRightX - offset
+	end
+
+	-- Create walls
+	local wallTop = Box(0, wallTopY, 400, 12)
+	local wallDown = Box(0, wallBottomY - 4, 400, 12)
+	local wallLeft = Box(wallLeftX, 12, 12, 216)
+	local wallRight = Box(wallRightX, 12, 12, 216)
+
+	print("✅ Paredes creadas con offsets:")
+	print("   Top Y:", wallTopY, "| Bottom Y:", wallBottomY, "| Left X:", wallLeftX, "| Right X:", wallRightX)
+	print("🧱 ===== FIN CREACIÓN PAREDES =====")
+
+	return {
+		top = wallTop,
+		bottom = wallDown,
+		left = wallLeft,
+		right = wallRight
+	}
+end
+
 
 -- MARK: Cheat codes
 

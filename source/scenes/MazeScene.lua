@@ -124,11 +124,17 @@ function scene:enter()
 	floor:setCenter(0, 0) -- Anchor top-left instead of center
 	floor:add()
 	
-	--Mark: Walls (this can be optimized)
-	wallTop = Box(0, 0, 400, 20)
-	wallDown = Box(0, 228, 400, 12)
-	wallLeft = Box(0, 12, 12, 216)
-	wallRight = Box(388, 12, 12, 216)
+	-- Mark: Walls
+	if room and levelsLDTK[room] then
+		local currentRoom = levelsLDTK[room]
+		local walls = CreateWallsFromLDTK(currentRoom)
+		wallTop = walls.top
+		wallDown = walls.bottom
+		wallLeft = walls.left
+		wallRight = walls.right
+	else
+		print("❌ ERROR: no se pudo crear paredes, room o levelsLDTK[room] es nil")
+	end
 	
 	-- Mark: doors
 

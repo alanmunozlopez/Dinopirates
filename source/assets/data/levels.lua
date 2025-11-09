@@ -44,7 +44,7 @@ levelsLDTK = {
 		comic_wasPlayed = false,
 		level = 4,
 		roomNumber = 7,
-		tile = 2,
+		tile = 7,
 		DoorsConnection = { "Top" },
 		play = "Enter"
 	  },
@@ -382,6 +382,90 @@ levelsLDTK = {
 	  },
 	  layers = { "Tilemap.png" },
 	  entities = {
+		Triggers = { {
+		  id = "Triggers",
+		  iid = "04803a80-ac70-11f0-ae64-7fad2120052d",
+		  layer = "Triggers",
+		  ["x"] = 172,
+		  ["y"] = 100,
+		  width = 40,
+		  height = 40,
+		  color = 16711748,
+		  customFields = {
+			script = "giftFor100",
+			usedTrigger = false,
+			type = "Search"
+		  }
+		}, {
+		  id = "Triggers",
+		  iid = "0f48b230-ac70-11f0-ae64-49bfdc9ab6ce",
+		  layer = "Triggers",
+		  ["x"] = 220,
+		  ["y"] = 92,
+		  width = 40,
+		  height = 40,
+		  color = 16711748,
+		  customFields = {
+			script = "giftFor233",
+			usedTrigger = false,
+			type = "Search"
+		  }
+		}, {
+		  id = "Triggers",
+		  iid = "2f45fa10-ac70-11f0-ae64-251f699f3ce2",
+		  layer = "Triggers",
+		  ["x"] = 180,
+		  ["y"] = 148,
+		  width = 176,
+		  height = 48,
+		  color = 16711748,
+		  customFields = {
+			script = "notesLook",
+			usedTrigger = false,
+			type = "Story"
+		  }
+		}, {
+		  id = "Triggers",
+		  iid = "537f8180-ac70-11f0-ae64-49446dfe4c17",
+		  layer = "Triggers",
+		  ["x"] = 76,
+		  ["y"] = 100,
+		  width = 48,
+		  height = 48,
+		  color = 16711748,
+		  customFields = {
+			script = "notesPickup",
+			usedTrigger = false,
+			type = "Story"
+		  }
+		}, {
+		  id = "Triggers",
+		  iid = "7d672b30-ac70-11f0-ae64-79d729daa857",
+		  layer = "Triggers",
+		  ["x"] = 316,
+		  ["y"] = 180,
+		  width = 88,
+		  height = 88,
+		  color = 16711748,
+		  customFields = {
+			script = "entranceMess",
+			usedTrigger = false,
+			type = "Search"
+		  }
+		} },
+		Notes = { {
+		  id = "Notes",
+		  iid = "44544bf0-ac70-11f0-ae64-63dd0bc57344",
+		  layer = "Items",
+		  ["x"] = 76,
+		  ["y"] = 100,
+		  width = 48,
+		  height = 48,
+		  color = 15389866,
+		  customFields = {
+			type = "notes"
+		  }
+		} },
 		Xtree1 = { {
 		  id = "Xtree1",
 		  iid = "0b24fca0-ac70-11f0-985a-61d94463d05b",
@@ -576,7 +660,7 @@ levelsLDTK = {
 		  id = "Table",
 		  iid = "46dec050-ac70-11f0-985a-132726764f8b",
 		  layer = "Props",
-		  ["x"] = 28,
+		  ["x"] = 36,
 		  ["y"] = 100,
 		  width = 32,
 		  height = 32,
@@ -592,6 +676,20 @@ levelsLDTK = {
 		  layer = "Props",
 		  ["x"] = 356,
 		  ["y"] = 68,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "table",
+			nocollider = false,
+			destroyed = false
+		  }
+		}, {
+		  id = "Table",
+		  iid = "6d93cec0-ac70-11f0-ae64-1be5800770cc",
+		  layer = "Props",
+		  ["x"] = 300,
+		  ["y"] = 172,
 		  width = 32,
 		  height = 32,
 		  color = 12470831,
@@ -619,8 +717,8 @@ levelsLDTK = {
 		  id = "FellTable",
 		  iid = "4c9c0520-ac70-11f0-985a-e99f3d0bf46f",
 		  layer = "Props",
-		  ["x"] = 28,
-		  ["y"] = 188,
+		  ["x"] = 36,
+		  ["y"] = 180,
 		  width = 32,
 		  height = 32,
 		  color = 12470831,
@@ -633,7 +731,7 @@ levelsLDTK = {
 		  id = "FellTable",
 		  iid = "4db452f0-ac70-11f0-985a-cfe8262e92fe",
 		  layer = "Props",
-		  ["x"] = 372,
+		  ["x"] = 364,
 		  ["y"] = 204,
 		  width = 32,
 		  height = 32,
@@ -648,7 +746,21 @@ levelsLDTK = {
 		  iid = "4fdbc6d0-ac70-11f0-985a-a5601f3ccd47",
 		  layer = "Props",
 		  ["x"] = 92,
-		  ["y"] = 212,
+		  ["y"] = 204,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "fellTable",
+			nocollider = false,
+			destroyed = false
+		  }
+		}, {
+		  id = "FellTable",
+		  iid = "6ed6af00-ac70-11f0-ae64-f7bb28f9916d",
+		  layer = "Props",
+		  ["x"] = 340,
+		  ["y"] = 196,
 		  width = 32,
 		  height = 32,
 		  color = 12470831,
@@ -663,7 +775,7 @@ levelsLDTK = {
 		  iid = "518e7fe0-ac70-11f0-985a-93391a2015c0",
 		  layer = "Props",
 		  ["x"] = 316,
-		  ["y"] = 212,
+		  ["y"] = 204,
 		  width = 32,
 		  height = 32,
 		  color = 12470831,
@@ -699,6 +811,282 @@ levelsLDTK = {
 			nocollider = false,
 			destroyed = false,
 			type = "fellchair"
+		  }
+		}, {
+		  id = "Fellchair",
+		  iid = "722d2d00-ac70-11f0-ae64-d9f2ef5111fe",
+		  layer = "Props",
+		  ["x"] = 324,
+		  ["y"] = 164,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "fellchair"
+		  }
+		} },
+		Chair = { {
+		  id = "Chair",
+		  iid = "7626a1c0-ac70-11f0-ae64-a5338e4e288e",
+		  layer = "Props",
+		  ["x"] = 364,
+		  ["y"] = 164,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "chair"
+		  }
+		} }
+	  }
+	},
+	{
+	  identifier = "Room_3",
+	  uniqueIdentifer = "bf654080-ac70-11f0-997a-e578ba2da2ac",
+	  ["x"] = 800,
+	  ["y"] = 0,
+	  width = 400,
+	  height = 240,
+	  bgColor = "#696A79",
+	  neighbourLevels = { {
+		levelIid = "2dc4bd30-ac70-11f0-998c-2ba6c3750080",
+		dir = "<"
+	  }, {
+		levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
+		dir = "w"
+	  }, {
+		levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+		dir = "e"
+	  }, {
+		levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
+		dir = "sw"
+	  }, {
+		levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
+		dir = "s"
+	  }, {
+		levelIid = "dab87dc0-ac70-11f0-997a-63497867517d",
+		dir = "se"
+	  } },
+	  customFields = {
+		shadow = false,
+		light = 0,
+		visited = false,
+		comic_name = nil,
+		comic_wasPlayed = false,
+		level = 4,
+		roomNumber = 3,
+		tile = 3,
+		DoorsConnection = { "Left", "Down" },
+		play = nil
+	  },
+	  layers = { "Tilemap.png" },
+	  entities = {
+		Triggers = { {
+		  id = "Triggers",
+		  iid = "c9660040-ac70-11f0-ae64-094e17987f94",
+		  layer = "Triggers",
+		  ["x"] = 100,
+		  ["y"] = 60,
+		  width = 56,
+		  height = 32,
+		  color = 16711748,
+		  customFields = {
+			script = "microwaveBurn",
+			usedTrigger = false,
+			type = "Search"
+		  }
+		}, {
+		  id = "Triggers",
+		  iid = "f2317670-ac70-11f0-ae64-133829c2c353",
+		  layer = "Triggers",
+		  ["x"] = 244,
+		  ["y"] = 108,
+		  width = 32,
+		  height = 32,
+		  color = 16711748,
+		  customFields = {
+			script = "kitchenWeapons",
+			usedTrigger = false,
+			type = "Search"
+		  }
+		}, {
+		  id = "Triggers",
+		  iid = "3a47bf50-ac70-11f0-ae64-474c236a6fd7",
+		  layer = "Triggers",
+		  ["x"] = 332,
+		  ["y"] = 100,
+		  width = 56,
+		  height = 48,
+		  color = 16711748,
+		  customFields = {
+			script = "inneficientCutting",
+			usedTrigger = false,
+			type = "Story"
+		  }
+		}, {
+		  id = "Triggers",
+		  iid = "a059dac0-ac70-11f0-ae64-f1ee9dff56d1",
+		  layer = "Triggers",
+		  ["x"] = 44,
+		  ["y"] = 196,
+		  width = 48,
+		  height = 40,
+		  color = 16711748,
+		  customFields = {
+			script = "justBoxes",
+			usedTrigger = false,
+			type = "Search"
+		  }
+		} },
+		FellTable = { {
+		  id = "FellTable",
+		  iid = "bf46c0e0-ac70-11f0-ae64-597ec6fe672b",
+		  layer = "Props",
+		  ["x"] = 36,
+		  ["y"] = 60,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "fellTable",
+			nocollider = false,
+			destroyed = false
+		  }
+		} },
+		Blood = { {
+		  id = "Blood",
+		  iid = "c2442260-ac70-11f0-ae64-a5f7b1f853f5",
+		  layer = "Props",
+		  ["x"] = 68,
+		  ["y"] = 60,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "blood",
+			nocollider = true,
+			destroyed = false
+		  }
+		}, {
+		  id = "Blood",
+		  iid = "01ef6b90-ac70-11f0-ae64-292bbea86898",
+		  layer = "Props",
+		  ["x"] = 324,
+		  ["y"] = 132,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "blood",
+			nocollider = true,
+			destroyed = false
+		  }
+		}, {
+		  id = "Blood",
+		  iid = "0601e690-ac70-11f0-ae64-8778a1292c62",
+		  layer = "Props",
+		  ["x"] = 348,
+		  ["y"] = 60,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "blood",
+			nocollider = true,
+			destroyed = false
+		  }
+		}, {
+		  id = "Blood",
+		  iid = "0ed1c290-ac70-11f0-ae64-95329b483a8a",
+		  layer = "Props",
+		  ["x"] = 268,
+		  ["y"] = 60,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "blood",
+			nocollider = true,
+			destroyed = false
+		  }
+		} },
+		Microwave = { {
+		  id = "Microwave",
+		  iid = "c7345330-ac70-11f0-ae64-3f2b938fe6d4",
+		  layer = "Props",
+		  ["x"] = 100,
+		  ["y"] = 60,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "microwave",
+			nocollider = false,
+			destroyed = false
+		  }
+		} },
+		DeadRat = { {
+		  id = "DeadRat",
+		  iid = "f4bef490-ac70-11f0-ae64-d96e07439f33",
+		  layer = "Props",
+		  ["x"] = 332,
+		  ["y"] = 100,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "deadrat",
+			nocollider = false,
+			destroyed = false
+		  }
+		} },
+		Blood2 = { {
+		  id = "Blood2",
+		  iid = "fb5b9ce0-ac70-11f0-ae64-c17f4252e798",
+		  layer = "Props",
+		  ["x"] = 292,
+		  ["y"] = 84,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "blood2",
+			nocollider = true,
+			destroyed = false
+		  }
+		} },
+		KnifeKettle = { {
+		  id = "KnifeKettle",
+		  iid = "ed4c9040-ac70-11f0-ae64-57af9b96ac8a",
+		  layer = "Props",
+		  ["x"] = 244,
+		  ["y"] = 108,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "knifeKettle",
+			nocollider = false,
+			destroyed = false
+		  }
+		} },
+		Box = { {
+		  id = "Box",
+		  iid = "9d998240-ac70-11f0-ae64-fffc401f9f95",
+		  layer = "Props",
+		  ["x"] = 44,
+		  ["y"] = 196,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "box"
 		  }
 		} }
 	  }

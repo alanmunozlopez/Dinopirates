@@ -32,7 +32,7 @@ function Door:init(direction, status, nextRoom, zIndex)
   self.status = status
   
   local isHorizontal = direction == 'top' or direction == 'down'
-  local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'
+  -- local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'
   local sizeX, sizeY = isHorizontal and 56 or 10, isHorizontal and 10 or 56
   local rectX, rectY, rectW, rectH = setRectValues(direction)
 
@@ -40,14 +40,14 @@ function Door:init(direction, status, nextRoom, zIndex)
   self:setSize(sizeX, sizeY)
   self:setCollideRect(rectX, rectY, rectW, rectH)
 
-  for state, frame in pairs(animationStates) do
-    self.animation:addState(state, frame, frame)
-    self.animation[state].frameDuration = 12
-  end
+  -- for state, frame in pairs(animationStates) do
+  --   self.animation:addState(state, frame, frame)
+  --   self.animation[state].frameDuration = 12
+  -- end
 
   local isNormal = direction == 'top' or direction == 'right'
   local statePrefix = isNormal and 'normal' or 'reverse'
-  self.animation:setState(statePrefix .. (status == 'closed' and 'Closed' or 'Open'))
+  -- self.animation:setState(statePrefix .. (status == 'closed' and 'Closed' or 'Open'))
   
 
   local position = positions[direction]
