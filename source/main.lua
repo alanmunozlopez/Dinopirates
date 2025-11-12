@@ -5,7 +5,7 @@ import 'achievements/all'
 
 import 'utilities/Utilities'
 import 'utilities/PauseMenu'
-import 'utilities/SaveSystem'  -- ⭐ AGREGAR ESTA LÍNEA
+import 'utilities/SaveSystem' 
 
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
@@ -70,11 +70,9 @@ CollideGroups = {
 	noCollide = 6
 }
 
--- ⭐ CAMBIAR ESTAS LÍNEAS:
 -- Solo guardar PlayerData original (levels legacy ya no es necesario)
 playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
 
--- ⭐ IMPORTANTE: Crear backup de levelsLDTK ANTES de que se modifique
 SaveSystem.createOriginalBackup()
 
 local menu = playdate.getSystemMenu()

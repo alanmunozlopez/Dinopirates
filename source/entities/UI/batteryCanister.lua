@@ -9,5 +9,3 @@ function BatteryCanister:init(x,y,Zindex)
 	self:setZIndex(Zindex+1)
 	self:add()	
 end
-
-
