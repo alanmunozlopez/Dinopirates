@@ -70,7 +70,6 @@ CollideGroups = {
 	noCollide = 6
 }
 
--- Solo guardar PlayerData original (levels legacy ya no es necesario)
 playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
 
 SaveSystem.createOriginalBackup()

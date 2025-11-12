@@ -70,12 +70,8 @@ function scene:init()
 end
 function scene:setFloor(levelNumber, roomNumber)
 	for i, levelData in ipairs(levelsLDTK) do
-		print(i)
-		print(levelData.customFields.level)
-		print(levelData.customFields.roomNumber)
 		if levelData.customFields.level == levelNumber and levelData.customFields.roomNumber == roomNumber then
 			room = i
-			print(levelData.customFields.level)
 			return
 		end
 	end
@@ -100,7 +96,7 @@ function scene:enter()
 	
 	PlayerData.actualLevel = levelsLDTK[room].customFields.level
 	PlayerData.actualRoom = levelsLDTK[room].customFields.roomNumber
-	PlayerData.actualTilemap = levelsLDTK[room].customFields.tile -- aca tengo que ver como conectar el tile con el csv
+	PlayerData.actualTilemap = levelsLDTK[room].customFields.tile 
 	levelsLDTK[room].customFields.visited = true
 	
 	-- Mark: floor
@@ -160,15 +156,6 @@ function scene:enter()
 	end
 	print("======================")
 	
-	-- Mark: doors
-	print("🏠 Room index:", room)
-	local currentRoom = levelsLDTK[room]
-	if currentRoom then
-		print("✅ CurrentRoom válido:", currentRoom.identifier)
-		CreateDoorsFromLDTK(currentRoom)
-	else
-		print("❌ ERROR: currentRoom es nil")
-	end
 	
 	
 	-- Mark: Props 
