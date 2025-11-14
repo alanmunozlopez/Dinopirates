@@ -3,7 +3,7 @@ import 'entities/props/hats'
 CrewMember = {}
 class('CrewMember').extends('NobleSprite')
 -- TODO check animation
-function CrewMember:init(x, y, moveSpeed, Zindex, player, position, room, crewId)
+function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	CrewMember.super.init(self, 'assets/images/enemies/crewmember', true)
 	
 	-- error handling
@@ -35,9 +35,11 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, position, room, crewId
 		CollideGroups.wall,
 		CollideGroups.enemy
 	})
+	self.iid = iid
 	self:setZIndex(self.Zindex)
 	self:add(x, y)
 	self.hat = Hats(x,y - self.hatDelta, crewId, 2)
+	print("🧩 CrewMember spawned with IID:", self.iid)
 end
 
 function CrewMember:search(player)
@@ -73,9 +75,28 @@ function CrewMember:moveCollision(movementX, movementY, player)
 end
 
 function CrewMember:taken()
-	levels[self.room].floor.items[self.position].taken = true
+	local roomData = levelsLDTK[self.room]
+	if not roomData or not roomData.entities or not roomData.entities.CrewMember then
+		print("⚠️ No CrewMember data found for room:", self.room)
+		return
+	end
+
+	for _, crewData in ipairs(roomData.entities.CrewMember) do
+		local cf = crewData.customFields or {}
+		local currentIID = crewData.iid
+	
+		-- Buscar el CrewMember correspondiente por su IID (identificador único de LDtk)
+		if currentIID == self.iid then
+			cf.isTaken = true
+			print("🟢 CrewMember marked as taken:", currentIID)
+			break
+		end
+	end
+
 	self:remove()
-	self.hat:remove()
+	if self.hat then
+		self.hat:remove()
+	end
 end
 
 function CrewMember:escape(player)

@@ -1,20 +1,56 @@
 function Player:fallBelow()
-  local level = PlayerData.actualLevel + 1
-  local room = PlayerData.actualRoom
-  local sceneName = "Floor" .. tostring(level) .. tostring(room)
-  local nextScene = _G[sceneName]
-  PlayerData.playerSpawn.x =  self.x
-  PlayerData.playerSpawn.y = self.y
+  print("💀 Player cayendo...")
+  
+  local currentRoomIndex = PlayerData.floor  -- El índice actual en levelsLDTK
+  local lowerRoomNumber, lowerRoomData = GetLowerRoom(currentRoomIndex)
+  
+  if not lowerRoomNumber then
+    print("⚠️  No se puede caer desde esta habitación")
+    -- Opcional: mostrar un mensaje al jugador
+    return
+  end
+  
+  local nextScene = RoomTranslate(lowerRoomNumber)
   
   if nextScene then
-    Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable,
-      {
-        imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
-        imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
+    -- Mantener la posición X e Y al caer
+    PlayerData.playerSpawn.x = self.x
+    PlayerData.playerSpawn.y = self.y
+    
+    print("✅ Transicionando a habitación:", lowerRoomNumber)
+    
+    Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable, {
+      imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
+      imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
     })
-    -- Noble.transition(nextScene, 1.5, Noble.Transition.Default)
   else
-    print("Scene " .. sceneName .. " not found. did you fall into the void")
+    print("❌ Scene Floor" .. lowerRoomNumber .. " no encontrada")
+    -- El jugador cayó al vacío
+  end
+end
+
+function Player:riseAbove()
+  print("🚀 Player subiendo...")
+  
+  local currentRoomIndex = PlayerData.floor
+  local upperRoomNumber, upperRoomData = GetUpperRoom(currentRoomIndex)
+  
+  if not upperRoomNumber then
+    print("⚠️  No se puede subir desde esta habitación")
+    return
+  end
+  
+  local nextScene = RoomTranslate(upperRoomNumber)
+  
+  if nextScene then
+    PlayerData.playerSpawn.x = self.x
+    PlayerData.playerSpawn.y = self.y
+    
+    print("✅ Transicionando a habitación:", upperRoomNumber)
+    
+    Noble.transition(nextScene, 1.5, Noble.Transition.Default)
+  else
+    print("❌ Scene Floor" .. upperRoomNumber .. " no encontrada")
   end
 end
 
@@ -111,9 +147,9 @@ function Player:checkTrigger()
 
             -- Solo se activa una vez cuando el jugador entra en el trigger
             if not self.triggerEnteredOnce then
-              if self.currentTrigger.type == "call" then
+              if self.currentTrigger.type == "Call" then
                 self.uiHud:setRing()
-              elseif self.currentTrigger.type == "search" then
+              elseif self.currentTrigger.type == "Search" then
                 self.uiHud:setPressA()
               elseif self.currentTrigger.type == nil then
               self.uiHud:setPressA()

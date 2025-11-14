@@ -12,30 +12,40 @@ function Player:collisionResponse(other)
     end
     
   elseif other:isa(CrewMember) then
+    -- validar tener la bolsa de captura
     other:taken() 
     
   elseif other:isa(Box) then
     return 'freeze' 
     
   elseif other:isa(Trigger) then
-  if other.type == "cutscene" then
+  if other.type == "Cutscene" then
       -- Cutscenes trigger automatically
       PlayerData.isGaming = false
       PlayerData.isCutscene = true
       other:returnScript()
+      -- ⭐ DEBUG: Verificar que se marcó como usado
+      print("🔍 Verificando trigger después de usar:")
+      local roomData = levelsLDTK[PlayerData.floor]
+      for _, t in ipairs(roomData.entities.Triggers) do
+          if t.iid == other.iid then
+              print("   usedTrigger:", t.customFields.usedTrigger)
+              break
+          end
+      end
       other:remove()
       Utilities.grantAchievementIfNeeded(other.script)
-  elseif other.type == "search" then
+  elseif other.type == "Search" then
       self.currentTrigger = other
-  elseif other.type == "call" then
+  elseif other.type == "Call" then
       self.currentTrigger = other
-  elseif other.type == "story" then
+  elseif other.type == "Story" then
       PlayerData.isGaming = false
       PlayerData.isTalking = true
       self.dialogUI:addScreen(other:returnScript(),other.sourceFeed)
   elseif other.type == nil then
       self.currentTrigger = other
-  elseif other.type == "counter" then
+  elseif other.type == "Counter" then
       PlayerData.storyCounter += 1
       other:remove()
   end
@@ -76,16 +86,18 @@ function Player:collisionResponse(other)
     self:grabTools()
   return 'overlap'
     
-  elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
-    
-    if (PlayerData.hasBoots == true and PlayerData.battery == 0) or PlayerData.hasBoots == false  then
+  elseif other:isa(PropItem) and other.isHole then
+  -- ⭐ Manejar TODOS los tipos de agujeros
+  
+  -- Si el jugador tiene botas con batería, puede caminar sobre el agujero
+  if PlayerData.hasBoots == true and PlayerData.battery > 0 then
+      self:drainBattery(1)
+      return 'overlap'
+  else
+      -- Sin botas o sin batería = caer
       self:fallBelow()
       return 'overlap'
-    elseif PlayerData.hasBoots == true then
-      
-      self:drainBattery(1)
-    return 'overlap'
-    end
+  end
   elseif other:isa(PropItem) then
   return 'overlap'
   elseif other:isa(Door) then

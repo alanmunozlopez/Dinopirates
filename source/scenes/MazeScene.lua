@@ -69,8 +69,8 @@ function scene:init()
 	
 end
 function scene:setFloor(levelNumber, roomNumber)
-	for i, levelData in ipairs(levels) do
-		if levelData.floor.level == levelNumber and levelData.floor.roomNumber == roomNumber then
+	for i, levelData in ipairs(levelsLDTK) do
+		if levelData.customFields.level == levelNumber and levelData.customFields.roomNumber == roomNumber then
 			room = i
 			return
 		end
@@ -90,25 +90,28 @@ function scene:enter()
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
-	PlayerData.room = levels[room].floor.roomNumber
-	PlayerData.isInDarkness = levels[room].floor.shadow
+	PlayerData.room = levelsLDTK[room].customFields.roomNumber
+	PlayerData.isInDarkness = levelsLDTK[room].customFields.shadow
 	PlayerData.floor = room
 	
-	PlayerData.actualLevel = levels[room].floor.level
-	PlayerData.actualRoom = levels[room].floor.roomNumber
-	PlayerData.actualTilemap = levels[room].floor.tile
-	levels[room].floor.visited = true
+	PlayerData.actualLevel = levelsLDTK[room].customFields.level
+	PlayerData.actualRoom = levelsLDTK[room].customFields.roomNumber
+	PlayerData.actualTilemap = levelsLDTK[room].customFields.tile 
+	levelsLDTK[room].customFields.visited = true
 	
 	-- Mark: floor
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
 	map = Graphics.tilemap.new()
-	map:setImageTable(tilesMap)
+	map:setImageTable(tilesMap) 
 	-- map:setSize(16,9)
 	
+	-- Mark: UI
+	uiScreen = playerHud()
+	inGameEquip = inGameMenu()
 	-- Mark: floor 
 	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
 	
-	renderTileMap(tileMapData[levels[room].floor.tile], map)
+	renderTileMap(tileMapData[PlayerData.actualTilemap], map)
 	
 	floor = Graphics.sprite.new()
 	floor:setZIndex(1)
@@ -117,164 +120,196 @@ function scene:enter()
 	floor:setCenter(0, 0) -- Anchor top-left instead of center
 	floor:add()
 	
-	--Mark: Walls (this can be optimized)
-	wallTop = Box(0, 0, 400, 20)
-	wallDown = Box(0, 228, 400, 12)
-	wallLeft = Box(0, 12, 12, 216)
-	wallRight = Box(388, 12, 12, 216)
+	-- Mark: Walls
+	if room and levelsLDTK[room] then
+		local currentRoom = levelsLDTK[room]
+		local walls = CreateWallsFromLDTK(currentRoom)
+		wallTop = walls.top
+		wallDown = walls.bottom
+		wallLeft = walls.left
+		wallRight = walls.right
+	else
+		print("❌ ERROR: no se pudo crear paredes, room o levelsLDTK[room] es nil")
+	end
 	
 	-- Mark: doors
-	local arrayData = levels[room].floor.doors -- Used several times to save variables
-	if arrayData ~= nil then
-		for _, doorData in ipairs(arrayData) do
-			local direction = doorData.direction
-			local open = doorData.open
-			local leads = doorData.leadsTo
+
+	
+	if room and levelsLDTK[room] then
+		local currentRoom = levelsLDTK[room]
+		print("✅ CurrentRoom:", currentRoom.identifier)
+		print("📍 Level:", currentRoom.customFields.level)
+		print("📍 RoomNumber:", currentRoom.customFields.roomNumber)
 		
-			Door(direction, open, leads, ZIndex.props)
+		if currentRoom.neighbourLevels then
+			print("👥 Vecinos encontrados:", #currentRoom.neighbourLevels)
+			for i, n in ipairs(currentRoom.neighbourLevels) do
+				print("  Vecino", i, "- iid:", n.levelIid, "dir:", n.dir)
+			end
+		else
+			print("❌ neighbourLevels es nil")
 		end
+		
+		CreateDoorsFromLDTK(currentRoom)
+	else
+		print("❌ ERROR: room es", room, "o levelsLDTK[room] es nil")
 	end
+	print("======================")
+	
 	
 	
 	-- Mark: Props 
-	arrayData = levels[room].floor.props
-	if arrayData ~= nil then
-		for _, propData in ipairs(arrayData) do
-			if propData.destroyed == false or propData.destroyed == nil then
-				local type = propData.type
-				local x = propData.x
-				local y = propData.y
-				local collide = propData.nocollide
-				local id = propData.id
-				PropItem(x, y, type, ZIndex.props, collide, id)
-			else
-				local x = propData.x
-				local y = propData.y
-				local id = propData.id
-				PropItem(x, y, 'debris', ZIndex.props, true, id)
+	local entities = levelsLDTK[room].entities
+	
+	if entities ~= nil then
+		for entityType, entitiesList in pairs(entities) do
+			for _, prop in ipairs(entitiesList) do
+				local cf = prop.customFields or {}
+	
+				if cf.destroyed ~= nil or cf.nocollider ~= nil then
+					local x, y, id = prop.x, prop.y, prop.iid
+	
+					if cf.destroyed == false or cf.destroyed == nil then
+						PropItem(x, y, cf.type , ZIndex.props, cf.nocollider,cf.destroyed, id)
+					else
+						PropItem(x, y, "debris", ZIndex.props, true, cf.destroyed , id)
+					end
+				end
 			end
-			
 		end
 	end
 	
 	-- Mark: Items
-	arrayData = levels[room].floor.items
-	if arrayData ~= nil then
-		for _, itemData in ipairs(arrayData) do
-			
-			local type = itemData.type
-			local x = itemData.x
-			local y = itemData.y
-			local itemRequirements = {
-			  keycard = "hasKey",
-			  lamp = "hasLamp",
-			  radio = "hasRadio",
-			  notes = "hasNotes",
-			  bag = "hasBag",
-			  tools = "hasTools"
-			}
-			
-			if itemRequirements[type] and PlayerData[itemRequirements[type]] == false then
-			  Items(x, y, type)
-			end	
+	if entities ~= nil then
+		for entityType, entitiesList in pairs(entities) do
+			for _, item in ipairs(entitiesList) do
+				local cf = item.customFields or {}
+	
+				-- Detectar si pertenece a la capa Items o si es un tipo de ítem
+				if item.layer == "Items" or cf.isItem == true then
+					local x, y = item.x, item.y
+					local type = cf.type or entityType:lower() -- usa el tipo definido o el nombre de la entidad
+					
+					local itemRequirements = {
+						keycard = "hasKey",
+						lamp = "hasLamp",
+						radio = "hasRadio",
+						notes = "hasNotes",
+						bag = "hasBag",
+						tools = "hasTools"
+					}
+					
+					-- Si el jugador no tiene este ítem, lo genera
+					if itemRequirements[type] and PlayerData[itemRequirements[type]] == false then
+						Items(x, y, type)
+					end
+				end
+			end
 		end
 	end
-	
 	-- Mark: Player
 	local spawnPoint = PlayerData.playerSpawn
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
 	PlayerData.x = player.x
 	PlayerData.y = player.y
 	PlayerData.direction = 'idle'
+	
 	-- Mark: FX
-	if levels[room].floor.shadow == true then
-		shadow = FXshadow(player, 70, levels[room].floor.light, ZIndex.fx)
+	local cf = levelsLDTK[room].customFields or {}
+	
+	if cf.shadow == true then
+		local lightLevel = cf.light or 0
+		shadow = FXshadow(player, 70, lightLevel, ZIndex.fx)
 		PlayerData.isInDarkness = true
 	else
 		PlayerData.isInDarkness = false
 	end
 	
-	-- Mark: Comic
-	arrayData = levels[room].floor.comic
-	if arrayData ~= nil then
-		local comicData = comics[arrayData.name]
+	local cf = levelsLDTK[room].customFields
+	if cf.comic_name then
+		local comicData = comics[cf.comic_name]
 		if comicData then
-			if arrayData.play == "enter" and arrayData.wasPlayed == false then
+			if cf.play == "Enter" and cf.comic_wasPlayed == false then
 				PlayerData.isCutscene = true
 				PlayerData.isGaming = false
 			end
 			
-			local comicName = arrayData.name
 			Panels.startCutscene(comicData, function()
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
-				levels[room].floor.comic.wasPlayed = true
-				Utilities.checkStoryAchievement(comicName)
+				levelsLDTK[room].customFields.comic_wasPlayed = true
+				Utilities.checkStoryAchievement(cf.comic_name)
 			end)
-		else
-			-- comic not found
 		end
 	end
-	-- Mark: UI
-	uiScreen = playerHud()
-	inGameEquip = inGameMenu()
-	-- Mark: Enemies
-	arrayData = levels[room].floor.enemies
 	
-	for _, enemyData in ipairs(arrayData) do
-		if enemyData.dead == false or enemyData.dead == nil then
-			local name = enemyData.name
-			local x = enemyData.x
-			local y = enemyData.y
-			local speed = enemyData.speed
-			local id = enemyData.id
-			
-			if name == "brocorat" then
-				Brocorat(x, y, speed, ZIndex.enemy, player, id)
-			elseif name == "bosscolli" then
-				bosscolli(x, y, speed, ZIndex.enemy, player, id)
+	
+	-- Mark: Enemies
+	if entities ~= nil then
+		for entityType, entitiesList in pairs(entities) do
+			if entityType == "Brocorat" or entityType == "Bosscolli" then
+				for _, enemy in ipairs(entitiesList) do
+					local cf = enemy.customFields or {}
+					local x, y, id = enemy.x, enemy.y, enemy.iid
+					local speed = cf.speed or 1
+					local dead = cf.dead or false
+	
+					if not dead then
+						if entityType == "Brocorat" then
+							Brocorat(x, y, speed, ZIndex.enemy, player, id)
+						elseif entityType == "Bosscolli" then
+							bosscolli(x, y, speed, ZIndex.enemy, player, id)
+						end
+					else
+						PropItem(x, y, "blood2", ZIndex.props, true)
+					end
+				end
 			end
-		else
-			local x = enemyData.x
-			local y = enemyData.y
-			PropItem(x, y, 'blood2', ZIndex.props, true)
 		end
 	end
 	
 	-- Mark: Crew members 
-	arrayData = levels[room].floor.items
 	
-	for i, crewData in ipairs(arrayData) do
-		local type = crewData.type
-		local x = crewData.x
-		local y = crewData.y
-		local speed = crewData.speed
-		local crewId = crewData.crewId
-		if type == "crewmember" then
-			if crewData.taken == false then
-				CrewMember(x, y, speed, ZIndex.enemy, player, i ,room, crewId)
+	local entities = levelsLDTK[room].entities
+	
+	if entities and entities.CrewMember then
+		for i, crewData in ipairs(entities.CrewMember) do
+			local cf = crewData.customFields or {}
+			local x, y = crewData.x, crewData.y
+			local speed = cf.speed or 1
+			local crewId = cf.crewID or i
+			local crewIid = crewData.iid
+			local taken = cf.isTaken or false
+	
+			if not taken then
+				CrewMember(x, y, speed, ZIndex.enemy, player, crewIid, room, crewId)
 			end
 		end
 	end
 	
-	-- Mark: dialog triggers
 	
-	arrayData = levels[room].floor.triggers
-	for i, triggerData in ipairs(arrayData) do
-		if triggerData.usedTrigger == false then
-			local x = triggerData.x
-			local y = triggerData.y
-			local width = triggerData.width
-			local height = triggerData.height
-			local script = triggerData.script
-			local type = triggerData.type
-			Trigger(x,y,width,height,script, i, room, type)
+-- Mark: dialog triggers
+	local entities = levelsLDTK[room].entities
+	
+	if entities and entities.Triggers then
+		for i, triggerData in ipairs(entities.Triggers) do
+			local cf = triggerData.customFields or {}
+			local used = cf.usedTrigger or false
+			
+			if not used then
+				local x = triggerData.x
+				local y = triggerData.y
+				local width = triggerData.width
+				local height = triggerData.height
+				local script = cf.script
+				local type = cf.type
+				
+				-- Pasar el iid en lugar del índice
+				Trigger(x, y, width, height, script, triggerData.iid, room, type)
+			end
 		end
 	end
-	
-	SaveSystem.save()
 end
-
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)
@@ -336,6 +371,7 @@ function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
 	PlayerData.isGaming = false
+	SaveSystem.save()
 end
 
 function scene:pause()
@@ -408,7 +444,7 @@ scene.inputHandler = {
 			PlayerData.isEquiping = false
 			--inGameMenu:closeMenu()
 		end
-		--CurrentTile() for testing
+		-- CurrentTile() --for testing
 		playerFocus()
 	end,
 	BButtonHeld = function()

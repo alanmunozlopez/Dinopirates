@@ -1,6 +1,8 @@
 local floorRanges = {
-	{ start = 101, stop = 126 },
-	{ start = 201, stop = 226 }
+	{ start = 166, stop = 180 },
+	{ start = 231, stop = 274 },
+	{ start = 301, stop = 315 },
+	{ start = 401, stop = 415 }
 }
 
 for _, range in ipairs(floorRanges) do
@@ -22,3 +24,4 @@ for _, range in ipairs(floorRanges) do
 		end
 	end
 end
+

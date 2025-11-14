@@ -1,3 +1,4 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/dactrtr/Dinopirates)
 ![Cover image: Dinopirates fomr inner space working title](https://i.imgur.com/iy4wk5t.png)
 # Install instructions
 ### SDK

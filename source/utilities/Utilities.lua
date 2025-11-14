@@ -22,6 +22,78 @@ function Box:init(x, y, width, height)
 	self:setGroups(CollideGroups.wall)
 end
 
+-- wall creator
+function CreateWallsFromLDTK(currentRoom)
+	print("🧱 ===== CREANDO PAREDES =====")
+
+	if not currentRoom or not currentRoom.neighbourLevels then
+		print("❌ ERROR: currentRoom o neighbourLevels es nil")
+		return
+	end
+
+	local neighbours = {}
+	for _, n in ipairs(currentRoom.neighbourLevels) do
+		if n.dir then
+			neighbours[n.dir] = true
+		end
+	end
+
+	print("👀 Analizando vecinos:")
+	for dir, _ in pairs(neighbours) do
+		print("   🔹 Vecino en dirección:", dir)
+	end
+
+	-- Base wall positions
+	local wallTopY = 0
+	local wallBottomY = 228
+	local wallLeftX = 0
+	local wallRightX = 388
+
+	-- Movement offsets
+	local offset = 16
+
+	-- NORTH (no n, nw, ne)
+	if not (neighbours["n"] or neighbours["nw"] or neighbours["ne"]) then
+		print("⬆️ No hay vecino al norte → moviendo pared superior +Y")
+		wallTopY = wallTopY + offset
+	end
+
+	-- SOUTH (no s, sw, se)
+	if not (neighbours["s"] or neighbours["sw"] or neighbours["se"]) then
+		print("⬇️ No hay vecino al sur → moviendo pared inferior -Y")
+		wallBottomY = wallBottomY - offset
+	end
+
+	-- WEST (no w, nw, sw)
+	if not (neighbours["w"] or neighbours["nw"] or neighbours["sw"]) then
+		print("⬅️ No hay vecino al oeste → moviendo pared izquierda +X")
+		wallLeftX = wallLeftX + offset
+	end
+
+	-- EAST (no e, ne, se)
+	if not (neighbours["e"] or neighbours["ne"] or neighbours["se"]) then
+		print("➡️ No hay vecino al este → moviendo pared derecha -X")
+		wallRightX = wallRightX - offset
+	end
+
+	-- Create walls
+	local wallTop = Box(0, wallTopY, 400, 12)
+	local wallDown = Box(0, wallBottomY - 4, 400, 12)
+	local wallLeft = Box(wallLeftX, 12, 12, 216)
+	local wallRight = Box(wallRightX, 12, 12, 216)
+
+	print("✅ Paredes creadas con offsets:")
+	print("   Top Y:", wallTopY, "| Bottom Y:", wallBottomY, "| Left X:", wallLeftX, "| Right X:", wallRightX)
+	print("🧱 ===== FIN CREACIÓN PAREDES =====")
+
+	return {
+		top = wallTop,
+		bottom = wallDown,
+		left = wallLeft,
+		right = wallRight
+	}
+end
+
 
 -- MARK: Cheat codes
 
@@ -116,6 +188,331 @@ function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
 end
+-- door utilities
+-- Función para encontrar una habitación por su uniqueIdentifer (iid)
+function FindRoomByIid(iid)
+	print("🔍 Buscando room con iid:", iid)
+	for i, room in ipairs(levelsLDTK) do
+		if room.uniqueIdentifer == iid then
+			print("✅ Room encontrado:", room.identifier)
+			return room
+		end
+	end
+	print("❌ Room NO encontrado con iid:", iid)
+	return nil
+end
+
+-- Función para convertir dirección LDTK a dirección de puerta
+function ConvertLDTKDirection(dir)
+	print("🧭 Convirtiendo dirección:", dir)
+	local result
+	if dir == ">" then
+		result = "down"  -- Escalera hacia arriba (visualmente está abajo en la pantalla)
+	elseif dir == "<" then
+		result = "top"  -- Escalera hacia abajo (visualmente está arriba en la pantalla)
+	elseif dir == "n" then
+		result = "top"  -- Puerta arriba
+	elseif dir == "s" then
+		result = "down"  -- Puerta abajo
+	elseif dir == "e" then
+		result = "right"  -- Puerta derecha
+	elseif dir == "w" or dir == "o" then
+		result = "left"  -- Puerta izquierda
+	else
+		result = dir
+	end
+	print("   → Resultado:", result)
+	return result
+end
+
+-- Función para calcular el número de habitación destino
+function CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRoom)
+	print("🎯 Calculando leadsTo:")
+	print("   Current Level:", currentLevel)
+	print("   Current Room:", currentRoomNumber)
+	print("   Direction:", direction)
+	
+	local fullCurrentRoom = currentLevel * 100 + currentRoomNumber
+	print("   Full Current Room:", fullCurrentRoom)
+	
+	local result
+	if direction == ">" then
+		-- Piso superior: 120 -> 220
+		result = (currentLevel + 1) * 100 + currentRoomNumber
+		print("   → Escalera ARRIBA a:", result)
+	elseif direction == "<" then
+		-- Piso inferior: 120 -> 020
+		result = (currentLevel - 1) * 100 + currentRoomNumber
+		print("   → Escalera ABAJO a:", result)
+	else
+		-- Puerta normal: usa el level y roomNumber del vecino
+		if neighborRoom then
+			local neighborLevel = neighborRoom.customFields.level or 1
+			local neighborRoomNum = neighborRoom.customFields.roomNumber or 0
+			result = neighborLevel * 100 + neighborRoomNum
+			print("   → Puerta NORMAL a:", result, "(nivel:", neighborLevel, "room:", neighborRoomNum, ")")
+		else
+			print("   ⚠️  neighborRoom es nil, no se puede calcular")
+			result = fullCurrentRoom -- Fallback a la misma habitación
+		end
+	end
+	return result
+end
+
+-- Función principal: genera las puertas desde levelsLDTK
+function CreateDoorsFromLDTK(currentRoom)
+	print("🚪 ===== CREANDO PUERTAS =====")
+	print("📍 Room actual:", currentRoom.identifier)
+	
+	local neighbourLevels = currentRoom.neighbourLevels
+	if neighbourLevels == nil or #neighbourLevels == 0 then
+		print("⚠️  No hay neighbourLevels en esta habitación")
+		return
+	end
+	
+	print("📊 Total de vecinos:", #neighbourLevels)
+	
+	local currentLevel = currentRoom.customFields.level or 1
+	local currentRoomNumber = currentRoom.customFields.roomNumber or 0
+	local doorsConnection = currentRoom.customFields.DoorsConnection or {}
+	
+	print("🏢 Nivel actual:", currentLevel, "| Habitación:", currentRoomNumber)
+	print("🔑 Puertas permitidas:", table.concat(doorsConnection, ", "))
+	
+	for i, neighbor in ipairs(neighbourLevels) do
+		print("")
+		print("--- Procesando vecino", i, "---")
+		print("   levelIid:", neighbor.levelIid)
+		print("   dir:", neighbor.dir)
+		
+		local direction = ConvertLDTKDirection(neighbor.dir)
+		
+		-- Validar si esta puerta está permitida en DoorsConnection
+		local isAllowed = false
+		local directionCapitalized = direction:sub(1,1):upper() .. direction:sub(2):lower()
+		
+		for _, allowedDir in ipairs(doorsConnection) do
+			if allowedDir:lower() == direction:lower() then
+				isAllowed = true
+				break
+			end
+		end
+		
+		if not isAllowed then
+			print("🚫 Puerta NO permitida (no está en DoorsConnection):", direction)
+		else
+			print("✅ Puerta permitida:", direction)
+			
+			local neighborRoom = FindRoomByIid(neighbor.levelIid)
+			
+			-- Para escaleras (> y <), no necesitamos que el vecino exista
+			if neighbor.dir == ">" or neighbor.dir == "<" then
+				print("⚡ Es una ESCALERA, no se requiere vecino cargado")
+				
+				local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, nil)
+				local open = "open"
+				
+				print("🔧 Creando escalera:")
+				print("   direction:", direction)
+				print("   open:", open)
+				print("   leadsTo:", leadsTo)
+				print("   ZIndex:", ZIndex.props)
+				
+				-- Crea la escalera
+				Door(direction, open, leadsTo, ZIndex.props)
+				print("✅ Escalera creada exitosamente")
+				
+			elseif neighborRoom then
+				print("✅ Vecino encontrado:", neighborRoom.identifier)
+				
+				local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, neighborRoom)
+				local open = "open"
+				
+				print("🔧 Creando puerta:")
+				print("   direction:", direction)
+				print("   open:", open)
+				print("   leadsTo:", leadsTo)
+				print("   ZIndex:", ZIndex.props)
+				
+				-- Crea la puerta
+				Door(direction, open, leadsTo, ZIndex.props)
+				print("✅ Puerta creada exitosamente")
+			else
+				print("⚠️  ADVERTENCIA: Vecino no cargado (probablemente la habitación no existe aún)")
+			end
+		end
+	end
+	
+	print("🚪 ===== FIN CREACIÓN PUERTAS =====")
+	print("")
+end
+
+-- Función para encontrar el vecino por dirección
+function FindNeighborByDirection(currentRoom, direction)
+	print("🔍 Buscando vecino con dirección:", direction)
+	
+	if not currentRoom.neighbourLevels then
+		print("❌ No hay neighbourLevels")
+		return nil
+	end
+	
+	for _, neighbor in ipairs(currentRoom.neighbourLevels) do
+		if neighbor.dir == direction then
+			print("✅ Vecino encontrado con dir:", direction)
+			return neighbor
+		end
+	end
+	
+	print("❌ No se encontró vecino con dir:", direction)
+	return nil
+end
+
+-- Función para validar si se puede caer/subir en una dirección
+function CanMoveVertically(currentRoom, direction)
+	-- direction: "<" para caer (bajar), ">" para subir
+	local doorsConnection = currentRoom.customFields.DoorsConnection or {}
+	
+	-- Mapeo de direcciones verticales a nombres en DoorsConnection
+	local directionMap = {
+		["<"] = "lower",  -- Caer hacia abajo
+		[">"] = "upper"   -- Subir hacia arriba
+	}
+	
+	local requiredConnection = directionMap[direction]
+	if not requiredConnection then
+		print("⚠️  Dirección vertical no reconocida:", direction)
+		return false
+	end
+	
+	-- Verificar si está permitido en DoorsConnection
+	for _, allowed in ipairs(doorsConnection) do
+		if allowed:lower() == requiredConnection:lower() then
+			return true
+		end
+	end
+	
+	return false
+end
+
+-- Función para obtener la habitación inferior (caer)
+function GetLowerRoom(currentRoomIndex)
+	print("⬇️  === BUSCANDO HABITACIÓN INFERIOR ===")
+	local currentRoom = levelsLDTK[currentRoomIndex]
+	
+	if not currentRoom then
+		print("❌ currentRoom no válido")
+		return nil
+	end
+	
+	-- Validar si se puede caer
+	if not CanMoveVertically(currentRoom, "<") then
+		print("🚫 No se puede caer desde esta habitación (no tiene 'lower' en DoorsConnection)")
+		return nil
+	end
+	
+	-- Buscar el vecino con dirección "<" (piso inferior)
+	local lowerNeighbor = FindNeighborByDirection(currentRoom, "<")
+	
+	if not lowerNeighbor then
+		print("❌ No hay habitación inferior definida en neighbourLevels")
+		return nil
+	end
+	
+	-- Buscar la habitación por su iid
+	local lowerRoom = FindRoomByIid(lowerNeighbor.levelIid)
+	
+	if lowerRoom then
+		local level = lowerRoom.customFields.level or 0
+		local roomNum = lowerRoom.customFields.roomNumber or 0
+		local roomNumber = level * 100 + roomNum
+		
+		print("✅ Habitación inferior encontrada:")
+		print("   identifier:", lowerRoom.identifier)
+		print("   level:", level)
+		print("   roomNumber:", roomNum)
+		print("   fullRoomNumber:", roomNumber)
+		
+		return roomNumber, lowerRoom
+	else
+		print("⚠️  Habitación inferior no está cargada en levelsLDTK")
+		-- Calcular el número esperado aunque no esté cargada
+		local currentLevel = currentRoom.customFields.level or 1
+		local currentRoomNum = currentRoom.customFields.roomNumber or 0
+		local expectedRoom = (currentLevel - 1) * 100 + currentRoomNum
+		
+		print("📊 Habitación esperada (calculada):", expectedRoom)
+		return expectedRoom, nil
+	end
+end
+
+-- Función para obtener la habitación superior (subir)
+function GetUpperRoom(currentRoomIndex)
+	print("⬆️  === BUSCANDO HABITACIÓN SUPERIOR ===")
+	local currentRoom = levelsLDTK[currentRoomIndex]
+	
+	if not currentRoom then
+		print("❌ currentRoom no válido")
+		return nil
+	end
+	
+	-- Validar si se puede subir
+	if not CanMoveVertically(currentRoom, ">") then
+		print("🚫 No se puede subir desde esta habitación (no tiene 'upper' en DoorsConnection)")
+		return nil
+	end
+	
+	-- Buscar el vecino con dirección ">" (piso superior)
+	local upperNeighbor = FindNeighborByDirection(currentRoom, ">")
+	
+	if not upperNeighbor then
+		print("❌ No hay habitación superior definida en neighbourLevels")
+		return nil
+	end
+	
+	-- Buscar la habitación por su iid
+	local upperRoom = FindRoomByIid(upperNeighbor.levelIid)
+	
+	if upperRoom then
+		local level = upperRoom.customFields.level or 0
+		local roomNum = upperRoom.customFields.roomNumber or 0
+		local roomNumber = level * 100 + roomNum
+		
+		print("✅ Habitación superior encontrada:")
+		print("   identifier:", upperRoom.identifier)
+		print("   level:", level)
+		print("   roomNumber:", roomNum)
+		print("   fullRoomNumber:", roomNumber)
+		
+		return roomNumber, upperRoom
+	else
+		print("⚠️  Habitación superior no está cargada en levelsLDTK")
+		-- Calcular el número esperado aunque no esté cargada
+		local currentLevel = currentRoom.customFields.level or 1
+		local currentRoomNum = currentRoom.customFields.roomNumber or 0
+		local expectedRoom = (currentLevel + 1) * 100 + currentRoomNum
+		
+		print("📊 Habitación esperada (calculada):", expectedRoom)
+		return expectedRoom, nil
+	end
+end
+
+function GetRoomByNumber(roomNumber)
+	local level = math.floor(roomNumber / 100)
+	local room = roomNumber % 100
+	
+	print("🔍 Buscando room por número:", roomNumber, "(nivel:", level, "room:", room, ")")
+	
+	for _, roomData in ipairs(levelsLDTK) do
+		if roomData.customFields.level == level and 
+		   roomData.customFields.roomNumber == room then
+			print("✅ Room encontrado:", roomData.identifier)
+			return roomData
+		end
+	end
+	
+	print("❌ Room NO encontrado")
+	return nil
+end
 
 function drawVersionNumber(x, y, alignment)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
@@ -136,17 +533,33 @@ function drawVersionNumber(x, y, alignment)
 	Graphics.drawText(version, x, y)
 end 
 
--- finds and destroys a enemy
+-- Finds and kills an enemy by its unique ID (LDtk version)
 function findAndKillEnemyById(enemyId)
 	local room = PlayerData.floor
-	arrayData = levels[room].floor.enemies
-	
-	for _, enemyData in ipairs(arrayData) do
-		if enemyData.id == enemyId then
-		if enemyData.dead == nil or enemyData.dead == false then
-				enemyData.dead = true
-				enemyData.x = PlayerData.lastEnemyTouched.x
-				enemyData.y = PlayerData.lastEnemyTouched.y
+	local entities = levelsLDTK[room].entities
+
+	if not entities then
+		print("⚠️ No entities found in room:", room)
+		return
+	end
+
+	for entityType, entitiesList in pairs(entities) do
+		-- Buscar dentro de tipos de enemigos conocidos
+		if entityType == "Brocorat" or entityType == "Bosscolli" then
+			for _, enemy in ipairs(entitiesList) do
+				if enemy.iid == enemyId then
+					local cf = enemy.customFields or {}
+					if cf.dead == false or cf.dead == nil then
+						cf.dead = true
+						-- Actualizamos su posición a donde fue derrotado
+						if PlayerData.lastEnemyTouched then
+							enemy.x = PlayerData.lastEnemyTouched.x
+							enemy.y = PlayerData.lastEnemyTouched.y
+						end
+						print("💀 Enemy killed:", enemyId, "in", entityType)
+					end
+					return
+				end
 			end
 		end
 	end
@@ -155,12 +568,25 @@ end
 -- finds and destroys a prop
 function findAndDestroyPropById(propId)
 	local room = PlayerData.floor
-	arrayData = levels[room].floor.props
-	
-	for _, propData in ipairs(arrayData) do
-		if propData.id == propId then
-		if propData.destroyed == nil or propData.destroyed == false then
-				propData.destroyed = true
+	local entities = levelsLDTK[room].entities
+
+	if not entities then
+		print("⚠️ No entities found in room:", room)
+		return
+	end
+
+	for entityType, entitiesList in pairs(entities) do
+		for _, prop in ipairs(entitiesList) do
+			local cf = prop.customFields or {}
+			-- Detectar si es un prop por tener 'destroyed' o 'nocollider'
+			if cf.destroyed ~= nil or cf.nocollider ~= nil then
+				if prop.iid == propId then
+					if not cf.destroyed then
+						cf.destroyed = true
+						print("💥 Prop destroyed:", propId, "in", entityType)
+					end
+					return
+				end
 			end
 		end
 	end
@@ -272,9 +698,9 @@ end
 local TILE_SIZE = 16
 
 function CurrentTile()
-	local floor = PlayerData.actualTilemap
-	local x = PlayerData.x
-	local y = PlayerData.y
+	local floor = PlayerData.actualTilemap or 1
+	local x = tonumber(PlayerData.x) or 0
+	local y = tonumber(PlayerData.y) or 0
 
 	-- Convertir coordenadas de píxeles a coordenadas de tile
 	local tileX = math.floor(x / TILE_SIZE) + 1
@@ -289,15 +715,19 @@ function CurrentTile()
 
 	local row = floorData[tileY]
 	if not row then
-		print(string.format("⚠️ Fuera del rango vertical (tileY=%d)", tileY))
+		print(string.format("⚠️ Fuera del rango vertical (tileY=%.2f)", tileY))
 		return
 	end
 
-	local tileNumber = row[tileX] -- this is the number
+	local tileNumber = row[tileX]
 	if not tileNumber then
-		print(string.format("⚠️ Fuera del rango horizontal (tileX=%d)", tileX))
+		print(string.format("⚠️ Fuera del rango horizontal (tileX=%.2f)", tileX))
 		return
 	end
 
-	print(string.format("🧭 Piso %d | Tile (%d, %d) = %d", floor, tileX, tileY, tileNumber))
+	-- ✅ Usa %.2f para floats y %d solo para enteros seguros
+	print(string.format(
+		"🧭 Piso %d | Player (%.1f, %.1f) | Tile (%d, %d) = %d",
+		floor, x, y, tileX, tileY, tileNumber
+	))
 end
