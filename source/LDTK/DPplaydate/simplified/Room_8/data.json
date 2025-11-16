@@ -48,19 +48,52 @@
 		"shadow": false,
 		"light": 0,
 		"visited": false,
-		"comic_name": null,
+		"comic_name": "pick-the-device",
 		"comic_wasPlayed": false,
 		"level": 4,
 		"roomNumber": 8,
-		"tile": 2,
+		"tile": 8,
 		"DoorsConnection": [
 			"Top",
 			"Down"
 		],
-		"play": null
+		"play": "Cutscene"
 	},
 	"layers": [
 		"Tilemap.png"
 	],
-	"entities" : {}
+	"entities": {
+		"Triggers": [
+			{
+				"id": "Triggers",
+				"iid": "2f05dea0-ac70-11f0-8398-8b03b2d23bdf",
+				"layer": "Triggers",
+				"x": 324,
+				"y": 116,
+				"width": 48,
+				"height": 48,
+				"color": 16711748,
+				"customFields": {
+					"script": null,
+					"usedTrigger": false,
+					"type": "Cutscene"
+				}
+			}
+		],
+		"Radio": [
+			{
+				"id": "Radio",
+				"iid": "27526f20-ac70-11f0-8398-eb0a7d3547d7",
+				"layer": "Items",
+				"x": 324,
+				"y": 116,
+				"width": 48,
+				"height": 48,
+				"color": 15389866,
+				"customFields": {
+					"type": "radio"
+				}
+			}
+		]
+	}
 }

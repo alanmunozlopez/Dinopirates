@@ -111,6 +111,21 @@
 					"usedTrigger": false,
 					"type": "Search"
 				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "26163fe0-ac70-11f0-8398-53067febe16c",
+				"layer": "Triggers",
+				"x": 196,
+				"y": 204,
+				"width": 96,
+				"height": 40,
+				"color": 16711748,
+				"customFields": {
+					"script": "\"notnormalBrocoli\"",
+					"usedTrigger": false,
+					"type": "Search"
+				}
 			}
 		],
 		"FellTable": [
@@ -190,6 +205,21 @@
 					"nocollider": true,
 					"destroyed": false
 				}
+			},
+			{
+				"id": "Blood",
+				"iid": "0e256780-ac70-11f0-8398-fb5fdad9133f",
+				"layer": "Props",
+				"x": 196,
+				"y": 212,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood",
+					"nocollider": true,
+					"destroyed": false
+				}
 			}
 		],
 		"Microwave": [
@@ -241,6 +271,51 @@
 					"nocollider": true,
 					"destroyed": false
 				}
+			},
+			{
+				"id": "Blood2",
+				"iid": "12214d40-ac70-11f0-8398-31a430f47a22",
+				"layer": "Props",
+				"x": 228,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood2",
+					"nocollider": true,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Blood2",
+				"iid": "1975acd0-ac70-11f0-8398-9b842ef570b6",
+				"layer": "Props",
+				"x": 164,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood2",
+					"nocollider": true,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Blood2",
+				"iid": "1f4d3060-ac70-11f0-8398-2ff5d145c0a9",
+				"layer": "Props",
+				"x": 204,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood2",
+					"nocollider": true,
+					"destroyed": false
+				}
 			}
 		],
 		"KnifeKettle": [
@@ -274,6 +349,89 @@
 					"nocollider": false,
 					"destroyed": false,
 					"type": "box"
+				}
+			}
+		],
+		"Fridge2": [
+			{
+				"id": "Fridge2",
+				"iid": "35301230-ac70-11f0-8398-8fcdc90b8969",
+				"layer": "Props",
+				"x": 188,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "fridge2",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Fridge1": [
+			{
+				"id": "Fridge1",
+				"iid": "368c94f0-ac70-11f0-8398-27c802cf0097",
+				"layer": "Props",
+				"x": 188,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "fridge1",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Smalltable": [
+			{
+				"id": "Smalltable",
+				"iid": "39a100e0-ac70-11f0-8398-058ecccabc84",
+				"layer": "Props",
+				"x": 156,
+				"y": 60,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "smallTable",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"KitchenStorage": [
+			{
+				"id": "KitchenStorage",
+				"iid": "3d5fb690-ac70-11f0-8398-89d1822135c2",
+				"layer": "Props",
+				"x": 220,
+				"y": 60,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "kitchenStorage",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "KitchenStorage",
+				"iid": "421f6180-ac70-11f0-8398-3187f4a538f2",
+				"layer": "Props",
+				"x": 316,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "kitchenStorage",
+					"nocollider": false,
+					"destroyed": false
 				}
 			}
 		]

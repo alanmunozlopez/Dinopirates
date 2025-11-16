@@ -20,7 +20,7 @@ function Items:init(x, y, type)
   self.animation:addState('bag', 38, 41)
   self.animation.bag.frameDuration = 8    
   self:setSize(48, 48)
-  self:setCollideRect(8,8, 32,24)
+  self:setCollideRect(0 ,0, 48, 48)
   self:setZIndex(ZIndex.items)
   self.type = type
   self.animation:setState(type)

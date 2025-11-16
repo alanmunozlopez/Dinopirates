@@ -1893,21 +1893,54 @@ levelsLDTK = {
 	  shadow = false,
 	  light = 0,
 	  visited = false,
-	  comic_name = nil,
+	  comic_name = "pick-the-device",
 	  comic_wasPlayed = false,
 	  level = 4,
 	  roomNumber = 8,
-	  tile = 2,
+	  tile = 8,
 	  DoorsConnection = {
 		"Top",
 		"Down"
 	  },
-	  play = nil
+	  play = "Cutscene"
 	},
 	layers = {
 	  "Tilemap.png"
 	},
-	entities = {}
+	entities = {
+	  Triggers = {
+		{
+		  id = "Triggers",
+		  iid = "2f05dea0-ac70-11f0-8398-8b03b2d23bdf",
+		  layer = "Triggers",
+		  x = 324,
+		  y = 116,
+		  width = 32,
+		  height = 32,
+		  color = 16711748,
+		  customFields = {
+			script = nil,
+			usedTrigger = false,
+			type = "Cutscene"
+		  }
+		}
+	  },
+	  Radio = {
+		{
+		  id = "Radio",
+		  iid = "27526f20-ac70-11f0-8398-eb0a7d3547d7",
+		  layer = "Items",
+		  x = 324,
+		  y = 116,
+		  width = 48,
+		  height = 48,
+		  color = 15389866,
+		  customFields = {
+			type = "radio"
+		  }
+		}
+	  }
+	}
   },
 {
 	identifier = "Room_9",
@@ -2271,7 +2304,7 @@ levelsLDTK = {
 	  comic_wasPlayed = false,
 	  level = 4,
 	  roomNumber = 15,
-	  tile = 2,
+	  tile = 15,
 	  DoorsConnection = {
 		"Top",
 		"Left"
