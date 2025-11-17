@@ -93,9 +93,9 @@ end
 
 function Player:pedometer()
   PlayerData.steps += 0.5
+  PlayerData.totalSteps += 0.5
   -- print("steps " .. PlayerData.steps .. "/  steps " .. PlayerData.totalSteps .."/ calories ".. PlayerData.calories)
   if PlayerData.steps >= 200 then
-    PlayerData.totalSteps += PlayerData.steps
     PlayerData.steps = 0
     self:burnCalories(10)
   end

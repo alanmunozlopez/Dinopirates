@@ -7,7 +7,7 @@ local crewBagImg = Graphics.image.new('assets/images/ui/menu/crewbag.png')
 function playdate.gameWillPause()
 	if PlayerData.isGaming == true and PlayerData.hasNotes == true then
 		mapFillingAndChecking()
-		
+		drawStatusText()
 		if PlayerData.hasLamp == true then
 			Graphics.pushContext(menuImg)
 			lampImg:draw(13, 110)
@@ -16,11 +16,6 @@ function playdate.gameWillPause()
 		if PlayerData.hasRadio == true then
 			Graphics.pushContext(menuImg)
 			radioImg:draw(50, 108)
-			Graphics.popContext()
-		end
-		if PlayerData.hasNotes == true then
-			Graphics.pushContext(menuImg)
-			notesImg:draw(86, 111)
 			Graphics.popContext()
 		end
 		if PlayerData.hasBag == true then
@@ -35,6 +30,28 @@ function playdate.gameWillPause()
 	end
 end
 
+function drawStatusText()
+	Graphics.pushContext(menuImg)
+	
+	-- Clear the text areas first (draw white rectangles)
+	Graphics.setColor(Graphics.kColorWhite)
+	Graphics.fillRect(80, 183, 100, 12)  -- Clear sanity text area
+	Graphics.fillRect(80, 197, 100, 12)  -- Clear calories text area
+	Graphics.fillRect(80, 212, 100, 12)  -- Clear steps text area
+	
+	local smallFont = Graphics.font.new('assets/fonts/Mini Sans')
+	Graphics.setFont(smallFont)
+	
+	-- Draw sanity text
+	local sanityText = ": " .. tostring(PlayerData.sanity)
+	local caloriesText = ": " .. tostring(PlayerData.calories)
+	local stepsText = ": " .. tostring(PlayerData.totalSteps)
+	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
+	Graphics.drawText(sanityText, 80, 183)
+	Graphics.drawText(caloriesText, 80, 197)
+	Graphics.drawText(stepsText, 80, 212)
+	Graphics.popContext()
+end
 function mapFillingAndChecking()
 	-- Configuration for each floor
 	local floorConfig = {

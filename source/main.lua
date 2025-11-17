@@ -48,7 +48,7 @@ Panels.vars.lang = "en"
 
 debug = false
 diagonalMovement = true
-shinonome = Graphics.font.new('assets/fonts/shinonome/JF-Dot-Shinonome16')
+shinonome = Graphics.font.new('assets/fonts/JF-Dot-Shinonome16')
 Graphics.setFont(shinonome, 'normal')
 
 Panels.Settings.path = ""
