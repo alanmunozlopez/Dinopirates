@@ -47,6 +47,7 @@ end
 
 
 function dialogScreen:addScreen(scriptName)
+	PlayerData.isTalking = true
 	-- Buscar el diálogo por nombre
 	for i, scriptEntry in ipairs(script) do
 		if scriptEntry.name == scriptName then

@@ -13,7 +13,7 @@ function Trigger:init(x, y, width, height, script, iid, room, type)
     self:setGroups(3)
     self:add()
     
-    print("🎯 Trigger creado - iid:", self.iid, "type:", self.type, "script:", self.script)
+    printDebug("🎯 Trigger creado - iid:", self.iid, "type:", self.type, "script:", self.script)
 end
 
 function Trigger:returnScript()
@@ -29,7 +29,7 @@ function Trigger:returnScript()
     for _, triggerData in ipairs(roomData.entities.Triggers) do
         if triggerData.iid == self.iid then
             local cf = triggerData.customFields or {}
-            cf.usedTrigger = true  -- ⭐ Usar usedTrigger (como está en tu levelsLDTK)
+            cf.usedTrigger = true  
             print("✅ Trigger marcado como usado:", triggerData.iid)
             break
         end

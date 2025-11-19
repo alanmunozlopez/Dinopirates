@@ -1908,6 +1908,36 @@ levelsLDTK = {
 	  "Tilemap.png"
 	},
 	entities = {
+	  CrewMember = {
+		{
+		  id = "CrewMember",
+		  iid = "d6d0d0e0-ac70-11f0-9378-29a879421f4b",
+		  layer = "CrewMembers",
+		  x = 140,
+		  y = 92,
+		  width = 48,
+		  height = 48,
+		  color = 14984818,
+		  customFields = {
+			isTaken = false,
+			crewID = "100"
+		  }
+		},
+		{
+		  id = "CrewMember",
+		  iid = "dc0ab4e0-ac70-11f0-9378-055897bc85a0",
+		  layer = "CrewMembers",
+		  x = 260,
+		  y = 148,
+		  width = 48,
+		  height = 48,
+		  color = 14984818,
+		  customFields = {
+			isTaken = false,
+			crewID = "100"
+		  }
+		}
+	  },
 	  Triggers = {
 		{
 		  id = "Triggers",
@@ -1915,8 +1945,8 @@ levelsLDTK = {
 		  layer = "Triggers",
 		  x = 324,
 		  y = 116,
-		  width = 32,
-		  height = 32,
+		  width = 48,
+		  height = 48,
 		  color = 16711748,
 		  customFields = {
 			script = nil,
@@ -1942,6 +1972,7 @@ levelsLDTK = {
 	  }
 	}
   },
+		--
 {
 	identifier = "Room_9",
 	uniqueIdentifer = "dab87dc0-ac70-11f0-997a-63497867517d",

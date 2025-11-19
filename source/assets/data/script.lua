@@ -17,6 +17,16 @@ script = {
         }
     },
     {
+        name = "gotcha",
+        dialog = {
+            {
+                video = 'playerSurprise',
+                text = "gotcha-01",
+                screen = Graphics.image.new('assets/images/ui/dialog/img/microwaveBurn.png')
+            },
+        }
+    },
+    {
         name = "brocomess",
         dialog = {
             {

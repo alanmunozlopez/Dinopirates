@@ -13,6 +13,9 @@ function Player:collisionResponse(other)
     
   elseif other:isa(CrewMember) then
     -- validar tener la bolsa de captura
+    if PlayerData.CrewMemberData.amountTaken == 0 then
+      self.dialogUI:addScreen("gotcha",other.sourceFeed)
+    end
     other:taken() 
     
   elseif other:isa(Box) then
@@ -24,12 +27,11 @@ function Player:collisionResponse(other)
       PlayerData.isGaming = false
       PlayerData.isCutscene = true
       other:returnScript()
-      -- ⭐ DEBUG: Verificar que se marcó como usado
-      print("🔍 Verificando trigger después de usar:")
+      printDebug("🔍 Verificando trigger después de usar:")
       local roomData = levelsLDTK[PlayerData.floor]
       for _, t in ipairs(roomData.entities.Triggers) do
           if t.iid == other.iid then
-              print("   usedTrigger:", t.customFields.usedTrigger)
+              printDebug("   usedTrigger:", t.customFields.usedTrigger)
               break
           end
       end
@@ -41,7 +43,6 @@ function Player:collisionResponse(other)
       self.currentTrigger = other
   elseif other.type == "Story" then
       PlayerData.isGaming = false
-      PlayerData.isTalking = true
       self.dialogUI:addScreen(other:returnScript(),other.sourceFeed)
   elseif other.type == nil then
       self.currentTrigger = other
@@ -107,7 +108,7 @@ function Player:collisionResponse(other)
       other:goTo()
       return 'overlap'
     else
-      PlayerData.isTalking = true
+      
       self.dialogUI:addScreen("nokeys")
       return 'freeze'
     end

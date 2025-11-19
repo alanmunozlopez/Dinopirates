@@ -88,6 +88,7 @@ function CrewMember:taken()
 		-- Buscar el CrewMember correspondiente por su IID (identificador único de LDtk)
 		if currentIID == self.iid then
 			cf.isTaken = true
+			PlayerData.CrewMemberData.amountTaken += 1
 			print("🟢 CrewMember marked as taken:", currentIID)
 			break
 		end

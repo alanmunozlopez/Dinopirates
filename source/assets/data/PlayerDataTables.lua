@@ -59,6 +59,9 @@ PlayerData = {
 		powerLevel = 1, -- max 20
 		sightRadius = 50, -- min 50
 		isEvolved = false,
+	},
+	CrewMemberData ={
+		amountTaken = 0
 	}
 }
 
@@ -123,5 +126,8 @@ PlayerDataOriginal = {
 		powerLevel = 1, -- max 20
 		sightRadius = 50, -- min 50
 		isEvolved = false,
+	},
+	CrewMemberData ={
+		amountTaken = 0
 	}
 }
