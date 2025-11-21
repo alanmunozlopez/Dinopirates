@@ -25,28 +25,40 @@ function playdate.gameWillPause()
 	end
 end
 
+local function formatNumberK(n)
+	if n >= 1000000 then
+		return string.format("%.1fM", n / 1000000):gsub("%.0M", "M")
+	elseif n >= 1000 then
+		return string.format("%.1fk", n / 1000):gsub("%.0k", "k")
+	else
+		return tostring(n)
+	end
+end
+
 function drawStatusText()
 	local xPos = 164
 	local yPos = 128
 	Graphics.pushContext(menuImg)
 	
-	-- Clear the text areas first (draw white rectangles)
+	-- Clear text areas
 	Graphics.setColor(Graphics.kColorWhite)
-	Graphics.fillRect(xPos, yPos, 100, 12)  -- Clear sanity text area
-	Graphics.fillRect(xPos, yPos + 12, 100, 12)  -- Clear calories text area
-	Graphics.fillRect(xPos, yPos + 25, 100, 12)  -- Clear steps text area
+	Graphics.fillRect(xPos, yPos, 100, 12)
+	Graphics.fillRect(xPos, yPos + 12, 100, 12)
+	Graphics.fillRect(xPos, yPos + 25, 100, 12)
 	
 	local smallFont = Graphics.font.new('assets/fonts/Mini Sans')
 	Graphics.setFont(smallFont)
 	
-	-- Draw sanity text
+	-- Apply formatting to steps
 	local sanityText = ": " .. tostring(PlayerData.sanity)
 	local caloriesText = ": " .. tostring(PlayerData.calories)
-	local stepsText = ": " .. tostring(PlayerData.totalSteps)
+	local stepsText = ": " .. formatNumberK(PlayerData.totalSteps)
+
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
 	Graphics.drawText(sanityText, xPos, yPos)
 	Graphics.drawText(caloriesText, xPos, yPos + 12)
 	Graphics.drawText(stepsText, xPos, yPos + 25)
+
 	Graphics.popContext()
 end
 function mapFillingAndChecking()
