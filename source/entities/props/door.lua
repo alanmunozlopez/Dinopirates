@@ -9,18 +9,18 @@ local animationStates = {
 }
 
 local positions = { -- art
-  right = {x = 393, y = 130},
-  left = {x = 10, y = 130},
-  down = {x = 205, y = 232},
-  top = {x = 205, y = 10}
+  right = {x = 393, y = 122},
+  left = {x = 4, y = 122},
+  down = {x = 203, y = 230},
+  top = {x = 203, y = 0}
 }
 
 local function setRectValues(direction)
   local rectValues = {
-    down = {8, -4, 36, 12},
-    top = {4, 4, 36, 12},
-    left = {0, 8, 12, 36},
-    right = {-4, 8, 12, 36}
+    right = {0, 0, 16, 50},
+    left = {0, 0, 14, 50},
+    down = {0, 0, 50, 16},
+    top = {0, 0, 50, 16},
   }
   return table.unpack(rectValues[direction])
 end
@@ -64,6 +64,7 @@ function Door:goTo()
   -- })
     
 end
+
 function Door:prevRoom(direction)
     PlayerData.lastRoom = direction
     local spawnCoordinates = {
