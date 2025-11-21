@@ -10,17 +10,12 @@ function playdate.gameWillPause()
 		drawStatusText()
 		if PlayerData.hasLamp == true then
 			Graphics.pushContext(menuImg)
-			lampImg:draw(13, 110)
-			Graphics.popContext()
-		end
-		if PlayerData.hasRadio == true then
-			Graphics.pushContext(menuImg)
-			radioImg:draw(50, 108)
+			lampImg:draw(13, 168)
 			Graphics.popContext()
 		end
 		if PlayerData.hasBag == true then
 			Graphics.pushContext(menuImg)
-			crewBagImg:draw(130, 111)
+			crewBagImg:draw(22, 139)
 			Graphics.popContext()
 		end
 		
@@ -31,13 +26,15 @@ function playdate.gameWillPause()
 end
 
 function drawStatusText()
+	local xPos = 164
+	local yPos = 128
 	Graphics.pushContext(menuImg)
 	
 	-- Clear the text areas first (draw white rectangles)
 	Graphics.setColor(Graphics.kColorWhite)
-	Graphics.fillRect(80, 183, 100, 12)  -- Clear sanity text area
-	Graphics.fillRect(80, 197, 100, 12)  -- Clear calories text area
-	Graphics.fillRect(80, 212, 100, 12)  -- Clear steps text area
+	Graphics.fillRect(xPos, yPos, 100, 12)  -- Clear sanity text area
+	Graphics.fillRect(xPos, yPos + 12, 100, 12)  -- Clear calories text area
+	Graphics.fillRect(xPos, yPos + 25, 100, 12)  -- Clear steps text area
 	
 	local smallFont = Graphics.font.new('assets/fonts/Mini Sans')
 	Graphics.setFont(smallFont)
@@ -47,9 +44,9 @@ function drawStatusText()
 	local caloriesText = ": " .. tostring(PlayerData.calories)
 	local stepsText = ": " .. tostring(PlayerData.totalSteps)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
-	Graphics.drawText(sanityText, 80, 183)
-	Graphics.drawText(caloriesText, 80, 197)
-	Graphics.drawText(stepsText, 80, 212)
+	Graphics.drawText(sanityText, xPos, yPos)
+	Graphics.drawText(caloriesText, xPos, yPos + 12)
+	Graphics.drawText(stepsText, xPos, yPos + 25)
 	Graphics.popContext()
 end
 function mapFillingAndChecking()
@@ -57,13 +54,13 @@ function mapFillingAndChecking()
 	local floorConfig = {
 		[1] = { cols = 5, rows = 3, posX = 150, posY = 70 },  -- Level 1: 5x3
 		[2] = { cols = 5, rows = 3, posX = 40, posY = 62 },  -- Level 2: 5x3
-		[3] = { cols = 7, rows = 5, posX = 139, posY = 15 },  -- Level 3: 7x5 (ajusta posX/posY según tu diseño)
+		[3] = { cols = 7, rows = 5, posX = 139, posY = 15 },  -- Level 3: 7x5 
 		[4] = { cols = 5, rows = 3, posX = 40, posY = 26 }   -- Level 4: 5x3
 	}
 	
 	local alpha = 0.5
 	local roomSize = 7
-	local spacing = 6  -- Espaciado entre celdas (incluyendo el tamaño de la celda)
+	local spacing = 6  
 	
 	-- Draw background grid for each floor
 	for level, config in pairs(floorConfig) do

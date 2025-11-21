@@ -1,6 +1,6 @@
 import 'libraries/noble/Noble'
 import 'libraries/panels/Panels'
-import 'libraries/ldtk/LDtk'
+-- import 'libraries/ldtk/LDtk'
 import 'achievements/all'
 
 import 'utilities/Utilities'
