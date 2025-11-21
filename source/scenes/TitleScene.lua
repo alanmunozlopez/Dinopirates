@@ -54,7 +54,7 @@ function scene:init()
 			local success, savedLevel = SaveSystem.load()
 			
 			if success and savedLevel then
-				print("📍 Cargando nivel guardado:", savedLevel)
+				printDebug("📍 Cargando nivel guardado:", savedLevel)
 				
 				-- Traducir el número de nivel a la escena
 				local nextScene = RoomTranslate(savedLevel)
@@ -71,12 +71,12 @@ function scene:init()
 						ease = Ease.outInQuad}
 					)
 				else
-					print("❌ ERROR: No se encontró la escena Floor" .. savedLevel)
+					printDebug("❌ ERROR: No se encontró la escena Floor" .. savedLevel)
 					-- Fallback a un nivel por defecto
 					Noble.transition(Floor120, 1, Noble.Transition.Default)
 				end
 			else
-				print("❌ Error cargando el save")
+				printDebug("❌ Error cargando el save")
 				-- Opcional: mostrar mensaje de error
 			end
 		end)

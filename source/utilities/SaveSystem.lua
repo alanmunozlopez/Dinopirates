@@ -49,14 +49,21 @@ function SaveSystem.getLevelState()
 
                         -- Items
                         if entity.layer == "Items" then
-                            entityState.collected = false
+                            entityState.collected = entity.customFields.collected or false
                         end
 
-                        -- Triggers (FALLA ORIGINAL: se guardaba bien)
+                        -- Triggers - Save ALL trigger data including 'usedTrigger' status
+                        if entity.customFields.type or entity.customFields.script or entity.customFields.usedTrigger ~= nil then
+                            entityState.type = entity.customFields.type
+                            entityState.script = entity.customFields.script
+                            entityState.usedTrigger = entity.customFields.usedTrigger or false
+                        end
+                        
+                        -- Also check by entityType or layer name
                         if entityType == "Triggers" or entity.layer == "Triggers" then
                             entityState.type = entity.customFields.type
                             entityState.script = entity.customFields.script
-                            entityState.used = entity.customFields.used or false
+                            entityState.usedTrigger = entity.customFields.usedTrigger or false
                         end
                     end
 
@@ -145,8 +152,19 @@ function SaveSystem.restoreLevelState(levelState)
                                     end
 
                                     -- ⭐ TRIGGERS (fix)
-                                    if savedEntity.used ~= nil then
-                                        currentEntity.customFields.used = savedEntity.used
+                                    if savedEntity.usedTrigger ~= nil then
+                                        currentEntity.customFields.usedTrigger = savedEntity.usedTrigger
+                                    end
+                                    if savedEntity.type then
+                                        currentEntity.customFields.type = savedEntity.type
+                                    end
+                                    if savedEntity.script then
+                                        currentEntity.customFields.script = savedEntity.script
+                                    end
+                                    
+                                    -- Items
+                                    if savedEntity.collected ~= nil then
+                                        currentEntity.customFields.collected = savedEntity.collected
                                     end
                                 end
                                 break
@@ -162,7 +180,7 @@ end
 
 
 -------------------------------------------------------------
--- Save
+-- Save (Fixed: using datastore correctly)
 -------------------------------------------------------------
 function SaveSystem.save()
     local saveData = {
@@ -172,13 +190,40 @@ function SaveSystem.save()
         version = "2.0-LDTK"
     }
 
-    playdate.datastore.write(saveData, 'gameState', true)
-    print("💾 Game saved successfully")
+    -- Debug: Count triggers being saved
+    local triggerCount = 0
+    local usedTriggerCount = 0
+    for _, level in ipairs(saveData.levelState) do
+        if level.entities then
+            for entityType, entities in pairs(level.entities) do
+                for _, entity in ipairs(entities) do
+                    if entity.usedTrigger ~= nil or entity.type or entity.script then
+                        triggerCount = triggerCount + 1
+                        if entity.usedTrigger then
+                            usedTriggerCount = usedTriggerCount + 1
+                        end
+                    end
+                end
+            end
+        end
+    end
+    print("📊 Saving " .. triggerCount .. " triggers (" .. usedTriggerCount .. " used)")
+
+    -- Write to datastore (no .json extension needed)
+    local success = playdate.datastore.write(saveData, 'gameState', true)
+    
+    if success ~= false then
+        print("💾 Game saved successfully")
+        return true
+    else
+        print("❌ Failed to save game")
+        return false
+    end
 end
 
 
 -------------------------------------------------------------
--- Load
+-- Load (Fixed: proper error handling)
 -------------------------------------------------------------
 function SaveSystem.load()
     local saveData = playdate.datastore.read('gameState')
@@ -186,6 +231,26 @@ function SaveSystem.load()
     if saveData then
         if saveData.version == "2.0-LDTK" then
             PlayerData = saveData.player
+            
+            -- Debug: Count triggers being loaded
+            local triggerCount = 0
+            local usedTriggerCount = 0
+            for _, level in ipairs(saveData.levelState) do
+                if level.entities then
+                    for entityType, entities in pairs(level.entities) do
+                        for _, entity in ipairs(entities) do
+                            if entity.usedTrigger ~= nil or entity.type or entity.script then
+                                triggerCount = triggerCount + 1
+                                if entity.usedTrigger then
+                                    usedTriggerCount = usedTriggerCount + 1
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            print("📊 Loading " .. triggerCount .. " triggers (" .. usedTriggerCount .. " used)")
+            
             SaveSystem.restoreLevelState(saveData.levelState)
             print("✅ Save loaded (LDTK format)")
             return true, saveData.player.saveLevel
@@ -195,13 +260,13 @@ function SaveSystem.load()
         end
     end
 
-    print("📭 No save file found")
+    print("🔭 No save file found")
     return false, nil
 end
 
 
 -------------------------------------------------------------
--- Reset
+-- Reset (Resets to original state without deleting file)
 -------------------------------------------------------------
 function SaveSystem.reset()
     PlayerData = table.deepcopy(PlayerDataOriginal)
@@ -213,17 +278,24 @@ end
 
 
 -------------------------------------------------------------
--- Delete save
+-- Delete save (Fixed: using correct datastore delete)
 -------------------------------------------------------------
 function SaveSystem.delete()
-    playdate.file.delete('gameState.json')
+    -- Use datastore.delete instead of file.delete
+    local success = playdate.datastore.delete('gameState')
+    
+    if success ~= false then
+        print("🗑️ Save deleted successfully")
+    else
+        print("⚠️ Could not delete save file (may not exist)")
+    end
+    
+    -- Reset to original state
     PlayerData = table.deepcopy(PlayerDataOriginal)
 
     if levelsLDTKOriginal then
         levelsLDTK = table.deepcopy(levelsLDTKOriginal)
     end
-
-    print("🗑️ Save deleted")
 end
 
 

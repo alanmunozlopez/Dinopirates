@@ -24,10 +24,10 @@ end
 
 -- wall creator
 function CreateWallsFromLDTK(currentRoom)
-	print("🧱 ===== CREANDO PAREDES =====")
+	printDebug("🧱 ===== CREANDO PAREDES =====")
 
 	if not currentRoom or not currentRoom.neighbourLevels then
-		print("❌ ERROR: currentRoom o neighbourLevels es nil")
+		printDebug("❌ ERROR: currentRoom o neighbourLevels es nil")
 		return
 	end
 
@@ -38,9 +38,9 @@ function CreateWallsFromLDTK(currentRoom)
 		end
 	end
 
-	print("👀 Analizando vecinos:")
+	printDebug("👀 Analizando vecinos:")
 	for dir, _ in pairs(neighbours) do
-		print("   🔹 Vecino en dirección:", dir)
+		printDebug("   🔹 Vecino en dirección:", dir)
 	end
 
 	-- Base wall positions
@@ -54,25 +54,25 @@ function CreateWallsFromLDTK(currentRoom)
 
 	-- NORTH (no n, nw, ne)
 	if not (neighbours["n"] or neighbours["nw"] or neighbours["ne"]) then
-		print("⬆️ No hay vecino al norte → moviendo pared superior +Y")
+		printDebug("⬆️ No hay vecino al norte → moviendo pared superior +Y")
 		wallTopY = wallTopY + offset
 	end
 
 	-- SOUTH (no s, sw, se)
 	if not (neighbours["s"] or neighbours["sw"] or neighbours["se"]) then
-		print("⬇️ No hay vecino al sur → moviendo pared inferior -Y")
+		printDebug("⬇️ No hay vecino al sur → moviendo pared inferior -Y")
 		wallBottomY = wallBottomY - offset
 	end
 
 	-- WEST (no w, nw, sw)
 	if not (neighbours["w"] or neighbours["nw"] or neighbours["sw"]) then
-		print("⬅️ No hay vecino al oeste → moviendo pared izquierda +X")
+		printDebug("⬅️ No hay vecino al oeste → moviendo pared izquierda +X")
 		wallLeftX = wallLeftX + offset
 	end
 
 	-- EAST (no e, ne, se)
 	if not (neighbours["e"] or neighbours["ne"] or neighbours["se"]) then
-		print("➡️ No hay vecino al este → moviendo pared derecha -X")
+		printDebug("➡️ No hay vecino al este → moviendo pared derecha -X")
 		wallRightX = wallRightX - offset
 	end
 
@@ -82,9 +82,9 @@ function CreateWallsFromLDTK(currentRoom)
 	local wallLeft = Box(wallLeftX, 12, 12, 216)
 	local wallRight = Box(wallRightX, 12, 12, 216)
 
-	print("✅ Paredes creadas con offsets:")
-	print("   Top Y:", wallTopY, "| Bottom Y:", wallBottomY, "| Left X:", wallLeftX, "| Right X:", wallRightX)
-	print("🧱 ===== FIN CREACIÓN PAREDES =====")
+	printDebug("✅ Paredes creadas con offsets:")
+	printDebug("   Top Y:", wallTopY, "| Bottom Y:", wallBottomY, "| Left X:", wallLeftX, "| Right X:", wallRightX)
+	printDebug("🧱 ===== FIN CREACIÓN PAREDES =====")
 
 	return {
 		top = wallTop,
@@ -191,20 +191,20 @@ end
 -- door utilities
 -- Función para encontrar una habitación por su uniqueIdentifer (iid)
 function FindRoomByIid(iid)
-	print("🔍 Buscando room con iid:", iid)
+	printDebug("🔍 Buscando room con iid:", iid)
 	for i, room in ipairs(levelsLDTK) do
 		if room.uniqueIdentifer == iid then
-			print("✅ Room encontrado:", room.identifier)
+			printDebug("✅ Room encontrado:", room.identifier)
 			return room
 		end
 	end
-	print("❌ Room NO encontrado con iid:", iid)
+	printDebug("❌ Room NO encontrado con iid:", iid)
 	return nil
 end
 
 -- Función para convertir dirección LDTK a dirección de puerta
 function ConvertLDTKDirection(dir)
-	print("🧭 Convirtiendo dirección:", dir)
+	printDebug("🧭 Convirtiendo dirección:", dir)
 	local result
 	if dir == ">" then
 		result = "down"  -- Escalera hacia arriba (visualmente está abajo en la pantalla)
@@ -221,38 +221,38 @@ function ConvertLDTKDirection(dir)
 	else
 		result = dir
 	end
-	print("   → Resultado:", result)
+	printDebug("   → Resultado:", result)
 	return result
 end
 
 -- Función para calcular el número de habitación destino
 function CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRoom)
-	print("🎯 Calculando leadsTo:")
-	print("   Current Level:", currentLevel)
-	print("   Current Room:", currentRoomNumber)
-	print("   Direction:", direction)
+	printDebug("🎯 Calculando leadsTo:")
+	printDebug("   Current Level:", currentLevel)
+	printDebug("   Current Room:", currentRoomNumber)
+	printDebug("   Direction:", direction)
 	
 	local fullCurrentRoom = currentLevel * 100 + currentRoomNumber
-	print("   Full Current Room:", fullCurrentRoom)
+	printDebug("   Full Current Room:", fullCurrentRoom)
 	
 	local result
 	if direction == ">" then
 		-- Piso superior: 120 -> 220
 		result = (currentLevel + 1) * 100 + currentRoomNumber
-		print("   → Escalera ARRIBA a:", result)
+		printDebug("   → Escalera ARRIBA a:", result)
 	elseif direction == "<" then
 		-- Piso inferior: 120 -> 020
 		result = (currentLevel - 1) * 100 + currentRoomNumber
-		print("   → Escalera ABAJO a:", result)
+		printDebug("   → Escalera ABAJO a:", result)
 	else
 		-- Puerta normal: usa el level y roomNumber del vecino
 		if neighborRoom then
 			local neighborLevel = neighborRoom.customFields.level or 1
 			local neighborRoomNum = neighborRoom.customFields.roomNumber or 0
 			result = neighborLevel * 100 + neighborRoomNum
-			print("   → Puerta NORMAL a:", result, "(nivel:", neighborLevel, "room:", neighborRoomNum, ")")
+			printDebug("   → Puerta NORMAL a:", result, "(nivel:", neighborLevel, "room:", neighborRoomNum, ")")
 		else
-			print("   ⚠️  neighborRoom es nil, no se puede calcular")
+			printDebug("   ⚠️  neighborRoom es nil, no se puede calcular")
 			result = fullCurrentRoom -- Fallback a la misma habitación
 		end
 	end
@@ -261,29 +261,29 @@ end
 
 -- Función principal: genera las puertas desde levelsLDTK
 function CreateDoorsFromLDTK(currentRoom)
-	print("🚪 ===== CREANDO PUERTAS =====")
-	print("📍 Room actual:", currentRoom.identifier)
+	printDebug("🚪 ===== CREANDO PUERTAS =====")
+	printDebug("📍 Room actual:", currentRoom.identifier)
 	
 	local neighbourLevels = currentRoom.neighbourLevels
 	if neighbourLevels == nil or #neighbourLevels == 0 then
-		print("⚠️  No hay neighbourLevels en esta habitación")
+		printDebug("⚠️  No hay neighbourLevels en esta habitación")
 		return
 	end
 	
-	print("📊 Total de vecinos:", #neighbourLevels)
+	printDebug("📊 Total de vecinos:", #neighbourLevels)
 	
 	local currentLevel = currentRoom.customFields.level or 1
 	local currentRoomNumber = currentRoom.customFields.roomNumber or 0
 	local doorsConnection = currentRoom.customFields.DoorsConnection or {}
 	
-	print("🏢 Nivel actual:", currentLevel, "| Habitación:", currentRoomNumber)
-	print("🔑 Puertas permitidas:", table.concat(doorsConnection, ", "))
+	printDebug("🏢 Nivel actual:", currentLevel, "| Habitación:", currentRoomNumber)
+	printDebug("🔑 Puertas permitidas:", table.concat(doorsConnection, ", "))
 	
 	for i, neighbor in ipairs(neighbourLevels) do
-		print("")
-		print("--- Procesando vecino", i, "---")
-		print("   levelIid:", neighbor.levelIid)
-		print("   dir:", neighbor.dir)
+		printDebug("")
+		printDebug("--- Procesando vecino", i, "---")
+		printDebug("   levelIid:", neighbor.levelIid)
+		printDebug("   dir:", neighbor.dir)
 		
 		local direction = ConvertLDTKDirection(neighbor.dir)
 		
@@ -299,71 +299,71 @@ function CreateDoorsFromLDTK(currentRoom)
 		end
 		
 		if not isAllowed then
-			print("🚫 Puerta NO permitida (no está en DoorsConnection):", direction)
+			printDebug("🚫 Puerta NO permitida (no está en DoorsConnection):", direction)
 		else
-			print("✅ Puerta permitida:", direction)
+			printDebug("✅ Puerta permitida:", direction)
 			
 			local neighborRoom = FindRoomByIid(neighbor.levelIid)
 			
 			-- Para escaleras (> y <), no necesitamos que el vecino exista
 			if neighbor.dir == ">" or neighbor.dir == "<" then
-				print("⚡ Es una ESCALERA, no se requiere vecino cargado")
+				printDebug("⚡ Es una ESCALERA, no se requiere vecino cargado")
 				
 				local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, nil)
 				local open = "open"
 				
-				print("🔧 Creando escalera:")
-				print("   direction:", direction)
-				print("   open:", open)
-				print("   leadsTo:", leadsTo)
-				print("   ZIndex:", ZIndex.props)
+				printDebug("🔧 Creando escalera:")
+				printDebug("   direction:", direction)
+				printDebug("   open:", open)
+				printDebug("   leadsTo:", leadsTo)
+				printDebug("   ZIndex:", ZIndex.props)
 				
 				-- Crea la escalera
-				Door(direction, open, leadsTo, ZIndex.props)
-				print("✅ Escalera creada exitosamente")
+				--Door(direction, open, leadsTo, ZIndex.props)
+				
 				
 			elseif neighborRoom then
-				print("✅ Vecino encontrado:", neighborRoom.identifier)
+				printDebug("✅ Vecino encontrado:", neighborRoom.identifier)
 				
 				local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, neighborRoom)
 				local open = "open"
 				
-				print("🔧 Creando puerta:")
-				print("   direction:", direction)
-				print("   open:", open)
-				print("   leadsTo:", leadsTo)
-				print("   ZIndex:", ZIndex.props)
+				printDebug("🔧 Creando puerta:")
+				printDebug("   direction:", direction)
+				printDebug("   open:", open)
+				printDebug("   leadsTo:", leadsTo)
+				printDebug("   ZIndex:", ZIndex.props)
 				
 				-- Crea la puerta
 				Door(direction, open, leadsTo, ZIndex.props)
-				print("✅ Puerta creada exitosamente")
+				printDebug("✅ Puerta creada exitosamente")
 			else
 				print("⚠️  ADVERTENCIA: Vecino no cargado (probablemente la habitación no existe aún)")
 			end
 		end
 	end
 	
-	print("🚪 ===== FIN CREACIÓN PUERTAS =====")
-	print("")
+	printDebug("🚪 ===== FIN CREACIÓN PUERTAS =====")
+	printDebug("")
 end
 
 -- Función para encontrar el vecino por dirección
 function FindNeighborByDirection(currentRoom, direction)
-	print("🔍 Buscando vecino con dirección:", direction)
+	printDebug("🔍 Buscando vecino con dirección:", direction)
 	
 	if not currentRoom.neighbourLevels then
-		print("❌ No hay neighbourLevels")
+		printDebug("❌ No hay neighbourLevels")
 		return nil
 	end
 	
 	for _, neighbor in ipairs(currentRoom.neighbourLevels) do
 		if neighbor.dir == direction then
-			print("✅ Vecino encontrado con dir:", direction)
+			printDebug("✅ Vecino encontrado con dir:", direction)
 			return neighbor
 		end
 	end
 	
-	print("❌ No se encontró vecino con dir:", direction)
+	printDebug("❌ No se encontró vecino con dir:", direction)
 	return nil
 end
 
@@ -380,7 +380,7 @@ function CanMoveVertically(currentRoom, direction)
 	
 	local requiredConnection = directionMap[direction]
 	if not requiredConnection then
-		print("⚠️  Dirección vertical no reconocida:", direction)
+		printDebug("⚠️  Dirección vertical no reconocida:", direction)
 		return false
 	end
 	
@@ -396,17 +396,17 @@ end
 
 -- Función para obtener la habitación inferior (caer)
 function GetLowerRoom(currentRoomIndex)
-	print("⬇️  === BUSCANDO HABITACIÓN INFERIOR ===")
+	printDebug("⬇️  === BUSCANDO HABITACIÓN INFERIOR ===")
 	local currentRoom = levelsLDTK[currentRoomIndex]
 	
 	if not currentRoom then
-		print("❌ currentRoom no válido")
+		printDebug("❌ currentRoom no válido")
 		return nil
 	end
 	
 	-- Validar si se puede caer
 	if not CanMoveVertically(currentRoom, "<") then
-		print("🚫 No se puede caer desde esta habitación (no tiene 'lower' en DoorsConnection)")
+		printDebug("🚫 No se puede caer desde esta habitación (no tiene 'lower' en DoorsConnection)")
 		return nil
 	end
 	
@@ -414,7 +414,7 @@ function GetLowerRoom(currentRoomIndex)
 	local lowerNeighbor = FindNeighborByDirection(currentRoom, "<")
 	
 	if not lowerNeighbor then
-		print("❌ No hay habitación inferior definida en neighbourLevels")
+		printDebug("❌ No hay habitación inferior definida en neighbourLevels")
 		return nil
 	end
 	
@@ -426,38 +426,38 @@ function GetLowerRoom(currentRoomIndex)
 		local roomNum = lowerRoom.customFields.roomNumber or 0
 		local roomNumber = level * 100 + roomNum
 		
-		print("✅ Habitación inferior encontrada:")
-		print("   identifier:", lowerRoom.identifier)
-		print("   level:", level)
-		print("   roomNumber:", roomNum)
-		print("   fullRoomNumber:", roomNumber)
+		printDebug("✅ Habitación inferior encontrada:")
+		printDebug("   identifier:", lowerRoom.identifier)
+		printDebug("   level:", level)
+		printDebug("   roomNumber:", roomNum)
+		printDebug("   fullRoomNumber:", roomNumber)
 		
 		return roomNumber, lowerRoom
 	else
-		print("⚠️  Habitación inferior no está cargada en levelsLDTK")
+		printDebug("⚠️  Habitación inferior no está cargada en levelsLDTK")
 		-- Calcular el número esperado aunque no esté cargada
 		local currentLevel = currentRoom.customFields.level or 1
 		local currentRoomNum = currentRoom.customFields.roomNumber or 0
 		local expectedRoom = (currentLevel - 1) * 100 + currentRoomNum
 		
-		print("📊 Habitación esperada (calculada):", expectedRoom)
+		printDebug("📊 Habitación esperada (calculada):", expectedRoom)
 		return expectedRoom, nil
 	end
 end
 
 -- Función para obtener la habitación superior (subir)
 function GetUpperRoom(currentRoomIndex)
-	print("⬆️  === BUSCANDO HABITACIÓN SUPERIOR ===")
+	printDebug("⬆️  === BUSCANDO HABITACIÓN SUPERIOR ===")
 	local currentRoom = levelsLDTK[currentRoomIndex]
 	
 	if not currentRoom then
-		print("❌ currentRoom no válido")
+		printDebug("❌ currentRoom no válido")
 		return nil
 	end
 	
 	-- Validar si se puede subir
 	if not CanMoveVertically(currentRoom, ">") then
-		print("🚫 No se puede subir desde esta habitación (no tiene 'upper' en DoorsConnection)")
+		printDebug("🚫 No se puede subir desde esta habitación (no tiene 'upper' en DoorsConnection)")
 		return nil
 	end
 	
@@ -465,7 +465,7 @@ function GetUpperRoom(currentRoomIndex)
 	local upperNeighbor = FindNeighborByDirection(currentRoom, ">")
 	
 	if not upperNeighbor then
-		print("❌ No hay habitación superior definida en neighbourLevels")
+		printDebug("❌ No hay habitación superior definida en neighbourLevels")
 		return nil
 	end
 	
@@ -477,21 +477,21 @@ function GetUpperRoom(currentRoomIndex)
 		local roomNum = upperRoom.customFields.roomNumber or 0
 		local roomNumber = level * 100 + roomNum
 		
-		print("✅ Habitación superior encontrada:")
-		print("   identifier:", upperRoom.identifier)
-		print("   level:", level)
-		print("   roomNumber:", roomNum)
-		print("   fullRoomNumber:", roomNumber)
+		printDebug("✅ Habitación superior encontrada:")
+		printDebug("   identifier:", upperRoom.identifier)
+		printDebug("   level:", level)
+		printDebug("   roomNumber:", roomNum)
+		printDebug("   fullRoomNumber:", roomNumber)
 		
 		return roomNumber, upperRoom
 	else
-		print("⚠️  Habitación superior no está cargada en levelsLDTK")
+		printDebug("⚠️  Habitación superior no está cargada en levelsLDTK")
 		-- Calcular el número esperado aunque no esté cargada
 		local currentLevel = currentRoom.customFields.level or 1
 		local currentRoomNum = currentRoom.customFields.roomNumber or 0
 		local expectedRoom = (currentLevel + 1) * 100 + currentRoomNum
 		
-		print("📊 Habitación esperada (calculada):", expectedRoom)
+		printDebug("📊 Habitación esperada (calculada):", expectedRoom)
 		return expectedRoom, nil
 	end
 end
@@ -500,17 +500,17 @@ function GetRoomByNumber(roomNumber)
 	local level = math.floor(roomNumber / 100)
 	local room = roomNumber % 100
 	
-	print("🔍 Buscando room por número:", roomNumber, "(nivel:", level, "room:", room, ")")
+	printDebug("🔍 Buscando room por número:", roomNumber, "(nivel:", level, "room:", room, ")")
 	
 	for _, roomData in ipairs(levelsLDTK) do
 		if roomData.customFields.level == level and 
 		   roomData.customFields.roomNumber == room then
-			print("✅ Room encontrado:", roomData.identifier)
+			printDebug("✅ Room encontrado:", roomData.identifier)
 			return roomData
 		end
 	end
 	
-	print("❌ Room NO encontrado")
+	printDebug("❌ Room NO encontrado")
 	return nil
 end
 
@@ -539,7 +539,7 @@ function findAndKillEnemyById(enemyId)
 	local entities = levelsLDTK[room].entities
 
 	if not entities then
-		print("⚠️ No entities found in room:", room)
+		printDebug("⚠️ No entities found in room:", room)
 		return
 	end
 
@@ -556,7 +556,7 @@ function findAndKillEnemyById(enemyId)
 							enemy.x = PlayerData.lastEnemyTouched.x
 							enemy.y = PlayerData.lastEnemyTouched.y
 						end
-						print("💀 Enemy killed:", enemyId, "in", entityType)
+						printDebug("💀 Enemy killed:", enemyId, "in", entityType)
 					end
 					return
 				end
@@ -571,7 +571,7 @@ function findAndDestroyPropById(propId)
 	local entities = levelsLDTK[room].entities
 
 	if not entities then
-		print("⚠️ No entities found in room:", room)
+		printDebug("⚠️ No entities found in room:", room)
 		return
 	end
 
@@ -662,11 +662,11 @@ end
 function printEnemies()
 	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
 		if enemy.type == "Enemy" then
-			print("x:", enemy.x)
-			print("y:", enemy.y)
-			print("Type:", enemy.type)
-			print("ID:", enemy.id)
-			print("----")
+			printDebug("x:", enemy.x)
+			printDebug("y:", enemy.y)
+			printDebug("Type:", enemy.type)
+			printDebug("ID:", enemy.id)
+			printDebug("----")
 		end
 	end
 end
@@ -709,24 +709,24 @@ function CurrentTile()
 	-- Obtener referencias seguras
 	local floorData = tileMapData[floor]
 	if not floorData then
-		print("⚠️ Piso no encontrado:", floor)
+		printDebug("⚠️ Piso no encontrado:", floor)
 		return
 	end
 
 	local row = floorData[tileY]
 	if not row then
-		print(string.format("⚠️ Fuera del rango vertical (tileY=%.2f)", tileY))
+		printDebug(string.format("⚠️ Fuera del rango vertical (tileY=%.2f)", tileY))
 		return
 	end
 
 	local tileNumber = row[tileX]
 	if not tileNumber then
-		print(string.format("⚠️ Fuera del rango horizontal (tileX=%.2f)", tileX))
+		printDebug(string.format("⚠️ Fuera del rango horizontal (tileX=%.2f)", tileX))
 		return
 	end
 
 	-- ✅ Usa %.2f para floats y %d solo para enteros seguros
-	print(string.format(
+	printDebug(string.format(
 		"🧭 Piso %d | Player (%.1f, %.1f) | Tile (%d, %d) = %d",
 		floor, x, y, tileX, tileY, tileNumber
 	))

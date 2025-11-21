@@ -129,7 +129,7 @@ function scene:enter()
 		wallLeft = walls.left
 		wallRight = walls.right
 	else
-		print("❌ ERROR: no se pudo crear paredes, room o levelsLDTK[room] es nil")
+		printDebug("❌ ERROR: no se pudo crear paredes, room o levelsLDTK[room] es nil")
 	end
 	
 	-- Mark: doors
@@ -137,24 +137,24 @@ function scene:enter()
 	
 	if room and levelsLDTK[room] then
 		local currentRoom = levelsLDTK[room]
-		print("✅ CurrentRoom:", currentRoom.identifier)
-		print("📍 Level:", currentRoom.customFields.level)
-		print("📍 RoomNumber:", currentRoom.customFields.roomNumber)
+		printDebug("✅ CurrentRoom:", currentRoom.identifier)
+		printDebug("📍 Level:", currentRoom.customFields.level)
+		printDebug("📍 RoomNumber:", currentRoom.customFields.roomNumber)
 		
 		if currentRoom.neighbourLevels then
-			print("👥 Vecinos encontrados:", #currentRoom.neighbourLevels)
+			printDebug("👥 Vecinos encontrados:", #currentRoom.neighbourLevels)
 			for i, n in ipairs(currentRoom.neighbourLevels) do
-				print("  Vecino", i, "- iid:", n.levelIid, "dir:", n.dir)
+				printDebug("  Vecino", i, "- iid:", n.levelIid, "dir:", n.dir)
 			end
 		else
-			print("❌ neighbourLevels es nil")
+			printDebug("❌ neighbourLevels es nil")
 		end
 		
 		CreateDoorsFromLDTK(currentRoom)
 	else
-		print("❌ ERROR: room es", room, "o levelsLDTK[room] es nil")
+		printDebug("❌ ERROR: room es", room, "o levelsLDTK[room] es nil")
 	end
-	print("======================")
+	printDebug("======================")
 	
 	
 	
