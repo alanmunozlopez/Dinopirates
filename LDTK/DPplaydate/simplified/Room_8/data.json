@@ -45,8 +45,8 @@
 		}
 	],
 	"customFields": {
-		"shadow": false,
-		"light": 0,
+		"shadow": true,
+		"light": 0.5,
 		"visited": false,
 		"comic_name": "pick-the-device",
 		"comic_wasPlayed": false,
@@ -62,68 +62,5 @@
 	"layers": [
 		"Tilemap.png"
 	],
-	"entities": {
-		"CrewMember": [
-			{
-				"id": "CrewMember",
-				"iid": "d6d0d0e0-ac70-11f0-9378-29a879421f4b",
-				"layer": "CrewMembers",
-				"x": 140,
-				"y": 92,
-				"width": 48,
-				"height": 48,
-				"color": 14984818,
-				"customFields": {
-					"isTaken": false,
-					"crewID": "100"
-				}
-			},
-			{
-				"id": "CrewMember",
-				"iid": "dc0ab4e0-ac70-11f0-9378-055897bc85a0",
-				"layer": "CrewMembers",
-				"x": 260,
-				"y": 148,
-				"width": 48,
-				"height": 48,
-				"color": 14984818,
-				"customFields": {
-					"isTaken": false,
-					"crewID": "100"
-				}
-			}
-		],
-		"Triggers": [
-			{
-				"id": "Triggers",
-				"iid": "2f05dea0-ac70-11f0-8398-8b03b2d23bdf",
-				"layer": "Triggers",
-				"x": 324,
-				"y": 116,
-				"width": 48,
-				"height": 48,
-				"color": 16711748,
-				"customFields": {
-					"script": null,
-					"usedTrigger": false,
-					"type": "Cutscene"
-				}
-			}
-		],
-		"Radio": [
-			{
-				"id": "Radio",
-				"iid": "27526f20-ac70-11f0-8398-eb0a7d3547d7",
-				"layer": "Items",
-				"x": 324,
-				"y": 116,
-				"width": 48,
-				"height": 48,
-				"color": 15389866,
-				"customFields": {
-					"type": "radio"
-				}
-			}
-		]
-	}
+	"entities" : {}
 }

@@ -68,10 +68,10 @@ end
 function Door:prevRoom(direction)
     PlayerData.lastRoom = direction
     local spawnCoordinates = {
-        top = {x = 200, y = 180},
+        top = {x = 196, y = 196},
         down = {x = 200, y = 32},
-        right = {x = 40, y = 116},
-        left = {x = 350, y = 120}
+        right = {x = 34, y = 116},
+        left = {x = 364, y = 116}
     }
     PlayerData.playerSpawn.x = spawnCoordinates[direction].x
     PlayerData.playerSpawn.y = spawnCoordinates[direction].y
