@@ -11,8 +11,8 @@ local animationStates = {
 local positions = { -- art
   right = {x = 393, y = 122},
   left = {x = 4, y = 122},
-  down = {x = 203, y = 230},
-  top = {x = 203, y = 0}
+  down = {x = 203, y = 228},
+  top = {x = 203, y = 2}
 }
 
 local function setRectValues(direction)
@@ -69,8 +69,8 @@ function Door:prevRoom(direction)
     PlayerData.lastRoom = direction
     local spawnCoordinates = {
         top = {x = 196, y = 196},
-        down = {x = 200, y = 32},
-        right = {x = 34, y = 116},
+        down = {x = 196, y = 32},
+        right = {x = 32, y = 116},
         left = {x = 364, y = 116}
     }
     PlayerData.playerSpawn.x = spawnCoordinates[direction].x

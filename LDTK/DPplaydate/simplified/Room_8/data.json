@@ -62,5 +62,137 @@
 	"layers": [
 		"Tilemap.png"
 	],
-	"entities" : {}
+	"entities": {
+		"PlayerSpawnPoints": [
+			{
+				"id": "PlayerSpawnPoints",
+				"iid": "c8f4e8d0-ac70-11f0-aeab-7787f16bcbb3",
+				"layer": "PSpawnPoints",
+				"x": 196,
+				"y": 196,
+				"width": 48,
+				"height": 48,
+				"color": 16705377,
+				"customFields" : {}
+			},
+			{
+				"id": "PlayerSpawnPoints",
+				"iid": "d3da1040-ac70-11f0-aeab-e9fbfa179061",
+				"layer": "PSpawnPoints",
+				"x": 204,
+				"y": 36,
+				"width": 48,
+				"height": 48,
+				"color": 16705377,
+				"customFields" : {}
+			}
+		],
+		"Lamp": [
+			{
+				"id": "Lamp",
+				"iid": "16280d40-ac70-11f0-aeab-878c73817b92",
+				"layer": "Items",
+				"x": 308,
+				"y": 148,
+				"width": 48,
+				"height": 48,
+				"color": 15389866,
+				"customFields": {
+					"type": "lamp"
+				}
+			}
+		],
+		"Trash": [
+			{
+				"id": "Trash",
+				"iid": "1fdca3f0-ac70-11f0-aeab-198f05b5bf5c",
+				"layer": "Props",
+				"x": 92,
+				"y": 60,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "trash"
+				}
+			},
+			{
+				"id": "Trash",
+				"iid": "22f5cad0-ac70-11f0-aeab-557ab8741066",
+				"layer": "Props",
+				"x": 52,
+				"y": 124,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "trash"
+				}
+			},
+			{
+				"id": "Trash",
+				"iid": "252024e0-ac70-11f0-aeab-e91d62eb17a6",
+				"layer": "Props",
+				"x": 132,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "trash"
+				}
+			},
+			{
+				"id": "Trash",
+				"iid": "41bbe7b0-ac70-11f0-aeab-930a568dd8e7",
+				"layer": "Props",
+				"x": 236,
+				"y": 212,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "trash"
+				}
+			},
+			{
+				"id": "Trash",
+				"iid": "47f49e10-ac70-11f0-aeab-ed4a43faaf4a",
+				"layer": "Props",
+				"x": 164,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "trash"
+				}
+			},
+			{
+				"id": "Trash",
+				"iid": "51f3ab40-ac70-11f0-aeab-4d4cbcd3e234",
+				"layer": "Props",
+				"x": 252,
+				"y": 76,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"nocollider": false,
+					"destroyed": false,
+					"type": "trash"
+				}
+			}
+		]
+	}
 }

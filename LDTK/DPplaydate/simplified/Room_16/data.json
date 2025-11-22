@@ -36,7 +36,7 @@
 		"comic_wasPlayed": false,
 		"level": 3,
 		"roomNumber": 16,
-		"tile": 1,
+		"tile": 16,
 		"DoorsConnection": [],
 		"play": null
 	},

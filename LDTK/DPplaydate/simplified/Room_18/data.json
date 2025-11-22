@@ -44,7 +44,7 @@
 		"comic_wasPlayed": false,
 		"level": 3,
 		"roomNumber": 18,
-		"tile": 2,
+		"tile": 18,
 		"DoorsConnection": [
 			"Top"
 		],

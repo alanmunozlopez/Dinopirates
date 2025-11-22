@@ -51,6 +51,30 @@
 		"Tilemap.png"
 	],
 	"entities": {
+		"PlayerSpawnPoints": [
+			{
+				"id": "PlayerSpawnPoints",
+				"iid": "0cd9e410-ac70-11f0-aeab-b3666237bf74",
+				"layer": "PSpawnPoints",
+				"x": 364,
+				"y": 116,
+				"width": 48,
+				"height": 48,
+				"color": 16705377,
+				"customFields" : {}
+			},
+			{
+				"id": "PlayerSpawnPoints",
+				"iid": "0d9bdf10-ac70-11f0-aeab-cff62883b2fa",
+				"layer": "PSpawnPoints",
+				"x": 196,
+				"y": 196,
+				"width": 48,
+				"height": 48,
+				"color": 16705377,
+				"customFields" : {}
+			}
+		],
 		"Triggers": [
 			{
 				"id": "Triggers",
@@ -263,21 +287,6 @@
 			}
 		],
 		"Blood": [
-			{
-				"id": "Blood",
-				"iid": "2c1b18e0-ac70-11f0-985a-63cff1c9be3d",
-				"layer": "Props",
-				"x": 212,
-				"y": 124,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
 			{
 				"id": "Blood",
 				"iid": "2dcb39e0-ac70-11f0-985a-45f325c18dbd",

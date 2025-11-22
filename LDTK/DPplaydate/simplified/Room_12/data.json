@@ -50,5 +50,30 @@
 	"layers": [
 		"Tilemap.png"
 	],
-	"entities" : {}
+	"entities": {
+		"PlayerSpawnPoints": [
+			{
+				"id": "PlayerSpawnPoints",
+				"iid": "d3cd7b30-ac70-11f0-aeab-5594f181cfe1",
+				"layer": "PSpawnPoints",
+				"x": 364,
+				"y": 116,
+				"width": 48,
+				"height": 48,
+				"color": 16705377,
+				"customFields" : {}
+			},
+			{
+				"id": "PlayerSpawnPoints",
+				"iid": "d980d4f0-ac70-11f0-aeab-29e22f526775",
+				"layer": "PSpawnPoints",
+				"x": 34,
+				"y": 116,
+				"width": 48,
+				"height": 48,
+				"color": 16705377,
+				"customFields" : {}
+			}
+		]
+	}
 }
