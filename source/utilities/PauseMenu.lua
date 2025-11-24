@@ -57,17 +57,17 @@ function drawStatusText()
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
 	Graphics.drawText(sanityText, xPos, yPos)
 	Graphics.drawText(caloriesText, xPos, yPos + 12)
-	Graphics.drawText(stepsText, xPos, yPos + 25)
+	Graphics.drawText(PlayerData.actualRoom, xPos, yPos + 25)
 
 	Graphics.popContext()
 end
 function mapFillingAndChecking()
 	-- Configuration for each floor
 	local floorConfig = {
-		[1] = { cols = 5, rows = 3, posX = 150, posY = 70 },  -- Level 1: 5x3
-		[2] = { cols = 5, rows = 3, posX = 40, posY = 62 },  -- Level 2: 5x3
-		[3] = { cols = 7, rows = 5, posX = 139, posY = 15 },  -- Level 3: 7x5 
-		[4] = { cols = 5, rows = 3, posX = 40, posY = 26 }   -- Level 4: 5x3
+		[1] = { cols = 5, rows = 3, posX = 150, posY = 70 },  -- Level 4: 5x3 from room_66 to room_80
+		[2] = { cols = 7, rows = 5, posX = 139, posY = 15 },  -- Level 3: 7x5 from room_31 to room_65
+		[3] = { cols = 5, rows = 3, posX = 40, posY = 62 },  -- Level 2: 5x3 from room_16 to room_30
+		[4] = { cols = 5, rows = 3, posX = 40, posY = 26 }   -- Level 1: 5x3 from room_1 to room_15
 	}
 	
 	local alpha = 0.5
