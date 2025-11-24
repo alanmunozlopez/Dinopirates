@@ -396,17 +396,17 @@ end
 
 -- Función para obtener la habitación inferior (caer)
 function GetLowerRoom(currentRoomIndex)
-	printDebug("⬇️  === BUSCANDO HABITACIÓN INFERIOR ===")
+	print("⬇️  === BUSCANDO HABITACIÓN INFERIOR ===")
 	local currentRoom = levelsLDTK[currentRoomIndex]
 	
 	if not currentRoom then
-		printDebug("❌ currentRoom no válido")
+		print("❌ currentRoom no válido")
 		return nil
 	end
 	
 	-- Validar si se puede caer
 	if not CanMoveVertically(currentRoom, "<") then
-		printDebug("🚫 No se puede caer desde esta habitación (no tiene 'lower' en DoorsConnection)")
+		print("🚫 No se puede caer desde esta habitación (no tiene 'lower' en DoorsConnection)")
 		return nil
 	end
 	
@@ -414,7 +414,7 @@ function GetLowerRoom(currentRoomIndex)
 	local lowerNeighbor = FindNeighborByDirection(currentRoom, "<")
 	
 	if not lowerNeighbor then
-		printDebug("❌ No hay habitación inferior definida en neighbourLevels")
+		print("❌ No hay habitación inferior definida en neighbourLevels")
 		return nil
 	end
 	
@@ -426,21 +426,21 @@ function GetLowerRoom(currentRoomIndex)
 		local roomNum = lowerRoom.customFields.roomNumber or 0
 		local roomNumber = level * 100 + roomNum
 		
-		printDebug("✅ Habitación inferior encontrada:")
-		printDebug("   identifier:", lowerRoom.identifier)
-		printDebug("   level:", level)
-		printDebug("   roomNumber:", roomNum)
-		printDebug("   fullRoomNumber:", roomNumber)
+		print("✅ Habitación inferior encontrada:")
+		print("   identifier:", lowerRoom.identifier)
+		print("   level:", level)
+		print("   roomNumber:", roomNum)
+		print("   fullRoomNumber:", roomNumber)
 		
 		return roomNumber, lowerRoom
 	else
-		printDebug("⚠️  Habitación inferior no está cargada en levelsLDTK")
+		print("⚠️  Habitación inferior no está cargada en levelsLDTK")
 		-- Calcular el número esperado aunque no esté cargada
 		local currentLevel = currentRoom.customFields.level or 1
 		local currentRoomNum = currentRoom.customFields.roomNumber or 0
 		local expectedRoom = (currentLevel - 1) * 100 + currentRoomNum
 		
-		printDebug("📊 Habitación esperada (calculada):", expectedRoom)
+		print("📊 Habitación esperada (calculada):", expectedRoom)
 		return expectedRoom, nil
 	end
 end

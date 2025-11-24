@@ -61,13 +61,14 @@ function drawStatusText()
 
 	Graphics.popContext()
 end
+
 function mapFillingAndChecking()
 	-- Configuration for each floor
 	local floorConfig = {
-		[1] = { cols = 5, rows = 3, posX = 150, posY = 70 },  -- Level 4: 5x3 from room_66 to room_80
-		[2] = { cols = 7, rows = 5, posX = 139, posY = 15 },  -- Level 3: 7x5 from room_31 to room_65
-		[3] = { cols = 5, rows = 3, posX = 40, posY = 62 },  -- Level 2: 5x3 from room_16 to room_30
-		[4] = { cols = 5, rows = 3, posX = 40, posY = 26 }   -- Level 1: 5x3 from room_1 to room_15
+		[1] = { cols = 5, rows = 3, posX = 150, posY = 70, startRoom = 66 },  -- Level 4: 5x3 from room_66 to room_80
+		[2] = { cols = 7, rows = 5, posX = 139, posY = 15, startRoom = 31 },  -- Level 3: 7x5 from room_31 to room_65
+		[3] = { cols = 5, rows = 3, posX = 40, posY = 62, startRoom = 16 },  -- Level 2: 5x3 from room_16 to room_30
+		[4] = { cols = 5, rows = 3, posX = 40, posY = 26, startRoom = 1 }   -- Level 1: 5x3 from room_1 to room_15
 	}
 	
 	local alpha = 0.5
@@ -121,15 +122,17 @@ function mapFillingAndChecking()
 			goto continue
 		end
 		
-		-- Calculate position in grid (roomNumber 1-15 for 5x3, 1-35 for 7x5, etc.)
+		-- Calculate position in grid relative to the floor's starting room
 		local totalRooms = config.cols * config.rows
-		if roomNumber < 1 or roomNumber > totalRooms then
+		local roomIndexOnFloor = roomNumber - config.startRoom
+		
+		if roomIndexOnFloor < 0 or roomIndexOnFloor >= totalRooms then
 			print("⚠️  Room", roomNumber, "out of bounds for floor", level)
 			goto continue
 		end
 		
-		local col = (roomNumber - 1) % config.cols
-		local row = math.floor((roomNumber - 1) / config.cols)
+		local col = roomIndexOnFloor % config.cols
+		local row = math.floor(roomIndexOnFloor / config.cols)
 		
 		-- Only draw if visited
 		if visited then
