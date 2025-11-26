@@ -4,6 +4,8 @@ SaveSystem = {}
 -------------------------------------------------------------
 -- Extract necessary level data
 -------------------------------------------------------------
+--- Extrae el estado actual de todos los niveles para guardado
+-- @return table Estado serializable de todos los niveles
 function SaveSystem.getLevelState()
     local levelState = {}
 
@@ -80,6 +82,8 @@ end
 -------------------------------------------------------------
 -- Restore level state (Corregido)
 -------------------------------------------------------------
+--- Restaura el estado de los niveles desde datos guardados
+-- @param levelState table Estado de niveles previamente guardado
 function SaveSystem.restoreLevelState(levelState)
     if not levelState then return end
 
@@ -184,6 +188,8 @@ end
 -------------------------------------------------------------
 -- Save (Fixed: using datastore correctly)
 -------------------------------------------------------------
+--- Guarda el estado completo del juego en datastore
+-- @return boolean true si el guardado fue exitoso, false en caso contrario
 function SaveSystem.save()
     local saveData = {
         player = PlayerData,
@@ -227,6 +233,8 @@ end
 -------------------------------------------------------------
 -- Load (Fixed: proper error handling)
 -------------------------------------------------------------
+--- Carga el estado del juego desde datastore
+-- @return boolean, number|nil true si se cargó exitosamente, número de nivel guardado
 function SaveSystem.load()
     local saveData = playdate.datastore.read('gameState')
     

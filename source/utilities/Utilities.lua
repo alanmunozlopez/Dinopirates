@@ -22,7 +22,10 @@ function Box:init(x, y, width, height)
 	self:setGroups(CollideGroups.wall)
 end
 
--- wall creator
+--- Crea las paredes de una habitación basándose en sus vecinos LDTK
+-- Las paredes se ajustan dinámicamente según las conexiones con habitaciones vecinas
+-- @param currentRoom table Los datos de la habitación actual de levelsLDTK
+-- @return table Tabla con las 4 paredes creadas {top, bottom, left, right}
 function CreateWallsFromLDTK(currentRoom)
 	printDebug("🧱 ===== CREANDO PAREDES =====")
 
@@ -189,19 +192,29 @@ function RoomTranslate(roomNumber)
 	return _G[floorClass]
 end
 -- door utilities
--- Función para encontrar una habitación por su uniqueIdentifer (iid)
+--- Encuentra una habitación por su uniqueIdentifer (iid)
+-- Usa un índice hash para búsqueda O(1)
+-- @param iid string El uniqueIdentifer de la habitación a buscar
+-- @return table|nil Los datos de la habitación o nil si no se encuentra
 function FindRoomByIid(iid)
 	if not iid then
 		printDebug("❌ iid es nil")
 		return nil
 	end
 	
+	-- Usar índice hash para búsqueda rápida O(1)
+	if roomsByIid and roomsByIid[iid] then
+		printDebug("✅ Room encontrado (hash):", roomsByIid[iid].identifier)
+		return roomsByIid[iid]
+	end
+	
+	-- Fallback: búsqueda lineal si el índice no está disponible
 	if not levelsLDTK then
 		printDebug("❌ levelsLDTK no está inicializado")
 		return nil
 	end
 	
-	printDebug("🔍 Buscando room con iid:", iid)
+	printDebug("🔍 Buscando room con iid (fallback):", iid)
 	for i, room in ipairs(levelsLDTK) do
 		if room and room.uniqueIdentifer == iid then
 			printDebug("✅ Room encontrado:", room.identifier)
@@ -235,7 +248,12 @@ function ConvertLDTKDirection(dir)
 	return result
 end
 
--- Función para calcular el número de habitación destino
+--- Calcula el número de habitación destino basado en la dirección
+-- @param currentLevel number El nivel actual (1, 2, 3...)
+-- @param currentRoomNumber number El número de habitación actual (0-99)
+-- @param direction string La dirección LDTK (">", "<", "n", "s", "e", "w")
+-- @param neighborRoom table|nil Los datos del vecino (opcional para escaleras)
+-- @return number El número completo de la habitación destino (ej. 220)
 function CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRoom)
 	printDebug("🎯 Calculando leadsTo:")
 	printDebug("   Current Level:", currentLevel)
@@ -269,7 +287,9 @@ function CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRo
 	return result
 end
 
--- Función principal: genera las puertas desde levelsLDTK
+--- Genera las puertas de una habitación desde levelsLDTK
+-- Crea puertas basándose en los vecinos y el campo DoorsConnection
+-- @param currentRoom table Los datos de la habitación actual
 function CreateDoorsFromLDTK(currentRoom)
 	if not currentRoom then
 		printDebug("❌ ERROR: currentRoom es nil")

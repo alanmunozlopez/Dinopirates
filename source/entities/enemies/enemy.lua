@@ -3,7 +3,9 @@ class('Enemy').extends(NobleSprite)
 
 import 'entities/FX/FXsonar'
 
--- Update enemy move speed based on player battery and darkness
+--- Actualiza la velocidad de movimiento del enemigo según la batería del jugador
+-- La velocidad se ajusta en rangos: 0 (detenido), 1-20 (50%), 21-60 (70%), 61-100 (100%)
+-- Slowdown adicional en oscuridad con batería baja
 function Enemy:updateMoveSpeed()
     if PlayerData.battery == 0 then
         self.moveSpeed = 0
@@ -21,6 +23,8 @@ function Enemy:updateMoveSpeed()
     end
 end
 
+--- Búsqueda ciega: el enemigo se mueve directamente hacia el jugador
+-- @param player table Referencia al objeto jugador
 function Enemy:blindSearch(player)
     self.player = player
     self:updateMoveSpeed()
@@ -32,6 +36,8 @@ function Enemy:blindSearch(player)
     self:moveCollision(movementX, movementY, self.player)
 end
 
+--- Búsqueda lineal: el enemigo se mueve solo si está alineado horizontal o verticalmente
+-- @param player table Referencia al objeto jugador
 function Enemy:linealSearch(player)
     self.player = player
     self:updateMoveSpeed()
@@ -50,6 +56,10 @@ function Enemy:linealSearch(player)
     end
 end
 
+--- Maneja el movimiento con colisiones y efectos de rebote
+-- @param movementX number Posición X objetivo
+-- @param movementY number Posición Y objetivo
+-- @param player table Referencia al objeto jugador
 function Enemy:moveCollision(movementX, movementY, player)
     -- Speed is now managed by updateMoveSpeed() called before this function
 

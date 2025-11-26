@@ -196,14 +196,15 @@ function scene:enter()
    end
 
     -- Keep backwards compatibility with existing single-named globals used elsewhere
-    button = self.buttons[1]
-    button2 = self.buttons[2]
-    button3 = self.buttons[3]
-    button4 = self.buttons[4]
-    button5 = self.buttons[5]
-    button6 = self.buttons[6]
-    button7 = self.buttons[7]
-    button8 = self.buttons[8]
+    -- Convert to local variables to avoid global namespace pollution
+    local button = self.buttons[1]
+    local button2 = self.buttons[2]
+    local button3 = self.buttons[3]
+    local button4 = self.buttons[4]
+    local button5 = self.buttons[5]
+    local button6 = self.buttons[6]
+    local button7 = self.buttons[7]
+    local button8 = self.buttons[8]
 
     -- Other entities (unchanged)
     hitzone = HitZone(40,30, self.bpm)
@@ -245,6 +246,9 @@ function scene:update()
         if self.ButtonPressed == nil then
             
             self.accuracy += 1
+            -- Clamp accuracy to reasonable maximum
+            self.accuracy = math.min(self.accuracy, 100)
+            
             if self.accuracy > 5 then
                 self.balancePosition -= 0.3 
             end
@@ -325,6 +329,9 @@ function scene:update()
     end
 
    -- Normalize values (assume max enemy HP = 100, max lifes = 3)
+   -- Clamp lifes to valid range
+   lifes = math.max(0, math.min(3, lifes))
+   
    local enemyFactor = (100 - self.enemyHP) / 100 -- closer to 1 as enemy weakens
    local playerFactor = (3 - lifes) / 3           -- closer to 1 as player weakens
    

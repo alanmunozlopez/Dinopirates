@@ -70,9 +70,41 @@ CollideGroups = {
 	noCollide = 6
 }
 
+-- Button type constants
+ButtonTypes = {
+	A = "aButton",
+	B = "bButton",
+	LEFT = "leftButton",
+	RIGHT = "rightButton",
+	UP = "upButton",
+	DOWN = "downButton"
+}
+
+-- Direction constants
+Directions = {
+	LEFT = "left",
+	RIGHT = "right",
+	UP = "up",
+	DOWN = "down",
+	IDLE = "idle",
+	TOP = "top",
+	BOTTOM = "down" -- Para puertas
+}
+
 playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
 
 SaveSystem.createOriginalBackup()
+
+-- Initialize room index for fast lookups (O(1) instead of O(n))
+roomsByIid = {}
+if levelsLDTK then
+	for _, room in ipairs(levelsLDTK) do
+		if room and room.uniqueIdentifer then
+			roomsByIid[room.uniqueIdentifer] = room
+		end
+	end
+	print("📋 Room index created with " .. table.getsize(roomsByIid) .. " rooms")
+end
 
 local menu = playdate.getSystemMenu()
 
