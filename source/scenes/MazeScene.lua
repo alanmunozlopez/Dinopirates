@@ -46,14 +46,14 @@ import "entities/UI/inGameMenu"
 
 
 
--- Mark: player related
+-- MARK: Player related
 local player = nil
 local shadow = nil
 local inGameMenuActive = nil
--- Mark: UI
+-- MARK: UI
 local uiScreen = nil
 local inGameEquip = nil
--- Mark: Utilities
+-- MARK: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
@@ -99,16 +99,16 @@ function scene:enter()
 	PlayerData.actualTilemap = levelsLDTK[room].customFields.tile 
 	levelsLDTK[room].customFields.visited = true
 	
-	-- Mark: floor
+	-- MARK: Floor
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
 	map = Graphics.tilemap.new()
 	map:setImageTable(tilesMap) 
 	-- map:setSize(16,9)
 	
-	-- Mark: UI
+	-- MARK: UI
 	uiScreen = playerHud()
 	inGameEquip = inGameMenu()
-	-- Mark: floor 
+	-- MARK: Floor tilemap
 	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
 	
 	renderTileMap(tileMapData[PlayerData.actualTilemap], map)
@@ -120,7 +120,7 @@ function scene:enter()
 	floor:setCenter(0, 0) -- Anchor top-left instead of center
 	floor:add()
 	
-	-- Mark: Walls
+	-- MARK: Walls
 	if room and levelsLDTK[room] then
 		local currentRoom = levelsLDTK[room]
 		local walls = CreateWallsFromLDTK(currentRoom)
@@ -129,10 +129,10 @@ function scene:enter()
 		wallLeft = walls.left
 		wallRight = walls.right
 	else
-		printDebug("❌ ERROR: no se pudo crear paredes, room o levelsLDTK[room] es nil")
+		printDebug("❌ ERROR: could not create walls, room or levelsLDTK[room] is nil")
 	end
 	
-	-- Mark: doors
+	-- MARK: Doors
 
 	
 	if room and levelsLDTK[room] then
@@ -142,23 +142,23 @@ function scene:enter()
 		printDebug("📍 RoomNumber:", currentRoom.customFields.roomNumber)
 		
 		if currentRoom.neighbourLevels then
-			printDebug("👥 Vecinos encontrados:", #currentRoom.neighbourLevels)
+			printDebug("👥 Neighbors found:", #currentRoom.neighbourLevels)
 			for i, n in ipairs(currentRoom.neighbourLevels) do
-				printDebug("  Vecino", i, "- iid:", n.levelIid, "dir:", n.dir)
+				printDebug("  Neighbor", i, "- iid:", n.levelIid, "dir:", n.dir)
 			end
 		else
-			printDebug("❌ neighbourLevels es nil")
+			printDebug("❌ neighbourLevels is nil")
 		end
 		
 		CreateDoorsFromLDTK(currentRoom)
 	else
-		printDebug("❌ ERROR: room es", room, "o levelsLDTK[room] es nil")
+		printDebug("❌ ERROR: room is", room, "or levelsLDTK[room] is nil")
 	end
 	printDebug("======================")
 	
 	
 	
-	-- Mark: Props 
+	-- MARK: Props 
 	local entities = levelsLDTK[room].entities
 	
 	if entities ~= nil then
@@ -179,13 +179,13 @@ function scene:enter()
 		end
 	end
 	
-	-- Mark: Items
+	-- MARK: Items
 	if entities ~= nil then
 		for entityType, entitiesList in pairs(entities) do
 			for _, item in ipairs(entitiesList) do
 				local cf = item.customFields or {}
 	
-				-- Detectar si pertenece a la capa Items o si es un tipo de ítem
+				-- Detect if it belongs to Items layer or if it's an item type
 				if item.layer == "Items" or cf.isItem == true then
 					local x, y = item.x, item.y
 					local type = cf.type or entityType:lower() -- usa el tipo definido o el nombre de la entidad
@@ -199,7 +199,7 @@ function scene:enter()
 						tools = "hasTools"
 					}
 					
-					-- Si el jugador no tiene este ítem, lo genera
+					-- If player doesn't have this item, generate it
 					if itemRequirements[type] and PlayerData[itemRequirements[type]] == false then
 						Items(x, y, type)
 					end
@@ -207,14 +207,14 @@ function scene:enter()
 			end
 		end
 	end
-	-- Mark: Player
+	-- MARK: Player
 	local spawnPoint = PlayerData.playerSpawn
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
 	PlayerData.x = player.x
 	PlayerData.y = player.y
 	PlayerData.direction = 'idle'
 	
-	-- Mark: FX
+	-- MARK: FX
 	local cf = levelsLDTK[room].customFields or {}
 	
 	if cf.shadow == true then
@@ -244,7 +244,7 @@ function scene:enter()
 	end
 	
 	
-	-- Mark: Enemies
+	-- MARK: Enemies
 	if entities ~= nil then
 		for entityType, entitiesList in pairs(entities) do
 			if entityType == "Brocorat" or entityType == "Bosscolli" then
@@ -268,7 +268,7 @@ function scene:enter()
 		end
 	end
 	
-	-- Mark: Crew members 
+	-- MARK: Crew members 
 	
 	local entities = levelsLDTK[room].entities
 	
@@ -288,7 +288,7 @@ function scene:enter()
 	end
 	
 	
--- Mark: dialog triggers
+-- MARK: Dialog triggers
 	local entities = levelsLDTK[room].entities
 	
 	if entities and entities.Triggers then

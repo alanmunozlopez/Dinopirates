@@ -6,7 +6,7 @@ class('Brocorat').extends('Enemy')
 function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	Brocorat.super.init(self, 'assets/images/enemies/brocorat', true)
 	
-	-- Mark: animation states
+	-- MARK: Animation states
 	self.animation:addState('idle', 4, 4)
 	self.animation.idle.frameDuration = 6
 	self.animation:addState('walk', 1, 8, 'idle')

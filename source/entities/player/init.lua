@@ -15,7 +15,7 @@ local uiHud = nil
 function Player:init(x, y, speed, Zindex)
   Player.super.init(self,'assets/images/player/player', true)
   self:initAnimations()
-  -- Mark: basic properties
+  -- MARK: Basic properties
   self:setSize(48, 52)
   self:setZIndex(Zindex)
   self:moveTo(x,y)
@@ -29,7 +29,7 @@ function Player:init(x, y, speed, Zindex)
     })
   self:setGroups(CollideGroups.player)
   
-  -- Mark: Custom properties
+  -- MARK: Custom properties
   self.initialSpeed = speed
   self.speed = speed
   self.initialSanity = PlayerData.sanity
@@ -45,13 +45,13 @@ function Player:init(x, y, speed, Zindex)
   self.loadingPower = false
   self.isAlive = true
   
-  -- Mark: Custom items properties
+  -- MARK: Custom items properties
   PlayerData.battery = PlayerData.battery
   self.hasKey = false
   PlayerData.hasLamp = PlayerData.hasLamp
   PlayerData.isInDarkness = PlayerData.isInDarkness
   
-  -- Mark: add to scene
+  -- MARK: Add to scene
   self.dialogUI = dialogScreen()
   self.uiHud = UIHud(x,y)
   self:sanityCheck()

@@ -6,7 +6,7 @@ class('bosscolli').extends('Enemy')
 function bosscolli:init(x, y, moveSpeed, Zindex, player)
 	Brocorat.super.init(self, 'assets/images/enemies/bosscolli', true)
 	
-	-- Mark: animation states
+	-- MARK: Animation states
 	self.animation:addState('idle', 5, 6)
 	self.animation.idle.frameDuration = 48
 	self.animation:addState('walk', 1, 10, 'idle')

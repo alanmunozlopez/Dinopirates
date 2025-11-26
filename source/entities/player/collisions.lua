@@ -12,7 +12,7 @@ function Player:collisionResponse(other)
     end
     
   elseif other:isa(CrewMember) then
-    -- validar tener la bolsa de captura
+    -- Validate having the capture bag
     if PlayerData.CrewMemberData.amountTaken == 0 then
       self.dialogUI:addScreen("gotcha",other.sourceFeed)
     end
@@ -88,14 +88,14 @@ function Player:collisionResponse(other)
   return 'overlap'
     
   elseif other:isa(PropItem) and other.isHole then
-  -- ⭐ Manejar TODOS los tipos de agujeros
+  -- ⭐ Handle ALL hole types
   
-  -- Si el jugador tiene botas con batería, puede caminar sobre el agujero
+  -- If player has boots with battery, can walk over the hole
   if PlayerData.hasBoots == true and PlayerData.battery > 0 then
       self:drainBattery(1)
       return 'overlap'
   else
-      -- Sin botas o sin batería = caer
+      -- Without boots or without battery = fall
       self:fallBelow()
       return 'overlap'
   end

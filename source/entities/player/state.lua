@@ -1,44 +1,44 @@
 function Player:fallBelow()
-  print("💀 Player cayendo...")
+  print("💀 Player falling...")
   
-  local currentRoomIndex = PlayerData.floor  -- El índice actual en levelsLDTK
+  local currentRoomIndex = PlayerData.floor  -- Current index in levelsLDTK
   local lowerRoomNumber, lowerRoomData = GetLowerRoom(currentRoomIndex)
   
   if not lowerRoomNumber then
-    print("⚠️  No se puede caer desde esta habitación")
-    -- Opcional: mostrar un mensaje al jugador
+    print("⚠️  Cannot fall from this room")
+    -- Optional: show message to player
     return
   end
   
   local nextScene = RoomTranslate(lowerRoomNumber)
   
   if nextScene then
-    -- Mantener la posición X e Y al caer
+    -- Keep X and Y position when falling
     PlayerData.playerSpawn.x = self.x
     PlayerData.playerSpawn.y = self.y
     
-    print("✅ Transicionando a habitación:", lowerRoomNumber)
+    print("✅ Transitioning to room:", lowerRoomNumber)
     
     Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable, {
       imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
       imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
     })
   else
-    print("❌ Scene Floor" .. lowerRoomNumber .. " no encontrada")
-    -- Fallback: El jugador cayó al vacío, transicionar a DeadScene
-    print("💀 Transicionando a DeadScene (caída al vacío)")
+    print("❌ Scene Floor" .. lowerRoomNumber .. " not found")
+    -- Fallback: Player fell into the void, transition to DeadScene
+    print("💀 Transitioning to DeadScene (fell into void)")
     Noble.transition(DeadScene, 1.5, Noble.Transition.Default)
   end
 end
 
 function Player:riseAbove()
-  print("🚀 Player subiendo...")
+  print("🚀 Player climbing...")
   
   local currentRoomIndex = PlayerData.floor
   local upperRoomNumber, upperRoomData = GetUpperRoom(currentRoomIndex)
   
   if not upperRoomNumber then
-    print("⚠️  No se puede subir desde esta habitación")
+    print("⚠️  Cannot climb from this room")
     return
   end
   
@@ -48,13 +48,13 @@ function Player:riseAbove()
     PlayerData.playerSpawn.x = self.x
     PlayerData.playerSpawn.y = self.y
     
-    print("✅ Transicionando a habitación:", upperRoomNumber)
+    print("✅ Transitioning to room:", upperRoomNumber)
     
     Noble.transition(nextScene, 1.5, Noble.Transition.Default)
   else
-    print("❌ Scene Floor" .. upperRoomNumber .. " no encontrada")
-    print("⚠️  No se puede subir más (no hay habitación superior)")
-    -- No hacer nada, el jugador se queda en la habitación actual
+    print("❌ Scene Floor" .. upperRoomNumber .. " not found")
+    print("⚠️  Cannot climb higher (no upper room)")
+    -- Do nothing, player stays in current room
   end
 end
 

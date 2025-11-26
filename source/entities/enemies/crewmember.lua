@@ -10,7 +10,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	if moveSpeed == nil then
 		moveSpeed = 1
 	end
-	-- Mark: animation states
+	-- MARK: Animation states
 	self.animation:addState('idle', 1, 4)
 	self.animation.idle.frameDuration = 8
 	self.animation:addState('walk', 1, 4)
@@ -85,7 +85,7 @@ function CrewMember:taken()
 		local cf = crewData.customFields or {}
 		local currentIID = crewData.iid
 	
-		-- Buscar el CrewMember correspondiente por su IID (identificador único de LDtk)
+		-- Search for the corresponding CrewMember by its IID (unique LDtk identifier)
 		if currentIID == self.iid then
 			cf.isTaken = true
 			PlayerData.CrewMemberData.amountTaken += 1
