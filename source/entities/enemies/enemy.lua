@@ -3,8 +3,28 @@ class('Enemy').extends(NobleSprite)
 
 import 'entities/FX/FXsonar'
 
+-- Update enemy move speed based on player battery and darkness
+function Enemy:updateMoveSpeed()
+    if PlayerData.battery == 0 then
+        self.moveSpeed = 0
+    elseif PlayerData.battery <= 20 then
+        self.moveSpeed = 0.5 * self.initialSpeed
+    elseif PlayerData.battery <= 60 then
+        self.moveSpeed = 0.7 * self.initialSpeed
+    else
+        self.moveSpeed = self.initialSpeed
+    end
+    
+    -- Additional slowdown in darkness with low battery
+    if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
+        self.moveSpeed = 0.5
+    end
+end
+
 function Enemy:blindSearch(player)
     self.player = player
+    self:updateMoveSpeed()
+    
     local movementX = self.player.x <= self.x and self.x - self.moveSpeed or self.x + self.moveSpeed
     local movementY = self.player.y <= self.y and self.y - self.moveSpeed or self.y + self.moveSpeed
 
@@ -13,12 +33,9 @@ function Enemy:blindSearch(player)
 end
 
 function Enemy:linealSearch(player)
-    if PlayerData.battery == 0 then
-        self.moveSpeed = 0
-    elseif PlayerData.battery > 60 then
-        self.moveSpeed = self.initialSpeed
-    end
     self.player = player
+    self:updateMoveSpeed()
+    
     local movementX = self.x
     local movementY = self.y
     
@@ -34,11 +51,7 @@ function Enemy:linealSearch(player)
 end
 
 function Enemy:moveCollision(movementX, movementY, player)
-    if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
-        self.moveSpeed = 0.5
-    elseif PlayerData.battery > 60 and PlayerData.isInDarkness == true then
-        self.moveSpeed = self.initialSpeed
-    end
+    -- Speed is now managed by updateMoveSpeed() called before this function
 
     local actualX, actualY, collisions, length = self:moveWithCollisions(movementX, movementY)
     local bounceFactor = 3
@@ -46,15 +59,7 @@ function Enemy:moveCollision(movementX, movementY, player)
         for index, collision in pairs(collisions) do
             local collideObject = collision['other']
             
-            -- if collideObject:isa(Player) and self.player.isAlive then
-            --     PlayerData.lastEnemyTouched.type = "Brocorat"
-            --     PlayerData.lastEnemyTouched.id = self.id
-            --     PlayerData.lastEnemyTouched.x = self.x
-            --     PlayerData.lastEnemyTouched.y = self.y
-            --     self.player:fight()
-            -- end
-
-            --  Bounce effect here
+            -- Bounce effect here
             if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy) then
                 
                 if collideObject:isa(Brocorat) then
@@ -62,7 +67,7 @@ function Enemy:moveCollision(movementX, movementY, player)
                 end
                 if collideObject:isa(PropItem) and collideObject.isEdible == true then
                     self.powerLevel += 1
-                    if ((collideObject.type ~= "holeLeft" ) or (collideObject.type ~= "holeRight" ) or (collideObject.type ~= "holeDown" ) or (collideObject.type ~= "holeTop" )) and self.powerLevel > 25 then
+                    if (collideObject.type ~= "holeLeft" and collideObject.type ~= "holeRight" and collideObject.type ~= "holeDown" and collideObject.type ~= "holeTop") and self.powerLevel > 25 then
                         collideObject:destroyProp(collideObject.id) 
                         self.powerLevel -= 5
                     end

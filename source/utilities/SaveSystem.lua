@@ -99,8 +99,10 @@ function SaveSystem.restoreLevelState(levelState)
             end
 
             -- Restore simple fields
-            levelsLDTK[i].customFields.visited = state.visited
-            levelsLDTK[i].customFields.comic_wasPlayed = state.comic_wasPlayed
+            if levelsLDTK[i].customFields then
+                levelsLDTK[i].customFields.visited = state.visited
+                levelsLDTK[i].customFields.comic_wasPlayed = state.comic_wasPlayed
+            end
 
             if not (state.entities and levelsLDTK[i].entities) then
                 goto continue

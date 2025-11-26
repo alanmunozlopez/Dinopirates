@@ -191,9 +191,19 @@ end
 -- door utilities
 -- Función para encontrar una habitación por su uniqueIdentifer (iid)
 function FindRoomByIid(iid)
+	if not iid then
+		printDebug("❌ iid es nil")
+		return nil
+	end
+	
+	if not levelsLDTK then
+		printDebug("❌ levelsLDTK no está inicializado")
+		return nil
+	end
+	
 	printDebug("🔍 Buscando room con iid:", iid)
 	for i, room in ipairs(levelsLDTK) do
-		if room.uniqueIdentifer == iid then
+		if room and room.uniqueIdentifer == iid then
 			printDebug("✅ Room encontrado:", room.identifier)
 			return room
 		end
@@ -261,6 +271,11 @@ end
 
 -- Función principal: genera las puertas desde levelsLDTK
 function CreateDoorsFromLDTK(currentRoom)
+	if not currentRoom then
+		printDebug("❌ ERROR: currentRoom es nil")
+		return
+	end
+	
 	printDebug("🚪 ===== CREANDO PUERTAS =====")
 	printDebug("📍 Room actual:", currentRoom.identifier)
 	
@@ -654,11 +669,6 @@ function Utilities.clearAllAchievements()
 end
 
 -- Dev Tools
-function printDebug(value)
-	if debug == true then 
-		print(value)
-	end
-end
 function printEnemies()
 	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
 		if enemy.type == "Enemy" then

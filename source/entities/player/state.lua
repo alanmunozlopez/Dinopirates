@@ -25,7 +25,9 @@ function Player:fallBelow()
     })
   else
     print("❌ Scene Floor" .. lowerRoomNumber .. " no encontrada")
-    -- El jugador cayó al vacío
+    -- Fallback: El jugador cayó al vacío, transicionar a DeadScene
+    print("💀 Transicionando a DeadScene (caída al vacío)")
+    Noble.transition(DeadScene, 1.5, Noble.Transition.Default)
   end
 end
 
@@ -51,6 +53,8 @@ function Player:riseAbove()
     Noble.transition(nextScene, 1.5, Noble.Transition.Default)
   else
     print("❌ Scene Floor" .. upperRoomNumber .. " no encontrada")
+    print("⚠️  No se puede subir más (no hay habitación superior)")
+    -- No hacer nada, el jugador se queda en la habitación actual
   end
 end
 
