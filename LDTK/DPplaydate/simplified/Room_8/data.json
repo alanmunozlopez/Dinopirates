@@ -102,6 +102,36 @@
 				}
 			}
 		],
+		"Brocorat": [
+			{
+				"id": "Brocorat",
+				"iid": "547cdf30-ac70-11f0-8539-afad52eb2b26",
+				"layer": "Enemies",
+				"x": 84,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false
+				}
+			},
+			{
+				"id": "Brocorat",
+				"iid": "580605f0-ac70-11f0-8539-0d60ca94c541",
+				"layer": "Enemies",
+				"x": 268,
+				"y": 180,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false
+				}
+			}
+		],
 		"Trash": [
 			{
 				"id": "Trash",
