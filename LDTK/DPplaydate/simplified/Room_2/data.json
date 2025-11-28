@@ -110,28 +110,13 @@
 				"id": "Triggers",
 				"iid": "7d672b30-ac70-11f0-ae64-79d729daa857",
 				"layer": "Triggers",
-				"x": 316,
+				"x": 308,
 				"y": 180,
 				"width": 88,
 				"height": 88,
 				"color": 16711748,
 				"customFields": {
 					"script": "entranceMess",
-					"usedTrigger": false,
-					"type": "Search"
-				}
-			},
-			{
-				"id": "Triggers",
-				"iid": "daac3cf0-ac70-11f0-aeab-5fdff64c67fb",
-				"layer": "Triggers",
-				"x": 84,
-				"y": 84,
-				"width": 72,
-				"height": 48,
-				"color": 16711748,
-				"customFields": {
-					"script": "sodirty",
 					"usedTrigger": false,
 					"type": "Search"
 				}

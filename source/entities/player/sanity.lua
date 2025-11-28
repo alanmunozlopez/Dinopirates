@@ -21,6 +21,10 @@ function Player:sanityCheck()
     if PlayerData.sanity >= 100 then
       PlayerData.sanity = 100
     end
+    
+    if PlayerData.sanity <= 0 then
+      PlayerData.sanity = 0
+    end
 
     -- Update lastSanity for the next check
     lastSanity = PlayerData.sanity
