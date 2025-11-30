@@ -78,6 +78,21 @@
 					"DoorsConnection": "Down",
 					"KeyNumber": null
 				}
+			},
+			{
+				"id": "Doors",
+				"iid": "c5a75a30-ac70-11f0-8539-6130c4fb1bfd",
+				"layer": "Doors",
+				"x": 200,
+				"y": 8,
+				"width": 48,
+				"height": 16,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
 			}
 		],
 		"PlayerSpawnPoints": [

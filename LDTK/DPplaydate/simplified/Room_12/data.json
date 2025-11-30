@@ -51,21 +51,6 @@
 		"Tilemap.png"
 	],
 	"entities": {
-		"Keys": [
-			{
-				"id": "Keys",
-				"iid": "d07a6090-ac70-11f0-8539-4d96faa29ca7",
-				"layer": "Keys",
-				"x": 184,
-				"y": 40,
-				"width": 48,
-				"height": 48,
-				"color": 4073265,
-				"customFields": {
-					"keyNumber": 2
-				}
-			}
-		],
 		"Doors": [
 			{
 				"id": "Doors",
@@ -77,9 +62,24 @@
 				"height": 48,
 				"color": 7552569,
 				"customFields": {
-					"NeedsKey": true,
+					"NeedsKey": false,
 					"DoorsConnection": "Right",
-					"KeyNumber": 2
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "d4659d20-ac70-11f0-8539-cfb033de52d4",
+				"layer": "Doors",
+				"x": 8,
+				"y": 120,
+				"width": 16,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
 				}
 			}
 		],

@@ -52,21 +52,6 @@
 		"Tilemap.png"
 	],
 	"entities": {
-		"Keys": [
-			{
-				"id": "Keys",
-				"iid": "60200480-ac70-11f0-8539-b975221d06b8",
-				"layer": "Keys",
-				"x": 88,
-				"y": 56,
-				"width": 48,
-				"height": 48,
-				"color": 4073265,
-				"customFields": {
-					"keyNumber": 1
-				}
-			}
-		],
 		"Doors": [
 			{
 				"id": "Doors",

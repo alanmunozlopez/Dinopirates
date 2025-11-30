@@ -62,8 +62,23 @@
 				"height": 48,
 				"color": 7552569,
 				"customFields": {
-					"NeedsKey": false,
+					"NeedsKey": true,
 					"DoorsConnection": "Left",
+					"KeyNumber": 1
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "07f5afe0-ac70-11f0-8539-1df82db73e07",
+				"layer": "Doors",
+				"x": 392,
+				"y": 120,
+				"width": 16,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
 					"KeyNumber": null
 				}
 			}
