@@ -51,6 +51,38 @@
 		"Tilemap.png"
 	],
 	"entities": {
+		"Keys": [
+			{
+				"id": "Keys",
+				"iid": "d07a6090-ac70-11f0-8539-4d96faa29ca7",
+				"layer": "Keys",
+				"x": 184,
+				"y": 40,
+				"width": 48,
+				"height": 48,
+				"color": 4073265,
+				"customFields": {
+					"keyNumber": 2
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "c6e3d930-ac70-11f0-8539-e78eb22c7faf",
+				"layer": "Doors",
+				"x": 392,
+				"y": 120,
+				"width": 16,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": true,
+					"DoorsConnection": "Right",
+					"KeyNumber": 2
+				}
+			}
+		],
 		"PlayerSpawnPoints": [
 			{
 				"id": "PlayerSpawnPoints",

@@ -53,8 +53,9 @@ function Player:collisionResponse(other)
   return 'overlap'
   
   elseif other:isa(Items) and other.type == 'keycard' then
+    local keyNumber = other.keyNumber or 1  -- Get key number from item
     other:removeAll()
-    self:grabKey()
+    self:grabKey(keyNumber)
     return 'overlap'
     
   elseif other:isa(Items) and other.type == 'lamp' then
@@ -103,14 +104,27 @@ function Player:collisionResponse(other)
   return 'overlap'
   elseif other:isa(Door) then
     
-    if (PlayerData.hasKey == true and other.status == 'closed') or other.status =='open' then
+    if other.status == 'open' then
+      -- Door is open, allow passage
       other:prevRoom(other.direction)
       other:goTo()
       return 'overlap'
-    else
+    elseif other.status == 'closed' then
+      -- Door is closed, check if player has the required key
+      local requiredKey = other.keyNumber or 1  -- Default to key 1 if not specified
       
-      self.dialogUI:addScreen("nokeys")
-      return 'freeze'
+      if PlayerData.keys[requiredKey] == true then
+        -- Player has the correct key
+        printDebug("🔓 Door unlocked with key", requiredKey)
+        other:prevRoom(other.direction)
+        other:goTo()
+        return 'overlap'
+      else
+        -- Player doesn't have the required key
+        printDebug("🔒 Door locked, requires key", requiredKey)
+        self.dialogUI:addScreen("nokeys")
+        return 'freeze'
+      end
     end
   
   end

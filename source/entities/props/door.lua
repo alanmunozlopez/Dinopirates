@@ -25,11 +25,12 @@ local function setRectValues(direction)
   return table.unpack(rectValues[direction])
 end
 
-function Door:init(direction, status, nextRoom, zIndex)
+function Door:init(direction, status, nextRoom, zIndex, keyNumber)
   
   self.nextRoom = RoomTranslate(nextRoom)
   self.direction = direction
   self.status = status
+  self.keyNumber = keyNumber  -- Store the required key number
   
   local isHorizontal = direction == 'top' or direction == 'down'
   -- local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'

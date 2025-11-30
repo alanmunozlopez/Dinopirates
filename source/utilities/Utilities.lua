@@ -290,7 +290,8 @@ function CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRo
 end
 
 --- Generates doors for a room from levelsLDTK
--- Creates doors based on neighbors and DoorsConnection field
+-- Creates doors based on the Doors entities list
+-- Each door entity has a DoorsConnection field indicating its direction
 -- @param currentRoom table The current room data
 function CreateDoorsFromLDTK(currentRoom)
 	if not currentRoom then
@@ -301,81 +302,131 @@ function CreateDoorsFromLDTK(currentRoom)
 	printDebug("🚪 ===== CREATING DOORS =====")
 	printDebug("📍 Current room:", currentRoom.identifier)
 	
+	-- Check if there are door entities
+	local doorEntities = currentRoom.entities and currentRoom.entities.Doors
+	if not doorEntities or #doorEntities == 0 then
+		printDebug("⚠️  No door entities in this room")
+		return
+	end
+	
+	printDebug("📊 Total door entities:", #doorEntities)
+	
 	local neighbourLevels = currentRoom.neighbourLevels
-	if neighbourLevels == nil or #neighbourLevels == 0 then
+	if not neighbourLevels then
 		printDebug("⚠️  No neighbourLevels in this room")
 		return
 	end
 	
-	printDebug("📊 Total neighbors:", #neighbourLevels)
-	
 	local currentLevel = currentRoom.customFields.level or 1
 	local currentRoomNumber = currentRoom.customFields.roomNumber or 0
-	local doorsConnection = currentRoom.customFields.DoorsConnection or {}
 	
 	printDebug("🏢 Current level:", currentLevel, "| Room:", currentRoomNumber)
-	printDebug("🔑 Allowed doors:", table.concat(doorsConnection, ", "))
 	
-	for i, neighbor in ipairs(neighbourLevels) do
-		printDebug("")
-		printDebug("--- Processing neighbor", i, "---")
-		printDebug("   levelIid:", neighbor.levelIid)
-		printDebug("   dir:", neighbor.dir)
-		
-		local direction = ConvertLDTKDirection(neighbor.dir)
-		
-		-- Validate if this door is allowed in DoorsConnection
-		local isAllowed = false
-		local directionCapitalized = direction:sub(1,1):upper() .. direction:sub(2):lower()
-		
-		for _, allowedDir in ipairs(doorsConnection) do
-			if allowedDir:lower() == direction:lower() then
-				isAllowed = true
-				break
-			end
+	-- Create a map of neighbors by direction for quick lookup
+	local neighborsByDir = {}
+	for _, neighbor in ipairs(neighbourLevels) do
+		if neighbor.dir then
+			neighborsByDir[neighbor.dir] = neighbor
 		end
+	end
+	
+	-- Mapping from door direction names to LDTK directions
+	local doorDirectionMap = {
+		-- Cardinal directions (north, south, east, west)
+		top = "n",      -- North
+		down = "s",     -- South
+		right = "e",    -- East
+		left = "w",     -- West
+		-- Stairs
+		upper = ">",    -- Stairs up
+		lower = "<"     -- Stairs down
+	}
+	
+	-- Process each door entity
+	for i, doorEntity in ipairs(doorEntities) do
+		printDebug("")
+		printDebug("--- Processing door entity", i, "---")
+		printDebug("   iid:", doorEntity.iid)
+		printDebug("   position: (", doorEntity.x, ",", doorEntity.y, ")")
 		
-		if not isAllowed then
-			printDebug("🚫 Door NOT allowed (not in DoorsConnection):", direction)
+		local doorConnection = doorEntity.customFields and doorEntity.customFields.DoorsConnection
+		if not doorConnection then
+			printDebug("⚠️  Door entity has no DoorsConnection field, skipping")
 		else
-			printDebug("✅ Door allowed:", direction)
+			printDebug("🔑 Door direction:", doorConnection)
 			
-			local neighborRoom = FindRoomByIid(neighbor.levelIid)
+			local doorNameLower = doorConnection:lower()
+			local ldtkDir = doorDirectionMap[doorNameLower]
 			
-			-- For stairs (> and <), we don't need the neighbor to exist
-			if neighbor.dir == ">" or neighbor.dir == "<" then
-				printDebug("⚡ It's a STAIRCASE, loaded neighbor not required")
-				
-				local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, nil)
-				local open = "open"
-				
-				printDebug("🔧 Creating staircase:")
-				printDebug("   direction:", direction)
-				printDebug("   open:", open)
-				printDebug("   leadsTo:", leadsTo)
-				printDebug("   ZIndex:", ZIndex.props)
-				
-				-- Create the staircase
-				--Door(direction, open, leadsTo, ZIndex.props)
-				
-				
-			elseif neighborRoom then
-				printDebug("✅ Neighbor found:", neighborRoom.identifier)
-				
-				local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, neighbor.dir, neighborRoom)
-				local open = "open"
-				
-				printDebug("🔧 Creating door:")
-				printDebug("   direction:", direction)
-				printDebug("   open:", open)
-				printDebug("   leadsTo:", leadsTo)
-				printDebug("   ZIndex:", ZIndex.props)
-				
-				-- Create the door
-				Door(direction, open, leadsTo, ZIndex.props)
-				printDebug("✅ Door created successfully")
+			if not ldtkDir then
+				printDebug("⚠️  Unknown door direction:", doorConnection)
 			else
-				print("⚠️  WARNING: Neighbor not loaded (room probably doesn't exist yet)")
+				printDebug("🔍 Looking for neighbor in LDTK direction:", ldtkDir)
+				
+				local neighbor = neighborsByDir[ldtkDir]
+				
+				if not neighbor then
+					printDebug("🚫 No neighbor found in direction:", ldtkDir, "- skipping door")
+				else
+					printDebug("✅ Neighbor found in direction:", ldtkDir)
+					printDebug("   levelIid:", neighbor.levelIid)
+					
+					local direction = ConvertLDTKDirection(ldtkDir)
+					
+					-- Check if door needs a key
+					local needsKey = doorEntity.customFields.NeedsKey or false
+					local keyNumber = doorEntity.customFields.KeyNumber
+					
+					printDebug("🔐 NeedsKey:", needsKey)
+					if needsKey and keyNumber then
+						printDebug("   KeyNumber:", keyNumber)
+					end
+					
+					-- Handle stairs (upper/lower)
+					if ldtkDir == ">" or ldtkDir == "<" then
+						printDebug("⚡ It's a STAIRCASE")
+						
+						local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, ldtkDir, nil)
+						local open = needsKey and "closed" or "open"
+						
+						printDebug("🔧 Creating staircase:")
+						printDebug("   direction:", direction)
+						printDebug("   open:", open)
+						printDebug("   leadsTo:", leadsTo)
+						printDebug("   ZIndex:", ZIndex.props)
+						
+						-- Create the staircase
+						--Door(direction, open, leadsTo, ZIndex.props)
+						printDebug("✅ Staircase created (commented out)")
+						
+					-- Handle cardinal directions (north, south, east, west)
+					else
+						local neighborRoom = FindRoomByIid(neighbor.levelIid)
+						
+						if neighborRoom then
+							printDebug("✅ Neighbor room loaded:", neighborRoom.identifier)
+							
+							local leadsTo = CalculateLeadsTo(currentLevel, currentRoomNumber, ldtkDir, neighborRoom)
+							local open = needsKey and "closed" or "open"
+							local keyNumber = needsKey and keyNumber or nil
+							
+							printDebug("🔧 Creating door:")
+							printDebug("   direction:", direction)
+							printDebug("   open:", open)
+							printDebug("   leadsTo:", leadsTo)
+							printDebug("   ZIndex:", ZIndex.props)
+							if keyNumber then
+								printDebug("   keyNumber:", keyNumber)
+							end
+							
+							-- Create the door
+							Door(direction, open, leadsTo, ZIndex.props, keyNumber)
+							printDebug("✅ Door created successfully")
+						else
+							printDebug("⚠️  Neighbor room not loaded in levelsLDTK")
+						end
+					end
+				end
 			end
 		end
 	end

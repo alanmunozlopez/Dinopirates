@@ -14,8 +14,10 @@ function Player:grabTools()
   table.insert(PlayerData.items,"tools")
 end
 
-function Player:grabKey()
-  PlayerData.hasKey = true
+function Player:grabKey(keyNumber)
+  keyNumber = keyNumber or 1  -- Default to key 1 if no number provided
+  PlayerData.keys[keyNumber] = true
+  printDebug("🔑 Key collected:", keyNumber)
 end
 
 function Player:grabLamp()

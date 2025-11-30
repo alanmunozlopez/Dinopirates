@@ -52,6 +52,68 @@
 		"Tilemap.png"
 	],
 	"entities": {
+		"Keys": [
+			{
+				"id": "Keys",
+				"iid": "60200480-ac70-11f0-8539-b975221d06b8",
+				"layer": "Keys",
+				"x": 88,
+				"y": 56,
+				"width": 48,
+				"height": 48,
+				"color": 4073265,
+				"customFields": {
+					"keyNumber": 1
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "e35e4010-ac70-11f0-8539-cfa071292c9d",
+				"layer": "Doors",
+				"x": 8,
+				"y": 120,
+				"width": 16,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f2cac460-ac70-11f0-8539-f32c05a0c6fe",
+				"layer": "Doors",
+				"x": 200,
+				"y": 8,
+				"width": 48,
+				"height": 16,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f5938150-ac70-11f0-8539-2555dd027d3e",
+				"layer": "Doors",
+				"x": 392,
+				"y": 120,
+				"width": 16,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": true,
+					"DoorsConnection": "Right",
+					"KeyNumber": 1
+				}
+			}
+		],
 		"PlayerSpawnPoints": [
 			{
 				"id": "PlayerSpawnPoints",

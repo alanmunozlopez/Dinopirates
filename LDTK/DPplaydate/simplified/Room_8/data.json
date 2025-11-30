@@ -63,6 +63,23 @@
 		"Tilemap.png"
 	],
 	"entities": {
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "07b70f50-ac70-11f0-8539-35ff95bfdbdf",
+				"layer": "Doors",
+				"x": 200,
+				"y": 232,
+				"width": 48,
+				"height": 16,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			}
+		],
 		"PlayerSpawnPoints": [
 			{
 				"id": "PlayerSpawnPoints",

@@ -4,7 +4,7 @@ class('Items').extends(NobleSprite)
 
 import 'entities/FX/FXsonar'
 
-function Items:init(x, y, type)
+function Items:init(x, y, type, keyNumber)
   Items.super.init(self,'assets/images/items/item-key', true)
   --- animation states
   self.animation:addState('keycard', 1, 20)
@@ -23,6 +23,7 @@ function Items:init(x, y, type)
   self:setCollideRect(0 ,0, 48, 48)
   self:setZIndex(ZIndex.items)
   self.type = type
+  self.keyNumber = keyNumber  -- Store key number for keycards
   self.animation:setState(type)
   sonar = FXsonar(self.x,self.y)
   self:setGroups(3)

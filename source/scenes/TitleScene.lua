@@ -87,7 +87,7 @@ function scene:init()
 		
 		-- Iniciar en el primer nivel de tu juego
 		Noble.transition(
-			Floor407,  -- Cambia esto al nivel inicial de tu juego
+			Floor413,  -- Cambia esto al nivel inicial de tu juego
 			1, Noble.Transition.Spotlight, {
 			x = 200,
 			y = 120,

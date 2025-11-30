@@ -185,13 +185,26 @@ function scene:enter()
 			for _, item in ipairs(entitiesList) do
 				local cf = item.customFields or {}
 	
-				-- Detect if it belongs to Items layer or if it's an item type
-				if item.layer == "Items" or cf.isItem == true then
+				-- Detect if it belongs to Items layer, is an item type, or is a Keys entity
+				local isKeyEntity = (entityType == "Keys" or item.layer == "Keys")
+				local isItemEntity = (item.layer == "Items" or cf.isItem == true)
+				
+				if isKeyEntity or isItemEntity then
 					local x, y = item.x, item.y
-					local type = cf.type or entityType:lower() -- usa el tipo definido o el nombre de la entidad
+					
+					-- For Keys entities, type is always keycard
+					local type
+					if isKeyEntity then
+						type = "keycard"
+					else
+						type = cf.type or entityType:lower()
+					end
+					
+					-- Get KeyNumber (try both uppercase and lowercase)
+					local keyNumber = cf.KeyNumber or cf.keyNumber
 					
 					local itemRequirements = {
-						keycard = "hasKey",
+						keycard = "keys",  -- Changed to check keys table
 						lamp = "hasLamp",
 						radio = "hasRadio",
 						notes = "hasNotes",
@@ -199,9 +212,22 @@ function scene:enter()
 						tools = "hasTools"
 					}
 					
-					-- If player doesn't have this item, generate it
-					if itemRequirements[type] and PlayerData[itemRequirements[type]] == false then
-						Items(x, y, type)
+					-- Special handling for keycards with key numbers
+					local shouldGenerate = false
+					if type == "keycard" then
+						-- For keycards, check if player doesn't have this specific key
+						local keyNum = keyNumber or 1
+						shouldGenerate = not PlayerData.keys[keyNum]
+						printDebug("🔑 Checking keycard generation - KeyNumber:", keyNum, "shouldGenerate:", shouldGenerate)
+					elseif itemRequirements[type] then
+						-- For other items, check the boolean flag
+						shouldGenerate = PlayerData[itemRequirements[type]] == false
+					end
+					
+					-- Generate item if player doesn't have it
+					if shouldGenerate then
+						printDebug("✅ Generating item:", type, "at position (", x, ",", y, ") with keyNumber:", keyNumber)
+						Items(x, y, type, keyNumber)
 					end
 				end
 			end

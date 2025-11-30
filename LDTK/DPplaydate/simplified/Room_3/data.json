@@ -146,7 +146,7 @@
 				"height": 40,
 				"color": 16711748,
 				"customFields": {
-					"script": "\"notnormalBrocoli\"",
+					"script": "notnormalBrocoli",
 					"usedTrigger": false,
 					"type": "Search"
 				}
