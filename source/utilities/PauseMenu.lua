@@ -36,7 +36,7 @@ local function formatNumberK(n)
 end
 
 function drawStatusText()
-	local xPos = 164
+	local xPos = 160
 	local yPos = 128
 	Graphics.pushContext(menuImg)
 	
@@ -57,7 +57,7 @@ function drawStatusText()
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
 	Graphics.drawText(sanityText, xPos, yPos)
 	Graphics.drawText(caloriesText, xPos, yPos + 12)
-	Graphics.drawText(PlayerData.actualRoom, xPos, yPos + 25)
+	Graphics.drawText(stepsText, xPos, yPos + 25)
 
 	Graphics.popContext()
 end

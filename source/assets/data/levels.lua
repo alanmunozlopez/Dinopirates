@@ -733,7 +733,7 @@ levelsLDTK = {
 		  height = 40,
 		  color = 16711748,
 		  customFields = {
-			script = "\"notnormalBrocoli\"",
+			script = "notnormalBrocoli",
 			usedTrigger = false,
 			type = "Search"
 		  }
@@ -1193,7 +1193,8 @@ levelsLDTK = {
 	  tile = 6,
 	  DoorsConnection = {
 		"Top",
-		"Down"
+		"Down",
+		"lower"
 	  },
 	  play = nil
 	},
