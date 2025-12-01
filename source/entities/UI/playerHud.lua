@@ -29,7 +29,7 @@ function playerHud:init()
 	self:setZIndex(ZIndex.ui)
 	batteryIndicator = Battery(x+50, 11, player, ZIndex.ui+1, userUI)
 	sanityIndicator = sanityHud(x+66, 11, ZIndex.ui+1, player, userUI)
-	keyIndicator = keyHud(x+32, 11, ZIndex.ui+1, player, userUI)
+	--keyIndicator = keyHud(x+32, 11, ZIndex.ui+1, player, userUI)
 	self:add(x,y)
 end
 

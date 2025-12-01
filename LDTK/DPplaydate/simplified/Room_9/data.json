@@ -61,5 +61,23 @@
 	"layers": [
 		"Tilemap.png"
 	],
-	"entities" : {}
+	"entities": {
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "0330c2e0-ac70-11f0-8539-e9c343f3fe6a",
+				"layer": "Doors",
+				"x": 200,
+				"y": 8,
+				"width": 48,
+				"height": 16,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
 }
