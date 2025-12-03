@@ -89,6 +89,9 @@ function scene:enter()
 	PlayerData.isGaming = false
 	self:addSprite(background)
 	
+	-- Set image draw mode to properly render sprite transparency
+	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
+	
 	-- Clear previous menu items
 	menuItems = {}
 	

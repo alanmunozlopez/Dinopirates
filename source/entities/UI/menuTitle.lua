@@ -4,6 +4,13 @@ class('MenuTitle').extends(NobleSprite)
 
 function MenuTitle:init(x, y, type, zIndex)
   MenuTitle.super.init(self,'assets/images/screens/menuTitle', true)
+  
+  -- Set size BEFORE animation states (required by NobleEngine)
+  self:setSize(180, 56)
+  
+  -- Set image draw mode for the sprite (not global)
+  self:setImageDrawMode(Graphics.kDrawModeCopy)
+  
   --- animation states
   self.animation:addState('defContinue', 1, 1)
   self.animation:addState('selContinue', 2, 2)
@@ -16,8 +23,8 @@ function MenuTitle:init(x, y, type, zIndex)
   self.animation:addState('defPlayground', 9, 9)
   self.animation:addState('selPlayground', 10, 10)
   self.animation:setState(type)
+  
   -- position and z-index
-  self:setSize(180, 56)
   self:setZIndex(zIndex)
   self:setGroups(3)
   self:add(x,y)

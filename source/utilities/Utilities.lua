@@ -374,6 +374,9 @@ function GetRoomByNumber(roomNumber)
 end
 
 function drawVersionNumber(x, y, alignment)
+	-- Save current graphics context to avoid affecting sprites
+	Graphics.pushContext()
+	
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
 	
 	-- local version = "*"..Panels.vars.lang.."* Demo*" .. playdate.metadata.version .. "*"
@@ -390,6 +393,9 @@ function drawVersionNumber(x, y, alignment)
 	end
 	
 	Graphics.drawText(version, x, y)
+	
+	-- Restore previous graphics context
+	Graphics.popContext()
 end 
 
 -- Finds and kills an enemy by its unique ID (LDtk version)
