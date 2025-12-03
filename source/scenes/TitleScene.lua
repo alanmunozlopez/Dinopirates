@@ -1,10 +1,12 @@
 import "utilities/SaveSystem"
+import "entities/ui/menuTitle"
 
 TitleScene = {}
 class("TitleScene").extends(NobleScene)
 local scene = TitleScene
 
-local menu
+local menuItems = {}
+local selectedIndex = 1
 local crankTick = 0
 local bg <const> = Graphics.image.new('assets/images/screens/titlescreen.png')
 local background <const> = Graphics.sprite.new(bg)
@@ -12,25 +14,57 @@ background:moveTo(200,120)
 
 scene.backgroundColor = Graphics.kColorWhite
 
+local function updateMenuSelection()
+	for i, item in ipairs(menuItems) do
+		if i == selectedIndex then
+			item.sprite.animation:setState(item.selectedState)
+		else
+			item.sprite.animation:setState(item.defaultState)
+		end
+	end
+end
+
+local function selectPrevious()
+	selectedIndex = selectedIndex - 1
+	if selectedIndex < 1 then
+		selectedIndex = #menuItems
+	end
+	updateMenuSelection()
+end
+
+local function selectNext()
+	selectedIndex = selectedIndex + 1
+	if selectedIndex > #menuItems then
+		selectedIndex = 1
+	end
+	updateMenuSelection()
+end
+
+local function executeSelected()
+	if menuItems[selectedIndex] and menuItems[selectedIndex].action then
+		menuItems[selectedIndex].action()
+	end
+end
+
 TitleScene.inputHandler = {
 	upButtonDown = function()
-		menu:selectPrevious()
+		selectPrevious()
 	end,
 	downButtonDown = function()
-		menu:selectNext()
+		selectNext()
 	end,
 	cranked = function(change, _)
 		crankTick = crankTick + change
 		if crankTick > 30 then
 			crankTick = 0
-			menu:selectNext()
+			selectNext()
 		elseif crankTick < -30 then
 			crankTick = 0
-			menu:selectPrevious()
+			selectPrevious()
 		end
 	end,
 	AButtonDown = function()
-		menu:click()
+		executeSelected()
 	end
 }
 
@@ -46,81 +80,6 @@ function scene:init()
 	if not playdate.file.exists('levelOriginal.json') then
 		playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
 	end
-	
-	menu = Noble.Menu.new(true, Noble.Text.ALIGN_LEFT, false, nil, 2, 16)
-
-	if playdate.file.exists('gameState.json') then
-		menu:addItem("Continue", function() 
-			local success, savedLevel = SaveSystem.load()
-			
-			if success and savedLevel then
-				printDebug("📍 Cargando nivel guardado:", savedLevel)
-				
-				-- Traducir el número de nivel a la escena
-				local nextScene = RoomTranslate(savedLevel)
-				
-				if nextScene then
-					Noble.transition(
-						nextScene,
-						1, Noble.Transition.Spotlight, {
-						x = 200,
-						y = 120,
-						xExit = PlayerData.playerSpawn.x,
-						yExit = PlayerData.playerSpawn.y,
-						holdTime = 0.25,
-						ease = Ease.outInQuad}
-					)
-				else
-					printDebug("❌ ERROR: No se encontró la escena Floor" .. savedLevel)
-					-- Fallback a un nivel por defecto
-					Noble.transition(Floor120, 1, Noble.Transition.Default)
-				end
-			else
-				printDebug("❌ Error cargando el save")
-				-- Opcional: mostrar mensaje de error
-			end
-		end)
-	end
-	
-	menu:addItem("New Game", function()
-		SaveSystem.reset()
-		
-		-- Iniciar en el primer nivel de tu juego
-		Noble.transition(
-			Floor406,  -- Cambia esto al nivel inicial de tu juego
-			1, Noble.Transition.Spotlight, {
-			x = 200,
-			y = 120,
-			xExit = PlayerData.playerSpawn.x,
-			yExit = PlayerData.playerSpawn.y,
-			holdTime = 0.25,
-			ease = Ease.outInQuad
-		})
-	end)
-	
-	if playdate.file.exists('gameState.json') then
-		menu:addItem("Delete save", function() 
-			SaveSystem.delete()
-			Utilities.clearAllAchievements()
-			Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
-		end)
-	end
-	
-	menu:addItem("Achievements", function()
-		Graphics.setImageDrawMode(Graphics.kDrawModeCopy) -- hotfix
-		achievements.viewer.launch()
-	end)
-	
-	-- Add Playground option only if debug is true
-	if debug then
-		menu:addItem("Playground", function()
-			PlayerData.playerSpawn.x = 200
-			PlayerData.playerSpawn.y = 200
-			Noble.transition(Floor120, 0.3, Noble.Transition.MetroNexus)
-		end)
-	end
-	
-	menu:select(playdate.file.exists('gameState.json') and "Continue" or "New Game")
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -129,6 +88,129 @@ function scene:enter()
 	scene.super.enter(self)
 	PlayerData.isGaming = false
 	self:addSprite(background)
+	
+	-- Clear previous menu items
+	menuItems = {}
+	
+	-- Starting Y position for menu items
+	local startY = 140
+	local startX = 88
+	local spacing = 20
+	local currentY = startY
+	
+	-- Add Continue option if save exists
+	if playdate.file.exists('gameState.json') then
+		local continueSprite = MenuTitle(startX, currentY, 'defContinue', 100)
+		table.insert(menuItems, {
+			sprite = continueSprite,
+			defaultState = 'defContinue',
+			selectedState = 'selContinue',
+			action = function() 
+				local success, savedLevel = SaveSystem.load()
+				
+				if success and savedLevel then
+					printDebug("📍 Cargando nivel guardado:", savedLevel)
+					
+					-- Traducir el número de nivel a la escena
+					local nextScene = RoomTranslate(savedLevel)
+					
+					if nextScene then
+						Noble.transition(
+							nextScene,
+							1, Noble.Transition.Spotlight, {
+							x = 200,
+							y = 120,
+							xExit = PlayerData.playerSpawn.x,
+							yExit = PlayerData.playerSpawn.y,
+							holdTime = 0.25,
+							ease = Ease.outInQuad}
+						)
+					else
+						printDebug("❌ ERROR: No se encontró la escena Floor" .. savedLevel)
+						-- Fallback a un nivel por defecto
+						Noble.transition(Floor120, 1, Noble.Transition.Default)
+					end
+				else
+					printDebug("❌ Error cargando el save")
+					-- Opcional: mostrar mensaje de error
+				end
+			end
+		})
+		currentY = currentY + spacing
+	end
+	
+	-- Add New Game option
+	local newGameSprite = MenuTitle(startX, currentY, 'defNewGame', 100)
+	table.insert(menuItems, {
+		sprite = newGameSprite,
+		defaultState = 'defNewGame',
+		selectedState = 'selNewGame',
+		action = function()
+			SaveSystem.reset()
+			
+			-- Iniciar en el primer nivel de tu juego
+			Noble.transition(
+				Floor406,  -- Cambia esto al nivel inicial de tu juego
+				1, Noble.Transition.Spotlight, {
+				x = 200,
+				y = 120,
+				xExit = PlayerData.playerSpawn.x,
+				yExit = PlayerData.playerSpawn.y,
+				holdTime = 0.25,
+				ease = Ease.outInQuad
+			})
+		end
+	})
+	currentY = currentY + spacing
+	
+	-- Add Delete Save option if save exists
+	if playdate.file.exists('gameState.json') then
+		local deleteSprite = MenuTitle(startX, currentY, 'defDeleteGame', 100)
+		table.insert(menuItems, {
+			sprite = deleteSprite,
+			defaultState = 'defDeleteGame',
+			selectedState = 'selDeleteGame',
+			action = function() 
+				SaveSystem.delete()
+				Utilities.clearAllAchievements()
+				Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
+			end
+		})
+		currentY = currentY + spacing
+	end
+	
+	-- Add Achievements option
+	local achievementsSprite = MenuTitle(startX, currentY, 'defAchievements', 100)
+	table.insert(menuItems, {
+		sprite = achievementsSprite,
+		defaultState = 'defAchievements',
+		selectedState = 'selAchievements',
+		action = function()
+			Graphics.setImageDrawMode(Graphics.kDrawModeCopy) -- hotfix
+			achievements.viewer.launch()
+		end
+	})
+	currentY = currentY + spacing
+	
+	-- Add Playground option only if debug is true
+	if debug then
+		local playgroundSprite = MenuTitle(startX, currentY, 'defPlayground', 100)
+		table.insert(menuItems, {
+			sprite = playgroundSprite,
+			defaultState = 'defPlayground',
+			selectedState = 'selPlayground',
+			action = function()
+				PlayerData.playerSpawn.x = 200
+				PlayerData.playerSpawn.y = 200
+				Noble.transition(Floor120, 0.3, Noble.Transition.MetroNexus)
+			end
+		})
+		currentY = currentY + spacing
+	end
+	
+	-- Set initial selection (Continue if exists, otherwise New Game)
+	selectedIndex = 1
+	updateMenuSelection()
 end
 
 -- This runs once a transition from another scene is complete.
@@ -139,7 +221,6 @@ end
 -- This runs once per frame.
 function scene:update()
 	scene.super.update(self)
-	menu:draw(8, 120)
 	drawVersionNumber()
 end
 
