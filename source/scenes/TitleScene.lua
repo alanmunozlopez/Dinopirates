@@ -1,5 +1,6 @@
 import "utilities/SaveSystem"
 import "entities/ui/menuTitle"
+import "entities/ui/titleBackground"
 
 TitleScene = {}
 class("TitleScene").extends(NobleScene)
@@ -8,9 +9,7 @@ local scene = TitleScene
 local menuItems = {}
 local selectedIndex = 1
 local crankTick = 0
-local bg <const> = Graphics.image.new('assets/images/screens/titlescreen.png')
-local background <const> = Graphics.sprite.new(bg)
-background:moveTo(200,120)
+local background = nil
 
 scene.backgroundColor = Graphics.kColorWhite
 
@@ -21,6 +20,11 @@ local function updateMenuSelection()
 		else
 			item.sprite.animation:setState(item.defaultState)
 		end
+	end
+	
+	-- Update background animation based on selected menu item
+	if background and menuItems[selectedIndex] then
+		background:changeState(menuItems[selectedIndex].backgroundState)
 	end
 end
 
@@ -87,7 +91,9 @@ end
 function scene:enter()
 	scene.super.enter(self)
 	PlayerData.isGaming = false
-	self:addSprite(background)
+	
+	-- Create animated background
+	background = TitleBackground(200, 120, 1)
 	
 	-- Set image draw mode to properly render sprite transparency
 	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
@@ -96,7 +102,7 @@ function scene:enter()
 	menuItems = {}
 	
 	-- Starting Y position for menu items
-	local startY = 140
+	local startY = 120
 	local startX = 88
 	local spacing = 20
 	local currentY = startY
@@ -108,6 +114,7 @@ function scene:enter()
 			sprite = continueSprite,
 			defaultState = 'defContinue',
 			selectedState = 'selContinue',
+			backgroundState = 'continue',
 			action = function() 
 				local success, savedLevel = SaveSystem.load()
 				
@@ -148,6 +155,7 @@ function scene:enter()
 		sprite = newGameSprite,
 		defaultState = 'defNewGame',
 		selectedState = 'selNewGame',
+		backgroundState = 'newGame',
 		action = function()
 			SaveSystem.reset()
 			
@@ -173,6 +181,7 @@ function scene:enter()
 			sprite = deleteSprite,
 			defaultState = 'defDeleteGame',
 			selectedState = 'selDeleteGame',
+			backgroundState = 'deleteGame',
 			action = function() 
 				SaveSystem.delete()
 				Utilities.clearAllAchievements()
@@ -188,6 +197,7 @@ function scene:enter()
 		sprite = achievementsSprite,
 		defaultState = 'defAchievements',
 		selectedState = 'selAchievements',
+		backgroundState = 'achievements',
 		action = function()
 			Graphics.setImageDrawMode(Graphics.kDrawModeCopy) -- hotfix
 			achievements.viewer.launch()
@@ -202,6 +212,7 @@ function scene:enter()
 			sprite = playgroundSprite,
 			defaultState = 'defPlayground',
 			selectedState = 'selPlayground',
+			backgroundState = 'achievements', -- Reuse achievements background (only 4 frames available)
 			action = function()
 				PlayerData.playerSpawn.x = 200
 				PlayerData.playerSpawn.y = 200
