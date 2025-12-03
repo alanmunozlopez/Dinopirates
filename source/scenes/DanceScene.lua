@@ -247,7 +247,7 @@ function scene:update()
             
             self.accuracy += 1
             -- Clamp accuracy to reasonable maximum
-            self.accuracy = math.min(self.accuracy, 100)
+            --self.accuracy = math.min(self.accuracy, 100)
             
             if self.accuracy > 5 then
                 self.balancePosition -= 0.3 
