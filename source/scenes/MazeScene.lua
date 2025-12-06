@@ -346,9 +346,13 @@ end
 -- This runs once per frame.
 function scene:update()
 	scene.super.update(self)
-	-- Mark: cheat code
-	cheat:update()
-	-- Todo: make this a separate function
+	
+	-- Performance: Only update cheat code when player is gaming
+	if PlayerData.isGaming == true then
+		cheat:update()
+	end
+	
+	-- Cutscene input handling
 	if PlayerData.isCutscene == true then
 		-- Disable game input handlers while cutscene is running
 		if Noble.Input.getEnabled() then
@@ -362,7 +366,7 @@ function scene:update()
 		end
 	end
 	
-	-- Mark: Crank notification
+	-- Mark: Crank notification (only when needed)
 	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end

@@ -124,7 +124,7 @@ local menuItem, error = menu:addMenuItem("debug", function()
 	end
 end)
 
-playdate.display.setRefreshRate(46)
+playdate.display.setRefreshRate(35)
 timers = playdate.timer
 
 Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus)

@@ -148,6 +148,22 @@ function scene:enter()
 		})
 		currentY = currentY + spacing
 	end
+	-- Add Delete Save option if save exists
+	if playdate.file.exists('gameState.json') then
+		local deleteSprite = MenuTitle(startX, currentY, 'defDeleteGame', 100)
+		table.insert(menuItems, {
+			sprite = deleteSprite,
+			defaultState = 'defDeleteGame',
+			selectedState = 'selDeleteGame',
+			backgroundState = 'deleteGame',
+			action = function() 
+				SaveSystem.delete()
+				Utilities.clearAllAchievements()
+				Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
+			end
+		})
+		currentY = currentY + spacing
+	end
 	
 	-- Add New Game option
 	local newGameSprite = MenuTitle(startX, currentY, 'defNewGame', 100)
@@ -174,22 +190,6 @@ function scene:enter()
 	})
 	currentY = currentY + spacing
 	
-	-- Add Delete Save option if save exists
-	if playdate.file.exists('gameState.json') then
-		local deleteSprite = MenuTitle(startX, currentY, 'defDeleteGame', 100)
-		table.insert(menuItems, {
-			sprite = deleteSprite,
-			defaultState = 'defDeleteGame',
-			selectedState = 'selDeleteGame',
-			backgroundState = 'deleteGame',
-			action = function() 
-				SaveSystem.delete()
-				Utilities.clearAllAchievements()
-				Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
-			end
-		})
-		currentY = currentY + spacing
-	end
 	
 	-- Add Achievements option
 	local achievementsSprite = MenuTitle(startX, currentY, 'defAchievements', 100)

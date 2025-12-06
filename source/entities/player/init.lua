@@ -41,6 +41,11 @@ function Player:init(x, y, speed, Zindex)
   self.isBehind = false
   self.triggerEnteredOnce = false
   
+  -- Performance: Cache for optimization
+  self.lastZIndexY = y
+  self.lastCheckX = x
+  self.lastCheckY = y
+  
   PlayerData.isActive = false
   self.loadingPower = false
   self.isAlive = true

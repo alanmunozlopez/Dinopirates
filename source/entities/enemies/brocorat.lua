@@ -32,6 +32,9 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.initialSpeed = moveSpeed
 	self.sightRadius = PlayerData.EnemiesData.sightRadius + self.powerLevel * 3 -- this should be calculated according to the level or power of the enemy.
 	
+	-- Performance: Frame counter for throttling updates
+	self.updateFrameCounter = math.random(0, 2) -- Random offset to stagger enemy updates
+	
 	self:setSize(32, 32)
 	self:moveTo(x, y)
 	self:setCollideRect(0, 0, 32, 32)
@@ -60,7 +63,10 @@ function Brocorat:empty()
 end
 
 function Brocorat:update()
-	if PlayerData.isActive == true then
+	-- Performance: Only update AI every 3 frames
+	self.updateFrameCounter = (self.updateFrameCounter + 1) % 3
+	
+	if self.updateFrameCounter == 0 and PlayerData.isActive == true then
 		self:search(self.player)
 	end
 	-- self:sonar()

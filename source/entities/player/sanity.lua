@@ -12,6 +12,8 @@ function Player:sanityCheck()
     if PlayerData.sanity <= 0 and lastSanity > 0 then
       PlayerData.sanityCounter += 1
       PlayerData.sanity = 0
+      -- Performance: Check achievements only when sanity counter changes
+      Utilities.checkSanityAchievements()
     end
 
     if PlayerData.battery > 50 or PlayerData.isInDarkness == false then

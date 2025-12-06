@@ -28,6 +28,10 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.initialSpeed = moveSpeed
 	self.player = player
 	self.Zindex = Zindex
+	
+	-- Performance: Frame counter for throttling updates
+	self.updateFrameCounter = math.random(0, 2) -- Random offset to stagger enemy updates
+	
 	self:setGroups(CollideGroups.enemy)
 	self:setCollidesWithGroups({
 		CollideGroups.player,
@@ -111,7 +115,10 @@ function CrewMember:escape(player)
 end
 
 function CrewMember:update()
-	if PlayerData.isActive == true then
+	-- Performance: Only update AI every 3 frames
+	self.updateFrameCounter = (self.updateFrameCounter + 1) % 3
+	
+	if self.updateFrameCounter == 0 and PlayerData.isActive == true then
 		self:escape(self.player)
 	end
 	--self:sonar()

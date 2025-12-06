@@ -126,55 +126,66 @@ function Player:checkTrigger()
         Utilities.grantAchievementIfNeeded(trigger.script)
     end
     
-    if self.currentTrigger then
-      local stillInside = false
-      for _, sprite in ipairs(self:overlappingSprites()) do
-          if sprite == self.currentTrigger then
-            stillInside = true
-
-            -- Base position above the player
-            local hudX = self.x + self.playerUIX
-            local hudY = self.y - 40 -- normal default above player
-
-            -- Adjust for top of screen
-            if self.y < 60 then
-              hudY = self.y + self.playerUIY / 2 -- move down instead of above
-            end
-
-            -- Adjust for right edge
-            if self.x > 350 then
-                hudX = self.x - self.playerUIX -- move to left of player
-            end
-
-            self.uiHud:moveTo(hudX, hudY)
-            self.uiHud:setVisible(true)
-
-            -- Solo se activa una vez cuando el jugador entra en el trigger
-            if not self.triggerEnteredOnce then
-              if self.currentTrigger.type == "Call" then
-                self.uiHud:setRing()
-              elseif self.currentTrigger.type == "Search" then
-                self.uiHud:setPressA()
-              elseif self.currentTrigger.type == nil then
-              self.uiHud:setPressA()
-              end
-              self.triggerEnteredOnce = true -- Marca que ya se ejecutó
-            end
-
-            break
-          end
-        end
+    -- Performance: Only check overlapping sprites if player moved significantly
+    local distanceMoved = math.abs(self.x - self.lastCheckX) + math.abs(self.y - self.lastCheckY)
+    local shouldCheckOverlap = distanceMoved > 5 or self.currentTrigger ~= nil
     
-        if not stillInside then
-            self.uiHud:setVisible(false)
-            self.currentTrigger = nil
-            self.triggerEnteredOnce = false -- Reset para el próximo trigger
-        end
+    if shouldCheckOverlap then
+      self.lastCheckX = self.x
+      self.lastCheckY = self.y
+      
+      if self.currentTrigger then
+        local stillInside = false
+        for _, sprite in ipairs(self:overlappingSprites()) do
+            if sprite == self.currentTrigger then
+              stillInside = true
+
+              -- Base position above the player
+              local hudX = self.x + self.playerUIX
+              local hudY = self.y - 40 -- normal default above player
+
+              -- Adjust for top of screen
+              if self.y < 60 then
+                hudY = self.y + self.playerUIY / 2 -- move down instead of above
+              end
+
+              -- Adjust for right edge
+              if self.x > 350 then
+                  hudX = self.x - self.playerUIX -- move to left of player
+              end
+
+              self.uiHud:moveTo(hudX, hudY)
+              self.uiHud:setVisible(true)
+
+              -- Solo se activa una vez cuando el jugador entra en el trigger
+              if not self.triggerEnteredOnce then
+                if self.currentTrigger.type == "Call" then
+                  self.uiHud:setRing()
+                elseif self.currentTrigger.type == "Search" then
+                  self.uiHud:setPressA()
+                elseif self.currentTrigger.type == nil then
+                self.uiHud:setPressA()
+                end
+                self.triggerEnteredOnce = true -- Marca que ya se ejecutó
+              end
+
+              break
+            end
+          end
+      
+          if not stillInside then
+              self.uiHud:setVisible(false)
+              self.currentTrigger = nil
+              self.triggerEnteredOnce = false -- Reset para el próximo trigger
+          end
+      end
     end
 end
 
 function Player:update()
+  -- Performance: Only update zIndex if Y position changed significantly
   self:setZIndex(self.y)
+
   self:checkTrigger()
   
   -- if PlayerData.storyCounter == 4 then
@@ -203,6 +214,6 @@ function Player:update()
     self.speed = 0.5 * self.initialSpeed
   end
   PlayerData.isActive = false
-  Utilities.checkSanityAchievements()
+  -- Performance: Achievement check removed from update loop (handled by events)
 end
 
