@@ -81,7 +81,7 @@ function drawStatusText()
 	local sanityText = ": " .. tostring(PlayerData.sanity)
 	local caloriesText = ": " .. tostring(PlayerData.calories)
 	local stepsText = ": " .. formatNumberK(PlayerData.totalSteps)
-	local mapPercent = ": " .. calculateMapPercent()
+	local mapPercent = ": " .. calculateMapPercent().."%"
 
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
 	Graphics.drawText(sanityText, xPos, yPos)

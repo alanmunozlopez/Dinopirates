@@ -5,6 +5,7 @@ local shadow = Graphics.image.new(400,240)
 
 function inGameMenu:init()
   self.activeItem = PlayerData.activeItem 
+  
   self:moveTo(200,120)
   self:setZIndex(ZIndex.ui)
   self:setImage(shadow)
@@ -16,10 +17,11 @@ function inGameMenu:init()
   self:add()
 end
 
-function inGameMenu:displayMenu()
+function inGameMenu:displayMenu(__x,__y)
     PlayerData.isGaming = false
     PlayerData.isEquiping = true
-    
+    self.playerX = __x
+    self.playerY = __y
     print("imma menu")
 end
 
@@ -27,7 +29,7 @@ function inGameMenu:shadow()
   
     Graphics.pushContext(shadow)
       Graphics.setColor(Graphics.kColorBlack)
-      Graphics.setDitherPattern(0.5, Graphics.image.kDitherTypeBayer8x8)
+      Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeBayer8x8)
       Graphics.fillRect(0, 0, shadow:getSize()) -- Full screen darkness
     Graphics.popContext()
 end
@@ -49,6 +51,7 @@ end
 
 function inGameMenu:update()
   if table.getSize(PlayerData.items) > 0 then
+    
       if PlayerData.activeItem < 1 then
         PlayerData.activeItem = table.getSize(PlayerData.items) 
       end
@@ -57,8 +60,7 @@ function inGameMenu:update()
       end
       if PlayerData.isEquiping == true then  
         self:shadow()
-        
-        lampItem:show(30, 30)
+        lampItem:show(self.playerX, self.playerY)
         bootItem:show(64, 30)
         
       end

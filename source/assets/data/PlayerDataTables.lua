@@ -54,7 +54,13 @@ PlayerData = {
 		y = nil
 	},
 	items={
-		
+		hasLamp = false,
+		hasRadio = true,
+		hasNotes = true,
+		hasBoots = false,
+		hasBag = false,
+		hasHonk = false,
+		hasTools = false,
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20
@@ -74,7 +80,7 @@ PlayerDataOriginal = {
 	sanity = 100,
 	calories = 100, -- top 500
 	steps = 0,
-	totalSteps = 0,
+	totalSteps = 1000,
 	sanityCounter = 0, -- top 100
 	mapPercent = 0, -- Percentage of map explored (0-100)
 	keys = {}, -- Table to store collected keys by number: {[1] = true, [2] = true, ...}
@@ -122,7 +128,13 @@ PlayerDataOriginal = {
 		y = nil
 	},
 	items={
-		
+		hasLamp = false,
+		hasRadio = true,
+		hasNotes = true,
+		hasBoots = false,
+		hasBag = false,
+		hasHonk = false,
+		hasTools = false,
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20

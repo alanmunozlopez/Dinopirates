@@ -452,7 +452,7 @@ scene.inputHandler = {
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
 		-- Your code here
 		if PlayerData.isGaming == true and table.getSize(PlayerData.items) > 0  then
-			-- inGameMenu:displayMenu()
+			inGameMenu:displayMenu(player.x,player.y)
 		end
 	end,
 	AButtonUp = function()				-- Runs once when button is released.
@@ -466,9 +466,8 @@ scene.inputHandler = {
 		if PlayerData.isGaming == false and PlayerData.isEquiping == true then
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
-			--inGameMenu:closeMenu()
+			inGameMenu:closeMenu()
 		end
-		-- CurrentTile() --for testing
 		playerFocus()
 	end,
 	BButtonHeld = function()
