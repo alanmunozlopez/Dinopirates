@@ -445,6 +445,10 @@ scene.inputHandler = {
 		if PlayerData.isTalking == true then
 			player:displayDialog()
 		end
+		-- Seleccionar item cuando está en el menú de equipamiento
+		if PlayerData.isEquiping == true then
+			inGameEquip:selectItem()
+		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here

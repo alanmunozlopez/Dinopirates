@@ -49,6 +49,18 @@ function inGameMenu:nextItem()
     PlayerData.activeItem += 1
 end
 
+function inGameMenu:selectItem()
+    print("Item selected: " .. PlayerData.activeItem)
+    -- Aquí puedes agregar la lógica específica para cada item
+    if PlayerData.activeItem == 1 then
+        print("Lamp selected!")
+        -- Acción para la lámpara
+    elseif PlayerData.activeItem == 2 then
+        print("Boot selected!")
+        -- Acción para las botas
+    end
+end
+
 function inGameMenu:update()
   if table.getSize(PlayerData.items) > 0 then
     
