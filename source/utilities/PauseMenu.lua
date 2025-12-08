@@ -45,6 +45,7 @@ function drawStatusText()
 	Graphics.fillRect(xPos, yPos, 100, 12)
 	Graphics.fillRect(xPos, yPos + 12, 100, 12)
 	Graphics.fillRect(xPos, yPos + 25, 100, 12)
+	Graphics.fillRect(xPos, yPos + 38, 100, 12)
 	
 	local smallFont = Graphics.font.new('assets/fonts/Mini Sans')
 	Graphics.setFont(smallFont)
@@ -53,12 +54,13 @@ function drawStatusText()
 	local sanityText = ": " .. tostring(PlayerData.sanity)
 	local caloriesText = ": " .. tostring(PlayerData.calories)
 	local stepsText = ": " .. formatNumberK(PlayerData.totalSteps)
+	local mapPercent = ": " .. "OO"
 
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
 	Graphics.drawText(sanityText, xPos, yPos)
 	Graphics.drawText(caloriesText, xPos, yPos + 12)
 	Graphics.drawText(stepsText, xPos, yPos + 25)
-
+	Graphics.drawText(stepsText, xPos, yPos + 38)
 	Graphics.popContext()
 end
 
