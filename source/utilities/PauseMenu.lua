@@ -35,6 +35,33 @@ local function formatNumberK(n)
 	end
 end
 
+-- Calculate map exploration percentage
+-- Total rooms configuration: 80 rooms total
+-- Level 1 (rooms 1-15): 15 rooms
+-- Level 2 (rooms 16-30): 15 rooms  
+-- Level 3 (rooms 31-65): 35 rooms
+-- Level 4 (rooms 66-80): 15 rooms
+local function calculateMapPercent()
+	local TOTAL_ROOMS = 80 -- Total number of rooms in the game
+	local visitedCount = 0
+	
+	-- Safety check
+	if not levelsLDTK then
+		return 0
+	end
+	
+	-- Count visited rooms
+	for _, levelData in ipairs(levelsLDTK) do
+		local cf = levelData.customFields or {}
+		if cf.visited == true then
+			visitedCount = visitedCount + 1
+		end
+	end
+	
+	-- Calculate percentage
+	local percent = math.floor((visitedCount / TOTAL_ROOMS) * 100)
+	return percent
+end
 function drawStatusText()
 	local xPos = 160
 	local yPos = 128
@@ -54,13 +81,13 @@ function drawStatusText()
 	local sanityText = ": " .. tostring(PlayerData.sanity)
 	local caloriesText = ": " .. tostring(PlayerData.calories)
 	local stepsText = ": " .. formatNumberK(PlayerData.totalSteps)
-	local mapPercent = ": " .. "OO"
+	local mapPercent = ": " .. calculateMapPercent()
 
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
 	Graphics.drawText(sanityText, xPos, yPos)
 	Graphics.drawText(caloriesText, xPos, yPos + 12)
 	Graphics.drawText(stepsText, xPos, yPos + 25)
-	Graphics.drawText(stepsText, xPos, yPos + 38)
+	Graphics.drawText(mapPercent, xPos, yPos + 38)
 	Graphics.popContext()
 end
 

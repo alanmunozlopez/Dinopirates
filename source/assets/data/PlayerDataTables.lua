@@ -8,6 +8,7 @@ PlayerData = {
 	steps = 0,
 	totalSteps = 1000,
 	sanityCounter = 0, -- top 100
+	mapPercent = 0, -- Percentage of map explored (0-100)
 	keys = {}, -- Table to store collected keys by number: {[1] = true, [2] = true, ...}
 	hasLamp = false,
 	hasRadio = true,
@@ -75,6 +76,7 @@ PlayerDataOriginal = {
 	steps = 0,
 	totalSteps = 0,
 	sanityCounter = 0, -- top 100
+	mapPercent = 0, -- Percentage of map explored (0-100)
 	keys = {}, -- Table to store collected keys by number: {[1] = true, [2] = true, ...}
 	hasLamp = false,
 	hasRadio = true,
