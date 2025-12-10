@@ -422,18 +422,19 @@ function scene:movePlayer(direction)
 		end
 	end
 end
-function playerFocus()-- improve this with more constrains.
-	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
-		player.loadingPower = true
-		player:focus()
-	end
-end
-function playerDefocus()
-	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
-		player.loadingPower = false
-		player:deFocus()
-	end
-end
+-- Commented out for dash attack implementation
+-- function playerFocus()-- improve this with more constrains.
+-- 	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
+-- 		player.loadingPower = true
+-- 		player:focus()
+-- 	end
+-- end
+-- function playerDefocus()
+-- 	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
+-- 		player.loadingPower = false
+-- 		player:deFocus()
+-- 	end
+-- end
 -- Define the inputHander for this scene here, or use a previously defined inputHandler.
 
 -- scene.inputHandler = someOtherInputHandler
@@ -468,12 +469,16 @@ scene.inputHandler = {
 	--
 
 	BButtonDown = function()
+		-- Close equipment menu if open
 		if PlayerData.isGaming == false and PlayerData.isEquiping == true then
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
 			inGameMenu:closeMenu()
+		-- Trigger dash attack when in game
+		elseif PlayerData.isGaming == true and player.isAlive == true then
+			player:dash()
 		end
-		playerFocus()
+		-- playerFocus() -- Commented out for dash attack
 	end,
 	BButtonHeld = function()
 		
@@ -483,7 +488,7 @@ scene.inputHandler = {
 		
 	end,
 	BButtonUp = function()
-		playerDefocus()
+		-- playerDefocus() -- Commented out for dash attack
 	end,
 	-- D-pad left
 	--
