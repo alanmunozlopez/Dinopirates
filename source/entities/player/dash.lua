@@ -3,6 +3,12 @@
 -- Bounces back 5 pixels on collision
 
 function Player:dash()
+    -- Validate that boots are equipped (activeItem == 2)
+    if PlayerData.activeItem ~= 2 then
+        print("Dash requires boots to be equipped!")
+        return
+    end
+    
     -- Check if dash is on cooldown
     if self.dashCooldown and playdate.getCurrentTimeMilliseconds() < self.dashCooldown then
         print("Dash on cooldown!")

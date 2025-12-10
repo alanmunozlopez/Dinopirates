@@ -449,7 +449,7 @@ scene.inputHandler = {
 		end
 		-- Seleccionar item cuando está en el menú de equipamiento
 		if PlayerData.isEquiping == true then
-			-- inGameEquip:selectItem()
+			inGameEquip:selectItem()
 		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
@@ -474,11 +474,11 @@ scene.inputHandler = {
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
 			inGameMenu:closeMenu()
-		-- Trigger dash attack when in game
+		-- Trigger ability based on selected item
 		elseif PlayerData.isGaming == true and player.isAlive == true then
-			player:dash()
+			player:useAbility()
 		end
-		-- playerFocus() -- Commented out for dash attack
+		-- playerFocus() -- Commented out for ability system
 	end,
 	BButtonHeld = function()
 		

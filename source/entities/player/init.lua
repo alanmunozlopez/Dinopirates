@@ -10,6 +10,7 @@ import "entities/player/sanity"
 import "entities/player/items"
 import "entities/player/state"
 import "entities/player/dash"
+import "entities/player/abilities"
 local dialogUI = nil
 local uiHud = nil
 
