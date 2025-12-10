@@ -12,11 +12,15 @@ function TitleBackground:init(x, y, zIndex)
   self:setImageDrawMode(Graphics.kDrawModeCopy)
   
   --- animation states - one for each menu option
-  self.animation:addState('continue', 2, 2)
-  self.animation:addState('newGame', 1, 1)
-  self.animation:addState('deleteGame', 3, 3)
-  self.animation:addState('achievements', 7, 11)
-  self.animation.achievements.frameDuration = 12
+  local frameDefault = 4
+  self.animation:addState('continue', 1, 1)
+  self.animation.continue.frameDuration = frameDefault
+  self.animation:addState('deleteGame', 2, 5)
+  self.animation.deleteGame.frameDuration = frameDefault
+  self.animation:addState('newGame', 6, 6)
+  self.animation.newGame.frameDuration = frameDefault
+  self.animation:addState('achievements', 6, 8)
+  self.animation.achievements.frameDuration = frameDefault
   -- Default to first frame
   self.animation:setState('continue')
   
