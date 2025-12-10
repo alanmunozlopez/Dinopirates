@@ -1,6 +1,8 @@
 inGameMenu = {}
 class('inGameMenu').extends(Graphics.sprite)
--- import "entities/UI/itemMenu"
+import "entities/UI/itemMenu"
+import 'utilities/MapDrawer'
+
 local shadow = Graphics.image.new(400,240)
 local menuImage = Graphics.image.new('assets/images/ui/menu/ingame-menu')
 local menuSprite = nil 
@@ -22,8 +24,8 @@ function inGameMenu:init()
   menuSprite:moveTo(200, 120)
   menuSprite:setZIndex(ZIndex.ui + 2)
   
-  -- lampItem = itemMenu("lamp",ZIndex.ui+1)
-  -- bootItem = itemMenu("boot",ZIndex.ui+1)
+  lampItem = itemMenu("lamp",ZIndex.ui+1)
+  bootItem = itemMenu("boot",ZIndex.ui+1)
   self:add()
 end
 
@@ -32,21 +34,27 @@ function inGameMenu:displayMenu(__x,__y)
     PlayerData.isEquiping = true
     self.playerX = __x
     self.playerY = __y
-    print("imma menu")
+    self:drawMapOnMenu()
+    
+end
+
+function inGameMenu:drawMapOnMenu()
+    -- Draw the map on the menu image
+    MapDrawer.drawMap(menuImage)
 end
 
 function inGameMenu:shadow()
   
     Graphics.pushContext(shadow)
       Graphics.setColor(Graphics.kColorBlack)
-      Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeBayer8x8)
+      Graphics.setDitherPattern(0.4, Graphics.image.kDitherTypeBayer8x8)
       Graphics.fillRect(0, 0, shadow:getSize()) -- Full screen darkness
     Graphics.popContext()
 end
 function inGameMenu:closeMenu()
     shadow:clear(Graphics.kColorClear)
-    -- lampItem:remove()
-    -- bootItem:remove()
+    lampItem:remove()
+    bootItem:remove()
     if menuSprite then
         menuSprite:remove()
     end
@@ -66,10 +74,10 @@ function inGameMenu:selectItem()
     print("Item selected: " .. PlayerData.activeItem)
     -- Aquí puedes agregar la lógica específica para cada item
     if PlayerData.activeItem == 1 then
-        -- print("Lamp selected!")
+        print("Lamp selected!")
         -- Acción para la lámpara
     elseif PlayerData.activeItem == 2 then
-        -- print("Boot selected!")
+        print("Boot selected!")
         -- Acción para las botas
     end
 end
