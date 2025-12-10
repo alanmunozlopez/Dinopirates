@@ -64,7 +64,7 @@ end
 
 function Player:idle()
   if self.isAlive == true then
-    if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+    if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
       self.animation:setState('lampIdle')
     else
       self.animation:setState('idle')
@@ -203,14 +203,14 @@ function Player:update()
     PlayerData.battery = 100
   end
   -- Mark: Reduce speed in the dark
-  if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+  if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
     if PlayerData.battery < 20 then 
       self.speed = 0.5 * self.initialSpeed
     elseif PlayerData.battery > 20 then
       self.speed = self.initialSpeed
     end
   end
-  if PlayerData.isInDarkness == true and PlayerData.hasLamp == false then
+  if PlayerData.isInDarkness == true and PlayerData.items.hasLamp == false then
     self.speed = 0.5 * self.initialSpeed
   end
   PlayerData.isActive = false

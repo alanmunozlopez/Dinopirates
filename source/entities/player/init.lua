@@ -56,7 +56,7 @@ function Player:init(x, y, speed, Zindex)
   -- MARK: Custom items properties
   PlayerData.battery = PlayerData.battery
   self.hasKey = false
-  PlayerData.hasLamp = PlayerData.hasLamp
+  PlayerData.items.hasLamp = PlayerData.items.hasLamp
   PlayerData.isInDarkness = PlayerData.isInDarkness
   
   -- MARK: Add to scene

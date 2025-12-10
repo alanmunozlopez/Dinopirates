@@ -9,7 +9,7 @@ function Player:move(direction)
         self:drainBattery(0.5)
       end
       if (direction == "left") then
-        if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+        if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
           self.animation:setState('lampLeft')
         else
           self.animation:setState('left')
@@ -17,7 +17,7 @@ function Player:move(direction)
         movementX = self.x - self.speed
         movementY = self.y
       elseif (direction == "right") then
-        if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+        if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
           self.animation:setState('lampRight')
         else
           self.animation:setState('right')
@@ -25,7 +25,7 @@ function Player:move(direction)
         movementX = self.x + self.speed
         movementY = self.y
       elseif (direction == "up") then
-        if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+        if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
           self.animation:setState('up')
         else
           self.animation:setState('up')
@@ -33,7 +33,7 @@ function Player:move(direction)
         movementX = self.x 
         movementY = self.y - self.speed
       elseif (direction == "down") then
-        if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
+        if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
           self.animation:setState('lampDown')
         else
           self.animation:setState('down')

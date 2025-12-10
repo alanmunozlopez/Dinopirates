@@ -21,7 +21,7 @@ function Player:grabKey(keyNumber)
 end
 
 function Player:grabLamp()
-  PlayerData.hasLamp = true
+  PlayerData.items.hasLamp = true
   table.insert(PlayerData.items,"lamp")
   self:fillBattery()
 end

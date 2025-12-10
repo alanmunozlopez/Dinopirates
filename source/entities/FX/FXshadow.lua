@@ -104,7 +104,7 @@ function FXshadow:refresh()
 	end
 
 	-- === Adjust lighting based on whether the player has a lamp and remaining battery ===
-	if PlayerData.hasLamp == true then
+	if PlayerData.items.hasLamp == true then
 		if battery > 120 and battery <= 160 then
 			maskSize -= decreaseSize * 1
 			lightAmount = 0.2

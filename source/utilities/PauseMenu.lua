@@ -10,7 +10,7 @@ function playdate.gameWillPause()
 	if PlayerData.isGaming == true and PlayerData.hasNotes == true then
 		mapFillingAndChecking()
 		drawStatusText()
-		if PlayerData.hasLamp == true then
+		if PlayerData.items.hasLamp == true then
 			Graphics.pushContext(menuImg)
 			lampImg:draw(13, 168)
 			Graphics.popContext()

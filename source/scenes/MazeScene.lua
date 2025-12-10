@@ -63,7 +63,7 @@ scene.backgroundColor = Graphics.kColorWhite
 function scene:init()
 	scene.super.init(self)
 	cheat.onComplete = function()
-		PlayerData.hasLamp = true
+		PlayerData.items.hasLamp = true
 	end
 	playdate.display.setRefreshRate(35)
 	-- Your code here
@@ -368,7 +368,7 @@ function scene:update()
 	end
 	
 	-- Mark: Crank notification (only when needed)
-	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true then
+	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 end

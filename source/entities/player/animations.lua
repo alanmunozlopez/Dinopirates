@@ -30,7 +30,7 @@ function Player:initAnimations()
   self.animation:addState('charge', 36, 40)
   self.animation.charge.frameDuration = 12
   
-  if (PlayerData.hasLamp == true and PlayerData.isInDarkness == true) then
+  if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true) then
     self.animation:setState('lampIdle')
   else
     self.animation:setState('idle')
