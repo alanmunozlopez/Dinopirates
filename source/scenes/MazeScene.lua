@@ -65,6 +65,7 @@ function scene:init()
 	cheat.onComplete = function()
 		PlayerData.hasLamp = true
 	end
+	playdate.display.setRefreshRate(35)
 	-- Your code here
 	
 end
@@ -447,7 +448,7 @@ scene.inputHandler = {
 		end
 		-- Seleccionar item cuando está en el menú de equipamiento
 		if PlayerData.isEquiping == true then
-			inGameEquip:selectItem()
+			-- inGameEquip:selectItem()
 		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.

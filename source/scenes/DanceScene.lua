@@ -70,7 +70,7 @@ end
 
 function scene:init()
     scene.super.init(self)
-
+    playdate.display.setRefreshRate(50)
     -- Seed RNG with Playdate's current time in milliseconds (SDK 2.0+)
     -- This makes the probability roll different each run.
     if playdate and playdate.getCurrentTimeMilliseconds then
