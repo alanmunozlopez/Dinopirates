@@ -24,8 +24,8 @@ function inGameMenu:init()
   menuSprite:moveTo(200, 120)
   menuSprite:setZIndex(ZIndex.ui + 2)
   
-  lampItem = itemMenu("lamp",ZIndex.ui+1)
-  bootItem = itemMenu("boot",ZIndex.ui+1)
+  lampItem = itemMenu("lamp",ZIndex.ui+3)
+  bootItem = itemMenu("boot",ZIndex.ui+3)
   self:add()
 end
 
