@@ -29,9 +29,11 @@ function Player:dash()
         return
     end
     
+    print("🏃 Dash started in direction: " .. direction)
+    
     -- Dash parameters
-    local dashDistance = 24
-    local bounceDistance = 10
+    local dashDistance = 32
+    local bounceDistance = 16
     
     -- Calculate target position based on direction
     local targetX = self.x
@@ -87,6 +89,8 @@ function Player:dash()
     
     -- Set cooldown (500ms = 0.5 seconds)
     self.dashCooldown = playdate.getCurrentTimeMilliseconds() + 500
+    
+    print("✅ Dash completed!")
     
     -- Play dash animation or sound effect here if desired
     -- self.animation:setState('dash' .. direction)
