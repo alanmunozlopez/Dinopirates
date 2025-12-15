@@ -11,6 +11,7 @@ import "entities/player/items"
 import "entities/player/state"
 import "entities/player/dash"
 import "entities/player/abilities"
+import "entities/player/lightburst"
 local dialogUI = nil
 local uiHud = nil
 
@@ -52,6 +53,7 @@ function Player:init(x, y, speed, Zindex)
   self.loadingPower = false
   self.isAlive = true
   self.dashCooldown = 0  -- Cooldown timer for dash attack
+  self.lightBurstCooldown = 0  -- Cooldown timer for light burst
   
   -- MARK: Custom items properties
   PlayerData.battery = PlayerData.battery

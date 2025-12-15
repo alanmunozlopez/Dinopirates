@@ -28,15 +28,10 @@ function Player:useAbility()
     end
 end
 
--- Lamp ability - placeholder for now
+-- Lamp ability - Light Burst
 function Player:useLampAbility()
-    print("🔦 Lamp ability activated!")
-    -- TODO: Implement lamp ability
-    -- Ideas: 
-    -- - Reveal hidden items/enemies in radius
-    -- - Temporarily increase light radius
-    -- - Stun nearby enemies
-    -- - Consume battery
+    -- Call the light burst function
+    self:lightBurst()
 end
 
 -- Boot ability - Dash attack
