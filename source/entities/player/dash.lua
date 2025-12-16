@@ -33,11 +33,7 @@ function Player:dash()
     
     -- Dash parameters
     local dashDistance = 32
-<<<<<<< Updated upstream
     local bounceDistance = 16
-=======
-    local bounceDistance = 10
->>>>>>> Stashed changes
     
     -- Calculate target position based on direction
     local targetX = self.x
