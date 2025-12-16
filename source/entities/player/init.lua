@@ -55,6 +55,14 @@ function Player:init(x, y, speed, Zindex)
   self.dashCooldown = 0  -- Cooldown timer for dash attack
   self.lightBurstCooldown = 0  -- Cooldown timer for light burst
   
+  -- Dash state variables
+  self.isDashing = false
+  self.dashDirection = nil
+  self.dashProgress = 0
+  self.dashSpeed = 8
+  self.dashTotalDistance = 32
+  self.dashBounceDistance = 16
+  
   -- MARK: Custom items properties
   PlayerData.battery = PlayerData.battery
   self.hasKey = false

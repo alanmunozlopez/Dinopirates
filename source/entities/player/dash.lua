@@ -15,6 +15,11 @@ function Player:dash()
         return
     end
     
+    -- Check if already dashing
+    if self.isDashing then
+        return
+    end
+    
     -- Check if player is in valid state
     if not self.isAlive or PlayerData.isGaming ~= true then
         return
@@ -31,69 +36,94 @@ function Player:dash()
     
     print("🏃 Dash started in direction: " .. direction)
     
-    -- Dash parameters
-    local dashDistance = 32
-    local bounceDistance = 16
+    -- Set dash state
+    self.isDashing = true
+    self.dashDirection = direction
+    self.dashProgress = 0
+    self.dashSpeed = 8  -- Pixels per frame (32 total / 4 frames = 8 per frame)
+    self.dashTotalDistance = 32
+    self.dashBounceDistance = 16
     
-    -- Calculate target position based on direction
-    local targetX = self.x
-    local targetY = self.y
-    
-    -- Set animation state BEFORE movement for each direction
+    -- Set animation state for the direction
     if direction == "left" then
         self.animation:setState('dashLeft')
-        targetX = self.x - dashDistance
     elseif direction == "right" then
         self.animation:setState('dashRight')
-        targetX = self.x + dashDistance
     elseif direction == "up" then
         self.animation:setState('dashUp')
-        targetY = self.y - dashDistance
     elseif direction == "down" then
         self.animation:setState('dashDown')
-        targetY = self.y + dashDistance
     end
     
-    -- Attempt to move to target position
+    -- Set cooldown (500ms = 0.5 seconds)
+    self.dashCooldown = playdate.getCurrentTimeMilliseconds() + 500
+end
+
+function Player:updateDash()
+    if not self.isDashing then
+        return
+    end
+    
+    -- Calculate movement for this frame
+    local moveX = 0
+    local moveY = 0
+    
+    if self.dashDirection == "left" then
+        moveX = -self.dashSpeed
+    elseif self.dashDirection == "right" then
+        moveX = self.dashSpeed
+    elseif self.dashDirection == "up" then
+        moveY = -self.dashSpeed
+    elseif self.dashDirection == "down" then
+        moveY = self.dashSpeed
+    end
+    
+    -- Try to move
+    local targetX = self.x + moveX
+    local targetY = self.y + moveY
     local actualX, actualY, collisions, length = self:moveWithCollisions(targetX, targetY)
     
     -- Update UI position
     self.uiHud:moveTo(actualX + self.playerUIX, actualY - self.playerUIY)
     
-    -- Check if we collided (didn't reach target)
-    local collided = false
-    if direction == "left" or direction == "right" then
-        collided = (actualX ~= targetX)
-    else -- up or down
-        collided = (actualY ~= targetY)
-    end
-    
-    -- If we collided, bounce back
-    if collided and length > 0 then
+    -- Check if we hit something
+    if length > 0 then
+        -- Collision detected, bounce back
         local bounceX = actualX
         local bounceY = actualY
         
-        if direction == "left" then
-            bounceX = actualX + bounceDistance
-        elseif direction == "right" then
-            bounceX = actualX - bounceDistance
-        elseif direction == "up" then
-            bounceY = actualY + bounceDistance
-        elseif direction == "down" then
-            bounceY = actualY - bounceDistance
+        if self.dashDirection == "left" then
+            bounceX = actualX + self.dashBounceDistance
+        elseif self.dashDirection == "right" then
+            bounceX = actualX - self.dashBounceDistance
+        elseif self.dashDirection == "up" then
+            bounceY = actualY + self.dashBounceDistance
+        elseif self.dashDirection == "down" then
+            bounceY = actualY - self.dashBounceDistance
         end
         
-        -- Execute bounce
         self:moveWithCollisions(bounceX, bounceY)
         self.uiHud:moveTo(bounceX + self.playerUIX, bounceY - self.playerUIY)
         
         print("Dash collided! Bouncing back.")
-    else
-        print("Dash successful!")
+        self:endDash()
+        return
     end
     
-    -- Set cooldown (500ms = 0.5 seconds)
-    self.dashCooldown = playdate.getCurrentTimeMilliseconds() + 500
+    -- Update progress
+    self.dashProgress = self.dashProgress + self.dashSpeed
+    
+    -- Check if dash is complete
+    if self.dashProgress >= self.dashTotalDistance then
+        print("Dash successful!")
+        self:endDash()
+    end
+end
+
+function Player:endDash()
+    self.isDashing = false
+    self.dashDirection = nil
+    self.dashProgress = 0
     
     -- Restore appropriate idle animation after dash
     if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then

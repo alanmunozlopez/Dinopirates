@@ -183,6 +183,9 @@ function Player:checkTrigger()
 end
 
 function Player:update()
+  -- Update dash movement if dashing
+  self:updateDash()
+  
   -- Performance: Only update zIndex if Y position changed significantly
   self:setZIndex(self.y)
 

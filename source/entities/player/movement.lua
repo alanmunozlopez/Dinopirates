@@ -1,5 +1,10 @@
 function Player:move(direction)
   if PlayerData.isGaming == true then
+    -- Don't allow normal movement while dashing
+    if self.isDashing then
+      return
+    end
+    
     if self.isAlive == true and PlayerData.isCharging == false then
       PlayerData.isActive = true
       self.direction = direction

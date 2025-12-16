@@ -31,7 +31,7 @@ function Player:initAnimations()
   self.animation.charge.frameDuration = 12
   
   self.animation:addState('dashRight', 65, 68)
-  self.animation.dashRight.frameDuration = 3
+  self.animation.dashRight.frameDuration = 24
   
   self.animation:addState('dashLeft', 65, 68)
   self.animation.dashLeft.frameDuration = 3
