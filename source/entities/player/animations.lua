@@ -30,6 +30,9 @@ function Player:initAnimations()
   self.animation:addState('charge', 36, 40)
   self.animation.charge.frameDuration = 12
   
+  self.animation:addState('dashRight', 65, 68)
+  self.animation.dashRight.frameDuration = 3
+  
   if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true) then
     self.animation:setState('lampIdle')
   else

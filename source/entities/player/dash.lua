@@ -33,7 +33,11 @@ function Player:dash()
     
     -- Dash parameters
     local dashDistance = 32
+<<<<<<< Updated upstream
     local bounceDistance = 16
+=======
+    local bounceDistance = 10
+>>>>>>> Stashed changes
     
     -- Calculate target position based on direction
     local targetX = self.x
@@ -43,6 +47,7 @@ function Player:dash()
         targetX = self.x - dashDistance
     elseif direction == "right" then
         targetX = self.x + dashDistance
+        self.animation:setState('dashRight')
     elseif direction == "up" then
         targetY = self.y - dashDistance
     elseif direction == "down" then
