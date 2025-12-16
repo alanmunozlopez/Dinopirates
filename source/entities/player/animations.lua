@@ -33,6 +33,15 @@ function Player:initAnimations()
   self.animation:addState('dashRight', 65, 68)
   self.animation.dashRight.frameDuration = 3
   
+  self.animation:addState('dashLeft', 65, 68)
+  self.animation.dashLeft.frameDuration = 3
+  
+  self.animation:addState('dashUp', 65, 68)
+  self.animation.dashUp.frameDuration = 3
+  
+  self.animation:addState('dashDown', 65, 68)
+  self.animation.dashDown.frameDuration = 3
+  
   if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true) then
     self.animation:setState('lampIdle')
   else

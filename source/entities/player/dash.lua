@@ -39,14 +39,18 @@ function Player:dash()
     local targetX = self.x
     local targetY = self.y
     
+    -- Set animation state BEFORE movement for each direction
     if direction == "left" then
+        self.animation:setState('dashLeft')
         targetX = self.x - dashDistance
     elseif direction == "right" then
-        targetX = self.x + dashDistance
         self.animation:setState('dashRight')
+        targetX = self.x + dashDistance
     elseif direction == "up" then
+        self.animation:setState('dashUp')
         targetY = self.y - dashDistance
     elseif direction == "down" then
+        self.animation:setState('dashDown')
         targetY = self.y + dashDistance
     end
     
@@ -91,8 +95,12 @@ function Player:dash()
     -- Set cooldown (500ms = 0.5 seconds)
     self.dashCooldown = playdate.getCurrentTimeMilliseconds() + 500
     
-    print("✅ Dash completed!")
+    -- Restore appropriate idle animation after dash
+    if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
+        self.animation:setState('lampIdle')
+    else
+        self.animation:setState('idle')
+    end
     
-    -- Play dash animation or sound effect here if desired
-    -- self.animation:setState('dash' .. direction)
+    print("✅ Dash completed!")
 end
