@@ -40,8 +40,8 @@ function Player:dash()
     self.isDashing = true
     self.dashDirection = direction
     self.dashProgress = 0
-    self.dashSpeed = 8  -- Pixels per frame (32 total / 4 frames = 8 per frame)
-    self.dashTotalDistance = 32
+    self.dashSpeed = 6  -- Pixels per frame (32 total / 4 frames = 8 per frame)
+    self.dashTotalDistance = 56
     self.dashBounceDistance = 16
     
     -- Set animation state for the direction
