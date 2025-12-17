@@ -19,13 +19,27 @@ function Player:lightBurst()
         return
     end
     
-    -- Check if lamp has battery
+    -- Check if lamp is available
     if not PlayerData.items.hasLamp then
         print("No lamp available!")
         return
     end
     
+    -- Check if there's enough battery (requires 10 battery)
+    local batteryCost = 10
+    if PlayerData.battery < batteryCost then
+        print("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
+        return
+    end
+    
     print("💡 Light burst activated!")
+    
+    -- Consume battery
+    PlayerData.battery = PlayerData.battery - batteryCost
+    print("🔋 Battery consumed: -" .. batteryCost .. " (remaining: " .. PlayerData.battery .. ")")
+    
+    -- Show the light cone
+    PlayerData.showLightCone = true
     
     -- Get the current direction
     local direction = PlayerData.direction
@@ -35,6 +49,7 @@ function Player:lightBurst()
     
     if not lightPolygon then
         print("Cannot create light cone in idle state")
+        PlayerData.showLightCone = false
         return
     end
     
@@ -52,6 +67,9 @@ function Player:lightBurst()
     
     -- Set cooldown (1000ms = 1 second)
     self.lightBurstCooldown = playdate.getCurrentTimeMilliseconds() + 1000
+    
+    -- Hide the light cone after a short delay (500ms)
+    self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + 500
     
     print("✅ Light burst completed!")
 end

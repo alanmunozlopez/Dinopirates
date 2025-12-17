@@ -7,7 +7,7 @@ local crewBagImg = Graphics.image.new('assets/images/ui/menu/crewbag.png')
 import 'utilities/MapDrawer'
 
 function playdate.gameWillPause()
-	if PlayerData.isGaming == true and PlayerData.hasNotes == true then
+	if PlayerData.isGaming == true and PlayerData.items.hasNotes == true then
 		mapFillingAndChecking()
 		drawStatusText()
 		if PlayerData.items.hasLamp == true then
@@ -15,7 +15,7 @@ function playdate.gameWillPause()
 			lampImg:draw(13, 168)
 			Graphics.popContext()
 		end
-		if PlayerData.hasBag == true then
+		if PlayerData.items.hasBag == true then
 			Graphics.pushContext(menuImg)
 			crewBagImg:draw(22, 139)
 			Graphics.popContext()

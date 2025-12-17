@@ -186,6 +186,12 @@ function Player:update()
   -- Update dash movement if dashing
   self:updateDash()
   
+  -- Hide light cone after display time
+  if self.lightConeHideTime and playdate.getCurrentTimeMilliseconds() >= self.lightConeHideTime then
+    PlayerData.showLightCone = false
+    self.lightConeHideTime = nil
+  end
+  
   -- Performance: Only update zIndex if Y position changed significantly
   self:setZIndex(self.y)
 

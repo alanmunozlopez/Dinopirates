@@ -92,7 +92,7 @@ function Player:collisionResponse(other)
   -- ⭐ Handle ALL hole types
   
   -- If player has boots with battery, can walk over the hole
-  if PlayerData.hasBoots == true and PlayerData.battery > 0 then
+  if PlayerData.items.hasBoots == true and PlayerData.battery > 0 then
       self:drainBattery(1)
       return 'overlap'
   else

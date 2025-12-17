@@ -1,16 +1,16 @@
 
 function Player:grabBoots()
-  PlayerData.hasBoots = true
+  PlayerData.items.hasBoots = true
   table.insert(PlayerData.items,"boots")
 end
 
 function Player:grabBag()
-  PlayerData.hasBag = true
+  PlayerData.items.hasBag = true
   table.insert(PlayerData.items,"bag")
 end
 
 function Player:grabTools()
-  PlayerData.hasTools = true
+  PlayerData.items.hasTools = true
   table.insert(PlayerData.items,"tools")
 end
 
@@ -28,11 +28,11 @@ end
 
 function Player:grabRadio()
   
-  PlayerData.hasRadio = true
+  PlayerData.items.hasRadio = true
 end
 
 function Player:grabNotes()
-  PlayerData.hasNotes = true
+  PlayerData.items.hasNotes = true
   Utilities.grantAchievementIfNeeded("notebook")
 end
 

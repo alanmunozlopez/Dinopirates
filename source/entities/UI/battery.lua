@@ -12,7 +12,7 @@ function Battery:init(x, y, player, Zindex)
 end
 
 function Battery:update()
-    if PlayerData.items.hasLamp == true or PlayerData.hasBoots == true then
+    if PlayerData.items.hasLamp == true or PlayerData.items.hasBoots == true then
         self.battery = PlayerData.battery
         local batteryPercent = (self.battery * (batteryCanister.width - 8)) / 100
         

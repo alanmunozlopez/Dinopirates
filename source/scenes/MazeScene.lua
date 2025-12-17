@@ -206,11 +206,11 @@ function scene:enter()
 					
 					local itemRequirements = {
 						keycard = "keys",  -- Changed to check keys table
-						lamp = "hasLamp",
-						radio = "hasRadio",
-						notes = "hasNotes",
-						bag = "hasBag",
-						tools = "hasTools"
+						lamp = "items.hasLamp",
+						radio = "items.hasRadio",
+						notes = "items.hasNotes",
+						bag = "items.hasBag",
+						tools = "items.hasTools"
 					}
 					
 					-- Special handling for keycards with key numbers
@@ -221,8 +221,15 @@ function scene:enter()
 						shouldGenerate = not PlayerData.keys[keyNum]
 						printDebug("🔑 Checking keycard generation - KeyNumber:", keyNum, "shouldGenerate:", shouldGenerate)
 					elseif itemRequirements[type] then
-						-- For other items, check the boolean flag
-						shouldGenerate = PlayerData[itemRequirements[type]] == false
+						-- For other items, check the boolean flag in items table
+						local itemPath = itemRequirements[type]
+						if itemPath:match("^items%.") then
+							-- Extract the field name after "items."
+							local fieldName = itemPath:match("^items%.(.+)$")
+							shouldGenerate = PlayerData.items[fieldName] == false
+						else
+							shouldGenerate = PlayerData[itemPath] == false
+						end
 					end
 					
 					-- Generate item if player doesn't have it
