@@ -13,9 +13,7 @@ function inGameMenu:init()
   self:moveTo(200,120)
   self:setZIndex(ZIndex.ui)
   self:setImage(shadow)
-  if PlayerData.items == nil then
-    
-  end
+  
   
   -- Crear sprite para el menú
   menuSprite = Graphics.sprite.new()
@@ -43,14 +41,15 @@ function inGameMenu:drawMapOnMenu()
     MapDrawer.drawMap(menuImage)
 end
 
-function inGameMenu:shadow()
-  
-    Graphics.pushContext(shadow)
-      Graphics.setColor(Graphics.kColorBlack)
-      Graphics.setDitherPattern(0.4, Graphics.image.kDitherTypeBayer8x8)
-      Graphics.fillRect(0, 0, shadow:getSize()) -- Full screen darkness
-    Graphics.popContext()
-end
+-- function inGameMenu:shadow()
+  -- 
+  --   Graphics.pushContext(shadow)
+  --     Graphics.setColor(Graphics.kColorBlack)
+  --     Graphics.setDitherPattern(0.4, Graphics.image.kDitherTypeBayer8x8)
+  --     Graphics.fillRect(0, 0, shadow:getSize()) -- Full screen darkness
+  --   Graphics.popContext()
+-- end
+
 function inGameMenu:closeMenu()
     shadow:clear(Graphics.kColorClear)
     lampItem:remove()
@@ -73,10 +72,10 @@ end
 function inGameMenu:selectItem()
     print("Item selected: " .. PlayerData.activeItem)
     -- Aquí puedes agregar la lógica específica para cada item
-    if PlayerData.activeItem == 1 then
+    if PlayerData.activeItem == 1 and PlayerData.items.hasLamp == true then
         print("Lamp selected!")
         -- Acción para la lámpara
-    elseif PlayerData.activeItem == 2 then
+    elseif PlayerData.activeItem == 2 and PlayerData.items.hasBoots == true then
         print("Boot selected!")
         -- Acción para las botas
     end
@@ -92,12 +91,17 @@ function inGameMenu:update()
         PlayerData.activeItem = 1
       end
       if PlayerData.isEquiping == true then  
-        self:shadow()
+        -- self:shadow()
         if menuSprite then
             menuSprite:add()
         end
-        lampItem:show(18, 151)
-        bootItem:show(48, 153)
+        if PlayerData.items.hasLamp == true then
+          lampItem:show(18, 151)
+        end
+        if PlayerData.items.hasBoots == true then
+          bootItem:show(48, 153)
+        end
+        
         
       end
   end
