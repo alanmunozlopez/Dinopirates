@@ -86,8 +86,22 @@ function Player:updateDash()
     -- Update UI position
     self.uiHud:moveTo(actualX + self.playerUIX, actualY - self.playerUIY)
     
-    -- Check if we hit something
+    -- Filter collisions to only count solid objects (ignore triggers and items)
+    local hasSolidCollision = false
     if length > 0 then
+        for i = 1, length do
+            local other = collisions[i].other
+            -- Only count collision if it's NOT a trigger or item
+            -- Solid objects: walls, boxes, closed doors, enemies
+            if not other:isa(Trigger) and not other:isa(Items) and not other:isa(PropItem) then
+                hasSolidCollision = true
+                break
+            end
+        end
+    end
+    
+    -- Check if we hit a solid object
+    if hasSolidCollision then
         -- Collision detected, bounce back
         local bounceX = actualX
         local bounceY = actualY
