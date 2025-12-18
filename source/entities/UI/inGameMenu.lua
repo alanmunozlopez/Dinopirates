@@ -82,6 +82,7 @@ function inGameMenu:selectItem()
 end
 
 function inGameMenu:update()
+  drawStatusText(menuImage)
   if table.getSize(PlayerData.items) > 0 then
     
       if PlayerData.activeItem < 1 then
