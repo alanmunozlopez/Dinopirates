@@ -25,7 +25,7 @@ function Player:lightBurst()
         return
     end
     
-    -- Check if there's enough battery (requires 10 battery)
+    -- Check if there's enough battery 
     local batteryCost = 10
     if PlayerData.battery < batteryCost then
         print("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
@@ -69,7 +69,7 @@ function Player:lightBurst()
     self.lightBurstCooldown = playdate.getCurrentTimeMilliseconds() + 1000
     
     -- Hide the light cone after a short delay (500ms)
-    self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + 500
+    self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + 100
     
     print("✅ Light burst completed!")
 end

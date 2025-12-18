@@ -87,6 +87,11 @@ function Player:collisionResponse(other)
     other:removeAll()
     self:grabTools()
   return 'overlap'
+  
+  elseif other:isa(Items) and other.type == 'boots' then
+    other:removeAll()
+    self:grabBoots()
+  return 'overlap'
     
   elseif other:isa(PropItem) and other.isHole then
   -- ⭐ Handle ALL hole types

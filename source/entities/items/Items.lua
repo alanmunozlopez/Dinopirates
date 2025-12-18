@@ -18,7 +18,9 @@ function Items:init(x, y, type, keyNumber)
   self.animation:addState('tools', 34, 37)
   self.animation.tools.frameDuration = 8
   self.animation:addState('bag', 38, 41)
-  self.animation.bag.frameDuration = 8    
+  self.animation.bag.frameDuration = 8   
+  self.animation:addState('boots', 38, 41)
+  self.animation.boots.frameDuration = 8  
   self:setSize(48, 48)
   self:setCollideRect(0 ,0, 48, 48)
   self:setZIndex(ZIndex.items)

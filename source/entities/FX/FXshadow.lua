@@ -156,8 +156,8 @@ function FXshadow:refresh()
 	Graphics.pushContext(shadowMask)
 		Graphics.setColor(Graphics.kColorBlack)
 		Graphics.setDitherPattern(lightAmount, Graphics.image.kDitherTypeBayer8x8)
-		-- Only show cone when PlayerData.showLightCone is true and not idle
-		if Direction == 'idle' or not PlayerData.showLightCone then
+		-- Only show cone when PlayerData.showLightCone is true, lamp is selected, and not idle
+		if Direction == 'idle' or not PlayerData.showLightCone or PlayerData.activeItem ~= 1 then
 			Graphics.fillCircleAtPoint(self.player.x, self.player.y, maskSize)
 		else
 			Graphics.fillPolygon(Light)

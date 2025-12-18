@@ -210,7 +210,8 @@ function scene:enter()
 						radio = "items.hasRadio",
 						notes = "items.hasNotes",
 						bag = "items.hasBag",
-						tools = "items.hasTools"
+						tools = "items.hasTools",
+						boots= "items.hasBoots"
 					}
 					
 					-- Special handling for keycards with key numbers

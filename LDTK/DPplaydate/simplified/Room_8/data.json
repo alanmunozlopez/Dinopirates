@@ -140,13 +140,28 @@
 				"id": "Lamp",
 				"iid": "16280d40-ac70-11f0-aeab-878c73817b92",
 				"layer": "Items",
-				"x": 340,
-				"y": 52,
+				"x": 308,
+				"y": 36,
 				"width": 48,
 				"height": 48,
 				"color": 15389866,
 				"customFields": {
 					"type": "lamp"
+				}
+			}
+		],
+		"Boots": [
+			{
+				"id": "Boots",
+				"iid": "63ff5cd0-d380-11f0-8084-2fa54ff69747",
+				"layer": "Items",
+				"x": 308,
+				"y": 100,
+				"width": 48,
+				"height": 48,
+				"color": 15389866,
+				"customFields": {
+					"type": "boots"
 				}
 			}
 		],
