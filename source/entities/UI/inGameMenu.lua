@@ -96,8 +96,8 @@ function inGameMenu:update()
         if menuSprite then
             menuSprite:add()
         end
-        lampItem:show(self.playerX, self.playerY)
-        bootItem:show(64, 30)
+        lampItem:show(18, 151)
+        bootItem:show(48, 153)
         
       end
   end

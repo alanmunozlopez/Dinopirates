@@ -37,10 +37,10 @@ end
 function MapDrawer.drawMap(targetImage)
 	-- Configuration for each floor
 	local floorConfig = {
-		[1] = { cols = 5, rows = 3, posX = 148, posY = 78, startRoom = 66 },  -- Level 4: 5x3 from room_66 to room_80
-		[2] = { cols = 7, rows = 5, posX = 137, posY = 23, startRoom = 31 },  -- Level 3: 7x5 from room_31 to room_65
-		[3] = { cols = 5, rows = 3, posX = 38, posY = 70, startRoom = 16 },  -- Level 2: 5x3 from room_16 to room_30
-		[4] = { cols = 5, rows = 3, posX = 38, posY = 34, startRoom = 1 }   -- Level 1: 5x3 from room_1 to room_15
+		[1] = { cols = 5, rows = 3, posX = 142, posY = 73, startRoom = 66 },  -- Level 4: 5x3 from room_66 to room_80
+		[2] = { cols = 7, rows = 5, posX = 131, posY = 18, startRoom = 31 },  -- Level 3: 7x5 from room_31 to room_65
+		[3] = { cols = 5, rows = 3, posX = 32, posY = 65, startRoom = 16 },  -- Level 2: 5x3 from room_16 to room_30
+		[4] = { cols = 5, rows = 3, posX = 32, posY = 29, startRoom = 1 }   -- Level 1: 5x3 from room_1 to room_15
 	}
 	
 	local alpha = 0.5
