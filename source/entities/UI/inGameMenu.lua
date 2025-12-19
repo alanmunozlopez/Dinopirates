@@ -33,19 +33,14 @@ function inGameMenu:init()
 end
 
 function inGameMenu:displayMenu()
-    print("📋 displayMenu called!")
     PlayerData.isGaming = false
     PlayerData.isEquiping = true
     
     self:drawMapOnMenu()
     
     -- Create hat sprites when menu opens
-    print("📋 Checking if crew members captured:", PlayerData.CrewMemberData.amountTaken)
     if PlayerData.CrewMemberData.amountTaken > 0 then
-        print("📋 Calling drawCrewHats...")
         self:drawCrewHats()
-    else
-        print("📋 No crew members captured yet")
     end
 end
 
@@ -56,11 +51,8 @@ end
 
 function inGameMenu:drawCrewHats()
     -- Create sprites for captured crew member hats in the menu
-    print("🎩 drawCrewHats called!")
-    print("🎩 amountTaken:", PlayerData.CrewMemberData.amountTaken)
-    
-    local hatX = 232  -- Starting X position for hats (center of screen)
-    local hatY = 13  -- Y position for hats (center of screen)
+    local hatX = 232  -- Starting X position for hats
+    local hatY = 13  -- Y position for hats
     local hatSpacing = 20  -- Space between hats
     local hatIndex = 0
     
@@ -76,42 +68,41 @@ function inGameMenu:drawCrewHats()
     
     -- Check each crew member and create a sprite for their hat if captured
     if PlayerData.CrewMemberData and PlayerData.CrewMemberData.idNumbers then
-        print("🎩 Checking crew members...")
+        -- Collect and sort crew IDs to display in order
+        local capturedCrewIds = {}
         for crewId, isCaptured in pairs(PlayerData.CrewMemberData.idNumbers) do
-            print("🎩 CrewID:", crewId, "Captured:", isCaptured)
             if isCaptured then
-                -- Get the hat image based on crew ID
-                local hatFrameIndex = 1  -- Default to first frame
-                if crewId == "CM001" then
-                    hatFrameIndex = 1
-                elseif crewId == "CM002" then
-                    hatFrameIndex = 2
-                elseif crewId == "CM003" then
-                    hatFrameIndex = 3
-                end
-                
-                print("🎩 Creating hat sprite for", crewId, "frame:", hatFrameIndex)
-                
-                -- Create a sprite for this hat
-                local hatImage = hatSpriteSheet:getImage(hatFrameIndex)
-                if hatImage then
-                    print("🎩 Hat image loaded, size:", hatImage:getSize())
-                    local hatSprite = Graphics.sprite.new(hatImage)
-                    hatSprite:setCenter(0, 0)
-                    hatSprite:moveTo(hatX + (hatIndex * hatSpacing), hatY)
-                    hatSprite:setZIndex(ZIndex.ui + 9)
-                    hatSprite:add()
-                    table.insert(self.hatSprites, hatSprite)
-                    print("🎩 Hat sprite created at:", hatX + (hatIndex * hatSpacing), hatY, "zIndex:", ZIndex.ui + 9)
-                    hatIndex += 1
-                else
-                    print("🎩 ERROR: Could not load hat image for frame", hatFrameIndex)
-                end
+                table.insert(capturedCrewIds, crewId)
             end
         end
-        print("🎩 Total hats created:", hatIndex)
-    else
-        print("🎩 ERROR: CrewMemberData or idNumbers is nil")
+        
+        -- Sort the crew IDs alphabetically (CM001, CM002, CM003, etc.)
+        table.sort(capturedCrewIds)
+        
+        -- Create sprites in sorted order
+        for _, crewId in ipairs(capturedCrewIds) do
+            -- Get the hat image based on crew ID
+            local hatFrameIndex = 1  -- Default to first frame
+            if crewId == "CM001" then
+                hatFrameIndex = 1
+            elseif crewId == "CM002" then
+                hatFrameIndex = 2
+            elseif crewId == "CM003" then
+                hatFrameIndex = 3
+            end
+            
+            -- Create a sprite for this hat
+            local hatImage = hatSpriteSheet:getImage(hatFrameIndex)
+            if hatImage then
+                local hatSprite = Graphics.sprite.new(hatImage)
+                hatSprite:setCenter(0, 0)
+                hatSprite:moveTo(hatX + (hatIndex * hatSpacing), hatY)
+                hatSprite:setZIndex(ZIndex.ui + 9)
+                hatSprite:add()
+                table.insert(self.hatSprites, hatSprite)
+                hatIndex += 1
+            end
+        end
     end
 end
 
