@@ -28,6 +28,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.initialSpeed = moveSpeed
 	self.player = player
 	self.Zindex = Zindex
+	self.crewId = crewId  -- Store the crew member ID
 	
 	-- Performance: Frame counter for throttling updates
 	self.updateFrameCounter = math.random(0, 2) -- Random offset to stagger enemy updates
@@ -43,7 +44,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self:setZIndex(self.Zindex)
 	self:add(x, y)
 	self.hat = Hats(x,y - self.hatDelta, crewId, 2)
-	print("🧩 CrewMember spawned with IID:", self.iid)
+	print("🧩 CrewMember spawned with IID:", self.iid, "CrewID:", crewId)
 end
 
 function CrewMember:search(player)
@@ -93,7 +94,13 @@ function CrewMember:taken()
 		if currentIID == self.iid then
 			cf.isTaken = true
 			PlayerData.CrewMemberData.amountTaken += 1
-			print("🟢 CrewMember marked as taken:", currentIID)
+			-- Mark the specific crew member as captured in PlayerData using stored crewId
+			if self.crewId then
+				PlayerData.CrewMemberData.idNumbers[self.crewId] = true
+				print("🟢 CrewMember marked as taken:", currentIID, "ID:", self.crewId)
+			else
+				print("🟢 CrewMember marked as taken:", currentIID, "(no crewId)")
+			end
 			break
 		end
 	end

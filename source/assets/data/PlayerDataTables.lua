@@ -64,7 +64,12 @@ PlayerData = {
 		isEvolved = false,
 	},
 	CrewMemberData ={
-		amountTaken = 0
+		amountTaken = 3,
+		idNumbers={
+			CM001 = true,
+			CM002 = true,
+			CM003 = true
+		}
 	}
 }
 
@@ -134,6 +139,11 @@ PlayerDataOriginal = {
 		isEvolved = false,
 	},
 	CrewMemberData ={
-		amountTaken = 0
+		amountTaken = 3,
+		idNumbers={
+			CM001 = true,
+			CM002 = true,
+			CM003 = true
+		}
 	}
 }
