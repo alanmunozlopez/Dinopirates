@@ -41,6 +41,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.animation:addState('holeRight', 31, 31)
   self.animation:addState('holeBottomRight', 32, 32)
   self.animation:addState('debris', 33, 33)
+  self.animation:addState('minifier', 45, 45)
   self.animation:setState(type)
   
   -- Default properties
