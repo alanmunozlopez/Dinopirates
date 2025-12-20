@@ -63,7 +63,8 @@ scene.backgroundColor = Graphics.kColorWhite
 function scene:init()
 	scene.super.init(self)
 	cheat.onComplete = function()
-		PlayerData.items.hasLamp = true
+		PlayerData.battery = 100
+		player:grabBoots()
 	end
 	playdate.display.setRefreshRate(35)
 	-- Your code here

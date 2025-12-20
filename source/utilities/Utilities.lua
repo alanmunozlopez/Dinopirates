@@ -377,7 +377,7 @@ function drawVersionNumber(x, y, alignment)
 	-- Save current graphics context to avoid affecting sprites
 	Graphics.pushContext()
 	
-	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
 	
 	-- local version = "*"..Panels.vars.lang.."* Demo*" .. playdate.metadata.version .. "*"
 	local version = "* Demo " .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
