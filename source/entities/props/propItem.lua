@@ -115,7 +115,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
 end
 
 function PropItem:update()
-  if self.nocollide == true or self.isDestroyed == true then
+  if self.nocollide == true or self.isDestroyed == true or self.isHole == true then
     self:setZIndex(ZIndex.props)
   else
     self:setZIndex(self.y)
