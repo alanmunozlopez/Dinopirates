@@ -2496,6 +2496,23 @@ levelsLDTK = {
 			destroyed = false
 		  }
 		}
+	  },
+	  Minifier = {
+		{
+		  id = "Minifier",
+		  iid = "160b4520-d380-11f0-8084-e5f28f69cc1a",
+		  layer = "Props",
+		  x = 68,
+		  y = 84,
+		  width = 32,
+		  height = 32,
+		  color = 2943221,
+		  customFields = {
+			type = "minifier",
+			nocollider = false,
+			destroyed = false
+		  }
+		}
 	  }
 	}
   },

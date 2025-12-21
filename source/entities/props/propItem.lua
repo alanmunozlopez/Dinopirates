@@ -86,6 +86,9 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
     holeBottomLeft = { isHole = true, collideRect = {10, 0, 22, 22}, removePropCollider = true },
   }
   
+  if self.type == 'minifier' then
+    self.propcollider:remove()
+  end
   -- Apply hole configuration
   if holeTypes[type] then
     local config = holeTypes[type]

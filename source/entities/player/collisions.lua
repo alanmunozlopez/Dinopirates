@@ -105,6 +105,9 @@ function Player:collisionResponse(other)
       self:fallBelow()
       return 'overlap'
   end
+  elseif other:isa(PropItem) and other.type == 'minifier' then
+    print('ready to minify')
+  return 'overlap'
   elseif other:isa(PropItem) then
   return 'overlap'
   elseif other:isa(Door) then
@@ -131,7 +134,7 @@ function Player:collisionResponse(other)
         return 'freeze'
       end
     end
-  
+ 
   end
   
 end
