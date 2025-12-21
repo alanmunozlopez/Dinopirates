@@ -33,7 +33,7 @@ function Player:initAnimations()
   self.animation:addState('dashRight', 65, 68)
   self.animation.dashRight.frameDuration = 3
   
-  self.animation:addState('dashLeft', 65, 68)
+  self.animation:addState('dashLeft', 69, 72)
   self.animation.dashLeft.frameDuration = 3
   
   self.animation:addState('dashUp', 65, 68)
@@ -45,8 +45,16 @@ function Player:initAnimations()
   self.animation:addState('tinyIdle', 73, 81)
   self.animation.tinyIdle.frameDuration = 3
   
-  if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true) then
+  self.animation:addState('tinyRight', 82, 84)
+  self.animation.tinyRight.frameDuration = 3
+  
+  self.animation:addState('tinyLeft', 85, 87)
+  self.animation.tinyLeft.frameDuration = 3
+  
+  if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
     self.animation:setState('lampIdle')
+  elseif PlayerData.isTiny == true then
+    self.animation:setState('tinyIdle')
   else
     self.animation:setState('idle')
   end
