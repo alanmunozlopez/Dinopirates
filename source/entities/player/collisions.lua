@@ -109,7 +109,7 @@ function Player:collisionResponse(other)
   
   elseif other:isa(PropItem) and other.type == 'minifier' then
     self.currentMinifier = other
-    print('ready to minify')
+    PlayerData.readyToShrink = true
     self:showUIHUD()
     self.uiHud:setPressA()
   return 'overlap'

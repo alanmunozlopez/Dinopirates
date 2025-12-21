@@ -608,12 +608,57 @@ scene.inputHandler = {
 	-- Crank
 	--
 	cranked = function(change, acceleratedChange)
-		scene:PowerCrank()
-		if playdate.getCrankTicks(2) > 0 then
+		
+		local ticksValue = playdate.getCrankTicks(4)
+		if not player.isAlive then return end
+		
+		if ticksValue > 0 then
 			player:burnCalories(1)
 		end
+		
+		if PlayerData.isGaming == true then
+			if ticksValue > 0 then
+				if player.loadingPower then
+					print('powa')  -- Consider removing debug print
+				end
+				
+				if PlayerData.battery < 100 and PlayerData.readyToShrink == false then
+					player:chargeBattery(3)
+					if shadow then
+						shadow:refresh()
+					end
+				end
+				
+				if PlayerData.readyToShrink == true then
+					print(PlayerData.playerSize)
+					PlayerData.playerSize += 1
+					
+				end
+			end
+			if (ticksValue < 0) then
+				if PlayerData.readyToShrink == true then
+					print(PlayerData.playerSize)
+					PlayerData.playerSize -= 1
+					if PlayerData.playerSize == 0 then
+						print("shrink time")
+						player:shrink()
+					end
+				end
+			end
+			
+		end
+		
+		
+		
+		
+		if PlayerData.battery == 100 then
+			player:idle()
+		end
+		-- scene:PowerCrank()
+		
 	end,
-	crankDocked = function()						-- Runs once when when crank is docked.
+	crankDocked = function()	
+							-- Runs once when when crank is docked.
 	end,
 	crankUndocked = function()						-- Runs once when when crank is undocked.
 		
@@ -625,22 +670,5 @@ function MazeScene:setDiagonalMovement(enabled)
 end
 
 function scene:PowerCrank()
-    if not player.isAlive then return end
-    if PlayerData.isGaming == true then
-    	if playdate.getCrankTicks(4) > 0 then
-        	if player.loadingPower then
-            	print('powa')  -- Consider removing debug print
-        	else
-            	player:chargeBattery(3)
-            	if shadow then
-                	shadow:refresh()
-            	end
-        	end
-    	end
-		
-	end
     
-    if player.battery == 100 then
-        player:idle()
-    end
 end

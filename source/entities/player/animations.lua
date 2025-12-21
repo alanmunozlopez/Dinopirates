@@ -42,10 +42,14 @@ function Player:initAnimations()
   self.animation:addState('dashDown', 65, 68)
   self.animation.dashDown.frameDuration = 3
   
+  self.animation:addState('tinyIdle', 73, 81)
+  self.animation.tinyIdle.frameDuration = 3
+  
   if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true) then
     self.animation:setState('lampIdle')
   else
     self.animation:setState('idle')
   end
+  
 end
 

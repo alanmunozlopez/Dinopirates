@@ -69,6 +69,10 @@ function Player:idle()
     else
       self.animation:setState('idle')
     end
+    
+    if PlayerData.isTiny == true then
+      self.animation:setState('tinyIdle')
+    end
     PlayerData.direction = 'idle'
   end
 end
@@ -95,6 +99,14 @@ function Player:focus() -- unused
   end
 end
 
+function Player:shrink()
+  print("shrunk")
+  PlayerData.isTiny = true
+end
+
+function Player:grow()
+    PlayerData.isTiny = false
+end
 function Player:pedometer()
   PlayerData.steps += 0.5
   PlayerData.totalSteps += 0.5
@@ -144,6 +156,7 @@ function Player:checkMinifier()
         if not stillInside then
             self.uiHud:setVisible(false)
             self.currentMinifier = nil
+            PlayerData.readyToShrink = false
         end
     end
 end
@@ -214,7 +227,7 @@ function Player:update()
   self:setZIndex(self.y)
 
   self:checkTrigger()
-   self:checkMinifier()
+  self:checkMinifier()
 
   -- if PlayerData.storyCounter == 4 then
   -- PlayerData.isRinging = true
