@@ -113,6 +113,24 @@ function Player:deFocus() -- unused
     PlayerData.isFocused = false
   end
 end
+function Player:showUIHUD()
+  -- Base position above the player
+  local hudX = self.x + self.playerUIX
+  local hudY = self.y - 40 -- normal default above player
+  
+  -- Adjust for top of screen
+  if self.y < 60 then
+    hudY = self.y + self.playerUIY / 2 -- move down instead of above
+  end
+  
+  -- Adjust for right edge
+  if self.x > 350 then
+      hudX = self.x - self.playerUIX -- move to left of player
+  end
+  
+  self.uiHud:moveTo(hudX, hudY)
+  self.uiHud:setVisible(true)
+end
 
 function Player:checkTrigger()
     -- Check for dialog activation (A button)
@@ -140,22 +158,7 @@ function Player:checkTrigger()
             if sprite == self.currentTrigger then
               stillInside = true
 
-              -- Base position above the player
-              local hudX = self.x + self.playerUIX
-              local hudY = self.y - 40 -- normal default above player
-
-              -- Adjust for top of screen
-              if self.y < 60 then
-                hudY = self.y + self.playerUIY / 2 -- move down instead of above
-              end
-
-              -- Adjust for right edge
-              if self.x > 350 then
-                  hudX = self.x - self.playerUIX -- move to left of player
-              end
-
-              self.uiHud:moveTo(hudX, hudY)
-              self.uiHud:setVisible(true)
+              self:showUIHUD()
 
               -- Solo se activa una vez cuando el jugador entra en el trigger
               if not self.triggerEnteredOnce then
@@ -164,7 +167,7 @@ function Player:checkTrigger()
                 elseif self.currentTrigger.type == "Search" then
                   self.uiHud:setPressA()
                 elseif self.currentTrigger.type == nil then
-                self.uiHud:setPressA()
+                  self.uiHud:setPressA()
                 end
                 self.triggerEnteredOnce = true -- Marca que ya se ejecutó
               end

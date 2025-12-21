@@ -19,7 +19,8 @@ function Player:collisionResponse(other)
     other:taken() 
     
   elseif other:isa(Box) then
-    return 'freeze' 
+  
+  return 'freeze' 
     
   elseif other:isa(Trigger) then
   if other.type == "Cutscene" then
@@ -107,6 +108,8 @@ function Player:collisionResponse(other)
   end
   elseif other:isa(PropItem) and other.type == 'minifier' then
     print('ready to minify')
+    self:showUIHUD()
+    self.uiHud:setPressA()
   return 'overlap'
   elseif other:isa(PropItem) then
   return 'overlap'
@@ -136,5 +139,4 @@ function Player:collisionResponse(other)
     end
  
   end
-  
 end
