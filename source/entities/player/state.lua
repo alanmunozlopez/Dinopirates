@@ -1,24 +1,24 @@
 function Player:fallBelow()
   print("💀 Player falling...")
-  
+
   local currentRoomIndex = PlayerData.floor  -- Current index in levelsLDTK
   local lowerRoomNumber, lowerRoomData = GetLowerRoom(currentRoomIndex)
-  
+
   if not lowerRoomNumber then
     print("⚠️  Cannot fall from this room")
     -- Optional: show message to player
     return
   end
-  
+
   local nextScene = RoomTranslate(lowerRoomNumber)
-  
+
   if nextScene then
     -- Keep X and Y position when falling
     PlayerData.playerSpawn.x = self.x
     PlayerData.playerSpawn.y = self.y
-    
+
     print("✅ Transitioning to room:", lowerRoomNumber)
-    
+
     Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable, {
       imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
       imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
@@ -33,23 +33,23 @@ end
 
 function Player:riseAbove()
   print("🚀 Player climbing...")
-  
+
   local currentRoomIndex = PlayerData.floor
   local upperRoomNumber, upperRoomData = GetUpperRoom(currentRoomIndex)
-  
+
   if not upperRoomNumber then
     print("⚠️  Cannot climb from this room")
     return
   end
-  
+
   local nextScene = RoomTranslate(upperRoomNumber)
-  
+
   if nextScene then
     PlayerData.playerSpawn.x = self.x
     PlayerData.playerSpawn.y = self.y
-    
+
     print("✅ Transitioning to room:", upperRoomNumber)
-    
+
     Noble.transition(nextScene, 1.5, Noble.Transition.Default)
   else
     print("❌ Scene Floor" .. upperRoomNumber .. " not found")
@@ -81,16 +81,16 @@ end
 function Player:dead() -- unused
   self.isAlive = false
   local function deathScreen()
-  
+
     Noble.transition(DeadScene)
-  
+
   end
   playdate.timer.performAfterDelay(1000, deathScreen)
 end
 
 function Player:focus() -- unused
   if PlayerData.sanity > 20 then
-    PlayerData.sanity -= 20 
+    PlayerData.sanity -= 20
     PlayerData.isFocused = true
   end
 end
@@ -105,7 +105,7 @@ function Player:pedometer()
   end
 end
 function Player:burnCalories(calories)
-    PlayerData.calories -= calories 
+    PlayerData.calories -= calories
 end
 
 function Player:deFocus() -- unused
@@ -117,41 +117,56 @@ function Player:showUIHUD()
   -- Base position above the player
   local hudX = self.x + self.playerUIX
   local hudY = self.y - 40 -- normal default above player
-  
+
   -- Adjust for top of screen
   if self.y < 60 then
     hudY = self.y + self.playerUIY / 2 -- move down instead of above
   end
-  
+
   -- Adjust for right edge
   if self.x > 350 then
       hudX = self.x - self.playerUIX -- move to left of player
   end
-  
+
   self.uiHud:moveTo(hudX, hudY)
   self.uiHud:setVisible(true)
 end
+function Player:checkMinifier()
+    if self.currentMinifier then
+        local stillInside = false
+        for _, sprite in ipairs(self:overlappingSprites()) do
+            if sprite == self.currentMinifier then
+                stillInside = true
+                break
+            end
+        end
 
+        if not stillInside then
+            self.uiHud:setVisible(false)
+            self.currentMinifier = nil
+        end
+    end
+end
 function Player:checkTrigger()
     -- Check for dialog activation (A button)
     if self.currentTrigger and playdate.buttonJustPressed(playdate.kButtonA) then
         local trigger = self.currentTrigger
-    
+
         PlayerData.isGaming = false
         PlayerData.isTalking = true
         self.dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
-    
+
         Utilities.grantAchievementIfNeeded(trigger.script)
     end
-    
+
     -- Performance: Only check overlapping sprites if player moved significantly
     local distanceMoved = math.abs(self.x - self.lastCheckX) + math.abs(self.y - self.lastCheckY)
     local shouldCheckOverlap = distanceMoved > 5 or self.currentTrigger ~= nil
-    
+
     if shouldCheckOverlap then
       self.lastCheckX = self.x
       self.lastCheckY = self.y
-      
+
       if self.currentTrigger then
         local stillInside = false
         for _, sprite in ipairs(self:overlappingSprites()) do
@@ -175,7 +190,7 @@ function Player:checkTrigger()
               break
             end
           end
-      
+
           if not stillInside then
               self.uiHud:setVisible(false)
               self.currentTrigger = nil
@@ -188,23 +203,24 @@ end
 function Player:update()
   -- Update dash movement if dashing
   self:updateDash()
-  
+
   -- Hide light cone after display time
   if self.lightConeHideTime and playdate.getCurrentTimeMilliseconds() >= self.lightConeHideTime then
     PlayerData.showLightCone = false
     self.lightConeHideTime = nil
   end
-  
+
   -- Performance: Only update zIndex if Y position changed significantly
   self:setZIndex(self.y)
 
   self:checkTrigger()
-  
+   self:checkMinifier()
+
   -- if PlayerData.storyCounter == 4 then
-  -- PlayerData.isRinging = true 
+  -- PlayerData.isRinging = true
   -- end
-  
-  
+
+
   -- Mark: save actual position
   PlayerData.x = self.x
   PlayerData.y = self.y
@@ -216,7 +232,7 @@ function Player:update()
   end
   -- Mark: Reduce speed in the dark
   if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
-    if PlayerData.battery < 20 then 
+    if PlayerData.battery < 20 then
       self.speed = 0.5 * self.initialSpeed
     elseif PlayerData.battery > 20 then
       self.speed = self.initialSpeed
@@ -228,4 +244,3 @@ function Player:update()
   PlayerData.isActive = false
   -- Performance: Achievement check removed from update loop (handled by events)
 end
-

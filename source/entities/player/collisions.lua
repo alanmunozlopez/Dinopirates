@@ -1,5 +1,5 @@
 function Player:collisionResponse(other)
-  
+
   if other:isa(Enemy) then
     if other:isa(Brocorat) then -- validate candance also
       PlayerData.lastEnemyTouched.type = "Brocorat"
@@ -8,20 +8,20 @@ function Player:collisionResponse(other)
       PlayerData.lastEnemyTouched.y = other.y
       self:fight()
       return 'overlap'
-      
+
     end
-    
+
   elseif other:isa(CrewMember) then
     -- Validate having the capture bag
     if PlayerData.CrewMemberData.amountTaken == 0 then
       self.dialogUI:addScreen("gotcha",other.sourceFeed)
     end
-    other:taken() 
-    
+    other:taken()
+
   elseif other:isa(Box) then
-  
-  return 'freeze' 
-    
+
+  return 'freeze'
+
   elseif other:isa(Trigger) then
   if other.type == "Cutscene" then
       -- Cutscenes trigger automatically
@@ -52,51 +52,51 @@ function Player:collisionResponse(other)
       other:remove()
   end
   return 'overlap'
-  
+
   elseif other:isa(Items) and other.type == 'keycard' then
     local keyNumber = other.keyNumber or 1  -- Get key number from item
     other:removeAll()
     self:grabKey(keyNumber)
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'lamp' then
     other:removeAll()
     self:grabLamp()
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'radio' then
     other:removeAll()
     self:grabRadio()
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'notes' then
     other:removeAll()
     self:grabNotes()
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'bag' then
     other:removeAll()
     self:grabBag()
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'honk' then
     other:removeAll()
     self:grabBag()
   return 'overlap'
-  
+
   elseif other:isa(Items) and other.type == 'tools' then
     other:removeAll()
     self:grabTools()
   return 'overlap'
-  
+
   elseif other:isa(Items) and other.type == 'boots' then
     other:removeAll()
     self:grabBoots()
   return 'overlap'
-    
+
   elseif other:isa(PropItem) and other.isHole then
   -- ⭐ Handle ALL hole types
-  
+
   -- If player has boots with battery, can walk over the hole
   if PlayerData.items.hasBoots == true and PlayerData.battery > 0 then
       self:drainBattery(0.5)
@@ -106,15 +106,19 @@ function Player:collisionResponse(other)
       self:fallBelow()
       return 'overlap'
   end
+  
   elseif other:isa(PropItem) and other.type == 'minifier' then
+    self.currentMinifier = other
     print('ready to minify')
     self:showUIHUD()
     self.uiHud:setPressA()
   return 'overlap'
+
+
   elseif other:isa(PropItem) then
   return 'overlap'
   elseif other:isa(Door) then
-    
+
     if other.status == 'open' then
       -- Door is open, allow passage
       other:prevRoom(other.direction)
@@ -123,7 +127,7 @@ function Player:collisionResponse(other)
     elseif other.status == 'closed' then
       -- Door is closed, check if player has the required key
       local requiredKey = other.keyNumber or 1  -- Default to key 1 if not specified
-      
+
       if PlayerData.keys[requiredKey] == true then
         -- Player has the correct key
         printDebug("🔓 Door unlocked with key", requiredKey)
@@ -137,6 +141,6 @@ function Player:collisionResponse(other)
         return 'freeze'
       end
     end
- 
+
   end
 end
