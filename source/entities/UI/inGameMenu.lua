@@ -147,29 +147,30 @@ function inGameMenu:selectItem()
 end
 
 function inGameMenu:update()
-  drawStatusText(menuImage)
-  
-  if table.getSize(PlayerData.items) > 0 then
+  if PlayerData.isEquiping == true then
+    drawStatusText(menuImage)
     
-      if PlayerData.activeItem < 1 then
-        PlayerData.activeItem = table.getSize(PlayerData.items) 
-      end
-      if PlayerData.activeItem > table.getSize(PlayerData.items) then
-        PlayerData.activeItem = 1
-      end
-      if PlayerData.isEquiping == true then  
-        if menuSprite then
-            menuSprite:add()
+    if table.getSize(PlayerData.items) > 0 then
+      
+        if PlayerData.activeItem < 1 then
+          PlayerData.activeItem = table.getSize(PlayerData.items) 
         end
-        if PlayerData.items.hasLamp == true then
-          lampItem:show(18, 151)
+        if PlayerData.activeItem > table.getSize(PlayerData.items) then
+          PlayerData.activeItem = 1
         end
-        if PlayerData.items.hasBoots == true then
-          bootItem:show(48, 153)
+        if PlayerData.isEquiping == true then  
+          if menuSprite then
+              menuSprite:add()
+          end
+          if PlayerData.items.hasLamp == true then
+            lampItem:show(18, 151)
+          end
+          if PlayerData.items.hasBoots == true then
+            bootItem:show(48, 153)
+          end
+          
+          
         end
-        
-        
-      end
+    end
   end
-  
 end

@@ -66,7 +66,7 @@ function scene:init()
 		PlayerData.battery = 100
 		player:grabBoots()
 	end
-	playdate.display.setRefreshRate(35)
+	playdate.display.setRefreshRate(50)
 	-- Your code here
 	
 end
@@ -431,19 +431,7 @@ function scene:movePlayer(direction)
 		end
 	end
 end
--- Commented out for dash attack implementation
--- function playerFocus()-- improve this with more constrains.
--- 	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
--- 		player.loadingPower = true
--- 		player:focus()
--- 	end
--- end
--- function playerDefocus()
--- 	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
--- 		player.loadingPower = false
--- 		player:deFocus()
--- 	end
--- end
+
 -- Define the inputHander for this scene here, or use a previously defined inputHandler.
 
 -- scene.inputHandler = someOtherInputHandler

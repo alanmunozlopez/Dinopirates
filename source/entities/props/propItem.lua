@@ -85,9 +85,10 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
     holeBottom = { isHole = true, collideRect = {0, 0, 32, 22}, removePropCollider = true },
     holeBottomLeft = { isHole = true, collideRect = {10, 0, 22, 22}, removePropCollider = true },
   }
-  
-  if self.type == 'minifier' then
+  if self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.type == 'minifier' then
     self:setZIndex(ZIndex.props)
+  end
+  if self.type == 'minifier' then
     self.propcollider:remove()
   end
   -- Apply hole configuration
@@ -120,9 +121,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
 end
 
 function PropItem:update()
-  if self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.type == 'minifier' then
-    self:setZIndex(ZIndex.props)
-  else
+  if not (self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.type == 'minifier') then
     self:setZIndex(self.y)
   end
 end

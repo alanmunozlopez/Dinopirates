@@ -42,10 +42,5 @@ function Items:removeAll()
   self:remove()
 end
 
-function Items:update()
-  -- if PlayerData.sonarActive == true  then
-  --    self:sonar('key')
-  --  end
-end
 
 

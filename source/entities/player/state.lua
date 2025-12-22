@@ -225,7 +225,6 @@ function Player:update()
     self.lightConeHideTime = nil
   end
 
-  -- Performance: Only update zIndex if Y position changed significantly
   self:setZIndex(self.y)
 
   self:checkTrigger()
@@ -234,7 +233,6 @@ function Player:update()
   -- if PlayerData.storyCounter == 4 then
   -- PlayerData.isRinging = true
   -- end
-
 
   -- Mark: save actual position
   PlayerData.x = self.x
