@@ -101,11 +101,13 @@ end
 
 function Player:shrink()
   PlayerData.isTiny = true
+  self:setCollideRect(16, 24, 16, 16)
   self.animation:setState('tinyIdle')
 end
 
 function Player:grow()
     PlayerData.isTiny = false
+    self:setCollideRect(8, 24, 30, 24)
     self:idle()
 end
 function Player:pedometer()
