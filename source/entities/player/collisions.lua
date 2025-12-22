@@ -111,7 +111,12 @@ function Player:collisionResponse(other)
     self.currentMinifier = other
     PlayerData.readyToShrink = true
     self:showUIHUD()
-    self.uiHud:setPressA()
+    if PlayerData.isTiny == false then
+        self.uiHud:setCrankClock()
+    else
+        self.uiHud:setCrankAntiClock()
+    end
+    
   return 'overlap'
 
 

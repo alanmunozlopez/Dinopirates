@@ -100,12 +100,13 @@ function Player:focus() -- unused
 end
 
 function Player:shrink()
-  print("shrunk")
   PlayerData.isTiny = true
+  self.animation:setState('tinyIdle')
 end
 
 function Player:grow()
     PlayerData.isTiny = false
+    self:idle()
 end
 function Player:pedometer()
   PlayerData.steps += 0.5

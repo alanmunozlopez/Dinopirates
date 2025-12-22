@@ -36,6 +36,8 @@ function Player:move(direction)
       elseif (direction == "up") then
         if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false then
           self.animation:setState('up')
+        elseif PlayerData.isTiny == true then
+          self.animation:setState('tinyUp')
         else
           self.animation:setState('up')
         end
@@ -44,6 +46,8 @@ function Player:move(direction)
       elseif (direction == "down") then
         if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false then
           self.animation:setState('lampDown')
+        elseif PlayerData.isTiny == true then
+          self.animation:setState('tinyDown')
         else
           self.animation:setState('down')
         end

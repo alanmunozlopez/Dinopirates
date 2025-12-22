@@ -51,6 +51,12 @@ function Player:initAnimations()
   self.animation:addState('tinyLeft', 85, 87)
   self.animation.tinyLeft.frameDuration = 3
   
+  self.animation:addState('tinyDown', 88, 90)
+  self.animation.tinyDown.frameDuration = 3
+  
+  self.animation:addState('tinyUp', 91, 93)
+  self.animation.tinyUp.frameDuration = 3
+  
   if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
     self.animation:setState('lampIdle')
   elseif PlayerData.isTiny == true then
