@@ -24,7 +24,7 @@ function Player:init(x, y, speed, Zindex)
     self:moveTo(x, y)
     self:setCollideRect(8, 24, 30, 24)
     if PlayerData.isTiny == true then
-        self:setCollideRect(16, 24, 16, 16)
+        self:setCollideRect(16, 32, 16, 16)
     end
     self:setCollidesWithGroups(
         {

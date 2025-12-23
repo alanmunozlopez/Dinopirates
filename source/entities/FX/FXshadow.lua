@@ -13,7 +13,12 @@ function FXshadow:init(player, lightSize, globalLightAmount, Zindex)
 	self:setCollidesWithGroups(1)                      -- Set collision group (for interaction or layering)
 	self:setImage(shadow)                              -- Set the blank shadow image
 	self:setZIndex(Zindex)                             -- Define drawing order
-	self.globalLightAmount = globalLightAmount         -- Base dither for global light
+	self.globalLightAmount = globalLightAmount   
+	if PlayerData.isTiny == true then
+		self.lightSizeMulti = 0.5
+	else
+		self.lightSizeMulti = 1
+	end      -- Base dither for global light
 	self:add()	
 	self:refresh()                                     -- Trigger initial drawing
 end
@@ -48,7 +53,7 @@ function FXshadow:refresh()
 	-- Light parameters that will change based on battery
 	local lightSourceAmount = 0
 	local lightSourceSize = 35
-	local maskSize = self.lightSize
+	local maskSize = self.lightSize * self.lightSizeMulti
 	local decreaseSize = maskSize / 10
 	local lightAmount = self.globalLightAmount
 	local globalDither = self.globalLightAmount
@@ -157,7 +162,7 @@ function FXshadow:refresh()
 		Graphics.setColor(Graphics.kColorBlack)
 		Graphics.setDitherPattern(lightAmount, Graphics.image.kDitherTypeBayer8x8)
 		-- Only show cone when PlayerData.showLightCone is true, lamp is selected, and not idle
-		if Direction == 'idle' or not PlayerData.showLightCone or PlayerData.activeItem ~= 1 then
+		if Direction == 'idle' then
 			Graphics.fillCircleAtPoint(self.player.x, self.player.y, maskSize)
 		else
 			Graphics.fillPolygon(Light)

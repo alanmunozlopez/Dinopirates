@@ -145,6 +145,7 @@ function Player:showUIHUD()
   self.uiHud:moveTo(hudX, hudY)
   self.uiHud:setVisible(true)
 end
+
 function Player:checkMinifier()
     if self.currentMinifier then
         local stillInside = false
@@ -162,6 +163,7 @@ function Player:checkMinifier()
         end
     end
 end
+
 function Player:checkTrigger()
     -- Check for dialog activation (A button)
     if self.currentTrigger and playdate.buttonJustPressed(playdate.kButtonA) then
