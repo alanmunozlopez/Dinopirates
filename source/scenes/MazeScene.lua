@@ -620,7 +620,7 @@ scene.inputHandler = {
 				if PlayerData.readyToShrink == true then
 					print(PlayerData.playerSize)
 					PlayerData.playerSize += 1
-					if PlayerData.playerSize == 50 then
+					if PlayerData.playerSize == 25 then
 						print("grow time")
 						player:grow()
 					end

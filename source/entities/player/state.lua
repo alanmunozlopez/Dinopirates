@@ -102,7 +102,7 @@ end
 function Player:shrink()
   PlayerData.isTiny = true
   self:setCollideRect(16, 24, 16, 16)
-  self.animation:setState('tinyIdle')
+  self.animation:setState('transformTo')
 end
 
 function Player:grow()
