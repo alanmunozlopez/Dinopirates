@@ -14,11 +14,7 @@ function FXshadow:init(player, lightSize, globalLightAmount, Zindex)
 	self:setImage(shadow)                              -- Set the blank shadow image
 	self:setZIndex(Zindex)                             -- Define drawing order
 	self.globalLightAmount = globalLightAmount   
-	if PlayerData.isTiny == true then
-		self.lightSizeMulti = 0.5
-	else
-		self.lightSizeMulti = 1
-	end      -- Base dither for global light
+	     -- Base dither for global light
 	self:add()	
 	self:refresh()                                     -- Trigger initial drawing
 end
@@ -45,7 +41,11 @@ end
 -- Redraw the shadow mask depending on player state and light battery level
 function FXshadow:refresh()
 	local battery = PlayerData.battery * 2 -- Artificially scale battery level
-	
+	if PlayerData.isTiny == true then
+		self.lightSizeMulti = 0.5
+	else
+		self.lightSizeMulti = 1
+	end 
 	-- Create two mask images: one for soft lighting and one for focused light
 	local shadowMask = shadow:getMaskImage()
 	local lightSource = shadow:getMaskImage()

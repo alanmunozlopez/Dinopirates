@@ -56,6 +56,9 @@ local inGameEquip = nil
 -- MARK: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 -- Mark: variables for crank checking
+local crankIsMoving = false
+local crankStopTimer = 0
+local CRANK_STOP_THRESHOLD = 0.1 -- seconds of inactivity before considering crank stopped
 
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
@@ -364,6 +367,17 @@ function scene:update()
 		cheat:update()
 	end
 	
+	-- MARK: Crank stop detection
+	if crankIsMoving then
+		crankStopTimer += (1/50) -- Increment by frame time (assuming 50fps)
+		
+		if crankStopTimer >= CRANK_STOP_THRESHOLD then
+			crankIsMoving = false
+			crankStopTimer = 0
+			-- do something when player stopped cranking
+		end
+	end
+	
 	-- Cutscene input handling
 	if PlayerData.isCutscene == true then
 		-- Disable game input handlers while cutscene is running
@@ -598,7 +612,9 @@ scene.inputHandler = {
 	-- Crank
 	--
 	cranked = function(change, acceleratedChange)
-		
+		-- Reset crank stop detection
+		crankIsMoving = true
+		crankStopTimer = 0
 		
 		local ticksValue = playdate.getCrankTicks(4)
 		if not player.isAlive then return end
@@ -606,7 +622,9 @@ scene.inputHandler = {
 		if ticksValue > 0 then
 			player:burnCalories(1)
 		end
-		
+		if PlayerData.readyToShrink == true and PlayerData.actualPlayerSize < PlayerData.playerSize and 0 < PlayerData.actualPlayerSize then
+			player:transformCycle()
+		end
 		if PlayerData.isGaming == true then
 			if ticksValue > 0 then
 				if player.loadingPower then
@@ -627,6 +645,7 @@ scene.inputHandler = {
 					end
 				end
 			end
+			
 			if (ticksValue < 0) then
 				if PlayerData.readyToShrink == true then
 					PlayerData.actualPlayerSize -= 1

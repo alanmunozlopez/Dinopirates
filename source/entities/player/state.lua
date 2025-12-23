@@ -62,6 +62,10 @@ function Player:displayDialog()
   self.dialogUI:nextDialog()
 end
 
+function Player:transformCycle()
+    self.animation:setState('transformCycle')
+end
+
 function Player:idle()
   if self.isAlive == true then
     if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
