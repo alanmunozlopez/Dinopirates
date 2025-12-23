@@ -120,7 +120,8 @@
 				"customFields": {
 					"script": "microwaveBurn",
 					"usedTrigger": false,
-					"type": "Search"
+					"type": "Search",
+					"mapPercent": 0
 				}
 			},
 			{
@@ -135,7 +136,8 @@
 				"customFields": {
 					"script": "kitchenWeapons",
 					"usedTrigger": false,
-					"type": "Search"
+					"type": "Search",
+					"mapPercent": 0
 				}
 			},
 			{
@@ -150,7 +152,8 @@
 				"customFields": {
 					"script": "inneficientCutting",
 					"usedTrigger": false,
-					"type": "Story"
+					"type": "Story",
+					"mapPercent": 0
 				}
 			},
 			{
@@ -165,7 +168,8 @@
 				"customFields": {
 					"script": "justBoxes",
 					"usedTrigger": false,
-					"type": "Search"
+					"type": "Search",
+					"mapPercent": 0
 				}
 			},
 			{
@@ -180,7 +184,8 @@
 				"customFields": {
 					"script": "notnormalBrocoli",
 					"usedTrigger": false,
-					"type": "Search"
+					"type": "Search",
+					"mapPercent": 0
 				}
 			}
 		],

@@ -2323,12 +2323,12 @@ levelsLDTK = {
 		  iid = "580605f0-ac70-11f0-8539-0d60ca94c541",
 		  layer = "Enemies",
 		  x = 268,
-		  y = 180,
+		  y = 182,
 		  width = 32,
 		  height = 32,
 		  color = 14120515,
 		  customFields = {
-			speed = 0.5,
+			speed = 1,
 			dead = false
 		  }
 		}

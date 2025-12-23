@@ -375,6 +375,7 @@ function scene:update()
 			crankIsMoving = false
 			crankStopTimer = 0
 			-- do something when player stopped cranking
+			player:idle()
 		end
 	end
 	
@@ -622,23 +623,25 @@ scene.inputHandler = {
 		if ticksValue > 0 then
 			player:burnCalories(1)
 		end
-		if PlayerData.readyToShrink == true and PlayerData.actualPlayerSize < PlayerData.playerSize and 0 < PlayerData.actualPlayerSize then
+		
+		if PlayerData.readyToShrink == true and PlayerData.actualPlayerSize < PlayerData.playerSize and PlayerData.actualPlayerSize > 0 then
 			player:transformCycle()
 		end
+		
 		if PlayerData.isGaming == true then
 			if ticksValue > 0 then
 				if player.loadingPower then
-					print('powa')  -- Consider removing debug print
+					-- posible charged skill
 				end
 				
-				if PlayerData.battery < 100 and PlayerData.readyToShrink == false then
+				if PlayerData.battery < 100 and PlayerData.readyToShrink == false and  PlayerData.isTiny == false then
 					player:chargeBattery(3)
 					if shadow then
 						shadow:refresh()
 					end
 				end
 				
-				if PlayerData.readyToShrink == true then
+				if PlayerData.readyToShrink == true and PlayerData.isTiny == true then
 					PlayerData.actualPlayerSize += 1
 					if PlayerData.actualPlayerSize == PlayerData.playerSize then
 						player:grow()
@@ -647,7 +650,7 @@ scene.inputHandler = {
 			end
 			
 			if (ticksValue < 0) then
-				if PlayerData.readyToShrink == true then
+				if PlayerData.readyToShrink == true and PlayerData.isTiny == false then
 					PlayerData.actualPlayerSize -= 1
 					if PlayerData.actualPlayerSize == 0 then
 						player:shrink()

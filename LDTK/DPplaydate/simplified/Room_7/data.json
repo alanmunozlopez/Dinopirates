@@ -116,7 +116,8 @@
 				"customFields": {
 					"script": "wakeup",
 					"usedTrigger": false,
-					"type": "Story"
+					"type": "Story",
+					"mapPercent": 0
 				}
 			},
 			{
@@ -131,7 +132,8 @@
 				"customFields": {
 					"script": "someTrash",
 					"usedTrigger": false,
-					"type": "Search"
+					"type": "Search",
+					"mapPercent": 0
 				}
 			},
 			{
@@ -146,7 +148,8 @@
 				"customFields": {
 					"script": "justBoxes",
 					"usedTrigger": false,
-					"type": "Search"
+					"type": "Search",
+					"mapPercent": 0
 				}
 			}
 		],

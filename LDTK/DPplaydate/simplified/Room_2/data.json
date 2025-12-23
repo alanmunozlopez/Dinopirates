@@ -120,7 +120,8 @@
 				"customFields": {
 					"script": "giftFor100",
 					"usedTrigger": false,
-					"type": "Search"
+					"type": "Search",
+					"mapPercent": 0
 				}
 			},
 			{
@@ -135,7 +136,8 @@
 				"customFields": {
 					"script": "giftFor233",
 					"usedTrigger": false,
-					"type": "Search"
+					"type": "Search",
+					"mapPercent": 0
 				}
 			},
 			{
@@ -150,7 +152,8 @@
 				"customFields": {
 					"script": "entranceMess",
 					"usedTrigger": false,
-					"type": "Search"
+					"type": "Search",
+					"mapPercent": 0
 				}
 			}
 		],
