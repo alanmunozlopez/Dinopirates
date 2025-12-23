@@ -58,7 +58,7 @@ function Player:initAnimations()
   self.animation.tinyUp.frameDuration = frameDurationWalk/2
   
   self.animation:addState('transformTo', 94, 99, 'tinyIdle')
-  self.animation.transformTo.frameDuration = 3
+  self.animation.transformTo.frameDuration = 4
   
   self.animation:addState('transformCycle', 100, 105)
   self.animation.transformCycle.frameDuration = 3

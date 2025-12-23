@@ -55,6 +55,8 @@ local uiScreen = nil
 local inGameEquip = nil
 -- MARK: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
+-- Mark: variables for crank checking
+
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
 
@@ -597,6 +599,7 @@ scene.inputHandler = {
 	--
 	cranked = function(change, acceleratedChange)
 		
+		
 		local ticksValue = playdate.getCrankTicks(4)
 		if not player.isAlive then return end
 		
@@ -618,17 +621,16 @@ scene.inputHandler = {
 				end
 				
 				if PlayerData.readyToShrink == true then
-					PlayerData.playerSize += 1
-					if PlayerData.ActualPlayerSize == PlayerData.playerSize then
+					PlayerData.actualPlayerSize += 1
+					if PlayerData.actualPlayerSize == PlayerData.playerSize then
 						player:grow()
 					end
 				end
 			end
 			if (ticksValue < 0) then
 				if PlayerData.readyToShrink == true then
-					PlayerData.playerSize -= 1
-					if PlayerData.playerSize == 0 then
-						print("shrink time")
+					PlayerData.actualPlayerSize -= 1
+					if PlayerData.actualPlayerSize == 0 then
 						player:shrink()
 					end
 				end
