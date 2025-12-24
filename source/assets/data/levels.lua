@@ -737,6 +737,7 @@ levelsLDTK = {
 		  color = 16711748,
 		  customFields = {
 			script = "kitchenWeapons",
+			tinyScript="tinyKnife",
 			usedTrigger = false,
 			type = "Search"
 		  }

@@ -25,17 +25,24 @@ function Trigger:returnScript()
         return self.script
     end
     
-    -- Marcar como usado
+    -- Marcar como usado y verificar si hay script alternativo para modo tiny
+    local scriptToReturn = self.script
     for _, triggerData in ipairs(roomData.entities.Triggers) do
         if triggerData.iid == self.iid then
             local cf = triggerData.customFields or {}
             cf.usedTrigger = true  
             print("✅ Trigger marcado como usado:", triggerData.iid)
+            
+            -- Si el jugador está en modo tiny y existe tinyScript, usarlo
+            if PlayerData.isTiny and cf.tinyScript then
+                scriptToReturn = cf.tinyScript
+                print("🔍 Usando script tiny:", cf.tinyScript)
+            end
             break
         end
     end
     
-    return self.script
+    return scriptToReturn
 end
 
 -- ⭐ Función alternativa para marcar como usado sin clearCollideRect

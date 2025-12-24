@@ -103,6 +103,16 @@ script = {
         }
     },
     {
+        name = "tinyKnife",
+        dialog = {
+            {
+                video = 'player',
+                text = "tinyKnife",
+                screen = Graphics.image.new('assets/images/ui/dialog/img/smallCutlerly.png')
+            }
+        }
+    },
+    {
         name = "inneficientCutting",
         dialog = {
             {

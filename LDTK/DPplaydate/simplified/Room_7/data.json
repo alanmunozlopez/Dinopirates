@@ -117,7 +117,8 @@
 					"script": "wakeup",
 					"usedTrigger": false,
 					"type": "Story",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			},
 			{
@@ -133,7 +134,8 @@
 					"script": "someTrash",
 					"usedTrigger": false,
 					"type": "Search",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			},
 			{
@@ -149,7 +151,8 @@
 					"script": "justBoxes",
 					"usedTrigger": false,
 					"type": "Search",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			}
 		],

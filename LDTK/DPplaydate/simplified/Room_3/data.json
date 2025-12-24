@@ -121,7 +121,8 @@
 					"script": "microwaveBurn",
 					"usedTrigger": false,
 					"type": "Search",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			},
 			{
@@ -137,7 +138,8 @@
 					"script": "kitchenWeapons",
 					"usedTrigger": false,
 					"type": "Search",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": "tinyKnifeTiny"
 				}
 			},
 			{
@@ -153,7 +155,8 @@
 					"script": "inneficientCutting",
 					"usedTrigger": false,
 					"type": "Story",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			},
 			{
@@ -169,7 +172,8 @@
 					"script": "justBoxes",
 					"usedTrigger": false,
 					"type": "Search",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			},
 			{
@@ -185,7 +189,8 @@
 					"script": "notnormalBrocoli",
 					"usedTrigger": false,
 					"type": "Search",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			}
 		],
