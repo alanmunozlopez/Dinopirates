@@ -71,7 +71,11 @@ function dialogScreen:nextDialog()
 		
 		if dialogcounter <= table.getsize(dialogArray)then
 			if videoActive == false then
-				video = videoFeed(400,240,dialogArray[dialogcounter].video, ZIndex.alert)
+				if PlayerData.isTiny == true then
+					video = videoFeed(400,240,'tiny', ZIndex.alert)
+				else	
+					video = videoFeed(400,240,dialogArray[dialogcounter].video, ZIndex.alert)
+				end
 				videoActive = true
 			end
 			

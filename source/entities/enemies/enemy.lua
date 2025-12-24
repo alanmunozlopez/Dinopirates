@@ -7,11 +7,11 @@ import 'entities/FX/FXsonar'
 -- La velocidad se ajusta en rangos: 0 (detenido), 1-20 (50%), 21-60 (70%), 61-100 (100%)
 -- Slowdown adicional en oscuridad con batería baja
 function Enemy:updateMoveSpeed()
-    if PlayerData.battery == 0 then
-        self.moveSpeed = 0
-    elseif PlayerData.battery <= 20 then
+    if PlayerData.battery == 0 and PlayerData.isInDarkness == true then
+        self.moveSpeed = 0.2
+    elseif PlayerData.battery <= 20 and PlayerData.isInDarkness == true then
         self.moveSpeed = 0.5 * self.initialSpeed
-    elseif PlayerData.battery <= 60 then
+    elseif PlayerData.battery <= 60 and PlayerData.isInDarkness == true then
         self.moveSpeed = 0.7 * self.initialSpeed
     else
         self.moveSpeed = self.initialSpeed
