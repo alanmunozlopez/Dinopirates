@@ -58,8 +58,12 @@ PlayerData = {
 		hasNotes = true,
 		hasBoots = false,
 		hasBag = false,
-		hasHonk = false,
 		hasTools = false,
+	},
+	skills ={
+		canFlash = true,
+		canDash = true,
+	
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20
@@ -136,8 +140,12 @@ PlayerDataOriginal = {
 		hasNotes = true,
 		hasBoots = false,
 		hasBag = false,
-		hasHonk = false,
 		hasTools = false,
+	},
+	skills ={
+		canFlash = true,
+		canDash = true,
+	
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20
