@@ -148,7 +148,7 @@ end
 
 function inGameMenu:update()
   if PlayerData.isEquiping == true then
-    drawStatusText(menuImage)
+    -- drawStatusText(menuImage)
     
     if table.getSize(PlayerData.items) > 0 then
       

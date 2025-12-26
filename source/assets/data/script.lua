@@ -108,7 +108,7 @@ script = {
             {
                 video = 'player',
                 text = "tinyKnife",
-                screen = Graphics.image.new('assets/images/ui/dialog/img/smallCutlerly.png')
+                screen = Graphics.image.new('assets/images/ui/dialog/img/tinyKnife.png')
             }
         }
     },
