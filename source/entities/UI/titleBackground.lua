@@ -15,7 +15,7 @@ function TitleBackground:init(x, y, zIndex)
   local frameDefault = 4
   self.animation:addState('continue', 1, 1)
   self.animation.continue.frameDuration = frameDefault
-  self.animation:addState('deleteGame', 2, 5)
+  self.animation:addState('deleteGame', 3, 3)
   self.animation.deleteGame.frameDuration = frameDefault
   self.animation:addState('newGame', 6, 6)
   self.animation.newGame.frameDuration = frameDefault
