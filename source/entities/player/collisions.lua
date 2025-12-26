@@ -97,7 +97,11 @@ function Player:collisionResponse(other)
   elseif other:isa(PropItem) and other.isHole then
   -- If player has boots with battery, can walk over the hole
   if PlayerData.items.hasBoots == true and PlayerData.battery > 0 then
+    if PlayerData.isTiny == true then
+      self:drainBattery(0.2)
+    else
       self:drainBattery(0.5)
+    end
       return 'overlap'
   else
       -- Without boots or without battery = fall
@@ -120,6 +124,7 @@ function Player:collisionResponse(other)
 
   elseif other:isa(PropItem) then
   return 'overlap'
+  
   elseif other:isa(Door) then
 
     if other.status == 'open' then

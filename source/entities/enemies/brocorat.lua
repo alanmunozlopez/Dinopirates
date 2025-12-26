@@ -26,7 +26,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.player = player
 	self.Zindex = Zindex
 	if moveSpeed == nil then
-		self.moveSpeed = 0.6
+		self.moveSpeed = 1
 	end
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
@@ -50,10 +50,19 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 end
 
 function Brocorat:search(player)
+	
 	if self.stunProc > 1 then -- stun idea
-		if (player.x >= self.x - self.sightRadius) and (player.x <= self.x + self.sightRadius) and 
-		   (player.y >= self.y - self.sightRadius) and (player.y <= self.y + self.sightRadius) then
-			self:blindSearch(player)
+		if PlayerData.isTiny == true then
+			local tinySight = self.sightRadius/2
+			if (player.x >= self.x - tinySight) and (player.x <= self.x + tinySight) and 
+			(player.y >= self.y - tinySight) and (player.y <= self.y + tinySight) then
+				self:blindSearch(player)
+			end
+		else
+			if (player.x >= self.x - self.sightRadius) and (player.x <= self.x + self.sightRadius) and 
+			(player.y >= self.y - self.sightRadius) and (player.y <= self.y + self.sightRadius) then
+				self:blindSearch(player)
+			end
 		end
 	end
 end

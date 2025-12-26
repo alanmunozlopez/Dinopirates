@@ -492,6 +492,8 @@ scene.inputHandler = {
 		elseif PlayerData.isGaming == true and player.isAlive == true then
 			player:useAbility()
 		end
+		print(PlayerData.playerSize)
+		checkBool(PlayerData.isTiny)
 		-- playerFocus() -- Commented out for ability system
 	end,
 	BButtonHeld = function()
@@ -617,7 +619,7 @@ scene.inputHandler = {
 		crankIsMoving = true
 		crankStopTimer = 0
 		
-		local ticksValue = playdate.getCrankTicks(4)
+		local ticksValue = playdate.getCrankTicks(4) -- maybe its better use change or acceleratedChange
 		if not player.isAlive then return end
 		
 		if ticksValue > 0 then

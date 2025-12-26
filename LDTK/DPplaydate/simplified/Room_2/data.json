@@ -121,7 +121,8 @@
 					"script": "giftFor100",
 					"usedTrigger": false,
 					"type": "Search",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			},
 			{
@@ -137,7 +138,8 @@
 					"script": "giftFor233",
 					"usedTrigger": false,
 					"type": "Search",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			},
 			{
@@ -153,7 +155,8 @@
 					"script": "entranceMess",
 					"usedTrigger": false,
 					"type": "Search",
-					"mapPercent": 0
+					"mapPercent": 0,
+					"tinyScript": null
 				}
 			}
 		],
