@@ -137,11 +137,11 @@ end
 function inGameMenu:selectItem()
     print("Item selected: " .. PlayerData.activeItem)
     -- Aquí puedes agregar la lógica específica para cada item
-    if PlayerData.activeItem == 1 and PlayerData.items.hasLamp == true then
-        print("Lamp selected!")
+    if PlayerData.activeItem == 1 and PlayerData.skills.canFlash == true then
+        print("flash selected!")
         -- Acción para la lámpara
-    elseif PlayerData.activeItem == 2 and PlayerData.items.hasBoots == true then
-        print("Boot selected!")
+    elseif PlayerData.activeItem == 2 and PlayerData.skills.canDash == true then
+        print("dash selected!")
         -- Acción para las botas
     end
 end
@@ -150,22 +150,22 @@ function inGameMenu:update()
   if PlayerData.isEquiping == true then
     drawStatusText(menuImage)
     
-    if table.getSize(PlayerData.items) > 0 then
+    if table.getSize(PlayerData.skills) > 0 then
       
         if PlayerData.activeItem < 1 then
-          PlayerData.activeItem = table.getSize(PlayerData.items) 
+          PlayerData.activeItem = table.getSize(PlayerData.skills) 
         end
-        if PlayerData.activeItem > table.getSize(PlayerData.items) then
+        if PlayerData.activeItem > table.getSize(PlayerData.skills) then
           PlayerData.activeItem = 1
         end
         if PlayerData.isEquiping == true then  
           if menuSprite then
               menuSprite:add()
           end
-          if PlayerData.items.hasLamp == true then
+          if PlayerData.skills.canFlash == true then
             lampItem:show(18, 151)
           end
-          if PlayerData.items.hasBoots == true then
+          if PlayerData.skills.canDash == true then
             bootItem:show(48, 153)
           end
           
