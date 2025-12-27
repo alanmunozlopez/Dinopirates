@@ -90,6 +90,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   end
   if self.type == 'minifier' then
     self.propcollider:remove()
+    self:setCollideRect(0, 12, 32, 18)
   end
   -- Apply hole configuration
   if holeTypes[type] then
