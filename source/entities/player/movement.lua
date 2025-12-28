@@ -50,7 +50,7 @@ function Player:move(direction)
           self.animation:setState('tinyDown')
         else
           self.animation:setState('down')
-        end
+        end 
         movementX = self.x 
         movementY = self.y + self.speed
       end
@@ -58,7 +58,7 @@ function Player:move(direction)
       self.uiHud:moveTo(movementX + self.playerUIX, movementY - self.playerUIY)
       
       local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
-      
+      self:distributeMovementTokens(1)
       PlayerData.direction = direction
       self:pedometer()
     end

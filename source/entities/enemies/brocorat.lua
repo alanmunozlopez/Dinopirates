@@ -73,10 +73,23 @@ end
 
 function Brocorat:update()
 	-- Performance: Only update AI every 3 frames
+	-- Performance: Only update AI every 3 frames
 	self.updateFrameCounter = (self.updateFrameCounter + 1) % 3
 	
-	if self.updateFrameCounter == 0 and PlayerData.isActive == true then
-		self:search(self.player)
+	-- Initialize movementFrames if nil
+	if self.movementFrames == nil then self.movementFrames = 0 end
+
+	if self.movementFrames > 0 then
+		self.movementFrames = self.movementFrames - 1
+		
+		if self.updateFrameCounter == 0 and PlayerData.isActive == true then
+			self:search(self.player)
+		end
+	else
+		-- Ensure idle animation if not moving
+		if self.animation.currentState ~= 'idle' and self.animation.currentState ~= 'shine' then
+			self.animation:setState('idle')
+		end
 	end
 	-- self:sonar()
 end

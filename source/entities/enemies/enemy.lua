@@ -23,6 +23,12 @@ function Enemy:updateMoveSpeed()
     end
 end
 
+function Enemy:addMovementTokens(amount)
+    local FRAMES_PER_TOKEN = 30 -- Adjust duration as needed
+    if not self.movementFrames then self.movementFrames = 0 end
+    self.movementFrames = self.movementFrames + (amount * FRAMES_PER_TOKEN)
+end
+
 --- Búsqueda ciega: el enemigo se mueve directamente hacia el jugador
 -- @param player table Referencia al objeto jugador
 function Enemy:blindSearch(player)

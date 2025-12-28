@@ -44,7 +44,13 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self:setZIndex(self.Zindex)
 	self:add(x, y)
 	self.hat = Hats(x,y - self.hatDelta, crewId, 2)
+	self.movementFrames = 0 -- Initialize movement frames
 	print("🧩 CrewMember spawned with IID:", self.iid, "CrewID:", crewId)
+end
+
+function CrewMember:addMovementTokens(amount)
+	local FRAMES_PER_TOKEN = 30
+	self.movementFrames = self.movementFrames + (amount * FRAMES_PER_TOKEN)
 end
 
 function CrewMember:search(player)
@@ -78,11 +84,13 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	-- end
 	
 end
+function CrewMember:collisionResponse(other)
+end
 
 function CrewMember:taken()
 	local roomData = levelsLDTK[self.room]
 	if not roomData or not roomData.entities or not roomData.entities.CrewMember then
-		print("⚠️ No CrewMember data found for room:", self.room)
+		printDebug("⚠️ No CrewMember data found for room:", self.room)
 		return
 	end
 
@@ -123,10 +131,20 @@ end
 
 function CrewMember:update()
 	-- Performance: Only update AI every 3 frames
+	-- Performance: Only update AI every 3 frames
 	self.updateFrameCounter = (self.updateFrameCounter + 1) % 3
 	
-	if self.updateFrameCounter == 0 and PlayerData.isActive == true then
-		self:escape(self.player)
+	if self.movementFrames > 0 then
+		self.movementFrames = self.movementFrames - 1
+		
+		if self.updateFrameCounter == 0 and PlayerData.isActive == true then
+			self:escape(self.player)
+		end
+	else
+		-- Ensure idle animation
+		if self.animation.currentState ~= 'idle' then
+			self.animation:setState('idle')
+		end
 	end
 	--self:sonar()
 end

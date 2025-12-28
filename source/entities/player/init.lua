@@ -73,3 +73,16 @@ function Player:init(x, y, speed, Zindex)
     self:sanityCheck()
     self:add(x, y)
 end
+
+function Player:distributeMovementTokens(amount)
+    local allSprites = Graphics.sprite.getAllSprites()
+    for _, sprite in ipairs(allSprites) do
+        -- Check if sprite is an enemy or crew member
+        if sprite:isa(Brocorat) or sprite:isa(CrewMember) then
+            if sprite.addMovementTokens then
+                sprite:addMovementTokens(amount)
+                printDebug("🪙 Tokens added to entity: " .. (sprite.id or sprite.crewId or "unknown") .. " Amount: " .. amount)
+            end
+        end
+    end
+end

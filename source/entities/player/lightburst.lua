@@ -68,8 +68,11 @@ function Player:lightBurst()
     -- Set cooldown (1000ms = 1 second)
     self.lightBurstCooldown = playdate.getCurrentTimeMilliseconds() + 1000
     
-    -- Hide the light cone after a short delay (500ms)
-    self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + 100
+    -- Hide the light cone after a short delay (1000ms = 1 second)
+    self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + 1000
+    
+    -- Distribute motion tokens to enemies/crew
+    self:distributeMovementTokens(1) -- 1 Token = ~1 second of movement
     
     print("✅ Light burst completed!")
 end
@@ -83,8 +86,8 @@ function Player:createLightCone(direction)
     -- Use same parameters as FXshadow.lua
     local ix = PlayerData.x
     local iy = PlayerData.y
-    local d = 120     -- Distance the light reaches forward
-    local h = 8       -- Height scaling for the cone shape
+    local d = 200     -- Distance the light reaches forward (FX is 120)
+    local h = 12      -- Height scaling for the cone shape (FX is 8)
     
     -- Adjust distance depending on direction
     if direction == 'left' or direction == 'down' then
@@ -132,7 +135,7 @@ function Player:getEntitiesInLightCone(lightPolygon)
     
     for _, sprite in ipairs(allSprites) do
         -- Check if sprite is an enemy or crew member
-        if sprite:isa(Brocorat) or sprite:isa(Bosscolli) or sprite:isa(CrewMember) then
+        if sprite:isa(CrewMember) then
             -- Check if entity is within the light cone
             if lightPolygon:containsPoint(sprite.x, sprite.y) then
                 table.insert(affectedEntities, sprite)
