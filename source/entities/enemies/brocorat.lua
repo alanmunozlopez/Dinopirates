@@ -82,7 +82,8 @@ function Brocorat:update()
 	if self.movementFrames > 0 then
 		self.movementFrames = self.movementFrames - 1
 		
-		if self.updateFrameCounter == 0 and PlayerData.isActive == true then
+		-- When tokens are available, move regardless of isActive (tokens override normal behavior)
+		if self.updateFrameCounter == 0 then
 			self:search(self.player)
 		end
 	else

@@ -53,14 +53,14 @@ function CrewMember:addMovementTokens(amount)
 	self.movementFrames = self.movementFrames + (amount * FRAMES_PER_TOKEN)
 end
 
-function CrewMember:search(player)
-	self:escape(player)
+-- Add raw frames directly (for player movement sync)
+function CrewMember:addMovementFrames(frames)
+	-- Cap at reasonable max to prevent accumulation (3 seconds = 90 frames)
+	self.movementFrames = math.min(self.movementFrames + frames, 90)
 end
 
-function CrewMember:collisionResponse(other)
-	if other:isa(Player) then -- only works if the crewmember collide with the player, not the other way around
-		print('PLAAAYER')
-	end
+function CrewMember:search(player)
+	self:escape(player)
 end
 function CrewMember:moveCollision(movementX, movementY, player) 
 	if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
@@ -85,6 +85,14 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	
 end
 function CrewMember:collisionResponse(other)
+	-- Allow overlap with minifier props and triggers
+	if other:isa(PropItem) and other.type == 'minifier' then
+		return 'overlap'
+	elseif other:isa(Trigger) then
+		return 'overlap'
+	else
+		return 'freeze'
+	end
 end
 
 function CrewMember:taken()
@@ -137,7 +145,8 @@ function CrewMember:update()
 	if self.movementFrames > 0 then
 		self.movementFrames = self.movementFrames - 1
 		
-		if self.updateFrameCounter == 0 and PlayerData.isActive == true then
+		-- When tokens are available, move regardless of isActive
+		if self.updateFrameCounter == 0 then
 			self:escape(self.player)
 		end
 	else

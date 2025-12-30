@@ -58,7 +58,8 @@ function Player:move(direction)
       self.uiHud:moveTo(movementX + self.playerUIX, movementY - self.playerUIY)
       
       local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
-      self:distributeMovementTokens(1)
+      -- Distribute movement frames to NPCs (capped at 90 frames to prevent accumulation)
+      self:distributeMovementFrames(3) -- 3 frames per movement = smooth follow
       PlayerData.direction = direction
       self:pedometer()
     end

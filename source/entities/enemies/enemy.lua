@@ -23,10 +23,18 @@ function Enemy:updateMoveSpeed()
     end
 end
 
+-- Add tokens (1 token = ~1 second of movement at 30fps)
 function Enemy:addMovementTokens(amount)
-    local FRAMES_PER_TOKEN = 30 -- Adjust duration as needed
+    local FRAMES_PER_TOKEN = 30
     if not self.movementFrames then self.movementFrames = 0 end
     self.movementFrames = self.movementFrames + (amount * FRAMES_PER_TOKEN)
+end
+
+-- Add raw frames directly (for player movement sync - more efficient)
+function Enemy:addMovementFrames(frames)
+    if not self.movementFrames then self.movementFrames = 0 end
+    -- Cap at reasonable max to prevent accumulation (3 seconds = 90 frames)
+    self.movementFrames = math.min(self.movementFrames + frames, 90)
 end
 
 --- Búsqueda ciega: el enemigo se mueve directamente hacia el jugador

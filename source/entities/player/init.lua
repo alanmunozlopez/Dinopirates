@@ -81,7 +81,22 @@ function Player:distributeMovementTokens(amount)
         if sprite:isa(Brocorat) or sprite:isa(CrewMember) then
             if sprite.addMovementTokens then
                 sprite:addMovementTokens(amount)
-                printDebug("🪙 Tokens added to entity: " .. (sprite.id or sprite.crewId or "unknown") .. " Amount: " .. amount)
+            end
+        end
+    end
+end
+
+-- Efficient version: only runs when player is actively moving
+-- Uses isActive flag for performance (already set by movement code)
+function Player:distributeMovementFrames(frames)
+    -- Only distribute if player is active (moving)
+    if not PlayerData.isActive then return end
+    
+    local allSprites = Graphics.sprite.getAllSprites()
+    for _, sprite in ipairs(allSprites) do
+        if sprite:isa(Brocorat) or sprite:isa(CrewMember) then
+            if sprite.addMovementFrames then
+                sprite:addMovementFrames(frames)
             end
         end
     end
