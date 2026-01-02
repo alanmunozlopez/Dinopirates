@@ -59,8 +59,12 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.hidingMovementTokensAccumulated = 0 -- Accumulated movement tokens while hiding
 	self.hidingVisionRange = 80 -- Distance player must be to be considered "out of vision" (pixels)
 	self.cornerDetectionThreshold = 0.5 -- Threshold for detecting blocked movement (pixels)
-	self.consecutiveCornerFrames = 0 -- Counter for consecutive frames stuck in corner
-	self.cornerFramesRequired = 5 -- Frames stuck in corner before entering hiding (avoids false triggers)
+	
+	-- Corner/Trapped detection: count bounces to detect being stuck
+	self.recentBounceCount = 0 -- How many bounces happened recently  
+	self.bounceCountDecayFrames = 0 -- Frames until bounce count decays
+	self.bounceCountDecayRate = 30 -- Frames before bounce count resets (if no new bounces)
+	self.bouncesRequiredToHide = 3 -- Number of bounces in quick succession to trigger hiding
 	-- ============================================
 	
 	-- Store original collide rect for restoration
@@ -112,22 +116,32 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	local blockedX = math.abs(actualX - movementX) > self.cornerDetectionThreshold
 	local blockedY = math.abs(actualY - movementY) > self.cornerDetectionThreshold
 	
-	-- Check for corner situation (both axes blocked)
-	if blockedX and blockedY then
-		self.consecutiveCornerFrames = self.consecutiveCornerFrames + 1
-		
-		-- If stuck in corner for enough frames, enter hiding
-		if self.consecutiveCornerFrames >= self.cornerFramesRequired then
-			self:enterHiding()
-			return
-		end
+	-- Decay bounce count over time (if no bounces happen)
+	if self.bounceCountDecayFrames > 0 then
+		self.bounceCountDecayFrames = self.bounceCountDecayFrames - 1
 	else
-		-- Reset corner counter if not in corner
-		self.consecutiveCornerFrames = 0
+		-- Reset bounce count if enough time passed without bounces
+		if self.recentBounceCount > 0 then
+			self.recentBounceCount = 0
+			-- print("🔄 Bounce count reset") -- Debug
+		end
 	end
 	
 	-- Only trigger bounce if we hit something and aren't already bouncing
 	if (blockedX or blockedY) and self.bounceFrames <= 0 then
+		-- Increment bounce count and reset decay timer
+		self.recentBounceCount = self.recentBounceCount + 1
+		self.bounceCountDecayFrames = self.bounceCountDecayRate
+		
+		print("💥 Bounce detected! Count:", self.recentBounceCount, "/ Required:", self.bouncesRequiredToHide) -- Debug
+		
+		-- Check if enough bounces to trigger hiding (trapped in corner)
+		if self.recentBounceCount >= self.bouncesRequiredToHide then
+			print("🙈 Too many bounces - entering hiding!") -- Debug
+			self:enterHiding()
+			return
+		end
+		
 		-- Calculate escape direction from player
 		local playerToLeft = self.player.x < self.x
 		local playerBelow = self.player.y > self.y
