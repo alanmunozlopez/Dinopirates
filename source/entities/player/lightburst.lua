@@ -147,13 +147,25 @@ function Player:getEntitiesInLightCone(lightPolygon)
 end
 
 function Player:affectEntity(entity)
+    -- Define blind duration in frames (60 frames = approx 2 seconds)
+    local blindDuration = 60
+    
     if entity:isa(Brocorat) or entity:isa(Bosscolli) then
         -- For enemies, print that they were blinded with their ID
         local enemyId = entity.id or "unknown"
         print("👁️ Enemy blinded! ID: " .. tostring(enemyId))
+        
+        -- If enemies also have blinding implementation, call it here
+        if entity.blind then
+            entity:blind(blindDuration)
+        end
     elseif entity:isa(CrewMember) then
-        -- For crew members, print that they were blinded with their ID
+        -- For crew members, call the blind method
         local crewId = entity.crewId or entity.iid or "unknown"
         print("👁️ Crew member blinded! ID: " .. tostring(crewId))
+        
+        if entity.blind then
+            entity:blind(blindDuration)
+        end
     end
 end

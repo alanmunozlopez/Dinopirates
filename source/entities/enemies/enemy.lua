@@ -109,6 +109,22 @@ function Enemy:moveCollision(movementX, movementY, player)
     end
 end
 
+-- Blinds the enemy for a specific number of frames
+function Enemy:blind(frames)
+    self.blindFrames = frames or 60
+    self.isBlinded = true
+    
+    -- Reset movement frames to stop current movement
+    self.movementFrames = 0
+    
+    -- Visual feedback
+    if self.animation then
+        self.animation:setState('idle')
+    end
+    
+    print("✨ Enemy blinded! Frames:", self.blindFrames)
+end
+
 function Enemy:collisionResponse(other)
     if other:isa(Items) or other:isa(Trigger) then
         return 'overlap'

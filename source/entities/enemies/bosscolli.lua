@@ -38,6 +38,17 @@ function bosscolli:search(player)
 end
 
 function bosscolli:update()
+	-- Handle blinded state
+	if self.isBlinded then
+		self.blindFrames = self.blindFrames - 1
+		if self.blindFrames <= 0 then
+			self.isBlinded = false
+			print("👁️ Enemy (Bosscolli) no longer blinded")
+		end
+		-- Return early to skip movement logic while blinded
+		return
+	end
+
 	if PlayerData.isActive == true then
 		self:search(self.player)
 	end

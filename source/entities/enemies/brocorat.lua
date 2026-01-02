@@ -73,11 +73,21 @@ end
 
 function Brocorat:update()
 	-- Performance: Only update AI every 3 frames
-	-- Performance: Only update AI every 3 frames
 	self.updateFrameCounter = (self.updateFrameCounter + 1) % 3
 	
 	-- Initialize movementFrames if nil
 	if self.movementFrames == nil then self.movementFrames = 0 end
+
+	-- Handle blinded state
+	if self.isBlinded then
+		self.blindFrames = self.blindFrames - 1
+		if self.blindFrames <= 0 then
+			self.isBlinded = false
+			print("👁️ Enemy (Brocorat) no longer blinded")
+		end
+		-- Return early to skip movement logic while blinded
+		return
+	end
 
 	if self.movementFrames > 0 then
 		self.movementFrames = self.movementFrames - 1

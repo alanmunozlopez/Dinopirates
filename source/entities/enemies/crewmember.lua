@@ -70,6 +70,11 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	-- Store original collide rect for restoration
 	self.originalCollideRect = {x = 12, y = 24, w = 24, h = 24}
 	
+	-- Blinded state
+	self.isBlinded = false
+	self.blindFrames = 0
+	self.blindDuration = 60 -- Default blind duration in frames (approx 2 seconds)
+	
 	print("🧩 CrewMember spawned with IID:", self.iid, "CrewID:", crewId)
 end
 
@@ -301,6 +306,22 @@ function CrewMember:taken()
 	end
 end
 
+-- Blinds the crew member for a specific number of frames
+function CrewMember:blind(frames)
+    if self.isHiding then return end -- Can't blind if hidden
+    
+    self.blindFrames = frames or self.blindDuration
+    self.isBlinded = true
+    
+    -- Reset movement frames to stop current movement
+    self.movementFrames = 0
+    
+    -- Visual feedback: use idle or a specific state if available
+    self.animation:setState('idle')
+    
+    print("✨ CrewMember blinded! Frames:", self.blindFrames)
+end
+
 function CrewMember:escape(player)
 	self.player = player
 	local movementX, movementY
@@ -358,6 +379,16 @@ function CrewMember:update()
 		return
 	end
 	
+	if self.isBlinded then
+		self.blindFrames = self.blindFrames - 1
+		if self.blindFrames <= 0 then
+			self.isBlinded = false
+			print("👁️ CrewMember no longer blinded")
+		end
+		-- Return early to skip movement logic while blinded
+		return
+	end
+
 	if self.movementFrames > 0 then
 		self.movementFrames = self.movementFrames - 1
 		
