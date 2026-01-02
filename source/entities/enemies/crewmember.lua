@@ -45,6 +45,12 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self:add(x, y)
 	self.hat = Hats(x,y - self.hatDelta, crewId, 2)
 	self.movementFrames = 0 -- Initialize movement frames
+	
+	-- Bounce/redirect properties
+	self.bounceDirection = nil -- Current bounce direction: 'left', 'right', 'up', 'down'
+	self.bounceFrames = 0 -- How many frames to maintain bounce direction
+	self.lastCollisionAxis = nil -- Track which axis had collision: 'x', 'y', or 'both'
+	
 	print("🧩 CrewMember spawned with IID:", self.iid, "CrewID:", crewId)
 end
 
@@ -68,20 +74,61 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	elseif PlayerData.battery > 60 and PlayerData.isInDarkness == true then
 		self.moveSpeed = self.initialSpeed
 	end
-	self.hat:moveTo(movementX, movementY - self.hatDelta)
 	
-	local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY)
-	-- if lenght > 0 then
-	-- 	for index, collision in pairs(collisions) do
-	-- 		local collideObject = collision['other']
-	-- 		if collideObject:isa(Player) then -- not being used
-	-- 			print('enemy collision')
-	-- 			if self.player.isAlive then
-	-- 				self:taken(PlayerData.actualRoom)
-	-- 			end
-	-- 		end
-	-- 	end
-	-- end
+	local actualX, actualY, collisions, length = self:moveWithCollisions(movementX, movementY)
+	self.hat:moveTo(actualX, actualY - self.hatDelta)
+	
+	-- Check for collisions with walls or props to trigger bounce
+	if length > 0 then
+		for index, collision in pairs(collisions) do
+			local collideObject = collision['other']
+			local normal = collision['normal']
+			
+			-- Check if collision is with wall or prop (not minifier)
+			local isBlockingCollision = collideObject:isa(Wall) or 
+				(collideObject:isa(PropItem) and collideObject.type ~= 'minifier')
+			
+			if isBlockingCollision then
+				-- Determine which axis was blocked based on collision normal
+				local blockedX = normal.x ~= 0
+				local blockedY = normal.y ~= 0
+				
+				-- Calculate escape direction from player
+				local playerToLeft = self.player.x < self.x
+				local playerBelow = self.player.y > self.y
+				
+				if blockedX and blockedY then
+					-- Corner collision - pick perpendicular direction away from player
+					-- Alternate between up/down based on player position
+					if playerBelow then
+						self.bounceDirection = 'up'
+					else
+						self.bounceDirection = 'down'
+					end
+				elseif blockedX then
+					-- Horizontal collision (hit left/right wall)
+					-- Move up or down, away from player
+					if playerBelow then
+						self.bounceDirection = 'up'
+					else
+						self.bounceDirection = 'down'
+					end
+				elseif blockedY then
+					-- Vertical collision (hit top/bottom wall)
+					-- Move left or right, away from player
+					if playerToLeft then
+						self.bounceDirection = 'right'
+					else
+						self.bounceDirection = 'left'
+					end
+				end
+				
+				-- Set bounce frames (how long to maintain this direction)
+				self.bounceFrames = 15 -- About half a second at 30fps
+				break -- Only process first blocking collision
+			end
+		end
+	end
 	
 end
 function CrewMember:collisionResponse(other)
@@ -129,8 +176,40 @@ end
 
 function CrewMember:escape(player)
 	self.player = player
-	local movementX = self.player.x <= self.x and self.x + self.moveSpeed or self.x - self.moveSpeed
-	local movementY = self.player.y <= self.y and self.y + self.moveSpeed or self.y - self.moveSpeed
+	local movementX, movementY
+	
+	-- Check if we're in bounce mode
+	if self.bounceFrames > 0 then
+		self.bounceFrames = self.bounceFrames - 1
+		
+		-- Move in the bounce direction
+		if self.bounceDirection == 'left' then
+			movementX = self.x - self.moveSpeed
+			movementY = self.y
+		elseif self.bounceDirection == 'right' then
+			movementX = self.x + self.moveSpeed
+			movementY = self.y
+		elseif self.bounceDirection == 'up' then
+			movementX = self.x
+			movementY = self.y - self.moveSpeed
+		elseif self.bounceDirection == 'down' then
+			movementX = self.x
+			movementY = self.y + self.moveSpeed
+		else
+			-- Fallback to normal escape
+			movementX = self.player.x <= self.x and self.x + self.moveSpeed or self.x - self.moveSpeed
+			movementY = self.player.y <= self.y and self.y + self.moveSpeed or self.y - self.moveSpeed
+		end
+		
+		-- Clear bounce direction when frames run out
+		if self.bounceFrames <= 0 then
+			self.bounceDirection = nil
+		end
+	else
+		-- Normal escape movement (away from player)
+		movementX = self.player.x <= self.x and self.x + self.moveSpeed or self.x - self.moveSpeed
+		movementY = self.player.y <= self.y and self.y + self.moveSpeed or self.y - self.moveSpeed
+	end
 
 	self.animation:setState('walk')
 	self:moveCollision(movementX, movementY, self.player)
