@@ -127,11 +127,45 @@ function inGameMenu:closeMenu()
 end
 
 function inGameMenu:prevItem()
-    PlayerData.activeItem -= 1
+    local activeSkills = self:getActiveSkillsList()
+    if #activeSkills == 0 then return end -- No skills available
+    
+    -- Find current position in active skills list
+    local currentIndex = 1
+    for i, skillId in ipairs(activeSkills) do
+        if PlayerData.activeItem == skillId then
+            currentIndex = i
+            break
+        end
+    end
+    
+    -- Go to previous skill (with wraparound)
+    currentIndex = currentIndex - 1
+    if currentIndex < 1 then
+        currentIndex = #activeSkills
+    end
+    PlayerData.activeItem = activeSkills[currentIndex]
 end
 
 function inGameMenu:nextItem()
-    PlayerData.activeItem += 1
+    local activeSkills = self:getActiveSkillsList()
+    if #activeSkills == 0 then return end -- No skills available
+    
+    -- Find current position in active skills list
+    local currentIndex = 1
+    for i, skillId in ipairs(activeSkills) do
+        if PlayerData.activeItem == skillId then
+            currentIndex = i
+            break
+        end
+    end
+    
+    -- Go to next skill (with wraparound)
+    currentIndex = currentIndex + 1
+    if currentIndex > #activeSkills then
+        currentIndex = 1
+    end
+    PlayerData.activeItem = activeSkills[currentIndex]
 end
 
 function inGameMenu:selectItem()
@@ -146,31 +180,67 @@ function inGameMenu:selectItem()
     end
 end
 
+-- Helper function to count active skills (skills that are true)
+function inGameMenu:getActiveSkillsCount()
+    local count = 0
+    if PlayerData.skills.canFlash == true then count = count + 1 end
+    if PlayerData.skills.canDash == true then count = count + 1 end
+    return count
+end
+
+-- Helper function to get list of active skills in order
+function inGameMenu:getActiveSkillsList()
+    local skills = {}
+    if PlayerData.skills.canFlash == true then table.insert(skills, 1) end  -- 1 = Flash/Lamp
+    if PlayerData.skills.canDash == true then table.insert(skills, 2) end   -- 2 = Dash/Boot
+    return skills
+end
+
 function inGameMenu:update()
   if PlayerData.isEquiping == true then
     -- drawStatusText(menuImage)
     
-    if table.getSize(PlayerData.skills) > 0 then
-      
-        if PlayerData.activeItem < 1 then
-          PlayerData.activeItem = table.getSize(PlayerData.skills) 
+    local activeSkillsCount = self:getActiveSkillsCount()
+    local activeSkills = self:getActiveSkillsList()
+    
+    -- If no skills are active, reset activeItem to 0 and don't allow selection
+    if activeSkillsCount == 0 then
+        PlayerData.activeItem = 0
+    else
+        -- Make sure activeItem is a valid skill
+        local isValidItem = false
+        for _, skillId in ipairs(activeSkills) do
+            if PlayerData.activeItem == skillId then
+                isValidItem = true
+                break
+            end
         end
-        if PlayerData.activeItem > table.getSize(PlayerData.skills) then
-          PlayerData.activeItem = 1
+        
+        -- If current activeItem is not valid, set to first available skill
+        if not isValidItem then
+            PlayerData.activeItem = activeSkills[1]
         end
-        if PlayerData.isEquiping == true then  
-          if menuSprite then
-              menuSprite:add()
-          end
-          if PlayerData.skills.canFlash == true then
-            lampItem:show(18, 151)
-          end
-          if PlayerData.skills.canDash == true then
-            bootItem:show(48, 153)
-          end
-          
-          
+        
+        -- Handle cycling through only available skills
+        if PlayerData.activeItem < activeSkills[1] then
+            PlayerData.activeItem = activeSkills[#activeSkills]
         end
+        if PlayerData.activeItem > activeSkills[#activeSkills] then
+            PlayerData.activeItem = activeSkills[1]
+        end
+    end
+
+    -- This should ALWAYS happen if isEquiping is true
+    if menuSprite then
+        menuSprite:add()
+    end
+    
+    -- Show active skill icons
+    if PlayerData.skills.canFlash == true then
+        lampItem:show(18, 151)
+    end
+    if PlayerData.skills.canDash == true then
+        bootItem:show(48, 153)
     end
   end
 end

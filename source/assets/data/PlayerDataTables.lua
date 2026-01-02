@@ -61,8 +61,8 @@ PlayerData = {
 		hasTools = false,
 	},
 	skills ={
-		canFlash = true,
-		canDash = true,
+		canFlash = false,
+		canDash = false,
 	
 	},
 	EnemiesData ={
@@ -143,13 +143,13 @@ PlayerDataOriginal = {
 		hasTools = false,
 	},
 	skills ={
-		canFlash = true,
-		canDash = true,
+		canFlash = false,
+		canDash = false,
 	
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20
-		sightRadius = 100, -- min 50
+		sightRadius = 50, -- min 50
 		isEvolved = false,
 	},
 	CrewMemberData ={

@@ -471,8 +471,8 @@ scene.inputHandler = {
 	end,
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
 		-- Your code here
-		if PlayerData.isGaming == true and table.getSize(PlayerData.items) > 0  then
-			inGameMenu:displayMenu(player.x,player.y)
+		if PlayerData.isGaming == true then
+			inGameEquip:displayMenu(player.x,player.y)
 		end
 	end,
 	AButtonUp = function()				-- Runs once when button is released.

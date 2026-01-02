@@ -1,6 +1,8 @@
 
 function Player:grabBoots()
   PlayerData.items.hasBoots = true
+  PlayerData.skills.canDash = true
+  self:fillBattery()
 end
 
 function Player:grabBag()
@@ -18,6 +20,7 @@ end
 
 function Player:grabLamp()
   PlayerData.items.hasLamp = true
+  PlayerData.skills.canFlash = true
   self:fillBattery()
 end
 
