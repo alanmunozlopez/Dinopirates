@@ -33,6 +33,16 @@ function Player:dash()
         print("No direction to dash!")
         return
     end
+    -- Check if there's enough battery 
+    local batteryCost = 10
+    if PlayerData.battery < batteryCost then
+        print("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
+        return
+    end
+    
+    -- Consume battery
+    PlayerData.battery = PlayerData.battery - batteryCost
+    print("🔋 Battery consumed: -" .. batteryCost .. " (remaining: " .. PlayerData.battery .. ")")
     
     print("🏃 Dash started in direction: " .. direction)
     
