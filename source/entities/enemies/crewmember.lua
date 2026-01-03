@@ -105,7 +105,14 @@ function CrewMember:addMovementFrames(frames)
 end
 
 function CrewMember:search(player)
-	self:escape(player)
+	if not self:isPlayerOutOfVision() then
+		self:escape(player)
+	else
+		-- Ensure idle animation if player is not in vision
+		if self.animation.currentState ~= 'idle' then
+			self.animation:setState('idle')
+		end
+	end
 end
 function CrewMember:moveCollision(movementX, movementY, player) 
 	if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
@@ -213,7 +220,7 @@ function CrewMember:enterHiding()
 	-- Remove from enemy collision group
 	self:setGroups({})
 	
-	print("🙈 CrewMember entered hiding state - CrewID:", self.crewId)
+	printDebug("🙈 CrewMember entered hiding state - CrewID:", self.crewId)
 end
 
 -- Exit hiding state and return to normal
@@ -394,7 +401,7 @@ function CrewMember:update()
 		
 		-- When tokens are available, move regardless of isActive
 		if self.updateFrameCounter == 0 then
-			self:escape(self.player)
+			self:search(self.player)
 		end
 	else
 		-- Ensure idle animation
