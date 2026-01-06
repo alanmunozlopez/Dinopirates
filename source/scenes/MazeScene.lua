@@ -22,7 +22,6 @@ import "entities/player/init"
 import "assets/comics/comicsData"
 
 import "entities/enemies/brocorat"
-import "entities/enemies/bosscolli"
 import "entities/enemies/crewmember"
 
 import 'entities/props/propItem'
