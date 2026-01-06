@@ -14,6 +14,9 @@ function Player:collisionResponse(other)
   elseif other:isa(CrewMember) then
     -- Validate having the capture bag
     if PlayerData.CrewMemberData.amountTaken == 0 then
+      if other.crewId == 'CM001' then
+        -- custom screen here after validating the crewId
+      end
       self.dialogUI:addScreen("gotcha",other.sourceFeed)
     end
     other:taken()
