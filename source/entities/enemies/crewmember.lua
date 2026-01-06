@@ -11,12 +11,14 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 		moveSpeed = 1
 	end
 	-- MARK: Animation states
-	self.animation:addState('idle', 1, 4)
-	self.animation.idle.frameDuration = 8
 	self.animation:addState('walk', 1, 4)
-	self.animation.walk.frameDuration = 6
-	self.animation:addState('empty', 1, 4)
-	self.animation.empty.frameDuration = 6
+	self.animation.walk.frameDuration = 8
+	self.animation:addState('idle', 5, 8)
+	self.animation.idle.frameDuration = 6
+	-- self.animation:addState('hide', 9, 11, 'hole')
+	self.animation:addState('hide', 12, 13)
+	self.animation.hide.frameDuration = 6
+	-- self.animation.hole.frameDuration = 4
 		
 	self:setSize(48, 48)
 	self:moveTo(x, y)
@@ -207,7 +209,7 @@ function CrewMember:enterHiding()
 	
 	-- Change to hiding animation/sprite
 	-- TODO: Replace 'empty' with actual hiding animation state when sprite is ready
-	self.animation:setState('empty') -- Placeholder: use 'empty' state for now
+	self.animation:setState('hide') -- Placeholder: use 'empty' state for now
 	
 	-- Hide the hat
 	if self.hat then
@@ -381,7 +383,7 @@ function CrewMember:update()
 		-- The checkExitHiding is called from those functions, so nothing needed here
 		-- Ensure hiding animation stays active
 		if self.animation.currentState ~= 'empty' then
-			self.animation:setState('empty')
+			self.animation:setState('hide')
 		end
 		return
 	end
