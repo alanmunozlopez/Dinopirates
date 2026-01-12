@@ -91,7 +91,7 @@ Directions = {
 	BOTTOM = "down" -- Para puertas
 }
 
-playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
+-- playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true) -- Removed: using code-based reset now
 
 SaveSystem.createOriginalBackup()
 

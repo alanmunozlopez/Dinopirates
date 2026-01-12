@@ -279,7 +279,7 @@ end
 -- Reset (Resets to original state without deleting file)
 -------------------------------------------------------------
 function SaveSystem.reset()
-    PlayerData = table.deepcopy(PlayerDataOriginal)
+    ResetPlayerData()
     if levelsLDTKOriginal then
         levelsLDTK = table.deepcopy(levelsLDTKOriginal)
     end
@@ -301,7 +301,7 @@ function SaveSystem.delete()
     end
     
     -- Reset to original state
-    PlayerData = table.deepcopy(PlayerDataOriginal)
+    ResetPlayerData()
 
     if levelsLDTKOriginal then
         levelsLDTK = table.deepcopy(levelsLDTKOriginal)
