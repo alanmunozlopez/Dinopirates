@@ -122,7 +122,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": null
+					"tinyScript": null,
+					"conditionalScript": []
 				}
 			},
 			{
@@ -139,7 +140,10 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": "tinyKnifeTiny"
+					"tinyScript": "tinyKnifeTiny",
+					"conditionalScript": [
+						"items.hasLamp:nolamp"
+					]
 				}
 			},
 			{
@@ -156,7 +160,8 @@
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,
-					"tinyScript": null
+					"tinyScript": null,
+					"conditionalScript": []
 				}
 			},
 			{
@@ -173,7 +178,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": null
+					"tinyScript": null,
+					"conditionalScript": []
 				}
 			},
 			{
@@ -190,7 +196,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": null
+					"tinyScript": null,
+					"conditionalScript": []
 				}
 			}
 		],

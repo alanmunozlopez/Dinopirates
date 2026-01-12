@@ -1089,7 +1089,10 @@ levelsLDTK = {
 		  customFields = {
 			script = "microwaveBurn",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScript = {}
 		  }
 		},
 		{
@@ -1103,9 +1106,16 @@ levelsLDTK = {
 		  color = 16711748,
 		  customFields = {
 			script = "kitchenWeapons",
-			tinyScript="tinyKnife",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = "tinyKnife",
+			conditionalScripts = {
+			  "isTiny:tinyKnife",
+			  -- "isBig:kitchenWeapons",
+			  
+			  "items.hasLamp:nolamp",
+			}
 		  }
 		},
 		{
@@ -1120,7 +1130,10 @@ levelsLDTK = {
 		  customFields = {
 			script = "inneficientCutting",
 			usedTrigger = false,
-			type = "Story"
+			type = "Story",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScript = {}
 		  }
 		},
 		{
@@ -1135,7 +1148,10 @@ levelsLDTK = {
 		  customFields = {
 			script = "justBoxes",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScript = {}
 		  }
 		},
 		{
@@ -1150,7 +1166,10 @@ levelsLDTK = {
 		  customFields = {
 			script = "notnormalBrocoli",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScript = {}
 		  }
 		}
 	  },
@@ -2135,7 +2154,7 @@ levelsLDTK = {
 		  customFields = {
 			script = "wakeup",
 			usedTrigger = false,
-			type = "Story"
+			type = "Story",
 		  }
 		},
 		{

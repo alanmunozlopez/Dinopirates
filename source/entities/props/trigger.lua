@@ -25,21 +25,105 @@ function Trigger:returnScript()
         return self.script
     end
     
-    -- Marcar como usado y verificar si hay script alternativo para modo tiny
-    local scriptToReturn = self.script
-    for _, triggerData in ipairs(roomData.entities.Triggers) do
-        if triggerData.iid == self.iid then
-            local cf = triggerData.customFields or {}
-            cf.usedTrigger = true  
-            print("✅ Trigger marcado como usado:", triggerData.iid)
-            
-            -- Si el jugador está en modo tiny y existe tinyScript, usarlo
-            if PlayerData.isTiny and cf.tinyScript then
-                scriptToReturn = cf.tinyScript
-                print("🔍 Usando script tiny:", cf.tinyScript)
-            end
+    -- Find trigger data
+    local triggerData
+    for _, t in ipairs(roomData.entities.Triggers) do
+        if t.iid == self.iid then
+            triggerData = t
             break
         end
+    end
+
+    if not triggerData then return self.script end
+
+    local cf = triggerData.customFields or {}
+
+    -- Check for conditional scripts
+    if cf.conditionalScripts then
+        for _, condStr in ipairs(cf.conditionalScripts) do
+            -- Format: "condition:script"
+            local conditionExpr, targetScript = condStr:match("^(.*):(.*)$")
+            
+            if conditionExpr and targetScript then
+                local isMet = false
+                
+                -- Check for terminal flag '!' in script name
+                local isTerminal = false
+                if targetScript:sub(-1) == "!" then
+                    isTerminal = true
+                    targetScript = targetScript:sub(1, -2) -- Remove '!'
+                end
+
+                -- Check for comparison operators (order matters: check 2-char ops first)
+                local path, op, valStr = conditionExpr:match("^([%w%.]+)%s*([<>!=]=?)%s*([%d%-%.]+)$")
+                
+                if path and op and valStr then
+                    -- Numerical/Comparison Logic
+                    local current = PlayerData
+                    for part in path:gmatch("[^%.]+") do
+                        if current then current = current[part] end
+                    end
+                    
+                    local val = tonumber(valStr)
+                    local currentVal = tonumber(current) or 0 -- Default to 0 if nil/not number
+                    
+                    if op == ">" then isMet = currentVal > val
+                    elseif op == "<" then isMet = currentVal < val
+                    elseif op == ">=" then isMet = currentVal >= val
+                    elseif op == "<=" then isMet = currentVal <= val
+                    elseif op == "==" then isMet = currentVal == val
+                    elseif op == "!=" then isMet = currentVal ~= val
+                    end
+                    
+                    print(string.format("🔍 Comparación: %s (%s) %s %s -> %s", path, tostring(currentVal), op, valStr, tostring(isMet)))
+                else
+                    -- Boolean Logic (Original)
+                    local invert = false
+                    local cleanPath = conditionExpr
+                    
+                    if cleanPath:sub(1,1) == "!" then
+                        invert = true
+                        cleanPath = cleanPath:sub(2)
+                    end
+
+                    -- Resolve path in PlayerData
+                    local current = PlayerData
+                    for part in cleanPath:gmatch("[^%.]+") do
+                        if current then current = current[part] end
+                    end
+
+                    isMet = (current == true)
+                    if invert then isMet = not isMet end
+                end
+
+                if isMet then
+                    if isTerminal then
+                        cf.usedTrigger = true
+                        print("✅ Trigger marcado como usado (Terminal):", triggerData.iid)
+                    else
+                        print("ℹ️ Trigger mantenido activo (Transient):", triggerData.iid)
+                    end
+                    print("✅ Trigger ejecutando script:", targetScript)
+                    return targetScript
+                end
+            end
+        end
+    end
+
+    -- Fallback legacy logic
+    -- By default, legacy/fallback scripts consume the trigger (backward compatibility)
+    -- EXCEPT if it is a "Search" trigger, which should persist by default.
+    if self.type ~= "Search" then
+        cf.usedTrigger = true
+        print("✅ Trigger fallback marcado como usado:", triggerData.iid)
+    else
+        print("ℹ️ Trigger Search mantenido activo (Fallback):", triggerData.iid)
+    end
+
+    local scriptToReturn = self.script
+    if PlayerData.isTiny and cf.tinyScript then
+        scriptToReturn = cf.tinyScript
+        print("🔍 Usando script tiny:", cf.tinyScript)
     end
     
     return scriptToReturn

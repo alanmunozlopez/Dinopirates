@@ -1,5 +1,14 @@
 script = {
     {
+        name = "nolamp",
+        dialog = {
+            {
+                video = 'playerSleepy',
+                text = "nolamp-01",
+            },
+        }
+    },
+    {
         name = "wakeup",
         dialog = {
             {
