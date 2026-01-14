@@ -486,7 +486,7 @@ scene.inputHandler = {
 		if PlayerData.isGaming == false and PlayerData.isEquiping == true then
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
-			inGameMenu:closeMenu()
+			inGameEquip:closeMenu()
 		-- Trigger ability based on selected item
 		elseif PlayerData.isGaming == true and player.isAlive == true then
 			player:useAbility()

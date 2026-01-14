@@ -52,8 +52,10 @@ end
 function inGameMenu:drawCrewHats()
     -- Create sprites for captured crew member hats in the menu
     local hatX = 232  -- Starting X position for hats
-    local hatY = 13  -- Y position for hats
+    local hatY = 13  -- Starting Y position for hats
     local hatSpacing = 20  -- Space between hats
+    local rowSpacing = 16  -- Space between rows
+    local maxHatsPerRow = 8 -- Max hats before starting a new row
     local hatIndex = 0
     
     -- Remove any existing hat sprites first
@@ -96,7 +98,9 @@ function inGameMenu:drawCrewHats()
             if hatImage then
                 local hatSprite = Graphics.sprite.new(hatImage)
                 hatSprite:setCenter(0, 0)
-                hatSprite:moveTo(hatX + (hatIndex * hatSpacing), hatY)
+                local row = math.floor(hatIndex / maxHatsPerRow)
+                local col = hatIndex % maxHatsPerRow
+                hatSprite:moveTo(hatX + (col * hatSpacing), hatY + (row * rowSpacing))
                 hatSprite:setZIndex(ZIndex.ui + 9)
                 hatSprite:add()
                 table.insert(self.hatSprites, hatSprite)

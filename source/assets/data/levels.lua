@@ -1109,7 +1109,7 @@ levelsLDTK = {
 			usedTrigger = false,
 			type = "Search",
 			mapPercent = 0,
-			tinyScript = "tinyKnife",
+			tinyScript = nil,
 			conditionalScripts = {
 			  "isTiny:tinyKnife",
 			  -- "isBig:kitchenWeapons",
