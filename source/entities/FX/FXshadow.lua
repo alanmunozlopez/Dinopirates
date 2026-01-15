@@ -15,6 +15,14 @@ function FXshadow:init(player, lightSize, globalLightAmount, Zindex)
 	self:setZIndex(Zindex)                             -- Define drawing order
 	self.globalLightAmount = globalLightAmount   
 	     -- Base dither for global light
+	self.lastBattery = -1
+	self.lastDirection = ""
+	self.lastPlayerX = -1
+	self.lastPlayerY = -1
+	self.lastLightSizeMulti = -1
+	self.lastGlobalLightAmountValue = -1
+	self.lastShowLightConeValue = false
+
 	self:add()	
 	self:refresh()                                     -- Trigger initial drawing
 end
@@ -41,11 +49,35 @@ end
 -- Redraw the shadow mask depending on player state and light battery level
 function FXshadow:refresh()
 	local battery = PlayerData.battery * 2 -- Artificially scale battery level
-	if PlayerData.isTiny == true then
-		self.lightSizeMulti = 0.5
-	else
-		self.lightSizeMulti = 1
-	end 
+	local lightSizeMulti = PlayerData.isTiny == true and 0.5 or 1
+	local direction = PlayerData.direction
+	local ix = PlayerData.x
+	local iy = PlayerData.y
+	local globalLightAmountValue = self.globalLightAmount
+	local showLightConeValue = PlayerData.showLightCone == true
+
+	-- Check if anything changed before redrawing
+	if not self.shouldRefresh and
+	   battery == self.lastBattery and
+	   direction == self.lastDirection and
+	   ix == self.lastPlayerX and
+	   iy == self.lastPlayerY and
+	   lightSizeMulti == self.lastLightSizeMulti and
+	   globalLightAmountValue == self.lastGlobalLightAmountValue and
+	   showLightConeValue == self.lastShowLightConeValue then
+		return
+	end
+
+	-- Update tracking variables
+	self.lastBattery = battery
+	self.lastDirection = direction
+	self.lastPlayerX = ix
+	self.lastPlayerY = iy
+	self.lastLightSizeMulti = lightSizeMulti
+	self.lastGlobalLightAmountValue = globalLightAmountValue
+	self.lastShowLightConeValue = showLightConeValue
+	self.shouldRefresh = false
+
 	-- Create two mask images: one for soft lighting and one for focused light
 	local shadowMask = shadow:getMaskImage()
 	local lightSource = shadow:getMaskImage()
@@ -53,7 +85,7 @@ function FXshadow:refresh()
 	-- Light parameters that will change based on battery
 	local lightSourceAmount = 0
 	local lightSourceSize = 35
-	local maskSize = self.lightSize * self.lightSizeMulti
+	local maskSize = self.lightSize * lightSizeMulti
 	local decreaseSize = maskSize / 10
 	local lightAmount = self.globalLightAmount
 	local globalDither = self.globalLightAmount
@@ -239,14 +271,7 @@ function FXshadow:idleLight()
 end
 
 function FXshadow:update()
-    -- Check if light cone state changed (e.g. turned on or off by lightburst)
-    if self.lastShowLightCone ~= PlayerData.showLightCone then
-        self:refresh()
-        self.lastShowLightCone = PlayerData.showLightCone
-    end
-    
-    -- If light cone is on, force refresh to keep animation/visuals correct (optional, but good for safety)
-    if PlayerData.showLightCone == true then
-        self:refresh()
-    end
+    -- refresh() now handles its own change detection, 
+    -- but we still call it to check for external state changes
+    self:refresh()
 end

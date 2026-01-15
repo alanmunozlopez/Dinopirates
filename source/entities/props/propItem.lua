@@ -1,4 +1,4 @@
-import 'entities/props/propCollider'
+-- PropCollider removed, integrated into PropItem for performance
 PropItem = {}
 class('PropItem').extends(NobleSprite)
 
@@ -53,11 +53,10 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   
   -- Default collider setup
   if nocollide == false then
-    self:setCollideRect(0, 0, 32, 32)
     if type == "xtree-1" or type == "xtree-2" then
-      self.propcollider = PropCollider(x, y+16, 28, 4)
+      self:setCollideRect(2, 26, 28, 4) -- Aligned with previous PropCollider(x, y+16, 28, 4)
     else
-      self.propcollider = PropCollider(x, y, 28, 18)
+      self:setCollideRect(2, 10, 28, 18) -- Aligned with previous PropCollider(x, y, 28, 18)
     end
   end
   -- Default collider setup
@@ -89,7 +88,6 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
     self:setZIndex(ZIndex.props)
   end
   if self.type == 'minifier' then
-    self.propcollider:remove()
     self:setCollideRect(0, 12, 32, 18)
   end
   -- Apply hole configuration
@@ -106,9 +104,9 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
       self:setCollideRect(table.unpack(config.collideRect))
     end
     
-    -- Remove prop collider if needed
-    if config.removePropCollider and self.propcollider then
-      self.propcollider:remove()
+    -- Remove prop collider reference if needed (it no longer creates one)
+    if config.removePropCollider then
+      self:clearCollideRect()
       self.propcollider = nil
     end
     
@@ -130,8 +128,5 @@ end
 function PropItem:destroyProp(id)
   findAndDestroyPropById(id) 
   self:clearCollideRect()
-  if self.propcollider then
-    self.propcollider:remove()
-  end
   self.animation:setState('debris')
 end

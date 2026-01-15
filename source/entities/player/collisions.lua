@@ -126,7 +126,7 @@ function Player:collisionResponse(other)
 
 
   elseif other:isa(PropItem) then
-  return 'overlap'
+  return 'freeze'
   
   elseif other:isa(Door) then
 
