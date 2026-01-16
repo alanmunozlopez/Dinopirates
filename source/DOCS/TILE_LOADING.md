@@ -66,6 +66,39 @@ Finally, this map is assigned to a sprite (`floor`) which is drawn on screen wit
 
 ---
 
+## 🧱 Collisions and Walls
+
+Beyond rendering, the tilemap is used to generate physical colliders for walls. This logic is handled by `CreateTileColliders` in `utilities/Utilities.lua`.
+
+### 1. Wall Identification
+The system identifies which tiles are "walls" using a lookup table:
+
+```lua
+local WALL_TILE_IDS = {
+    [1] = true, [2] = true, [3] = true, [9] = true,
+    [6] = true, [7] = true, [8] = true, [10] = true,
+    [25] = true, [28] = true, [29] = true, [30] = true,
+    [31] = true, [39] = true, [41] = true, [42] = true,
+    [43] = true,
+}
+```
+
+### 2. Collider Optimization (`CreateTileColliders`)
+Instead of creating a collider for every single tile, the system optimizes them into larger rectangles using a two-phase clustering algorithm:
+
+1.  **Phase 1: Horizontal Identification**: Scans each row for contiguous wall tiles and groups them into segments.
+2.  **Phase 2: Vertical Merging**: Compares segments between consecutive rows. If two segments have the same horizontal position and width, they are merged into a single taller rectangle.
+
+This significantly reduces the number of active sprites/colliders, improving performance.
+
+### 3. The `Box` Class
+Merged areas are instantiated as `Box` objects (a subclass of `playdate.graphics.sprite`).
+- **Collision Group**: `CollideGroups.wall`
+- **Visuals**: Draws a white rectangle (useful for debugging).
+- **Physics**: Uses `setCollideRect` to match the merged tile area.
+
+---
+
 ## 🛠️ Summary of Dependencies
 
 - **LDtk**: Defines which layout each room uses via the `tile` custom field.
