@@ -51,67 +51,51 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.nocollide = nocollide
   self.isDestroyed = isDestroyed
   
-  -- Default collider setup
-  if nocollide == false then
-    if type == "xtree-1" or type == "xtree-2" then
-      self:setCollideRect(2, 26, 28, 4) -- Aligned with previous PropCollider(x, y+16, 28, 4)
-    else
-      self:setCollideRect(2, 10, 28, 18) -- Aligned with previous PropCollider(x, y, 28, 18)
-    end
-  end
-  -- Default collider setup
-  
-  
   -- HOLE TYPES CONFIGURATION
   local holeTypes = {
-    -- Holes where player falls through (no collision, no prop collider)
-    holeTop = { isHole = true, collideRect = nil, removePropCollider = true },
-    holeCenter = { isHole = true, collideRect = nil, removePropCollider = true },
-    holeBottom = { isHole = true, collideRect = nil, removePropCollider = true },
-    holeTopLeft = { isHole = true, collideRect = nil, removePropCollider = true },
-    holeBottomLeft = { isHole = true, collideRect = nil, removePropCollider = true },
-    holeTopRight = { isHole = true, collideRect = nil, removePropCollider = true },
-    holeBottomRight = { isHole = true, collideRect = nil, removePropCollider = true },
-    
-    -- Edge holes with partial collision
-    holeLeft = { isHole = true, collideRect = {10, 0, 22, 32}, removePropCollider = true },
-    holeRight = { isHole = true, collideRect = {0, 0, 22, 32}, removePropCollider = true },
-    holeCenter = { isHole = true, collideRect = {0, 0, 32, 32}, removePropCollider = true },
-    holeTopLeft = { isHole = true, collideRect = {10, 10, 22, 22}, removePropCollider = true },
-    holeTop = { isHole = true, collideRect = {0, 10, 32, 22}, removePropCollider = true },
-    holeTopRight = { isHole = true, collideRect = {0, 10, 22, 22}, removePropCollider = true },
-    holeBottomRight = { isHole = true, collideRect = {0, 0, 22, 22}, removePropCollider = true },
-    holeBottom = { isHole = true, collideRect = {0, 0, 32, 22}, removePropCollider = true },
-    holeBottomLeft = { isHole = true, collideRect = {10, 0, 22, 22}, removePropCollider = true },
+    holeLeft = { isHole = true, collideRect = {10, 0, 22, 32} },
+    holeRight = { isHole = true, collideRect = {0, 0, 22, 32} },
+    holeCenter = { isHole = true, collideRect = {0, 0, 32, 32} },
+    holeTopLeft = { isHole = true, collideRect = {10, 10, 22, 22} },
+    holeTop = { isHole = true, collideRect = {0, 10, 32, 22} },
+    holeTopRight = { isHole = true, collideRect = {0, 10, 22, 22} },
+    holeBottomRight = { isHole = true, collideRect = {0, 0, 22, 22} },
+    holeBottom = { isHole = true, collideRect = {0, 0, 32, 22} },
+    holeBottomLeft = { isHole = true, collideRect = {10, 0, 22, 22} },
   }
+
+  -- Check if this is a hole early
+  if holeTypes[type] then
+    self.isHole = true
+    self.isEdible = false
+  end
+
+  -- Default collider setup (only if not a hole and nocollide is false)
+  if self.nocollide == false and not self.isHole then
+    if type == "xtree-1" or type == "xtree-2" then
+      self:setCollideRect(2, 26, 28, 4) 
+    else
+      self:setCollideRect(2, 10, 28, 18)
+    end
+  end
+  
+  -- Apply specific hole configuration
+  if self.isHole then
+    local config = holeTypes[type]
+    if config.collideRect then
+      self:setCollideRect(table.unpack(config.collideRect))
+    else
+      self:clearCollideRect()
+    end
+    print("🕳️  Hole created:", type, "at", x, y)
+  end
+
   if self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.type == 'minifier' then
     self:setZIndex(ZIndex.props)
   end
+
   if self.type == 'minifier' then
     self:setCollideRect(0, 12, 32, 18)
-  end
-  -- Apply hole configuration
-  if holeTypes[type] then
-    local config = holeTypes[type]
-    self.isHole = config.isHole
-    self.isEdible = false
-    
-    -- Clear collide rect if no collision needed
-    if config.collideRect == nil then
-      self:clearCollideRect()
-    else
-      -- Set specific collide rect for edge holes
-      self:setCollideRect(table.unpack(config.collideRect))
-    end
-    
-    -- Remove prop collider reference if needed (it no longer creates one)
-    if config.removePropCollider then
-      self:clearCollideRect()
-      self.propcollider = nil
-    end
-    
-    print("🕳️  Hole created:", type, "at", x, y)
-    
   end
   
   self:setZIndex(zIndex)
