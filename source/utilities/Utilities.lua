@@ -444,47 +444,80 @@ local WALL_TILE_IDS = {
 	 [7] = true,
 	 [8] = true,
 	 [10] = true,
+	 [25] = true,
 	 [28] = true,
 	 [29] = true,
 	 [30] = true,
 	 [31] = true,
+	 [39] = true,
+	 [41] = true,
+	 [42] = true,
+	 [43] = true,
  }
 local TILE_SIZE = 16
 
---- Creates wall colliders from tilemap data with horizontal merging optimization
+--- Creates wall colliders from tilemap data with 2D clustering (horizontal and vertical merging)
 -- @param tileData table The 2D matrix of tile IDs
 -- @return table List of created Box sprites
 function CreateTileColliders(tileData)
 	local colliders = {}
 	local height = #tileData
 	local width = #tileData[1]
+	
+	local allSegments = {}
 
+	-- Phase 1: Horizontal identification
+	-- We find all contiguous wall tiles in each row and store them as segments.
 	for y = 1, height do
+		allSegments[y] = {}
 		local x = 1
 		while x <= width do
 			local tileID = tileData[y][x]
 			if WALL_TILE_IDS[tileID] then
-				-- Start of a wall segment
 				local startX = x
-				-- Find how many contiguous wall tiles follow in the same row
-				while x <= width and WALL_TILE_IDS[tileData[y][x]] do
+				while x <= width and tileData[y][x] and WALL_TILE_IDS[tileData[y][x]] do
 					x = x + 1
 				end
 				local segmentWidth = x - startX
-				
-				-- Create a single Box for this entire segment
-				local px = (startX - 1) * TILE_SIZE
-				local py = (y - 1) * TILE_SIZE
-				local pw = segmentWidth * TILE_SIZE
-				local ph = TILE_SIZE
-				
-				local collider = Box(px, py, pw, ph)
-				table.insert(colliders, collider)
+				table.insert(allSegments[y], {x = startX, w = segmentWidth, used = false})
 			else
 				x = x + 1
 			end
 		end
 	end
+
+	-- Phase 2: Vertical merging
+	-- We try to merge segments from consecutive rows if they have the same X and Width.
+	for y = 1, height do
+		for _, segment in ipairs(allSegments[y]) do
+			if not segment.used then
+				local currentH = 1
+				-- Look ahead in subsequent rows
+				for nextY = y + 1, height do
+					local found = false
+					for _, nextSegment in ipairs(allSegments[nextY]) do
+						if not nextSegment.used and nextSegment.x == segment.x and nextSegment.w == segment.w then
+							nextSegment.used = true
+							currentH = currentH + 1
+							found = true
+							break
+						end
+					end
+					if not found then break end
+				end
+				
+				-- Create the Box sprite for the final merged area
+				local px = (segment.x - 1) * TILE_SIZE
+				local py = (y - 1) * TILE_SIZE
+				local pw = segment.w * TILE_SIZE
+				local ph = currentH * TILE_SIZE
+				
+				local collider = Box(px, py, pw, ph)
+				table.insert(colliders, collider)
+			end
+		end
+	end
+	
 	return colliders
 end
 
