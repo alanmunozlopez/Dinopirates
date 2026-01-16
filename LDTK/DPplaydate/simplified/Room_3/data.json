@@ -216,6 +216,21 @@
 					"nocollider": false,
 					"destroyed": false
 				}
+			},
+			{
+				"id": "FellTable",
+				"iid": "ffc9fb50-d380-11f0-a276-0f85237af89c",
+				"layer": "Props",
+				"x": 276,
+				"y": 164,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "fellTable",
+					"nocollider": false,
+					"destroyed": false
+				}
 			}
 		],
 		"Blood": [
@@ -474,6 +489,66 @@
 					"nocollider": false,
 					"destroyed": false
 				}
+			},
+			{
+				"id": "Smalltable",
+				"iid": "d0f28ea0-d380-11f0-a276-170abcc70553",
+				"layer": "Props",
+				"x": 276,
+				"y": 188,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "smallTable",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Smalltable",
+				"iid": "d4288c50-d380-11f0-a276-9bdf43235b7f",
+				"layer": "Props",
+				"x": 276,
+				"y": 124,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "smallTable",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Smalltable",
+				"iid": "d53679e0-d380-11f0-a276-8f2b37a9f3ee",
+				"layer": "Props",
+				"x": 284,
+				"y": 212,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "smallTable",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Smalltable",
+				"iid": "d78991a0-d380-11f0-a276-f7b032b235ae",
+				"layer": "Props",
+				"x": 348,
+				"y": 188,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "smallTable",
+					"nocollider": false,
+					"destroyed": false
+				}
 			}
 		],
 		"KitchenStorage": [
@@ -503,6 +578,38 @@
 				"color": 12470831,
 				"customFields": {
 					"type": "kitchenStorage",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "KitchenStorage",
+				"iid": "f90bc140-d380-11f0-a276-d3e851faf0a1",
+				"layer": "Props",
+				"x": 276,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "kitchenStorage",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "c8814d60-d380-11f0-a276-e3aac22ec5f9",
+				"layer": "Props",
+				"x": 108,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
 					"nocollider": false,
 					"destroyed": false
 				}
