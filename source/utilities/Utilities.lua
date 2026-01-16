@@ -22,80 +22,6 @@ function Box:init(x, y, width, height)
 	self:setGroups(CollideGroups.wall)
 end
 
---- Creates walls for a room based on its LDTK neighbors
--- Walls are dynamically adjusted according to connections with neighboring rooms
--- @param currentRoom table The current room data from levelsLDTK
--- @return table Table with the 4 created walls {top, bottom, left, right}
-function CreateWallsFromLDTK(currentRoom)
-	printDebug("🧱 ===== CREATING WALLS =====")
-
-	if not currentRoom or not currentRoom.neighbourLevels then
-		printDebug("❌ ERROR: currentRoom or neighbourLevels is nil")
-		return
-	end
-
-	local neighbours = {}
-	for _, n in ipairs(currentRoom.neighbourLevels) do
-		if n.dir then
-			neighbours[n.dir] = true
-		end
-	end
-
-	printDebug("👀 Analyzing neighbors:")
-	for dir, _ in pairs(neighbours) do
-		printDebug("   🔹 Neighbor in direction:", dir)
-	end
-
-	-- Base wall positions
-	local wallTopY = 0
-	local wallBottomY = 228
-	local wallLeftX = 0
-	local wallRightX = 388
-
-	-- Movement offsets
-	local offset = 16
-
-	-- NORTH (no n, nw, ne)
-	if not (neighbours["n"] or neighbours["nw"] or neighbours["ne"]) then
-		printDebug("⬆️ No neighbor to the north → moving top wall +Y")
-		wallTopY = wallTopY + offset
-	end
-
-	-- SOUTH (no s, sw, se)
-	if not (neighbours["s"] or neighbours["sw"] or neighbours["se"]) then
-		printDebug("⬇️ No neighbor to the south → moving bottom wall -Y")
-		wallBottomY = wallBottomY - 2*offset
-	end
-
-	-- WEST (no w, nw, sw)
-	if not (neighbours["w"] or neighbours["nw"] or neighbours["sw"]) then
-		printDebug("⬅️ No neighbor to the west → moving left wall +X")
-		wallLeftX = wallLeftX + 2*offset
-	end
-
-	-- EAST (no e, ne, se)
-	if not (neighbours["e"] or neighbours["ne"] or neighbours["se"]) then
-		printDebug("➡️ No neighbor to the east → moving right wall -X")
-		wallRightX = wallRightX - 2*offset
-	end
-
-	-- Create walls
-	local wallTop = Box(0, wallTopY, 400, 12)
-	local wallDown = Box(0, wallBottomY - 4, 400, 12)
-	local wallLeft = Box(wallLeftX, 12, 12, 216)
-	local wallRight = Box(wallRightX, 12, 12, 216)
-
-	printDebug("✅ Walls created with offsets:")
-	printDebug("   Top Y:", wallTopY, "| Bottom Y:", wallBottomY, "| Left X:", wallLeftX, "| Right X:", wallRightX)
-	printDebug("🧱 ===== END WALL CREATION =====")
-
-	return {
-		top = wallTop,
-		bottom = wallDown,
-		left = wallLeft,
-		right = wallRight
-	}
-end
 
 
 -- MARK: Cheat codes
@@ -507,6 +433,59 @@ function renderTileMap(tileData, tilemap)
 	  tilemap:setTileAtPosition(x, y, tileData[y][x])
 	end
   end
+end
+
+local WALL_TILE_IDS = {
+	 [1] = true, 
+	 [2] = true, 
+	 [3] = true, 
+	 [9] = true, 
+	 [6] = true,
+	 [7] = true,
+	 [8] = true,
+	 [10] = true,
+	 [28] = true,
+	 [29] = true,
+	 [30] = true,
+	 [31] = true,
+ }
+local TILE_SIZE = 16
+
+--- Creates wall colliders from tilemap data with horizontal merging optimization
+-- @param tileData table The 2D matrix of tile IDs
+-- @return table List of created Box sprites
+function CreateTileColliders(tileData)
+	local colliders = {}
+	local height = #tileData
+	local width = #tileData[1]
+
+	for y = 1, height do
+		local x = 1
+		while x <= width do
+			local tileID = tileData[y][x]
+			if WALL_TILE_IDS[tileID] then
+				-- Start of a wall segment
+				local startX = x
+				-- Find how many contiguous wall tiles follow in the same row
+				while x <= width and WALL_TILE_IDS[tileData[y][x]] do
+					x = x + 1
+				end
+				local segmentWidth = x - startX
+				
+				-- Create a single Box for this entire segment
+				local px = (startX - 1) * TILE_SIZE
+				local py = (y - 1) * TILE_SIZE
+				local pw = segmentWidth * TILE_SIZE
+				local ph = TILE_SIZE
+				
+				local collider = Box(px, py, pw, ph)
+				table.insert(colliders, collider)
+			else
+				x = x + 1
+			end
+		end
+	end
+	return colliders
 end
 
 -- Bulk revoke (delete) achievements

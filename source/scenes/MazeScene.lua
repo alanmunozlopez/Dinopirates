@@ -58,6 +58,7 @@ local cheat = CheatCode("up", "up", "up", "down")
 local crankIsMoving = false
 local crankStopTimer = 0
 local CRANK_STOP_THRESHOLD = 0.1 -- seconds of inactivity before considering crank stopped
+local tileColliders = {}
 
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
@@ -126,16 +127,11 @@ function scene:enter()
 	floor:setCenter(0, 0) -- Anchor top-left instead of center
 	floor:add()
 	
-	-- MARK: Walls
+	-- MARK: Tile Colliders
 	if room and levelsLDTK[room] then
-		local currentRoom = levelsLDTK[room]
-		local walls = CreateWallsFromLDTK(currentRoom)
-		wallTop = walls.top
-		wallDown = walls.bottom
-		wallLeft = walls.left
-		wallRight = walls.right
+		tileColliders = CreateTileColliders(tileMapData[PlayerData.actualTilemap])
 	else
-		printDebug("❌ ERROR: could not create walls, room or levelsLDTK[room] is nil")
+		printDebug("❌ ERROR: could not create wall colliders, room or levelsLDTK[room] is nil")
 	end
 	
 	-- MARK: Doors
@@ -414,6 +410,11 @@ function scene:exit()
 	if shadow then
 		shadow:removeAll()
 	end
+	
+	for _, collider in ipairs(tileColliders) do
+		collider:remove()
+	end
+	tileColliders = {}
 	
 	Graphics.sprite.removeAll()
 	
