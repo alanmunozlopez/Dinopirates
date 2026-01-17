@@ -132,7 +132,7 @@ function Player:collisionResponse(other)
 
     if other.status == 'open' then
       -- Door is open, allow passage
-      other:prevRoom(other.direction)
+      other:prevRoom(other.direction, self.x, self.y)
       other:goTo()
       return 'overlap'
     elseif other.status == 'closed' then
@@ -142,7 +142,7 @@ function Player:collisionResponse(other)
       if PlayerData.keys[requiredKey] == true then
         -- Player has the correct key
         printDebug("🔓 Door unlocked with key", requiredKey)
-        other:prevRoom(other.direction)
+        other:prevRoom(other.direction, self.x, self.y)
         other:goTo()
         return 'overlap'
       else

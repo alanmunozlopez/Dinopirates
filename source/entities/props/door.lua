@@ -78,13 +78,13 @@ function Door:goTo()
     
 end
 
-function Door:prevRoom(direction)
+function Door:prevRoom(direction, playerX, playerY)
     PlayerData.lastRoom = direction
     local spawnCoordinates = {
-        top = {x = 196, y = 196},
-        down = {x = 196, y = 32},
-        right = {x = 32, y = 116},
-        left = {x = 364, y = 116}
+        top = {x = playerX or 196, y = 196},   -- Preserve X when entering from top/down
+        down = {x = playerX or 196, y = 32},
+        right = {x = 32, y = playerY or 116},  -- Preserve Y when entering from sides
+        left = {x = 364, y = playerY or 116}
     }
     PlayerData.playerSpawn.x = spawnCoordinates[direction].x
     PlayerData.playerSpawn.y = spawnCoordinates[direction].y
