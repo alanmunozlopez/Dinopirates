@@ -25,7 +25,7 @@ local function setRectValues(direction)
   return table.unpack(rectValues[direction])
 end
 
-function Door:init(direction, status, nextRoom, zIndex, keyNumber)
+function Door:init(direction, status, nextRoom, zIndex, keyNumber, x, y, width, height)
   
   self.nextRoom = RoomTranslate(nextRoom)
   self.direction = direction
@@ -34,8 +34,15 @@ function Door:init(direction, status, nextRoom, zIndex, keyNumber)
   
   local isHorizontal = direction == 'top' or direction == 'down'
   -- local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'
-  local sizeX, sizeY = isHorizontal and 56 or 10, isHorizontal and 10 or 56
-  local rectX, rectY, rectW, rectH = setRectValues(direction)
+  local sizeX = width or (isHorizontal and 56 or 10)
+  local sizeY = height or (isHorizontal and 10 or 56)
+  
+  local rectX, rectY, rectW, rectH
+  if width and height then
+    rectX, rectY, rectW, rectH = 0, 0, width, height
+  else
+    rectX, rectY, rectW, rectH = setRectValues(direction)
+  end
 
   Door.super.init(self, asset, true)
   self:setSize(sizeX, sizeY)
@@ -54,7 +61,12 @@ function Door:init(direction, status, nextRoom, zIndex, keyNumber)
   local position = positions[direction]
   self:setZIndex(zIndex)
   self:setGroups(3)
-  self:add(position.x, position.y)
+  
+  -- Use provided LDTK coordinates if available, otherwise fallback to hardcoded positions
+  local finalX = x or position.x
+  local finalY = y or position.y
+  
+  self:add(finalX, finalY)
 end
 
 function Door:goTo()
@@ -324,7 +336,7 @@ function CreateDoorsFromLDTK(currentRoom)
 							end
 							
 							-- Create the door
-							Door(direction, open, leadsTo, ZIndex.props, keyNumber)
+							Door(direction, open, leadsTo, ZIndex.props, keyNumber, doorEntity.x, doorEntity.y, doorEntity.width, doorEntity.height)
 							printDebug("✅ Door created successfully")
 						else
 							printDebug("⚠️  Neighbor room not loaded in levelsLDTK")

@@ -93,6 +93,36 @@
 					"DoorsConnection": "Top",
 					"KeyNumber": null
 				}
+			},
+			{
+				"id": "Doors",
+				"iid": "184c7a60-d380-11f0-a276-ef271e0ad648",
+				"layer": "Doors",
+				"x": 88,
+				"y": 8,
+				"width": 48,
+				"height": 16,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "1bcb67f0-d380-11f0-a276-2346b055c822",
+				"layer": "Doors",
+				"x": 344,
+				"y": 8,
+				"width": 48,
+				"height": 16,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
 			}
 		],
 		"PlayerSpawnPoints": [
