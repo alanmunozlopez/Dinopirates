@@ -112,6 +112,10 @@ function Player:collisionResponse(other)
       return 'overlap'
   end
   
+  elseif other:isa(PropItem) and other.isSlime then
+    self:startSliding(self.direction)
+    return 'overlap'
+  
   elseif other:isa(PropItem) and other.type == 'minifier' then
     self.currentMinifier = other
     PlayerData.readyToShrink = true

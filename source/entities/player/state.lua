@@ -225,6 +225,9 @@ end
 function Player:update()
   -- Update dash movement if dashing
   self:updateDash()
+  
+  -- Update sliding movement if on slime
+  self:updateSliding()
 
   -- Hide light cone after display time
   if self.lightConeHideTime and playdate.getCurrentTimeMilliseconds() >= self.lightConeHideTime then

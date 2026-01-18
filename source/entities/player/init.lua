@@ -12,6 +12,7 @@ import "entities/player/state"
 import "entities/player/dash"
 import "entities/player/abilities"
 import "entities/player/lightburst"
+import "entities/player/sliding"
 local dialogUI = nil
 local uiHud = nil
 
@@ -45,6 +46,7 @@ function Player:init(x, y, speed, Zindex)
     self.playerUIX = 30
     self.playerUIY = 30
     self.isBehind = false
+    self.direction = PlayerData.direction -- Initialize self.direction
     self.triggerEnteredOnce = false
     self.currentMinifier = nil
 
@@ -66,6 +68,11 @@ function Player:init(x, y, speed, Zindex)
     self.dashSpeed = 8
     self.dashTotalDistance = 32
     self.dashBounceDistance = 16
+
+    -- Sliding state variables
+    self.isSliding = false
+    self.slidingDirection = nil
+    self.slidingSpeed = 4
 
     -- MARK: Add to scene
     self.dialogUI = dialogScreen()

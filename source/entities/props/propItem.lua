@@ -42,6 +42,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.animation:addState('holeBottomRight', 32, 32)
   self.animation:addState('debris', 33, 33)
   self.animation:addState('minifier', 45, 45)
+  self.animation:addState('slime', 46, 46)
   self.animation:setState(type)
   
   -- Default properties
@@ -62,16 +63,18 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
     holeBottomRight = { isHole = true, collideRect = {0, 0, 22, 22} },
     holeBottom = { isHole = true, collideRect = {0, 0, 32, 22} },
     holeBottomLeft = { isHole = true, collideRect = {10, 0, 22, 22} },
+    slime = { isSlime = true, collideRect = {0, 0, 32, 32} },
   }
 
   -- Check if this is a hole early
   if holeTypes[type] then
-    self.isHole = true
+    self.isHole = holeTypes[type].isHole
+    self.isSlime = holeTypes[type].isSlime
     self.isEdible = false
   end
 
-  -- Default collider setup (only if not a hole and nocollide is false)
-  if self.nocollide == false and not self.isHole then
+  -- Default collider setup (only if not a hole, not slime and nocollide is false)
+  if self.nocollide == false and not self.isHole and not self.isSlime then
     if type == "xtree-1" or type == "xtree-2" then
       self:setCollideRect(2, 26, 28, 4) 
     else
@@ -79,18 +82,22 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
     end
   end
   
-  -- Apply specific hole configuration
-  if self.isHole then
+  -- Apply specific hole or slime configuration
+  if self.isHole or self.isSlime then
     local config = holeTypes[type]
     if config.collideRect then
       self:setCollideRect(table.unpack(config.collideRect))
     else
       self:clearCollideRect()
     end
-    print("🕳️  Hole created:", type, "at", x, y)
+    if self.isHole then
+      print("🕳️  Hole created:", type, "at", x, y)
+    else
+      print("💧 Slime created:", type, "at", x, y)
+    end
   end
 
-  if self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.type == 'minifier' then
+  if self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.isSlime == true or self.type == 'minifier' then
     self:setZIndex(ZIndex.props)
   end
 
@@ -104,7 +111,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
 end
 
 function PropItem:update()
-  if not (self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.type == 'minifier') then
+  if not (self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.isSlime == true or self.type == 'minifier') then
     self:setZIndex(self.y)
   end
 end
