@@ -35,6 +35,10 @@ Props share a single image sheet (`props.png`) and use animation states like `ch
     - **Falling**: In `collisions.lua`, hitting a hole without boots/battery triggers `self:fallBelow()`.
     - **Walking**: With boots, the player drains battery but remains in the room.
 - **Minifiers**: Special pods used to change the player's size via a crank interaction (`isTiny`).
+- **Slime (Tile 46)**: New hazard that causes the player to slide.
+    - **Sliding**: When stepped on, the player automatically moves in a straight line at a fixed speed (`slidingSpeed = 4`).
+    - **Stopping**: The slide ends if the player hits a solid obstacle (wall, solid prop) or exits the slime patch.
+    - **Control**: Manual movement is disabled during a slide.
 
 ### 3. Destruction & Persistence
 Props can be destroyed by certain enemies or effects.

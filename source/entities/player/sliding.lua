@@ -29,16 +29,16 @@ function Player:updateSliding()
 
     if self.slidingDirection == "left" then
         moveX = -self.slidingSpeed
-        self.animation:setState('left')
+        if PlayerData.isTiny then self.animation:setState('tinyLeft') else self.animation:setState('left') end
     elseif self.slidingDirection == "right" then
         moveX = self.slidingSpeed
-        self.animation:setState('right')
+        if PlayerData.isTiny then self.animation:setState('tinyRight') else self.animation:setState('right') end
     elseif self.slidingDirection == "up" then
         moveY = -self.slidingSpeed
-        self.animation:setState('up')
+        if PlayerData.isTiny then self.animation:setState('tinyUp') else self.animation:setState('up') end
     elseif self.slidingDirection == "down" then
         moveY = self.slidingSpeed
-        self.animation:setState('down')
+        if PlayerData.isTiny then self.animation:setState('tinyDown') else self.animation:setState('down') end
     end
 
     local targetX = self.x + moveX
