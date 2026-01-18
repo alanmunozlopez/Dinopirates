@@ -183,7 +183,7 @@ levelsLDTK = {
 	  },
 	  Boots = {
 		{
-		  id = "Boots",
+		  id = "antislip",
 		  iid = "63ff5cd0-d380-11f0-8084-2fa54ff69747",
 		  layer = "Items",
 		  x = 308,
@@ -192,7 +192,7 @@ levelsLDTK = {
 		  height = 48,
 		  color = 15389866,
 		  customFields = {
-			type = "boots"
+			type = "antislip"
 		  }
 		}
 	  },

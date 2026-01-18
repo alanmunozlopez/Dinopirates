@@ -54,12 +54,14 @@ The `isActive` flag is a critical internal value.
 
 ## 🎒 Inventory & Skills
 - **Items**:
-    - `hasLamp`: Enables vision and sanity regeneration.
-    - `hasBoots`: Provides "Hole" safety; player drains battery to walk over holes instead of falling.
+    - `hasLamp`: Enables vision and sanity regeneration. Grants **Lightburst** skill.
+    - `hasBoots`: Provides "Hole" safety; player drains battery to walk over holes instead of falling. Grants **Dash** skill.
+    - `hasAntiSlip`: Provides "Slime" safety; player drains battery to walk over slime instead of sliding.
     - `hasBag`: Required to capture CrewMembers.
+    - `hasTools`: Story-relevant or utility item (used for certain environment interactions).
 - **Skills**:
-    - `canFlash` (Lightburst): Costs battery to blind enemies in a radius.
-    - `canDash`: Enables a fast dash attack with a cooldown, used to bypass enemies or escape.
+    - `canFlash` (Lightburst): Costs battery to blind enemies in a radius. Granted by `hasLamp`.
+    - `canDash`: Enables a fast dash attack with a cooldown, used to bypass enemies or escape. Granted by `hasBoots`.
 
 > [!TIP]
 > Always check `PlayerData.isInDarkness`. Most survival mechanics (Sanity drain, Battery drain, Speed debuffs) are gated by this boolean.

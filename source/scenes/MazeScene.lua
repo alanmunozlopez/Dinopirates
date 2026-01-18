@@ -212,7 +212,8 @@ function scene:enter()
 						notes = "items.hasNotes",
 						bag = "items.hasBag",
 						tools = "items.hasTools",
-						boots= "items.hasBoots"
+						boots= "items.hasBoots",
+						antislip = "items.hasAntiSlip"
 					}
 					
 					-- Special handling for keycards with key numbers

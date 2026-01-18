@@ -21,6 +21,8 @@ function Items:init(x, y, type, keyNumber)
   self.animation.bag.frameDuration = 8   
   self.animation:addState('boots', 38, 41)
   self.animation.boots.frameDuration = 8  
+  self.animation:addState('antislip', 38, 41)
+  self.animation.antislip.frameDuration = 8  
   self:setSize(48, 48)
   self:setCollideRect(0 ,0, 48, 48)
   self:setZIndex(ZIndex.items)

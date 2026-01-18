@@ -5,6 +5,11 @@ function Player:grabBoots()
   self:fillBattery()
 end
 
+function Player:grabAntiSlip()
+  PlayerData.items.hasAntiSlip = true
+  self:fillBattery()
+end
+
 function Player:grabBag()
   PlayerData.items.hasBag = true
 end
