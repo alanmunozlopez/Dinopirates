@@ -403,7 +403,7 @@
 				"height": 32,
 				"color": 2513986,
 				"customFields": {
-					"type": "minifier",
+					"type": "slime",
 					"nocollider": false,
 					"destroyed": false
 				}
@@ -418,7 +418,7 @@
 				"height": 32,
 				"color": 2513986,
 				"customFields": {
-					"type": "minifier",
+					"type": "slime",
 					"nocollider": false,
 					"destroyed": false
 				}
@@ -433,7 +433,7 @@
 				"height": 32,
 				"color": 2513986,
 				"customFields": {
-					"type": "minifier",
+					"type": "slime",
 					"nocollider": false,
 					"destroyed": false
 				}
@@ -448,7 +448,7 @@
 				"height": 32,
 				"color": 2513986,
 				"customFields": {
-					"type": "minifier",
+					"type": "slime",
 					"nocollider": false,
 					"destroyed": false
 				}
