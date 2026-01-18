@@ -98,41 +98,6 @@
 					"KeyNumber": 1
 				}
 			}
-		],
-		"PlayerSpawnPoints": [
-			{
-				"id": "PlayerSpawnPoints",
-				"iid": "5c1a52c0-ac70-11f0-aeab-5dec0ea534cd",
-				"layer": "PSpawnPoints",
-				"x": 196,
-				"y": 32,
-				"width": 48,
-				"height": 48,
-				"color": 16705377,
-				"customFields" : {}
-			},
-			{
-				"id": "PlayerSpawnPoints",
-				"iid": "7a12e670-ac70-11f0-aeab-bd94f6a5fe5a",
-				"layer": "PSpawnPoints",
-				"x": 36,
-				"y": 116,
-				"width": 48,
-				"height": 48,
-				"color": 16705377,
-				"customFields" : {}
-			},
-			{
-				"id": "PlayerSpawnPoints",
-				"iid": "c18e4ee0-ac70-11f0-aeab-61d47ecd3507",
-				"layer": "PSpawnPoints",
-				"x": 364,
-				"y": 120,
-				"width": 48,
-				"height": 48,
-				"color": 16705377,
-				"customFields" : {}
-			}
 		]
 	}
 }

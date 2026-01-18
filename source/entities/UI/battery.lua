@@ -14,13 +14,17 @@ end
 function Battery:update()
     if PlayerData.items.hasLamp == true or PlayerData.items.hasBoots == true then
         self.battery = PlayerData.battery
-        local batteryPercent = (self.battery * (batteryCanister.width - 8)) / 100
         
-        local batteryFill = Graphics.image.new(batteryCanister.width - 8, 6)
+        local padding = 2
+        local fillWidth = batteryCanister.width - (padding * 2)
+        local fillHeight = batteryCanister.height - (padding * 2)
+        local batteryPercent = (self.battery * fillWidth) / 100
+        
+        local batteryFill = Graphics.image.new(fillWidth, fillHeight)
         
         Graphics.pushContext(batteryFill)
             Graphics.setColor(Graphics.kColorBlack)
-            Graphics.fillRect(0, 0, batteryPercent,6)
+            Graphics.fillRect(0, 0, batteryPercent, fillHeight)
         Graphics.popContext()
         self:setImage(batteryFill)
         batteryCanister:add()

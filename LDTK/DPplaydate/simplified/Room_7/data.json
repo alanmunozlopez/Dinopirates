@@ -79,30 +79,6 @@
 				}
 			}
 		],
-		"PlayerSpawnPoints": [
-			{
-				"id": "PlayerSpawnPoints",
-				"iid": "1787d970-ac70-11f0-aeab-f7cfec58e37c",
-				"layer": "PSpawnPoints",
-				"x": 200,
-				"y": 32,
-				"width": 48,
-				"height": 48,
-				"color": 16705377,
-				"customFields" : {}
-			},
-			{
-				"id": "PlayerSpawnPoints",
-				"iid": "1e8ae4b0-ac70-11f0-aeab-2d9248a855b7",
-				"layer": "PSpawnPoints",
-				"x": 196,
-				"y": 196,
-				"width": 48,
-				"height": 48,
-				"color": 16705377,
-				"customFields" : {}
-			}
-		],
 		"Triggers": [
 			{
 				"id": "Triggers",
