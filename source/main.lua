@@ -59,7 +59,9 @@ ZIndex = {
 	items = 4,
 	fx = 1999,
 	ui = 2000,
-	alert = 2100
+	hud = 2000,
+	menu = 2100,
+	alert = 2200
 }
 CollideGroups = {
 	player = 1,

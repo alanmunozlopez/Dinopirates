@@ -59,6 +59,7 @@
 		"play": "Enter"
 	},
 	"layers": [
+		"BGTilemap.png",
 		"Tilemap.png"
 	],
 	"entities": {

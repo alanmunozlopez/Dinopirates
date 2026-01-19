@@ -35,6 +35,7 @@
 		"play": null
 	},
 	"layers": [
+		"BGTilemap.png",
 		"Tilemap.png"
 	],
 	"entities" : {}

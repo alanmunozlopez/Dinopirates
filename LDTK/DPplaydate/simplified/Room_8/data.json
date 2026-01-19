@@ -60,6 +60,7 @@
 		"play": "Cutscene"
 	},
 	"layers": [
+		"BGTilemap.png",
 		"Tilemap.png"
 	],
 	"entities": {

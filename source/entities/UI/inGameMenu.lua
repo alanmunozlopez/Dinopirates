@@ -16,7 +16,7 @@ function inGameMenu:init()
   self.activeItem = PlayerData.activeItem 
   
   self:moveTo(200,120)
-  self:setZIndex(ZIndex.ui)
+  self:setZIndex(ZIndex.menu)
   self:setImage(shadow)
   
   
@@ -25,10 +25,10 @@ function inGameMenu:init()
   menuSprite:setImage(menuImage)
   menuSprite:setCenter(0.5, 0.5)
   menuSprite:moveTo(200, 120)
-  menuSprite:setZIndex(ZIndex.ui + 2)
+  menuSprite:setZIndex(ZIndex.menu + 2)
   
-  lampItem = itemMenu("lamp",ZIndex.ui+3)
-  bootItem = itemMenu("boot",ZIndex.ui+3)
+  lampItem = itemMenu("lamp",ZIndex.menu+3)
+  bootItem = itemMenu("boot",ZIndex.menu+3)
   self:add()
 end
 
@@ -101,7 +101,7 @@ function inGameMenu:drawCrewHats()
                 local row = math.floor(hatIndex / maxHatsPerRow)
                 local col = hatIndex % maxHatsPerRow
                 hatSprite:moveTo(hatX + (col * hatSpacing), hatY + (row * rowSpacing))
-                hatSprite:setZIndex(ZIndex.ui + 9)
+                hatSprite:setZIndex(ZIndex.menu + 9)
                 hatSprite:add()
                 table.insert(self.hatSprites, hatSprite)
                 hatIndex += 1
