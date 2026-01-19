@@ -435,24 +435,8 @@ function renderTileMap(tileData, tilemap)
   end
 end
 
-local WALL_TILE_IDS = {
-	 [1] = true, 
-	 [2] = true, 
-	 [3] = true, 
-	 [9] = true, 
-	 [6] = true,
-	 [7] = true,
-	 [8] = true,
-	 [10] = true,
-	 [25] = true,
-	 [28] = true,
-	 [29] = true,
-	 [30] = true,
-	 [31] = true,
-	 [39] = true,
-	 [41] = true,
-	 [42] = true,
-	 [43] = true,
+local SECTION_TILE_IDS = {
+	 [5] = true,
  }
 local TILE_SIZE = 16
 
@@ -467,15 +451,15 @@ function CreateTileColliders(tileData)
 	local allSegments = {}
 
 	-- Phase 1: Horizontal identification
-	-- We find all contiguous wall tiles in each row and store them as segments.
+	-- We find all contiguous wall tiles (anything NOT in SECTION_TILE_IDS) in each row and store them as segments.
 	for y = 1, height do
 		allSegments[y] = {}
 		local x = 1
 		while x <= width do
 			local tileID = tileData[y][x]
-			if WALL_TILE_IDS[tileID] then
+			if not SECTION_TILE_IDS[tileID] then
 				local startX = x
-				while x <= width and tileData[y][x] and WALL_TILE_IDS[tileData[y][x]] do
+				while x <= width and tileData[y][x] and not SECTION_TILE_IDS[tileData[y][x]] do
 					x = x + 1
 				end
 				local segmentWidth = x - startX
