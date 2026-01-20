@@ -27,12 +27,12 @@ function playerHud:init(player)
 	local y = 0
 	if player then
 		x = player.x
-		y = player.y - 40
+		y = player.y - 36
 	end
 	
 	self:moveTo(x, y)
 	
-	self.batteryIndicator = Battery(x, 5, player, ZIndex.hud+1)
+	self.batteryIndicator = Battery(x,y, player, ZIndex.hud+1)
 	self:add()
 end
 
@@ -43,7 +43,7 @@ function playerHud:update()
 		self:moveTo(tx, ty)
 		
 		if self.batteryIndicator then
-			self.batteryIndicator:moveTo(tx , ty)
+			self.batteryIndicator:moveTo(tx , ty-3)
 		end
 	end
 
