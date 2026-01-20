@@ -113,7 +113,6 @@ function scene:enter()
 	-- map:setSize(16,9)
 	
 	-- MARK: UI
-	uiScreen = playerHud()
 	inGameEquip = inGameMenu()
 	-- MARK: Floor tilemap
 	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
@@ -247,6 +246,7 @@ function scene:enter()
 	-- MARK: Player
 	local spawnPoint = PlayerData.playerSpawn
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
+	uiScreen = playerHud(player)
 	PlayerData.x = player.x
 	PlayerData.y = player.y
 	PlayerData.direction = 'idle'
