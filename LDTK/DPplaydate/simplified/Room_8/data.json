@@ -60,8 +60,7 @@
 		"play": "Cutscene"
 	},
 	"layers": [
-		"BGTilemap.png",
-		"Tilemap.png"
+		"BGTilemap.png"
 	],
 	"entities": {
 		"Doors": [

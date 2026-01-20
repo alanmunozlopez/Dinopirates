@@ -59,8 +59,7 @@
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png",
-		"Tilemap.png"
+		"BGTilemap.png"
 	],
 	"entities" : {}
 }
