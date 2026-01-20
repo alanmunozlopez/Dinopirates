@@ -32,7 +32,7 @@ function playerHud:init(player)
 	
 	self:moveTo(x, y)
 	
-	self.batteryIndicator = Battery(x, y, player, ZIndex.hud+1)
+	self.batteryIndicator = Battery(x, 5, player, ZIndex.hud+1)
 	self:add()
 end
 
