@@ -40,10 +40,10 @@ function Player:drainBattery(amount)
 end
 
 function Player:chargeBattery(amount)
-  if PlayerData.battery < 100 and PlayerData.items.hasLamp == true then
+  if PlayerData.battery < 100 then
     self.animation:setState('charge')
-  elseif (PlayerData.items.hasLamp == true) then
-    self.animation:setState('lampIdle')
+  elseif PlayerData.battery >= 100 then
+    self:idle()
   end
   PlayerData.battery += amount
   PlayerData.isActive = true

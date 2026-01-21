@@ -12,7 +12,7 @@ Doors in this game are more than just sprites; they handle the heavy lifting for
 Doors are initialized based on their location in the room:
 - **Directions**: `top`, `down`, `left`, `right`.
 - **Stairs**: Special "doors" for vertical movement between floors (`upper` and `lower`).
-- **Positions**: Each direction has a hardcoded screen position to ensure consistency (e.g., `right` at X=393).
+- **Positions**: Positions and dimensions are dynamically loaded from LDtk entities (using coordinates, `width`, and `height`), with hardcoded fallbacks for standard cardinal directions.
 
 ### 2. Room Transitions
 Transitions are handled via `Door:goTo()` and `Door:prevRoom(direction)`:

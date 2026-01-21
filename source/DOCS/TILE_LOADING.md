@@ -71,15 +71,11 @@ Finally, this map is assigned to a sprite (`floor`) which is drawn on screen wit
 Beyond rendering, the tilemap is used to generate physical colliders for walls. This logic is handled by `CreateTileColliders` in `utilities/Utilities.lua`.
 
 ### 1. Wall Identification
-The system identifies which tiles are "walls" using a lookup table:
+The system identifies which tiles are "non-wall" (sections) using a lookup table. Any tile NOT in this list is considered a wall:
 
 ```lua
-local WALL_TILE_IDS = {
-    [1] = true, [2] = true, [3] = true, [9] = true,
-    [6] = true, [7] = true, [8] = true, [10] = true,
-    [25] = true, [28] = true, [29] = true, [30] = true,
-    [31] = true, [39] = true, [41] = true, [42] = true,
-    [43] = true,
+local SECTION_TILE_IDS = {
+    [5] = true,
 }
 ```
 

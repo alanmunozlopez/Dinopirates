@@ -667,9 +667,7 @@ scene.inputHandler = {
 		
 		
 		
-		if PlayerData.battery == 100 then
-			player:idle()
-		end
+
 		-- scene:PowerCrank()
 		
 	end,

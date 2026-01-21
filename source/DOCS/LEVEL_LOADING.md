@@ -41,7 +41,7 @@ Before Entering, the game searches `levelsLDTK` for the entry matching the desir
 ### 2. Room Setup (`enter`)
 - **Metadata**: Sets `PlayerData.isInDarkness` and `PlayerData.actualTilemap` based on room fields.
 - **Environment**: Renders the `tilemap` and creates the `FXshadow` if the room is dark.
-- **Walls & Doors**: Calls `CreateWallsFromLDTK` and `CreateDoorsFromLDTK`. Walls are dynamically "opened" if a neighbor exists in that direction.
+- **Walls & Doors**: Calls `CreateTileColliders` (for walls) and `CreateDoorsFromLDTK`. Walls are automatically generated from non-walkable tiles in the tilemap.
 
 ### 3. Entity Spawning
 The scene iterates through the room's `entities` table:
