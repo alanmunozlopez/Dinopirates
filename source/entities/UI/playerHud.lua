@@ -16,8 +16,21 @@ function playerHud:init(player)
 	self.player = player
 	
 	-- Mark: animation states
-	self.animation:addState('100', 1, 1)
-	self.animation:setState('100')
+	local frameduration = 12
+	self.animation:addState('sanity100', 1, 2)
+	self.animation.sanity100.frameDuration =  frameduration
+	self.animation:addState('sanity80', 3, 4)
+	self.animation.sanity80.frameDuration = frameduration
+	self.animation:addState('sanity60', 5, 6)
+	self.animation.sanity60.frameDuration = frameduration
+	self.animation:addState('sanity40', 7, 9)
+	self.animation.sanity40.frameDuration = frameduration
+	self.animation:addState('sanity20', 10, 11)
+	self.animation.sanity20.frameDuration = frameduration
+	self.animation:addState('sanity0', 12, 12)
+	self.animation.sanity0.frameDuration = frameduration
+	
+	self.animation:setState('sanity100')
 	
 	self:setSize(35,15)
 	self:setCenter(0.5, 0.5)
@@ -47,7 +60,20 @@ function playerHud:update()
 		end
 	end
 
-	
+	local sanity = PlayerData.sanity
+	if sanity > 80 then
+		self.animation:setState('sanity100')
+	elseif sanity > 60 then
+		self.animation:setState('sanity80')
+	elseif sanity > 40 then
+		self.animation:setState('sanity60')
+	elseif sanity > 20 then
+		self.animation:setState('sanity40')
+	elseif sanity > 0 then
+		self.animation:setState('sanity20')
+	else
+		self.animation:setState('sanity0')
+	end
 end
 
 function playerHud:removeAll()
