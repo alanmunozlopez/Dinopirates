@@ -27,7 +27,7 @@ function playerHud:init(player)
 	self.animation.sanity40.frameDuration = frameduration
 	self.animation:addState('sanity20', 10, 11)
 	self.animation.sanity20.frameDuration = frameduration
-	self.animation:addState('sanity0', 12, 12)
+	self.animation:addState('sanity0', 12, 13)
 	self.animation.sanity0.frameDuration = frameduration
 	
 	self.animation:setState('sanity100')
