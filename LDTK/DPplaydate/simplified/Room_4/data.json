@@ -1,0 +1,87 @@
+{
+	"identifier": "Room_4",
+	"uniqueIdentifer": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+	"x": 1200,
+	"y": 0,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "310fc980-ac70-11f0-998c-05b91a46387d",
+			"dir": "<"
+		},
+		{
+			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
+			"dir": "w"
+		},
+		{
+			"levelIid": "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
+			"dir": "e"
+		},
+		{
+			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "dab87dc0-ac70-11f0-997a-63497867517d",
+			"dir": "s"
+		},
+		{
+			"levelIid": "672c4d40-ac70-11f0-997a-7b0342bedabe",
+			"dir": "se"
+		}
+	],
+	"customFields": {
+		"shadow": false,
+		"light": 0,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 4,
+		"roomNumber": 4,
+		"tile": 4,
+		"DoorsConnection": [
+			"Right",
+			"Down"
+		],
+		"play": null
+	},
+	"layers": [
+		"BGTilemap.png"
+	],
+	"entities": {
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "fcabe850-ac70-11f0-8539-f1bce0538eff",
+				"layer": "Doors",
+				"x": 392,
+				"y": 120,
+				"width": 16,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "ffe408e0-ac70-11f0-8539-89d439e8021b",
+				"layer": "Doors",
+				"x": 200,
+				"y": 232,
+				"width": 48,
+				"height": 16,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
+}

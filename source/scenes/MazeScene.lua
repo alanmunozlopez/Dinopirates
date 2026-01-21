@@ -22,7 +22,6 @@ import "entities/player/init"
 import "assets/comics/comicsData"
 
 import "entities/enemies/brocorat"
-import "entities/enemies/bosscolli"
 import "entities/enemies/crewmember"
 
 import 'entities/props/propItem'
@@ -46,15 +45,21 @@ import "entities/UI/inGameMenu"
 
 
 
--- Mark: player related
+-- MARK: Player related
 local player = nil
 local shadow = nil
 local inGameMenuActive = nil
--- Mark: UI
+-- MARK: UI
 local uiScreen = nil
 local inGameEquip = nil
--- Mark: Utilities
+-- MARK: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
+-- Mark: variables for crank checking
+local crankIsMoving = false
+local crankStopTimer = 0
+local CRANK_STOP_THRESHOLD = 0.1 -- seconds of inactivity before considering crank stopped
+local tileColliders = {}
+
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
 
@@ -63,14 +68,16 @@ scene.backgroundColor = Graphics.kColorWhite
 function scene:init()
 	scene.super.init(self)
 	cheat.onComplete = function()
-		PlayerData.hasLamp = true
+		PlayerData.battery = 100
+		player:grabBoots()
 	end
+	playdate.display.setRefreshRate(50)
 	-- Your code here
 	
 end
 function scene:setFloor(levelNumber, roomNumber)
-	for i, levelData in ipairs(levels) do
-		if levelData.floor.level == levelNumber and levelData.floor.roomNumber == roomNumber then
+	for i, levelData in ipairs(levelsLDTK) do
+		if levelData.customFields.level == levelNumber and levelData.customFields.roomNumber == roomNumber then
 			room = i
 			return
 		end
@@ -90,25 +97,27 @@ function scene:enter()
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
-	PlayerData.room = levels[room].floor.roomNumber
-	PlayerData.isInDarkness = levels[room].floor.shadow
+	PlayerData.room = levelsLDTK[room].customFields.roomNumber
+	PlayerData.isInDarkness = levelsLDTK[room].customFields.shadow
 	PlayerData.floor = room
 	
-	PlayerData.actualLevel = levels[room].floor.level
-	PlayerData.actualRoom = levels[room].floor.roomNumber
-	PlayerData.actualTilemap = levels[room].floor.tile
-	levels[room].floor.visited = true
+	PlayerData.actualLevel = levelsLDTK[room].customFields.level
+	PlayerData.actualRoom = levelsLDTK[room].customFields.roomNumber
+	PlayerData.actualTilemap = levelsLDTK[room].customFields.tile 
+	levelsLDTK[room].customFields.visited = true
 	
-	-- Mark: floor
+	-- MARK: Floor
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
 	map = Graphics.tilemap.new()
-	map:setImageTable(tilesMap)
+	map:setImageTable(tilesMap) 
 	-- map:setSize(16,9)
 	
-	-- Mark: floor 
+	-- MARK: UI
+	inGameEquip = inGameMenu()
+	-- MARK: Floor tilemap
 	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
 	
-	renderTileMap(tileMapData[levels[room].floor.tile], map)
+	renderTileMap(tileMapData[PlayerData.actualTilemap], map)
 	
 	floor = Graphics.sprite.new()
 	floor:setZIndex(1)
@@ -117,164 +126,227 @@ function scene:enter()
 	floor:setCenter(0, 0) -- Anchor top-left instead of center
 	floor:add()
 	
-	--Mark: Walls (this can be optimized)
-	wallTop = Box(0, 0, 400, 20)
-	wallDown = Box(0, 228, 400, 12)
-	wallLeft = Box(0, 12, 12, 216)
-	wallRight = Box(388, 12, 12, 216)
+	-- MARK: Tile Colliders
+	if room and levelsLDTK[room] then
+		tileColliders = CreateTileColliders(tileMapData[PlayerData.actualTilemap])
+	else
+		printDebug("❌ ERROR: could not create wall colliders, room or levelsLDTK[room] is nil")
+	end
 	
-	-- Mark: doors
-	local arrayData = levels[room].floor.doors -- Used several times to save variables
-	if arrayData ~= nil then
-		for _, doorData in ipairs(arrayData) do
-			local direction = doorData.direction
-			local open = doorData.open
-			local leads = doorData.leadsTo
+	-- MARK: Doors
+
+	
+	if room and levelsLDTK[room] then
+		local currentRoom = levelsLDTK[room]
+		printDebug("✅ CurrentRoom:", currentRoom.identifier)
+		printDebug("📍 Level:", currentRoom.customFields.level)
+		printDebug("📍 RoomNumber:", currentRoom.customFields.roomNumber)
 		
-			Door(direction, open, leads, ZIndex.props)
-		end
-	end
-	
-	
-	-- Mark: Props 
-	arrayData = levels[room].floor.props
-	if arrayData ~= nil then
-		for _, propData in ipairs(arrayData) do
-			if propData.destroyed == false or propData.destroyed == nil then
-				local type = propData.type
-				local x = propData.x
-				local y = propData.y
-				local collide = propData.nocollide
-				local id = propData.id
-				PropItem(x, y, type, ZIndex.props, collide, id)
-			else
-				local x = propData.x
-				local y = propData.y
-				local id = propData.id
-				PropItem(x, y, 'debris', ZIndex.props, true, id)
+		if currentRoom.neighbourLevels then
+			printDebug("👥 Neighbors found:", #currentRoom.neighbourLevels)
+			for i, n in ipairs(currentRoom.neighbourLevels) do
+				printDebug("  Neighbor", i, "- iid:", n.levelIid, "dir:", n.dir)
 			end
-			
+		else
+			printDebug("❌ neighbourLevels is nil")
+		end
+		
+		CreateDoorsFromLDTK(currentRoom)
+	else
+		printDebug("❌ ERROR: room is", room, "or levelsLDTK[room] is nil")
+	end
+	printDebug("======================")
+	
+	
+	
+	-- MARK: Props 
+	local entities = levelsLDTK[room].entities
+	
+	if entities ~= nil then
+		for entityType, entitiesList in pairs(entities) do
+			for _, prop in ipairs(entitiesList) do
+				local cf = prop.customFields or {}
+	
+				if cf.destroyed ~= nil or cf.nocollider ~= nil then
+					local x, y, id = prop.x, prop.y, prop.iid
+	
+					if cf.destroyed == false or cf.destroyed == nil then
+						PropItem(x, y, cf.type , ZIndex.props, cf.nocollider,cf.destroyed, id)
+					else
+						PropItem(x, y, "debris", ZIndex.props, true, cf.destroyed , id)
+					end
+				end
+			end
 		end
 	end
 	
-	-- Mark: Items
-	arrayData = levels[room].floor.items
-	if arrayData ~= nil then
-		for _, itemData in ipairs(arrayData) do
-			
-			local type = itemData.type
-			local x = itemData.x
-			local y = itemData.y
-			local itemRequirements = {
-			  keycard = "hasKey",
-			  lamp = "hasLamp",
-			  radio = "hasRadio",
-			  notes = "hasNotes",
-			  bag = "hasBag",
-			  tools = "hasTools"
-			}
-			
-			if itemRequirements[type] and PlayerData[itemRequirements[type]] == false then
-			  Items(x, y, type)
-			end	
+	-- MARK: Items
+	if entities ~= nil then
+		for entityType, entitiesList in pairs(entities) do
+			for _, item in ipairs(entitiesList) do
+				local cf = item.customFields or {}
+	
+				-- Detect if it belongs to Items layer, is an item type, or is a Keys entity
+				local isKeyEntity = (entityType == "Keys" or item.layer == "Keys")
+				local isItemEntity = (item.layer == "Items" or cf.isItem == true)
+				
+				if isKeyEntity or isItemEntity then
+					local x, y = item.x, item.y
+					
+					-- For Keys entities, type is always keycard
+					local type
+					if isKeyEntity then
+						type = "keycard"
+					else
+						type = cf.type or entityType:lower()
+					end
+					
+					-- Get KeyNumber (try both uppercase and lowercase)
+					local keyNumber = cf.KeyNumber or cf.keyNumber
+					
+					local itemRequirements = {
+						keycard = "keys",  -- Changed to check keys table
+						lamp = "items.hasLamp",
+						radio = "items.hasRadio",
+						notes = "items.hasNotes",
+						bag = "items.hasBag",
+						tools = "items.hasTools",
+						boots= "items.hasBoots",
+						antislip = "items.hasAntiSlip"
+					}
+					
+					-- Special handling for keycards with key numbers
+					local shouldGenerate = false
+					if type == "keycard" then
+						-- For keycards, check if player doesn't have this specific key
+						local keyNum = keyNumber or 1
+						shouldGenerate = not PlayerData.keys[keyNum]
+						printDebug("🔑 Checking keycard generation - KeyNumber:", keyNum, "shouldGenerate:", shouldGenerate)
+					elseif itemRequirements[type] then
+						-- For other items, check the boolean flag in items table
+						local itemPath = itemRequirements[type]
+						if itemPath:match("^items%.") then
+							-- Extract the field name after "items."
+							local fieldName = itemPath:match("^items%.(.+)$")
+							shouldGenerate = PlayerData.items[fieldName] == false
+						else
+							shouldGenerate = PlayerData[itemPath] == false
+						end
+					end
+					
+					-- Generate item if player doesn't have it
+					if shouldGenerate then
+						printDebug("✅ Generating item:", type, "at position (", x, ",", y, ") with keyNumber:", keyNumber)
+						Items(x, y, type, keyNumber)
+					end
+				end
+			end
 		end
 	end
-	
-	-- Mark: Player
+	-- MARK: Player
 	local spawnPoint = PlayerData.playerSpawn
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
+	uiScreen = playerHud(player)
 	PlayerData.x = player.x
 	PlayerData.y = player.y
 	PlayerData.direction = 'idle'
-	-- Mark: FX
-	if levels[room].floor.shadow == true then
-		shadow = FXshadow(player, 70, levels[room].floor.light, ZIndex.fx)
+	
+	-- MARK: FX
+	local cf = levelsLDTK[room].customFields or {}
+	
+	if cf.shadow == true then
+		local lightLevel = cf.light or 0
+		shadow = FXshadow(player, 70, lightLevel, ZIndex.fx)
 		PlayerData.isInDarkness = true
 	else
 		PlayerData.isInDarkness = false
 	end
 	
-	-- Mark: Comic
-	arrayData = levels[room].floor.comic
-	if arrayData ~= nil then
-		local comicData = comics[arrayData.name]
+	local cf = levelsLDTK[room].customFields
+	if cf.comic_name then
+		local comicData = comics[cf.comic_name]
 		if comicData then
-			if arrayData.play == "enter" and arrayData.wasPlayed == false then
+			if cf.play == "Enter" and cf.comic_wasPlayed == false then
 				PlayerData.isCutscene = true
 				PlayerData.isGaming = false
 			end
 			
-			local comicName = arrayData.name
 			Panels.startCutscene(comicData, function()
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
-				levels[room].floor.comic.wasPlayed = true
-				Utilities.checkStoryAchievement(comicName)
+				levelsLDTK[room].customFields.comic_wasPlayed = true
+				Utilities.checkStoryAchievement(cf.comic_name)
 			end)
-		else
-			-- comic not found
 		end
 	end
-	-- Mark: UI
-	uiScreen = playerHud()
-	inGameEquip = inGameMenu()
-	-- Mark: Enemies
-	arrayData = levels[room].floor.enemies
 	
-	for _, enemyData in ipairs(arrayData) do
-		if enemyData.dead == false or enemyData.dead == nil then
-			local name = enemyData.name
-			local x = enemyData.x
-			local y = enemyData.y
-			local speed = enemyData.speed
-			local id = enemyData.id
+	
+	-- MARK: Enemies
+	if entities ~= nil then
+		for entityType, entitiesList in pairs(entities) do
+			if entityType == "Brocorat" or entityType == "Bosscolli" then
+				for _, enemy in ipairs(entitiesList) do
+					local cf = enemy.customFields or {}
+					local x, y, id = enemy.x, enemy.y, enemy.iid
+					local speed = cf.speed or 1
+					local dead = cf.dead or false
+	
+					if not dead then
+						if entityType == "Brocorat" then
+							Brocorat(x, y, speed, ZIndex.enemy, player, id)
+						elseif entityType == "Bosscolli" then
+							bosscolli(x, y, speed, ZIndex.enemy, player, id)
+						end
+					else
+						PropItem(x, y, "blood2", ZIndex.props, true)
+					end
+				end
+			end
+		end
+	end
+	
+	-- MARK: Crew members 
+	
+	local entities = levelsLDTK[room].entities
+	
+	if entities and entities.CrewMember then
+		for i, crewData in ipairs(entities.CrewMember) do
+			local cf = crewData.customFields or {}
+			local x, y = crewData.x, crewData.y
+			local speed = cf.speed or 1
+			local crewId = cf.crewID or i
+			local crewIid = crewData.iid
+			local taken = cf.isTaken or false
+	
+			if not taken then
+				CrewMember(x, y, speed, ZIndex.enemy, player, crewIid, room, crewId)
+			end
+		end
+	end
+	
+	
+-- MARK: Dialog triggers
+	local entities = levelsLDTK[room].entities
+	
+	if entities and entities.Triggers then
+		for i, triggerData in ipairs(entities.Triggers) do
+			local cf = triggerData.customFields or {}
+			local used = cf.usedTrigger or false
 			
-			if name == "brocorat" then
-				Brocorat(x, y, speed, ZIndex.enemy, player, id)
-			elseif name == "bosscolli" then
-				bosscolli(x, y, speed, ZIndex.enemy, player, id)
-			end
-		else
-			local x = enemyData.x
-			local y = enemyData.y
-			PropItem(x, y, 'blood2', ZIndex.props, true)
-		end
-	end
-	
-	-- Mark: Crew members 
-	arrayData = levels[room].floor.items
-	
-	for i, crewData in ipairs(arrayData) do
-		local type = crewData.type
-		local x = crewData.x
-		local y = crewData.y
-		local speed = crewData.speed
-		local crewId = crewData.crewId
-		if type == "crewmember" then
-			if crewData.taken == false then
-				CrewMember(x, y, speed, ZIndex.enemy, player, i ,room, crewId)
+			if not used then
+				local x = triggerData.x
+				local y = triggerData.y
+				local width = triggerData.width
+				local height = triggerData.height
+				local script = cf.script
+				local type = cf.type
+				
+				-- Pasar el iid en lugar del índice
+				Trigger(x, y, width, height, script, triggerData.iid, room, type)
 			end
 		end
 	end
-	
-	-- Mark: dialog triggers
-	
-	arrayData = levels[room].floor.triggers
-	for i, triggerData in ipairs(arrayData) do
-		if triggerData.usedTrigger == false then
-			local x = triggerData.x
-			local y = triggerData.y
-			local width = triggerData.width
-			local height = triggerData.height
-			local script = triggerData.script
-			local type = triggerData.type
-			Trigger(x,y,width,height,script, i, room, type)
-		end
-	end
-	
-	SaveSystem.save()
 end
-
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)
@@ -285,9 +357,25 @@ end
 -- This runs once per frame.
 function scene:update()
 	scene.super.update(self)
-	-- Mark: cheat code
-	cheat:update()
-	-- Todo: make this a separate function
+	
+	-- Performance: Only update cheat code when player is gaming
+	if PlayerData.isGaming == true then
+		cheat:update()
+	end
+	
+	-- MARK: Crank stop detection
+	if crankIsMoving then
+		crankStopTimer += (1/50) -- Increment by frame time (assuming 50fps)
+		
+		if crankStopTimer >= CRANK_STOP_THRESHOLD then
+			crankIsMoving = false
+			crankStopTimer = 0
+			-- do something when player stopped cranking
+			player:idle()
+		end
+	end
+	
+	-- Cutscene input handling
 	if PlayerData.isCutscene == true then
 		-- Disable game input handlers while cutscene is running
 		if Noble.Input.getEnabled() then
@@ -301,8 +389,8 @@ function scene:update()
 		end
 	end
 	
-	-- Mark: Crank notification
-	if PlayerData.battery == 0 and PlayerData.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true then
+	-- Mark: Crank notification (only when needed)
+	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 end
@@ -324,6 +412,11 @@ function scene:exit()
 		shadow:removeAll()
 	end
 	
+	for _, collider in ipairs(tileColliders) do
+		collider:remove()
+	end
+	tileColliders = {}
+	
 	Graphics.sprite.removeAll()
 	
 	PlayerData.playerExit.x = player.x
@@ -336,6 +429,7 @@ function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
 	PlayerData.isGaming = false
+	SaveSystem.save()
 end
 
 function scene:pause()
@@ -355,18 +449,7 @@ function scene:movePlayer(direction)
 		end
 	end
 end
-function playerFocus()-- improve this with more constrains.
-	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
-		player.loadingPower = true
-		player:focus()
-	end
-end
-function playerDefocus()
-	if PlayerData.isCutscene == false or PlayerData.isCutscene == nil then
-		player.loadingPower = false
-		player:deFocus()
-	end
-end
+
 -- Define the inputHander for this scene here, or use a previously defined inputHandler.
 
 -- scene.inputHandler = someOtherInputHandler
@@ -379,37 +462,41 @@ scene.inputHandler = {
 		if PlayerData.isTalking == true then
 			player:displayDialog()
 		end
-		-- if PlayerData.hasRadio == true  then
-		-- 	PlayerData.sonarActive = true
-		-- end
+		-- Seleccionar item cuando está en el menú de equipamiento
+		if PlayerData.isEquiping == true then
+			inGameEquip:selectItem()
+		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
 	end,
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
 		-- Your code here
-		if PlayerData.isGaming == true and table.getSize(PlayerData.items) > 0  then
-			-- inGameMenu:displayMenu()
+		if PlayerData.isGaming == true then
+			inGameEquip:displayMenu(player.x,player.y)
 		end
 	end,
 	AButtonUp = function()				-- Runs once when button is released.
 		-- Your code here
-		-- if PlayerData.hasRadio == true  then
-		-- 	PlayerData.sonarActive = false
-		-- end
 	end,
 
 	-- B button
 	--
 
 	BButtonDown = function()
+		-- Close equipment menu if open
 		if PlayerData.isGaming == false and PlayerData.isEquiping == true then
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
-			--inGameMenu:closeMenu()
+			inGameEquip:closeMenu()
+		-- Trigger ability based on selected item
+		elseif PlayerData.isGaming == true and player.isAlive == true then
+			player:useAbility()
 		end
-		--CurrentTile() for testing
-		playerFocus()
+		player:distributeMovementTokens(5) 
+		print(PlayerData.playerSize)
+		checkBool(PlayerData.isTiny)
+		-- playerFocus() -- Commented out for ability system
 	end,
 	BButtonHeld = function()
 		
@@ -419,7 +506,7 @@ scene.inputHandler = {
 		
 	end,
 	BButtonUp = function()
-		playerDefocus()
+		-- playerDefocus() -- Commented out for dash attack
 	end,
 	-- D-pad left
 	--
@@ -530,12 +617,62 @@ scene.inputHandler = {
 	-- Crank
 	--
 	cranked = function(change, acceleratedChange)
-		scene:PowerCrank()
-		if playdate.getCrankTicks(2) > 0 then
+		-- Reset crank stop detection
+		crankIsMoving = true
+		crankStopTimer = 0
+		
+		local ticksValue = playdate.getCrankTicks(4) -- maybe its better use change or acceleratedChange
+		if not player.isAlive then return end
+		
+		if ticksValue > 0 then
 			player:burnCalories(1)
 		end
+		
+		if PlayerData.readyToShrink == true and PlayerData.actualPlayerSize < PlayerData.playerSize and PlayerData.actualPlayerSize > 0 then
+			player:transformCycle()
+		end
+		
+		if PlayerData.isGaming == true then
+			if ticksValue > 0 then
+				if player.loadingPower then
+					-- posible charged skill
+				end
+				
+				if PlayerData.battery < 100 and PlayerData.readyToShrink == false and  PlayerData.isTiny == false then
+					player:chargeBattery(3)
+					if shadow then
+						shadow:refresh()
+					end
+				end
+				
+				if PlayerData.readyToShrink == true and PlayerData.isTiny == true then
+					PlayerData.actualPlayerSize += 1
+					if PlayerData.actualPlayerSize == PlayerData.playerSize then
+						player:grow()
+					end
+				end
+			end
+			
+			if (ticksValue < 0) then
+				if PlayerData.readyToShrink == true and PlayerData.isTiny == false then
+					PlayerData.actualPlayerSize -= 1
+					if PlayerData.actualPlayerSize == 0 then
+						player:shrink()
+					end
+				end
+			end
+			
+		end
+		
+		
+		
+		
+
+		-- scene:PowerCrank()
+		
 	end,
-	crankDocked = function()						-- Runs once when when crank is docked.
+	crankDocked = function()	
+							-- Runs once when when crank is docked.
 	end,
 	crankUndocked = function()						-- Runs once when when crank is undocked.
 		
@@ -547,22 +684,5 @@ function MazeScene:setDiagonalMovement(enabled)
 end
 
 function scene:PowerCrank()
-    if not player.isAlive then return end
-    if PlayerData.isGaming == true then
-    	if playdate.getCrankTicks(4) > 0 then
-        	if player.loadingPower then
-            	print('powa')  -- Consider removing debug print
-        	else
-            	player:chargeBattery(3)
-            	if shadow then
-                	shadow:refresh()
-            	end
-        	end
-    	end
-		
-	end
     
-    if player.battery == 100 then
-        player:idle()
-    end
 end

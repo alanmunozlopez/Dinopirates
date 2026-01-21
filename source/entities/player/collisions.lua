@@ -1,5 +1,5 @@
 function Player:collisionResponse(other)
-  
+
   if other:isa(Enemy) then
     if other:isa(Brocorat) then -- validate candance also
       PlayerData.lastEnemyTouched.type = "Brocorat"
@@ -8,98 +8,170 @@ function Player:collisionResponse(other)
       PlayerData.lastEnemyTouched.y = other.y
       self:fight()
       return 'overlap'
-      
+
     end
-    
+
   elseif other:isa(CrewMember) then
-    other:taken() 
-    
+    -- Validate having the capture bag
+    if PlayerData.CrewMemberData.amountTaken == 0 then
+      if other.crewId == 'CM001' then
+        -- custom screen here after validating the crewId
+      end
+      self.dialogUI:addScreen("gotcha",other.sourceFeed)
+    end
+    other:taken()
+
   elseif other:isa(Box) then
-    return 'freeze' 
-    
+
+  return 'freeze'
+
   elseif other:isa(Trigger) then
-  if other.type == "cutscene" then
+  if other.type == "Cutscene" then
       -- Cutscenes trigger automatically
       PlayerData.isGaming = false
       PlayerData.isCutscene = true
       other:returnScript()
+      printDebug("🔍 Verificando trigger después de usar:")
+      local roomData = levelsLDTK[PlayerData.floor]
+      for _, t in ipairs(roomData.entities.Triggers) do
+          if t.iid == other.iid then
+              printDebug("   usedTrigger:", t.customFields.usedTrigger)
+              break
+          end
+      end
       other:remove()
       Utilities.grantAchievementIfNeeded(other.script)
-  elseif other.type == "search" then
+  elseif other.type == "Search" then
       self.currentTrigger = other
-  elseif other.type == "call" then
+  elseif other.type == "Call" then
       self.currentTrigger = other
-  elseif other.type == "story" then
+  elseif other.type == "Story" then
       PlayerData.isGaming = false
-      PlayerData.isTalking = true
       self.dialogUI:addScreen(other:returnScript(),other.sourceFeed)
   elseif other.type == nil then
       self.currentTrigger = other
-  elseif other.type == "counter" then
+  elseif other.type == "Counter" then
       PlayerData.storyCounter += 1
       other:remove()
   end
   return 'overlap'
-  
+
   elseif other:isa(Items) and other.type == 'keycard' then
+    local keyNumber = other.keyNumber or 1  -- Get key number from item
     other:removeAll()
-    self:grabKey()
+    self:grabKey(keyNumber)
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'lamp' then
     other:removeAll()
     self:grabLamp()
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'radio' then
     other:removeAll()
     self:grabRadio()
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'notes' then
     other:removeAll()
     self:grabNotes()
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'bag' then
     other:removeAll()
     self:grabBag()
     return 'overlap'
-    
+
   elseif other:isa(Items) and other.type == 'honk' then
     other:removeAll()
     self:grabBag()
   return 'overlap'
-  
+
   elseif other:isa(Items) and other.type == 'tools' then
     other:removeAll()
     self:grabTools()
   return 'overlap'
-    
-  elseif other:isa(PropItem) and (other.type == 'holeLeft' or other.type == 'holeRight')then
-    
-    if (PlayerData.hasBoots == true and PlayerData.battery == 0) or PlayerData.hasBoots == false  then
+
+  elseif other:isa(Items) and other.type == 'boots' then
+    other:removeAll()
+    self:grabBoots()
+  return 'overlap'
+
+  elseif other:isa(Items) and other.type == 'antislip' then
+    other:removeAll()
+    self:grabAntiSlip()
+  return 'overlap'
+
+  elseif other:isa(PropItem) and other.isHole then
+  -- If player has boots with battery, can walk over the hole
+  if PlayerData.items.hasBoots == true and PlayerData.battery > 0 then
+    if PlayerData.isTiny == true then
+      self:drainBattery(0.2)
+    else
+      self:drainBattery(0.5)
+    end
+      return 'overlap'
+  else
+      -- Without boots or without battery = fall
       self:fallBelow()
       return 'overlap'
-    elseif PlayerData.hasBoots == true then
-      
-      self:drainBattery(1)
-    return 'overlap'
-    end
-  elseif other:isa(PropItem) then
-  return 'overlap'
-  elseif other:isa(Door) then
-    
-    if (PlayerData.hasKey == true and other.status == 'closed') or other.status =='open' then
-      other:prevRoom(other.direction)
-      other:goTo()
-      return 'overlap'
-    else
-      PlayerData.isTalking = true
-      self.dialogUI:addScreen("nokeys")
-      return 'freeze'
-    end
-  
   end
   
+  elseif other:isa(PropItem) and other.isSlime then
+    -- If player has antislip boots with battery, can walk over slime
+    if PlayerData.items.hasAntiSlip == true and PlayerData.battery > 0 then
+      if PlayerData.isTiny == true then
+        self:drainBattery(0.2)
+      else
+        self:drainBattery(0.5)
+      end
+      return 'overlap'
+    else
+      -- Without antislip or without battery = slide
+      self:startSliding(self.direction)
+      return 'overlap'
+    end
+  
+  elseif other:isa(PropItem) and other.type == 'minifier' then
+    self.currentMinifier = other
+    PlayerData.readyToShrink = true
+    self:showUIHUD()
+    if PlayerData.isTiny == false then
+      self.uiHud:setCrankAntiClock()
+    else
+      self.uiHud:setCrankClock()
+    end
+    
+  return 'overlap'
+
+
+  elseif other:isa(PropItem) then
+  return 'freeze'
+  
+  elseif other:isa(Door) then
+
+    if other.status == 'open' then
+      -- Door is open, allow passage
+      other:prevRoom(other.direction, self.x, self.y)
+      other:goTo()
+      return 'overlap'
+    elseif other.status == 'closed' then
+      -- Door is closed, check if player has the required key
+      local requiredKey = other.keyNumber or 1  -- Default to key 1 if not specified
+
+      if PlayerData.keys[requiredKey] == true then
+        -- Player has the correct key
+        printDebug("🔓 Door unlocked with key", requiredKey)
+        other:prevRoom(other.direction, self.x, self.y)
+        other:goTo()
+        return 'overlap'
+      else
+        -- Player doesn't have the required key
+        printDebug("🔒 Door locked, requires key", requiredKey)
+        self.dialogUI:addScreen("nokeys")
+        return 'freeze'
+      end
+    end
+
+  end
 end

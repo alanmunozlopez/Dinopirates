@@ -1,31 +1,31 @@
 Battery = {}
 class('Battery').extends(Graphics.sprite)
 
-import 'entities/UI/batteryCanister'
+
 
 function Battery:init(x, y, player, Zindex)
     self.player = player
-    batteryCanister = BatteryCanister(x,y,Zindex)
+    
     self:setZIndex(Zindex)
     self:moveTo(x,y)
-    self:add(0,0)
+    self:add(x,y)
 end
 
+
 function Battery:update()
-    if PlayerData.hasLamp == true or PlayerData.hasBoots == true then
+    if PlayerData.items.hasLamp == true or PlayerData.items.hasBoots == true then
         self.battery = PlayerData.battery
-        local batteryPercent = (self.battery * (batteryCanister.width - 8)) / 100
         
-        local batteryFill = Graphics.image.new(batteryCanister.width - 8, 6)
-        
-        Graphics.pushContext(batteryFill)
-            Graphics.setColor(Graphics.kColorBlack)
-            Graphics.fillRect(0, 0, batteryPercent,6)
-        Graphics.popContext()
-        self:setImage(batteryFill)
-        batteryCanister:add()
-    else
-        batteryCanister:remove()
+            local fillWidth = 27
+            local batteryPercent = (self.battery * fillWidth) / 100
+            
+            local batteryFill = Graphics.image.new(fillWidth, 2)
+            
+            Graphics.pushContext(batteryFill)
+                Graphics.setColor(Graphics.kColorBlack)
+                Graphics.fillRect(0, 0, batteryPercent, 2)
+            Graphics.popContext()
+            self:setImage(batteryFill)
     end
 end
 

@@ -23,6 +23,7 @@ function Box:init(x, y, width, height)
 end
 
 
+
 -- MARK: Cheat codes
 
 local keys = {
@@ -116,9 +117,193 @@ function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
 end
+-- Door utilities have been moved to entities/props/door.lua
+
+--- Finds a neighbor by direction
+-- @param currentRoom table Current room data
+-- @param direction string Direction to search for
+-- @return table|nil Neighbor data or nil
+function FindNeighborByDirection(currentRoom, direction)
+	printDebug("🔍 Searching for neighbor with direction:", direction)
+	
+	if not currentRoom.neighbourLevels then
+		printDebug("❌ No neighbourLevels")
+		return nil
+	end
+	
+	for _, neighbor in ipairs(currentRoom.neighbourLevels) do
+		if neighbor.dir == direction then
+			printDebug("✅ Neighbor found with dir:", direction)
+			return neighbor
+		end
+	end
+	
+	printDebug("❌ Neighbor not found with dir:", direction)
+	return nil
+end
+
+--- Validates if you can fall/climb in a direction
+-- @param currentRoom table Current room data
+-- @param direction string Direction: "<" to fall (down), ">" to climb (up)
+-- @return boolean true if movement is allowed
+function CanMoveVertically(currentRoom, direction)
+	-- direction: "<" to fall (down), ">" to climb (up)
+	local doorsConnection = currentRoom.customFields.DoorsConnection or {}
+	
+	-- Mapping of vertical directions to names in DoorsConnection
+	local directionMap = {
+		["<"] = "lower",  -- Fall downwards
+		[">"] = "upper"   -- Climb upwards
+	}
+	
+	local requiredConnection = directionMap[direction]
+	if not requiredConnection then
+		printDebug("⚠️  Vertical direction not recognized:", direction)
+		return false
+	end
+	
+	-- Check if it's allowed in DoorsConnection
+	for _, allowed in ipairs(doorsConnection) do
+		if allowed:lower() == requiredConnection:lower() then
+			return true
+		end
+	end
+	
+	return false
+end
+
+--- Gets the lower room (fall)
+-- @param currentRoomIndex number Current room index in levelsLDTK
+-- @return number|nil, table|nil Room number and room data
+function GetLowerRoom(currentRoomIndex)
+	printDebug("⬇️  === SEARCHING FOR LOWER ROOM ===")
+	local currentRoom = levelsLDTK[currentRoomIndex]
+	
+	if not currentRoom then
+		printDebug("❌ currentRoom not valid")
+		return nil
+	end
+	
+	-- Validate if you can fall
+	if not CanMoveVertically(currentRoom, "<") then
+		printDebug("🚫 Cannot fall from this room (doesn't have 'lower' in DoorsConnection)")
+		return nil
+	end
+	
+	-- Search for neighbor with direction "<" (lower floor)
+	local lowerNeighbor = FindNeighborByDirection(currentRoom, "<")
+	
+	if not lowerNeighbor then
+		printDebug("❌ No lower room defined in neighbourLevels")
+		return nil
+	end
+	
+	-- Search for room by its iid
+	local lowerRoom = FindRoomByIid(lowerNeighbor.levelIid)
+	
+	if lowerRoom then
+		local level = lowerRoom.customFields.level or 0
+		local roomNum = lowerRoom.customFields.roomNumber or 0
+		local roomNumber = level * 100 + roomNum
+		
+		printDebug("✅ Lower room found:")
+		printDebug("   identifier:", lowerRoom.identifier)
+		printDebug("   level:", level)
+		printDebug("   roomNumber:", roomNum)
+		printDebug("   fullRoomNumber:", roomNumber)
+		
+		return roomNumber, lowerRoom
+	else
+		printDebug("⚠️  Lower room is not loaded in levelsLDTK")
+		-- Calculate expected number even if not loaded
+		local currentLevel = currentRoom.customFields.level or 1
+		local currentRoomNum = currentRoom.customFields.roomNumber or 0
+		local expectedRoom = (currentLevel - 1) * 100 + currentRoomNum
+		
+		printDebug("📊 Expected room (calculated):", expectedRoom)
+		return expectedRoom, nil
+	end
+end
+
+--- Gets the upper room (climb)
+-- @param currentRoomIndex number Current room index in levelsLDTK
+-- @return number|nil, table|nil Room number and room data
+function GetUpperRoom(currentRoomIndex)
+	printDebug("⬆️  === SEARCHING FOR UPPER ROOM ===")
+	local currentRoom = levelsLDTK[currentRoomIndex]
+	
+	if not currentRoom then
+		printDebug("❌ currentRoom not valid")
+		return nil
+	end
+	
+	-- Validate if you can climb
+	if not CanMoveVertically(currentRoom, ">") then
+		printDebug("🚫 Cannot climb from this room (doesn't have 'upper' in DoorsConnection)")
+		return nil
+	end
+	
+	-- Search for neighbor with direction ">" (upper floor)
+	local upperNeighbor = FindNeighborByDirection(currentRoom, ">")
+	
+	if not upperNeighbor then
+		printDebug("❌ No upper room defined in neighbourLevels")
+		return nil
+	end
+	
+	-- Search for room by its iid
+	local upperRoom = FindRoomByIid(upperNeighbor.levelIid)
+	
+	if upperRoom then
+		local level = upperRoom.customFields.level or 0
+		local roomNum = upperRoom.customFields.roomNumber or 0
+		local roomNumber = level * 100 + roomNum
+		
+		printDebug("✅ Upper room found:")
+		printDebug("   identifier:", upperRoom.identifier)
+		printDebug("   level:", level)
+		printDebug("   roomNumber:", roomNum)
+		printDebug("   fullRoomNumber:", roomNumber)
+		
+		return roomNumber, upperRoom
+	else
+		printDebug("⚠️  Upper room is not loaded in levelsLDTK")
+		-- Calculate expected number even if not loaded
+		local currentLevel = currentRoom.customFields.level or 1
+		local currentRoomNum = currentRoom.customFields.roomNumber or 0
+		local expectedRoom = (currentLevel + 1) * 100 + currentRoomNum
+		
+		printDebug("📊 Expected room (calculated):", expectedRoom)
+		return expectedRoom, nil
+	end
+end
+
+--- Gets a room by its number
+-- @param roomNumber number Complete room number (e.g. 220 = level 2, room 20)
+-- @return table|nil Room data or nil
+function GetRoomByNumber(roomNumber)
+	local level = math.floor(roomNumber / 100)
+	local room = roomNumber % 100
+	
+	printDebug("🔍 Searching room by number:", roomNumber, "(level:", level, "room:", room, ")")
+	
+	for _, roomData in ipairs(levelsLDTK) do
+		if roomData.customFields.level == level and 
+		   roomData.customFields.roomNumber == room then
+			printDebug("✅ Room found:", roomData.identifier)
+			return roomData
+		end
+	end
+	
+	printDebug("❌ Room NOT found")
+	return nil
+end
 
 function drawVersionNumber(x, y, alignment)
-	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+	-- Save current graphics context to avoid affecting sprites
+	Graphics.pushContext()
+	
+	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
 	
 	-- local version = "*"..Panels.vars.lang.."* Demo*" .. playdate.metadata.version .. "*"
 	local version = "* Demo " .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
@@ -134,19 +319,38 @@ function drawVersionNumber(x, y, alignment)
 	end
 	
 	Graphics.drawText(version, x, y)
+	
+	-- Restore previous graphics context
+	Graphics.popContext()
 end 
 
--- finds and destroys a enemy
+-- Finds and kills an enemy by its unique ID (LDtk version)
 function findAndKillEnemyById(enemyId)
 	local room = PlayerData.floor
-	arrayData = levels[room].floor.enemies
-	
-	for _, enemyData in ipairs(arrayData) do
-		if enemyData.id == enemyId then
-		if enemyData.dead == nil or enemyData.dead == false then
-				enemyData.dead = true
-				enemyData.x = PlayerData.lastEnemyTouched.x
-				enemyData.y = PlayerData.lastEnemyTouched.y
+	local entities = levelsLDTK[room].entities
+
+	if not entities then
+		printDebug("⚠️ No entities found in room:", room)
+		return
+	end
+
+	for entityType, entitiesList in pairs(entities) do
+		-- Buscar dentro de tipos de enemigos conocidos
+		if entityType == "Brocorat" or entityType == "Bosscolli" then
+			for _, enemy in ipairs(entitiesList) do
+				if enemy.iid == enemyId then
+					local cf = enemy.customFields or {}
+					if cf.dead == false or cf.dead == nil then
+						cf.dead = true
+						-- Actualizamos su posición a donde fue derrotado
+						if PlayerData.lastEnemyTouched then
+							enemy.x = PlayerData.lastEnemyTouched.x
+							enemy.y = PlayerData.lastEnemyTouched.y
+						end
+						printDebug("💀 Enemy killed:", enemyId, "in", entityType)
+					end
+					return
+				end
 			end
 		end
 	end
@@ -155,12 +359,25 @@ end
 -- finds and destroys a prop
 function findAndDestroyPropById(propId)
 	local room = PlayerData.floor
-	arrayData = levels[room].floor.props
-	
-	for _, propData in ipairs(arrayData) do
-		if propData.id == propId then
-		if propData.destroyed == nil or propData.destroyed == false then
-				propData.destroyed = true
+	local entities = levelsLDTK[room].entities
+
+	if not entities then
+		printDebug("⚠️ No entities found in room:", room)
+		return
+	end
+
+	for entityType, entitiesList in pairs(entities) do
+		for _, prop in ipairs(entitiesList) do
+			local cf = prop.customFields or {}
+			-- Detectar si es un prop por tener 'destroyed' o 'nocollider'
+			if cf.destroyed ~= nil or cf.nocollider ~= nil then
+				if prop.iid == propId then
+					if not cf.destroyed then
+						cf.destroyed = true
+						print("💥 Prop destroyed:", propId, "in", entityType)
+					end
+					return
+				end
 			end
 		end
 	end
@@ -218,6 +435,76 @@ function renderTileMap(tileData, tilemap)
   end
 end
 
+local SECTION_TILE_IDS = {
+	 [5] = true,
+ }
+local TILE_SIZE = 16
+
+--- Creates wall colliders from tilemap data with 2D clustering (horizontal and vertical merging)
+-- @param tileData table The 2D matrix of tile IDs
+-- @return table List of created Box sprites
+function CreateTileColliders(tileData)
+	local colliders = {}
+	local height = #tileData
+	local width = #tileData[1]
+	
+	local allSegments = {}
+
+	-- Phase 1: Horizontal identification
+	-- We find all contiguous wall tiles (anything NOT in SECTION_TILE_IDS) in each row and store them as segments.
+	for y = 1, height do
+		allSegments[y] = {}
+		local x = 1
+		while x <= width do
+			local tileID = tileData[y][x]
+			if not SECTION_TILE_IDS[tileID] then
+				local startX = x
+				while x <= width and tileData[y][x] and not SECTION_TILE_IDS[tileData[y][x]] do
+					x = x + 1
+				end
+				local segmentWidth = x - startX
+				table.insert(allSegments[y], {x = startX, w = segmentWidth, used = false})
+			else
+				x = x + 1
+			end
+		end
+	end
+
+	-- Phase 2: Vertical merging
+	-- We try to merge segments from consecutive rows if they have the same X and Width.
+	for y = 1, height do
+		for _, segment in ipairs(allSegments[y]) do
+			if not segment.used then
+				local currentH = 1
+				-- Look ahead in subsequent rows
+				for nextY = y + 1, height do
+					local found = false
+					for _, nextSegment in ipairs(allSegments[nextY]) do
+						if not nextSegment.used and nextSegment.x == segment.x and nextSegment.w == segment.w then
+							nextSegment.used = true
+							currentH = currentH + 1
+							found = true
+							break
+						end
+					end
+					if not found then break end
+				end
+				
+				-- Create the Box sprite for the final merged area
+				local px = (segment.x - 1) * TILE_SIZE
+				local py = (y - 1) * TILE_SIZE
+				local pw = segment.w * TILE_SIZE
+				local ph = currentH * TILE_SIZE
+				
+				local collider = Box(px, py, pw, ph)
+				table.insert(colliders, collider)
+			end
+		end
+	end
+	
+	return colliders
+end
+
 -- Bulk revoke (delete) achievements
 function Utilities.clearAllAchievements()
 	for _, data in ipairs(achievementData.achievements) do
@@ -228,19 +515,14 @@ function Utilities.clearAllAchievements()
 end
 
 -- Dev Tools
-function printDebug(value)
-	if debug == true then 
-		print(value)
-	end
-end
 function printEnemies()
 	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
 		if enemy.type == "Enemy" then
-			print("x:", enemy.x)
-			print("y:", enemy.y)
-			print("Type:", enemy.type)
-			print("ID:", enemy.id)
-			print("----")
+			printDebug("x:", enemy.x)
+			printDebug("y:", enemy.y)
+			printDebug("Type:", enemy.type)
+			printDebug("ID:", enemy.id)
+			printDebug("----")
 		end
 	end
 end
@@ -272,9 +554,9 @@ end
 local TILE_SIZE = 16
 
 function CurrentTile()
-	local floor = PlayerData.actualTilemap
-	local x = PlayerData.x
-	local y = PlayerData.y
+	local floor = PlayerData.actualTilemap or 1
+	local x = tonumber(PlayerData.x) or 0
+	local y = tonumber(PlayerData.y) or 0
 
 	-- Convertir coordenadas de píxeles a coordenadas de tile
 	local tileX = math.floor(x / TILE_SIZE) + 1
@@ -283,21 +565,63 @@ function CurrentTile()
 	-- Obtener referencias seguras
 	local floorData = tileMapData[floor]
 	if not floorData then
-		print("⚠️ Piso no encontrado:", floor)
+		printDebug("⚠️ Piso no encontrado:", floor)
 		return
 	end
 
 	local row = floorData[tileY]
 	if not row then
-		print(string.format("⚠️ Fuera del rango vertical (tileY=%d)", tileY))
+		printDebug(string.format("⚠️ Fuera del rango vertical (tileY=%.2f)", tileY))
 		return
 	end
 
-	local tileNumber = row[tileX] -- this is the number
+	local tileNumber = row[tileX]
 	if not tileNumber then
-		print(string.format("⚠️ Fuera del rango horizontal (tileX=%d)", tileX))
+		printDebug(string.format("⚠️ Fuera del rango horizontal (tileX=%.2f)", tileX))
 		return
 	end
 
-	print(string.format("🧭 Piso %d | Tile (%d, %d) = %d", floor, tileX, tileY, tileNumber))
+	-- ✅ Usa %.2f para floats y %d solo para enteros seguros
+	printDebug(string.format(
+		"🧭 Piso %d | Player (%.1f, %.1f) | Tile (%d, %d) = %d",
+		floor, x, y, tileX, tileY, tileNumber
+	))
+end
+
+local function formatNumberK(n)
+	if n >= 1000000 then
+		return string.format("%.1fM", n / 1000000):gsub("%.0M", "M")
+	elseif n >= 1000 then
+		return string.format("%.1fk", n / 1000):gsub("%.0k", "k")
+	else
+		return tostring(n)
+	end
+end
+function drawStatusText(image)
+	local xPos = 160
+	local yPos = 128
+	Graphics.pushContext(image)
+	
+	-- Clear text areas
+	Graphics.setColor(Graphics.kColorWhite)
+	Graphics.fillRect(xPos, yPos, 100, 12)
+	Graphics.fillRect(xPos, yPos + 12, 100, 12)
+	Graphics.fillRect(xPos, yPos + 25, 100, 12)
+	Graphics.fillRect(xPos, yPos + 38, 100, 12)
+	
+	local smallFont = Graphics.font.new('assets/fonts/Mini Sans')
+	Graphics.setFont(smallFont)
+	
+	-- Apply formatting to steps
+	local sanityText = ": " .. tostring(PlayerData.sanity)
+	local caloriesText = ": " .. tostring(PlayerData.calories)
+	local stepsText = ": " .. formatNumberK(PlayerData.totalSteps)
+	local mapPercent = ": " .. MapDrawer.calculateMapPercent().."%"
+
+	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
+	Graphics.drawText(sanityText, xPos, yPos)
+	Graphics.drawText(caloriesText, xPos, yPos + 12)
+	Graphics.drawText(stepsText, xPos, yPos + 25)
+	Graphics.drawText(mapPercent, xPos, yPos + 38)
+	Graphics.popContext()
 end

@@ -4,7 +4,7 @@ class('Items').extends(NobleSprite)
 
 import 'entities/FX/FXsonar'
 
-function Items:init(x, y, type)
+function Items:init(x, y, type, keyNumber)
   Items.super.init(self,'assets/images/items/item-key', true)
   --- animation states
   self.animation:addState('keycard', 1, 20)
@@ -18,11 +18,16 @@ function Items:init(x, y, type)
   self.animation:addState('tools', 34, 37)
   self.animation.tools.frameDuration = 8
   self.animation:addState('bag', 38, 41)
-  self.animation.bag.frameDuration = 8    
+  self.animation.bag.frameDuration = 8   
+  self.animation:addState('boots', 38, 41)
+  self.animation.boots.frameDuration = 8  
+  self.animation:addState('antislip', 38, 41)
+  self.animation.antislip.frameDuration = 8  
   self:setSize(48, 48)
-  self:setCollideRect(8,8, 32,24)
+  self:setCollideRect(0 ,0, 48, 48)
   self:setZIndex(ZIndex.items)
   self.type = type
+  self.keyNumber = keyNumber  -- Store key number for keycards
   self.animation:setState(type)
   sonar = FXsonar(self.x,self.y)
   self:setGroups(3)
@@ -39,10 +44,5 @@ function Items:removeAll()
   self:remove()
 end
 
-function Items:update()
-  -- if PlayerData.sonarActive == true  then
-  --    self:sonar('key')
-  --  end
-end
 
 

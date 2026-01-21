@@ -4,7 +4,8 @@
 "menuOptions" =			"Options"
 "menuCredits" =			"Credits"
 
-
+"nolamp-01" = "I need a lamp"
+"gotcha-01" = "got you!!"
 
 "wakeup-01" = "wow that was a good *dino nap*, better than those beauty naps.."
 
@@ -34,6 +35,8 @@
 
 "kitchenweapons-02" = "Why we keep using human cutlery?, is too small for us, only *crew members* can use them.."
 
+"tinyKnife" = "woooo if a knife is huge, is still a knife?"
+
 "inneficientcutting-01" = "jeez, this is the most inefficient way to cut some broccoli, looks more like a fight.."
 
 "inneficientcutting-02" = "..that's why we have tiny knives.. maybe we need that  *Using knives* DR presentation.."
@@ -59,173 +62,13 @@
 
 "notespickup-05" = "what they mean with *former*, those idiots I'm gonna grab them one by one and slap them.."
 
-"thisdemo-01" = "*ring ring*"
-
-"thisdemo-02" = "Hello this a *META* call im the *developer* of the game.."
-
-"thisdemo-03" = "Whats a developer? you meant *Dinoloper*??"
-
-"thisdemo-04" = "no, im talking with the player. Mike, in this section u can try the feature of the lamp."
-
-"thisdemo-05" = "as u move the battery drains and the movement gets slower, also on the top right.."
-
-"thisdemo-06" = "theres a indicator(little brain) that shows the sanity level of the character.."
-
-"thisdemo-07" = "ahh I dont like darkness..."
-
-"thisdemo-08" = "that doesnt do anything yet, also ahead in this room are some enemies, also half baked. thanxs"
-
-"nolights-01" = "*Ring Ring*"
-
-"nolights-02" = "Moshi Moshiiii"
-
-"nolights-03" = "Hello captain, you got it, now you can receive calls.. hope this call finds you well.."
-
-"nolights-04" = "*CAN YOU GET TO THE POINT?*"
-
-"nolights-05" = "I'm in a middle of a very dark room, and I don't like it, I feel someone is watching me"
-
-"nolights-06" = "ohh no doubt about that *Dino resources* is always watching, creeping, judging.."
-
-"nolights-07" = "but don't worry you are alone in the ship, well mostly maybe we forgot some *crew members*.."
-
-"nolights-08" = "What do you mean with *ALONE*?"
-
-"nolights-09" = "sorry got a go need to cook for the new captain, worry not my dear old captain.."
-
-"nolights-10" = "I can see in the comms that there's a lamp around in the room, look for it.."
-
-"nolights-11" = "*This is not the darkest room you will find*"
-
-"nolights-12" = "..not... the... darkest.. but I'm alone right??"
-
-"nolights-13" = "Hello? some one there?"
-
-"nolights-14" = "Yes you are alone.. for now..."
-
-"nolights-15" = "...."
-
-"boo-01" = "BOO!!! hahaha just joking, the lamp its ahead hahaha"
--- non translated
-
-"nokeys" = "What? I need a keycard?"
-"chargelamp-01" = "Uh? it runs out of battery?"
-
-"chargelamp-02" = "I never said was a *brand new lamp*, you have to crank it to charge it.."
-
-"chargelamp-03" = "the bright side is that since is an old model we can customize it."
-
-"chargelamp-04" = "you mean stickers??"
-
-"chargelamp-05" = "better than that, gotta go byeeee"
-
-"nicetobrocoliyou-01" = "What's that noise?"
-
-"nicetobrocoliyou-02" = "something is moving behind those boxes?"
-
-"nicetobrocoliyou-03" = "Probably is a crew member, let me save you little one…"
-
-"nicetobrocoliyou-04" = "no, don't make any noise, walk away from that room, I repeat WALK AWAY FROM THAT ROOM"
-
-"nicetobrocoliyou-05" = "what do you?"
-
-"nicetobrocoliyou-06" = "if you want to survive don't let them touch you, run!!!"
-"darkest-01" = "ahhh why keeps getting darker, we always pay the electricity bill on time."
-
-"darkest-02" = "Ring Ring"
-
-"darkest-03" = "no, we did not pay december, we left the ship behind... and some crew members."
-
-"darkest-04" = "WHAT?"
-
-"darkest-05" = "I keep saying, take care of the crew members they are very handy..."
-
-"darkest-06" = "They clean, and do all the jobs we don't know how to do... like... write emails and do calls."
-
-"darkest-07" = "and taxes!!"
-
-"betterrun-01" = "Run that room is infested!"
-
-"betterrun-02" = "ahhhh"
-
-"betterrun-03" = "They are blind, they won't see you if you move in the dark, but your lamp..."
-
-"betterrun-04" = "it makes noises while you charge it so be careful, try to escape to the next room..."
-
-"betterrun-05" = "oh no! and Im not fit enough yet to fight"
-
-"betterrun-06" = "yes just run, you are not READY YET!!"
-
-"justjump-01" = "hey what happened to the floor?"
-
-"justjump-02" = "Captain there's no time for taking care about the floor..."
-
-"justjump-03" = "What do you mean that floor was expensive."
-
-"justjump-04" = "you have to jump!"
-
-"justjump-05" = "but what's there?"
-
-"justjump-06" = "maybe less brocolites, maybe more..."
-
-"justjump-07" = "my level of confidence are very low now."
-
-"justjump-08" = "at least we fix the gravity compensator so you will fall slowly and gracefully..."
-
-"thankyou-01" = "Ring ring"
-
-"thankyou-02" = "that was a terrible landing, what happened with the “soft and gracefully”"
-
-"thankyou-03" = "ah no worry about that we will fix it in the next update"
-
-"thankyou-04" = "update? what are you talking about?"
-
-"thankyou-05" = "Im not talking to you im talking with the player"
-
-"thankyou-06" = "thank you for playing the early beta of Dinopirates  from inner space, Brocollation"
-
-"thankyou-07" = "OMG Im going crazy"
-
-"thankyou-08" = "in fact, yes you can go crazy if stay for longer periods in the darkness"
-
-"thankyou-09" = "which will affect the way you interact with the environment and of course your abilities"
-
-"thankyou-10" = "to survive and fight, did you tried to fight a Brocolite?"
-
-"thankyou-11" = "But someone told me they were dangerous"
-
-"thankyou-12" = "and you are a big HERVIBORE DINOSAUR, of course you can beat them, can you?"
-
-"thankyou-13" = "Im crazy"
-
-"trytofight-01" = "go start again, dont be afraid."
-
-"trytofight-02" = "ok enough communications"
-
-"trytofight-03" = "*THUCK*"
-
-"trytofight-04" = "Riiing ring riiiiiing"
-
-"nowayback-01" = "Im trap here?"
-
-"nowayback-02" = "Yes this is the end of the demo"
-
-"nowayback-03" = "but worry not my captain, there's a bunch of this being developed"
-
-"nowayback-04" = "Like a bunch of money and treasures for me?"
-
-"nowayback-05" = "hahaha not really, mostly more performance improvement, better animations,"
-
-"nowayback-06" = "a new INSANITY system, a few upgrades to the lamp, and sound, you aren't deaf"
-
-"nowayback-07" = "Insanity system? that doesn't sounds fun"
-
-"nowayback-08" = "oh you are right, definetely not fun for you"
-
-"nowayback-09" = "why?"
-
-"nowayback-10" = "again, *Thank you for playing*"
 "investigation-01" = "I step on some crap!"
 "phonecall-01" = "Hello, this is a phone call"
 
 "phonecall-02" = "is it working?"
+
+"notnormalbrocoli-01" = "this doesn't look like normal broccoli..."
+
+"notnormalbrocoli-02" = "looks tasty, maybe should I try it?"
+
+"notnormalbrocoli-03" = "no, last time I ate something from the ground ended losing an eye, can’t do that again."

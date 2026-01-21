@@ -2,7 +2,7 @@ import "entities/UI/dialog/videoFeed"
 
 local dialogbox <const> = Graphics.image.new('assets/images/ui/dialog/dialogbox.png')
 
-local dialogtext <const> = Graphics.image.new(260,80)
+local dialogtext <const> = Graphics.image.new(250, 64)
 local screen <const> = Graphics.image.new(277,146)
 local video = nil
 local screenImg = nil
@@ -38,7 +38,7 @@ class("dialogScreen").extends(Graphics.sprite)
 
 function dialogScreen:init(position)
 	self:setZIndex(ZIndex.alert+1)
-	self:moveTo( 20, 170)
+	self:moveTo( 16, 165)
 	self:setCenter(0,0)
 	dialogbg = dialogBG()
 	screenimg = imageScreen()
@@ -47,6 +47,7 @@ end
 
 
 function dialogScreen:addScreen(scriptName)
+	PlayerData.isTalking = true
 	-- Buscar el diálogo por nombre
 	for i, scriptEntry in ipairs(script) do
 		if scriptEntry.name == scriptName then
@@ -70,7 +71,11 @@ function dialogScreen:nextDialog()
 		
 		if dialogcounter <= table.getsize(dialogArray)then
 			if videoActive == false then
-				video = videoFeed(400,240,dialogArray[dialogcounter].video, ZIndex.alert)
+				if PlayerData.isTiny == true then
+					video = videoFeed(400,240,'tiny', ZIndex.alert)
+				else	
+					video = videoFeed(400,240,dialogArray[dialogcounter].video, ZIndex.alert)
+				end
 				videoActive = true
 			end
 			
@@ -86,7 +91,7 @@ function dialogScreen:nextDialog()
 			dialogtext:clear(Graphics.kColorClear)
 			Graphics.pushContext(dialogtext)
 				local textString = Graphics.getLocalizedText(script[dialogPosition].dialog[dialogcounter].text, lang)
-				Graphics.drawTextInRect(textString, 0, 0, 255, 78)
+				Graphics.drawTextInRect(textString, 0, 0, dialogtext.width, dialogtext.height)
 			Graphics.popContext()
 			
 			self:add()

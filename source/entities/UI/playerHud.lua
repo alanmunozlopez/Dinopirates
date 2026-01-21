@@ -11,34 +11,75 @@ local sanityIndicator = nil
 
 -- local background <const> = Graphics.image.new('assets/images/ui/statusbar.png')
 
-function playerHud:init()	
-	playerHud.super.init(self,'assets/images/ui/statusbar', true)
+function playerHud:init(player)	
+	playerHud.super.init(self,'assets/images/ui/UIHud', true)
+	self.player = player
 	
 	-- Mark: animation states
-	self.animation:addState('1item', 1, 1)
-	self.animation:addState('2item', 2, 2)
-	self.animation:addState('3item', 3, 3)
-	self.animation:setState('1item')
-	local x = 316
-	local y = 0
+	local frameduration = 12
+	self.animation:addState('sanity100', 1, 2)
+	self.animation.sanity100.frameDuration =  frameduration
+	self.animation:addState('sanity80', 3, 4)
+	self.animation.sanity80.frameDuration = frameduration
+	self.animation:addState('sanity60', 5, 6)
+	self.animation.sanity60.frameDuration = frameduration
+	self.animation:addState('sanity40', 7, 9)
+	self.animation.sanity40.frameDuration = frameduration
+	self.animation:addState('sanity20', 10, 11)
+	self.animation.sanity20.frameDuration = frameduration
+	self.animation:addState('sanity0', 12, 13)
+	self.animation.sanity0.frameDuration = frameduration
 	
-	self:setSize(84,22)
-	self:setImage(background)
-	self:setCenter(0,0)
+	self.animation:setState('sanity100')
+	
+	self:setSize(35,15)
+	self:setCenter(0.5, 0.5)
+	self:setZIndex(ZIndex.hud)
+	
+	local x = 0
+	local y = 0
+	if player then
+		x = player.x
+		y = player.y - 36
+	end
+	
 	self:moveTo(x, y)
-	self:setZIndex(ZIndex.ui)
-	batteryIndicator = Battery(x+50, 11, player, ZIndex.ui+1, userUI)
-	sanityIndicator = sanityHud(x+66, 11, ZIndex.ui+1, player, userUI)
-	keyIndicator = keyHud(x+32, 11, ZIndex.ui+1, player, userUI)
-	self:add(x,y)
+	
+	self.batteryIndicator = Battery(x,y, player, ZIndex.hud+1)
+	self:add()
 end
 
 function playerHud:update()
-	if PlayerData.hasLamp == true or PlayerData.hasBoots == true then
-		self.animation:setState('2item')
+	if self.player then
+		local tx = self.player.x
+		local ty = self.player.y - 36
+		self:moveTo(tx, ty)
+		
+		if self.batteryIndicator then
+			self.batteryIndicator:moveTo(tx , ty-3)
+		end
 	end
-	if (PlayerData.hasKey == true) and (PlayerData.hasLamp == true or PlayerData.hasBoots == true) then
-		self.animation:setState('3item')
+
+	local sanity = PlayerData.sanity
+	if sanity > 80 then
+		self.animation:setState('sanity100')
+	elseif sanity > 60 then
+		self.animation:setState('sanity80')
+	elseif sanity > 40 then
+		self.animation:setState('sanity60')
+	elseif sanity > 20 then
+		self.animation:setState('sanity40')
+	elseif sanity > 0 then
+		self.animation:setState('sanity20')
+	else
+		self.animation:setState('sanity0')
 	end
+end
+
+function playerHud:removeAll()
+	if self.batteryIndicator then
+		self.batteryIndicator:remove()
+	end
+	self:remove()
 end
 

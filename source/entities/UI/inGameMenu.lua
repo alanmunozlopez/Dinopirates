@@ -1,18 +1,34 @@
 inGameMenu = {}
 class('inGameMenu').extends(Graphics.sprite)
 import "entities/UI/itemMenu"
-local shadow = Graphics.image.new(400,240) 
+import "entities/props/hats"
+import 'utilities/MapDrawer'
+
+local shadow = Graphics.image.new(400,240)
+local menuImage = Graphics.image.new('assets/images/ui/menu/ingame-menu')
+local menuSprite = nil
+
+-- Crew member hat images
+local hatImages = {}
+local hatSpriteSheet = Graphics.imagetable.new('assets/images/props/hats') 
 
 function inGameMenu:init()
   self.activeItem = PlayerData.activeItem 
+  
   self:moveTo(200,120)
-  self:setZIndex(ZIndex.ui)
+  self:setZIndex(ZIndex.menu)
   self:setImage(shadow)
-  if PlayerData.items == nil then
-    
-  end
-  lampItem = itemMenu("lamp",ZIndex.ui+1)
-  bootItem = itemMenu("boot",ZIndex.ui+1)
+  
+  
+  -- Crear sprite para el menú
+  menuSprite = Graphics.sprite.new()
+  menuSprite:setImage(menuImage)
+  menuSprite:setCenter(0.5, 0.5)
+  menuSprite:moveTo(200, 120)
+  menuSprite:setZIndex(ZIndex.menu + 2)
+  
+  lampItem = itemMenu("lamp",ZIndex.menu+3)
+  bootItem = itemMenu("boot",ZIndex.menu+3)
   self:add()
 end
 
@@ -20,48 +36,215 @@ function inGameMenu:displayMenu()
     PlayerData.isGaming = false
     PlayerData.isEquiping = true
     
-    print("imma menu")
+    self:drawMapOnMenu()
+    
+    -- Create hat sprites when menu opens
+    if PlayerData.CrewMemberData.amountTaken > 0 then
+        self:drawCrewHats()
+    end
 end
 
-function inGameMenu:shadow()
-  
-    Graphics.pushContext(shadow)
-      Graphics.setColor(Graphics.kColorBlack)
-      Graphics.setDitherPattern(0.5, Graphics.image.kDitherTypeBayer8x8)
-      Graphics.fillRect(0, 0, shadow:getSize()) -- Full screen darkness
-    Graphics.popContext()
+function inGameMenu:drawMapOnMenu()
+    -- Draw the map on the menu image
+    MapDrawer.drawMap(menuImage)
 end
+
+function inGameMenu:drawCrewHats()
+    -- Create sprites for captured crew member hats in the menu
+    local hatX = 232  -- Starting X position for hats
+    local hatY = 13  -- Starting Y position for hats
+    local hatSpacing = 20  -- Space between hats
+    local rowSpacing = 16  -- Space between rows
+    local maxHatsPerRow = 8 -- Max hats before starting a new row
+    local hatIndex = 0
+    
+    -- Remove any existing hat sprites first
+    if self.hatSprites then
+        for _, hatSprite in ipairs(self.hatSprites) do
+            if hatSprite then
+                hatSprite:remove()
+            end
+        end
+    end
+    self.hatSprites = {}
+    
+    -- Check each crew member and create a sprite for their hat if captured
+    if PlayerData.CrewMemberData and PlayerData.CrewMemberData.idNumbers then
+        -- Collect and sort crew IDs to display in order
+        local capturedCrewIds = {}
+        for crewId, isCaptured in pairs(PlayerData.CrewMemberData.idNumbers) do
+            if isCaptured then
+                table.insert(capturedCrewIds, crewId)
+            end
+        end
+        
+        -- Sort the crew IDs alphabetically (CM001, CM002, CM003, etc.)
+        table.sort(capturedCrewIds)
+        
+        -- Create sprites in sorted order
+        for _, crewId in ipairs(capturedCrewIds) do
+            -- Get the hat image based on crew ID
+            local hatFrameIndex = 1  -- Default to first frame
+            if crewId == "CM001" then
+                hatFrameIndex = 1
+            elseif crewId == "CM002" then
+                hatFrameIndex = 2
+            elseif crewId == "CM003" then
+                hatFrameIndex = 3
+            end
+            
+            -- Create a sprite for this hat
+            local hatImage = hatSpriteSheet:getImage(hatFrameIndex)
+            if hatImage then
+                local hatSprite = Graphics.sprite.new(hatImage)
+                hatSprite:setCenter(0, 0)
+                local row = math.floor(hatIndex / maxHatsPerRow)
+                local col = hatIndex % maxHatsPerRow
+                hatSprite:moveTo(hatX + (col * hatSpacing), hatY + (row * rowSpacing))
+                hatSprite:setZIndex(ZIndex.menu + 9)
+                hatSprite:add()
+                table.insert(self.hatSprites, hatSprite)
+                hatIndex += 1
+            end
+        end
+    end
+end
+
 function inGameMenu:closeMenu()
     shadow:clear(Graphics.kColorClear)
     lampItem:remove()
     bootItem:remove()
+    if menuSprite then
+        menuSprite:remove()
+    end
+    -- Remove hat sprites
+    if self.hatSprites then
+        for _, hatSprite in ipairs(self.hatSprites) do
+            if hatSprite then
+                hatSprite:remove()
+            end
+        end
+        self.hatSprites = nil
+    end
     print('closing menu')
     -- remove all the icons also
 end
 
 function inGameMenu:prevItem()
-    PlayerData.activeItem -= 1
+    local activeSkills = self:getActiveSkillsList()
+    if #activeSkills == 0 then return end -- No skills available
+    
+    -- Find current position in active skills list
+    local currentIndex = 1
+    for i, skillId in ipairs(activeSkills) do
+        if PlayerData.activeItem == skillId then
+            currentIndex = i
+            break
+        end
+    end
+    
+    -- Go to previous skill (with wraparound)
+    currentIndex = currentIndex - 1
+    if currentIndex < 1 then
+        currentIndex = #activeSkills
+    end
+    PlayerData.activeItem = activeSkills[currentIndex]
 end
 
 function inGameMenu:nextItem()
-    PlayerData.activeItem += 1
+    local activeSkills = self:getActiveSkillsList()
+    if #activeSkills == 0 then return end -- No skills available
+    
+    -- Find current position in active skills list
+    local currentIndex = 1
+    for i, skillId in ipairs(activeSkills) do
+        if PlayerData.activeItem == skillId then
+            currentIndex = i
+            break
+        end
+    end
+    
+    -- Go to next skill (with wraparound)
+    currentIndex = currentIndex + 1
+    if currentIndex > #activeSkills then
+        currentIndex = 1
+    end
+    PlayerData.activeItem = activeSkills[currentIndex]
+end
+
+function inGameMenu:selectItem()
+    print("Item selected: " .. PlayerData.activeItem)
+    -- Aquí puedes agregar la lógica específica para cada item
+    if PlayerData.activeItem == 1 and PlayerData.skills.canFlash == true then
+        print("flash selected!")
+        -- Acción para la lámpara
+    elseif PlayerData.activeItem == 2 and PlayerData.skills.canDash == true then
+        print("dash selected!")
+        -- Acción para las botas
+    end
+end
+
+-- Helper function to count active skills (skills that are true)
+function inGameMenu:getActiveSkillsCount()
+    local count = 0
+    if PlayerData.skills.canFlash == true then count = count + 1 end
+    if PlayerData.skills.canDash == true then count = count + 1 end
+    return count
+end
+
+-- Helper function to get list of active skills in order
+function inGameMenu:getActiveSkillsList()
+    local skills = {}
+    if PlayerData.skills.canFlash == true then table.insert(skills, 1) end  -- 1 = Flash/Lamp
+    if PlayerData.skills.canDash == true then table.insert(skills, 2) end   -- 2 = Dash/Boot
+    return skills
 end
 
 function inGameMenu:update()
-  if table.getSize(PlayerData.items) > 0 then
-      if PlayerData.activeItem < 1 then
-        PlayerData.activeItem = table.getSize(PlayerData.items) 
-      end
-      if PlayerData.activeItem > table.getSize(PlayerData.items) then
-        PlayerData.activeItem = 1
-      end
-      if PlayerData.isEquiping == true then  
-        self:shadow()
+  if PlayerData.isEquiping == true then
+    -- drawStatusText(menuImage)
+    
+    local activeSkillsCount = self:getActiveSkillsCount()
+    local activeSkills = self:getActiveSkillsList()
+    
+    -- If no skills are active, reset activeItem to 0 and don't allow selection
+    if activeSkillsCount == 0 then
+        PlayerData.activeItem = 0
+    else
+        -- Make sure activeItem is a valid skill
+        local isValidItem = false
+        for _, skillId in ipairs(activeSkills) do
+            if PlayerData.activeItem == skillId then
+                isValidItem = true
+                break
+            end
+        end
         
-        lampItem:show(30, 30)
-        bootItem:show(64, 30)
+        -- If current activeItem is not valid, set to first available skill
+        if not isValidItem then
+            PlayerData.activeItem = activeSkills[1]
+        end
         
-      end
+        -- Handle cycling through only available skills
+        if PlayerData.activeItem < activeSkills[1] then
+            PlayerData.activeItem = activeSkills[#activeSkills]
+        end
+        if PlayerData.activeItem > activeSkills[#activeSkills] then
+            PlayerData.activeItem = activeSkills[1]
+        end
+    end
+
+    -- This should ALWAYS happen if isEquiping is true
+    if menuSprite then
+        menuSprite:add()
+    end
+    
+    -- Show active skill icons
+    if PlayerData.skills.canFlash == true then
+        lampItem:show(18, 151)
+    end
+    if PlayerData.skills.canDash == true then
+        bootItem:show(48, 153)
+    end
   end
-  
 end

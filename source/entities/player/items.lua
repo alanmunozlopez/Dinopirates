@@ -1,36 +1,40 @@
 
 function Player:grabBoots()
-  PlayerData.hasBoots = true
-  table.insert(PlayerData.items,"boots")
+  PlayerData.items.hasBoots = true
+  PlayerData.skills.canDash = true
+  self:fillBattery()
+end
+
+function Player:grabAntiSlip()
+  PlayerData.items.hasAntiSlip = true
+  self:fillBattery()
 end
 
 function Player:grabBag()
-  PlayerData.hasBag = true
-  table.insert(PlayerData.items,"bag")
+  PlayerData.items.hasBag = true
 end
 
 function Player:grabTools()
-  PlayerData.hasTools = true
-  table.insert(PlayerData.items,"tools")
+  PlayerData.items.hasTools = true
 end
 
-function Player:grabKey()
-  PlayerData.hasKey = true
+function Player:grabKey(keyNumber)
+  keyNumber = keyNumber or 1  -- Default to key 1 if no number provided
+  PlayerData.keys[keyNumber] = true
 end
 
 function Player:grabLamp()
-  PlayerData.hasLamp = true
-  table.insert(PlayerData.items,"lamp")
+  PlayerData.items.hasLamp = true
+  PlayerData.skills.canFlash = true
   self:fillBattery()
 end
 
 function Player:grabRadio()
-  
-  PlayerData.hasRadio = true
+  PlayerData.items.hasRadio = true
 end
 
 function Player:grabNotes()
-  PlayerData.hasNotes = true
+  PlayerData.items.hasNotes = true
   Utilities.grantAchievementIfNeeded("notebook")
 end
 

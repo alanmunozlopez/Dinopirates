@@ -1,6 +1,13 @@
--- crear una funcion que busque los dialogos por nombre
-
 script = {
+    {
+        name = "nolamp",
+        dialog = {
+            {
+                video = 'playerSleepy',
+                text = "nolamp-01",
+            },
+        }
+    },
     {
         name = "wakeup",
         dialog = {
@@ -16,6 +23,16 @@ script = {
                 video = 'playerSurprise',
                 text = "wakeup-03",
             }
+        }
+    },
+    {
+        name = "gotcha",
+        dialog = {
+            {
+                video = 'playerSurprise',
+                text = "gotcha-01",
+                screen = Graphics.image.new('assets/images/ui/dialog/img/captured.png')
+            },
         }
     },
     {
@@ -91,6 +108,16 @@ script = {
                 video = 'player',
                 text = "kitchenweapons-02",
                 screen = Graphics.image.new('assets/images/ui/dialog/img/smallCutlerly.png')
+            }
+        }
+    },
+    {
+        name = "tinyKnife",
+        dialog = {
+            {
+                video = 'player',
+                text = "tinyKnife",
+                screen = Graphics.image.new('assets/images/ui/dialog/img/tinyKnife.png')
             }
         }
     },
@@ -173,397 +200,6 @@ script = {
         }
     },
     {
-        name = "thisDemo",
-        dialog = {
-            {
-                video = 'radioRing',
-                text = "thisdemo-01",
-            },
-            {
-                video = 'radioHand',
-                text = "thisdemo-02",
-            },
-            {
-                video = 'playerWorry',
-                text = "thisdemo-03",
-            },
-            {
-                video = 'radioHand',
-                text = "thisdemo-04",
-            },
-            {
-                video = 'radioHand',
-                text = "thisdemo-05",
-            },
-            {
-                video = 'radioHand',
-                text = "thisdemo-06",
-            },
-            {
-                video = 'playerWorry',
-                text = "thisdemo-07",
-            },
-            {
-                video = 'radioHand',
-                text = "thisdemo-08",
-            }
-        }
-    },
-    {
-        name = "noLights",
-        dialog = {
-            {
-                video = 'radioRing',
-                text = "nolights-01",
-            },
-            {
-                video = 'playerWorry',
-                text = "nolights-02",
-            },
-            {
-                video = 'radioHand',
-                text = "nolights-03",
-            },
-            {
-                video = 'playerAngry',
-                text = "nolights-04",
-            },
-            {
-                video = 'player',
-                text = "nolights-05",
-            },
-            {
-                video = 'radioHand',
-                text = "nolights-06",
-            },
-            {
-                video = 'radioHand',
-                text = "nolights-07",
-            },
-            {
-                video = 'playerWorry',
-                text = "nolights-08",
-            },
-            {
-                video = 'radioHand',
-                text = "nolights-09",
-            },
-            {
-                video = 'radioHand',
-                text = "nolights-10",
-            },
-            {
-                video = 'radioHand',
-                text = "nolights-11",
-            },
-            {
-                video = 'playerSurprise',
-                text = "nolights-12",
-            },
-            {
-                video = 'player',
-                text = "nolights-13",
-            },
-            {
-                video = 'radioPocket',
-                text = "nolights-14",
-            },
-            {
-                video = 'playerSurprise',
-                text = "nolights-15",
-            }
-        }
-    },
-    {
-        name = "boo",
-        dialog = {
-            {
-                video = 'radioPocket',
-                text = "boo-01",
-                screen = Graphics.image.new('assets/images/ui/dialog/img/boo.png')
-            }
-        }
-    },
-    {
-        name = "chargeLamp",
-        dialog = {
-            {
-        video = 'playerCry',
-        text = "chargelamp-01",
-    },
-                    {
-        video = 'radioPocket',
-        text = "chargelamp-02",
-    },
-                    {
-        video = 'radioHand',
-        text = "chargelamp-03",
-    },
-                    {
-        video = 'playerSurprise',
-        text = "chargelamp-04",
-    },
-                    {
-        video = 'radioHand',
-        text = "chargelamp-05",
-    }
-            
-        }
-    },
-   {
-       name = "darkest",
-       dialog = {
-           {
-       video = 'playerCry',
-       text = "darkest-01",
-   },
-                   {
-       video = 'radioRing',
-       text = "darkest-02",
-   },
-                   {
-       video = 'radioHand',
-       text = "darkest-03",
-   },
-                   {
-       video = 'playerSurprise',
-       text = "darkest-04",
-   },
-                   {
-       video = 'player',
-       text = "darkest-05",
-   },
-                   {
-       video = 'player',
-       text = "darkest-06",
-   },
-                   {
-       video = 'radioHand',
-       text = "darkest-07",
-   }
-           
-       }
-   },
-   {
-       name = "nicetobrocoliyou",
-       dialog = {
-           {
-       video = 'playerWorry',
-       text = "nicetobrocoliyou-01",
-   },
-                   {
-       video = 'playerSurprise',
-       text = "nicetobrocoliyou-02",
-   },
-                   {
-       video = 'playerHappy',
-       text = "nicetobrocoliyou-03",
-   },
-                   {
-       video = 'radioHand',
-       text = "nicetobrocoliyou-04",
-   },
-                   {
-       video = 'playerSurprise',
-       text = "nicetobrocoliyou-05",
-   },
-                   {
-       video = 'radioHand',
-       text = "nicetobrocoliyou-06",
-   }
-           
-       }
-   },{
-       name = "betterRun",
-       dialog = {
-           {
-       video = 'radioHand',
-       text = "betterrun-01",
-   },
-                   {
-       video = 'playerSurprise',
-       text = "betterrun-02",
-   },
-                   {
-       video = 'radioHand',
-       text = "betterrun-03",
-   },
-                   {
-       video = 'radioHand',
-       text = "betterrun-04",
-   },
-                   {
-       video = 'playerWorry',
-       text = "betterrun-05",
-   },
-                   {
-       video = 'radioHand',
-       text = "betterrun-06",
-   }
-           
-       }
-   },{
-       name = "justJump",
-       dialog = {
-           {
-       video = 'playerSurprise',
-       text = "justjump-01",
-   },
-                   {
-       video = 'radioPocket',
-       text = "justjump-02",
-   },
-                   {
-       video = 'playerWorry',
-       text = "justjump-03",
-   },
-                   {
-       video = 'radioHand',
-       text = "justjump-04",
-   },
-                   {
-       video = 'playerSurprise',
-       text = "justjump-05",
-   },
-                   {
-       video = 'radioHand',
-       text = "justjump-06",
-   },
-                   {
-       video = 'player',
-       text = "justjump-07",
-   },
-                   {
-       video = 'radioHand',
-       text = "justjump-08",
-   }
-           
-       }
-   },{
-       name = "thankyou",
-       dialog = {
-           {
-       video = 'radioRing',
-       text = "thankyou-01",
-   },
-                   {
-       video = 'playerSleepy',
-       text = "thankyou-02",
-   },
-                   {
-       video = 'radioHand',
-       text = "thankyou-03",
-   },
-                   {
-       video = 'playerSurprise',
-       text = "thankyou-04",
-   },
-                   {
-       video = 'radioHand',
-       text = "thankyou-05",
-   },
-                   {
-       video = 'radioHand',
-       text = "thankyou-06",
-   },
-                   {
-       video = 'playerWorry',
-       text = "thankyou-07",
-   },
-                   {
-       video = 'radioHand',
-       text = "thankyou-08",
-   },
-                   {
-       video = 'radioHand',
-       text = "thankyou-09",
-   },
-                   {
-       video = 'radioHand',
-       text = "thankyou-10",
-   },
-                   {
-       video = 'playerWorry',
-       text = "thankyou-11",
-   },
-                   {
-       video = 'radioHand',
-       text = "thankyou-12",
-   },
-                   {
-       video = 'playerCry',
-       text = "thankyou-13",
-   }
-           
-       }
-   },{
-       name = "trytofight",
-       dialog = {
-           {
-       video = 'radioHand',
-       text = "trytofight-01",
-   },
-                   {
-       video = 'playerWorry',
-       text = "trytofight-02",
-   },
-                   {
-       video = 'radioPocket',
-       text = "trytofight-03",
-   },
-                   {
-       video = 'radioRing',
-       text = "trytofight-04",
-   }
-           
-       }
-   },{
-       name = "nowayback",
-       dialog = {
-           {
-       video = 'playerWorry',
-       text = "nowayback-01",
-   },
-                   {
-       video = 'radioPocket',
-       text = "nowayback-02",
-   },
-                   {
-       video = 'radioHand',
-       text = "nowayback-03",
-   },
-                   {
-       video = 'playerHappy',
-       text = "nowayback-04",
-   },
-                   {
-       video = 'radioHand',
-       text = "nowayback-05",
-   },
-                   {
-       video = 'radioHand',
-       text = "nowayback-06",
-   },
-                   {
-       video = 'playerWorry',
-       text = "nowayback-07",
-   },
-                   {
-       video = 'radioHand',
-       text = "nowayback-08",
-   },
-                   {
-       video = 'playerCry',
-       text = "nowayback-09",
-   },
-                   {
-       video = 'radioHand',
-       text = "nowayback-10",
-   }
-           
-       }
-   },
-    {
         name = "nokeys",
         dialog = {
             {
@@ -573,25 +209,19 @@ script = {
         }
     },
     {
-        name = "phonecall",
-        dialog = {
-            {
-        video = 'radioHand',
-        text = "phonecall-01",
-    },
-                    {
-        video = 'playerWorry',
-        text = "phonecall-02",
-    }
-            
-        }
-    },
-    {
-        name = "investigation",
+        name = "notnormalBrocoli",
         dialog = {
             {
         video = 'playerSurprise',
-        text = "investigation-01",
+        text = "notnormalbrocoli-01",
+    },
+                    {
+        video = 'playerHappy',
+        text = "notnormalbrocoli-02",
+    },
+                    {
+        video = 'playerSleepy',
+        text = "notnormalbrocoli-03",
     }
             
         }

@@ -1,9 +1,11 @@
 import 'libraries/noble/Noble'
 import 'libraries/panels/Panels'
+-- import 'libraries/ldtk/LDtk'
 import 'achievements/all'
 
 import 'utilities/Utilities'
-import 'utilities/PauseMenu'
+-- import 'utilities/PauseMenu'
+import 'utilities/SaveSystem' 
 
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
@@ -24,11 +26,9 @@ local configToast = import 'assets/data/toastConfig'
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
 local config = {
-   toastOnGrant = true, -- automatically show toasts for granted achievements
-   miniMode = true, -- use tiny toasts to avoid blocking gameplay
+   toastOnGrant = true,
+   miniMode = true,
    toastFromTop = true,
-   -- renderMode = "sprite" -- show black cards with white text, for added contrast
-   -- ...
 }
 
 achievements.toasts.initialize(configToast)
@@ -47,8 +47,8 @@ Noble.GameData.setup({
 Panels.vars.lang = "en"
 
 debug = false
-diagonalMovement = true -- TODO: fix movement stuck after entering a new room
-shinonome = Graphics.font.new('assets/fonts/shinonome/JF-Dot-Shinonome16')
+diagonalMovement = true
+shinonome = Graphics.font.new('assets/fonts/JF-Dot-Shinonome16')
 Graphics.setFont(shinonome, 'normal')
 
 Panels.Settings.path = ""
@@ -59,7 +59,9 @@ ZIndex = {
 	items = 4,
 	fx = 1999,
 	ui = 2000,
-	alert = 2100
+	hud = 2000,
+	menu = 2100,
+	alert = 2200
 }
 CollideGroups = {
 	player = 1,
@@ -69,8 +71,42 @@ CollideGroups = {
 	wall = 5,
 	noCollide = 6
 }
-playdate.datastore.write(levels, 'levelOriginal', true) 
-playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)-- DEBUG
+
+-- Button type constants
+ButtonTypes = {
+	A = "aButton",
+	B = "bButton",
+	LEFT = "leftButton",
+	RIGHT = "rightButton",
+	UP = "upButton",
+	DOWN = "downButton"
+}
+
+-- Direction constants
+Directions = {
+	LEFT = "left",
+	RIGHT = "right",
+	UP = "up",
+	DOWN = "down",
+	IDLE = "idle",
+	TOP = "top",
+	BOTTOM = "down" -- Para puertas
+}
+
+-- playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true) -- Removed: using code-based reset now
+
+SaveSystem.createOriginalBackup()
+
+-- Initialize room index for fast lookups (O(1) instead of O(n))
+roomsByIid = {}
+if levelsLDTK then
+	for _, room in ipairs(levelsLDTK) do
+		if room and room.uniqueIdentifer then
+			roomsByIid[room.uniqueIdentifer] = room
+		end
+	end
+	print("📋 Room index created with " .. table.getsize(roomsByIid) .. " rooms")
+end
 
 local menu = playdate.getSystemMenu()
 
@@ -90,7 +126,7 @@ local menuItem, error = menu:addMenuItem("debug", function()
 	end
 end)
 
-playdate.display.setRefreshRate(46)
+playdate.display.setRefreshRate(35)
 timers = playdate.timer
 
-Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus) --- TODO: add custom transition
+Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus)

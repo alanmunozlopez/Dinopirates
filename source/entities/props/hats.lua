@@ -6,11 +6,12 @@ function Hats:init(x, y, type, zIndex)
   Hats.super.init(self,'assets/images/props/hats', true)
   -- error handling
   if type == nil then
-    type = 'chef'
+    type = 'CM001'
   end
   --- animation states
-  self.animation:addState('100', 1, 1)
-  self.animation:addState('101', 2, 2)
+  self.animation:addState('CM001', 1, 1)
+  self.animation:addState('CM002', 2, 2)
+  self.animation:addState('CM003', 2, 2)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(20, 16)

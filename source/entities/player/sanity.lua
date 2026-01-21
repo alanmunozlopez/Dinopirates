@@ -12,6 +12,8 @@ function Player:sanityCheck()
     if PlayerData.sanity <= 0 and lastSanity > 0 then
       PlayerData.sanityCounter += 1
       PlayerData.sanity = 0
+      -- Performance: Check achievements only when sanity counter changes
+      Utilities.checkSanityAchievements()
     end
 
     if PlayerData.battery > 50 or PlayerData.isInDarkness == false then
@@ -20,6 +22,10 @@ function Player:sanityCheck()
 
     if PlayerData.sanity >= 100 then
       PlayerData.sanity = 100
+    end
+    
+    if PlayerData.sanity <= 0 then
+      PlayerData.sanity = 0
     end
 
     -- Update lastSanity for the next check
@@ -34,10 +40,10 @@ function Player:drainBattery(amount)
 end
 
 function Player:chargeBattery(amount)
-  if PlayerData.battery < 100 and PlayerData.hasLamp == true then
+  if PlayerData.battery < 100 then
     self.animation:setState('charge')
-  elseif (PlayerData.hasLamp == true) then
-    self.animation:setState('lampIdle')
+  elseif PlayerData.battery >= 100 then
+    self:idle()
   end
   PlayerData.battery += amount
   PlayerData.isActive = true
