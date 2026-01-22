@@ -19,6 +19,7 @@ local DefaultPlayerData = {
 	x = 200,
 	y = 200, 
 	speed = 1.5,
+	healthPoints = 10,
 	battery = 0, 
 	sanity = 100,
 	calories = 100, -- top 500

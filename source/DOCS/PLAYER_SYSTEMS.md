@@ -27,6 +27,10 @@ Sanity and Nutrition represent the player's mental and physical health.
     - **Drain**: Occurs when in darkness with low battery.
     - **Regen**: Recharges if battery > 50 or the player is in light.
     - **Sanity Counter**: Every time sanity hits 0, the `sanityCounter` increments. This increases the global **Enemy Power Level**, making encounters more difficult.
+- **Health**:
+    - **Representation**: Stored as `healthPoints` (default 10).
+    - **HUD**: Represented by 5 hearts, where each heart is 2 points (total 10 bits).
+    - **Sync**: Updated in real-time in the HUD via the `HealthIndicator` class.
 - **Calories & Steps**:
     - The `pedometer()` tracks steps. 200 steps = 10 calories burned.
     - **Calories** influence the difficulty roll of the `DanceScene`. Higher calories contribute to a higher probability of encountering "Badass" or "Boss" enemy profiles.
