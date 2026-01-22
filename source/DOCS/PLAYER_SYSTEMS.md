@@ -56,7 +56,7 @@ The `isActive` flag is a critical internal value.
 - **Items**:
     - `hasLamp`: Enables vision and sanity regeneration. Grants **Lightburst** skill.
     - `hasBoots`: Provides "Hole" safety; player drains battery to walk over holes instead of falling. Grants **Dash** skill.
-    - `hasAntiSlip`: Provides "Slime" safety; player drains battery to walk over slime instead of sliding.
+    - `hasPlunger`: Provides "Slime" safety; player drains battery to walk over slime instead of sliding.
     - `hasBag`: Required to capture CrewMembers.
     - `hasTools`: Story-relevant or utility item (used for certain environment interactions).
 - **Skills**:

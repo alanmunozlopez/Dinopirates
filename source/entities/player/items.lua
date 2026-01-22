@@ -6,7 +6,7 @@ function Player:grabBoots()
 end
 
 function Player:grabAntiSlip()
-  PlayerData.items.hasAntiSlip = true
+  PlayerData.items.hasPlunger = true
   self:fillBattery()
 end
 

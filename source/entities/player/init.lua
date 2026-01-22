@@ -13,6 +13,8 @@ import "entities/player/dash"
 import "entities/player/abilities"
 import "entities/player/lightburst"
 import "entities/player/sliding"
+import "entities/player/projectile"
+import "entities/player/plunge"
 local dialogUI = nil
 local uiHud = nil
 
@@ -73,6 +75,8 @@ function Player:init(x, y, speed, Zindex)
     self.isSliding = false
     self.slidingDirection = nil
     self.slidingSpeed = 4
+
+    self.isPlunging = false
 
     -- MARK: Add to scene
     self.dialogUI = dialogScreen()
