@@ -15,14 +15,14 @@ function Projectile:init(player, direction)
     self.returning = false
     self.speed = 8 -- Increased speed for better feel
     
-    self:setZIndex(ZIndex.player + 1)
+    self:setZIndex(ZIndex.player + 10)
     self:setSize(24, 24)
     self:setCollideRect(4, 4, 16, 16)
     self:setGroups(CollideGroups.items)
     self:setCollidesWithGroups({CollideGroups.enemy})
     
     -- Set initial position and add to scene
-    self:add(px, py)
+    self:add(px, py + 16)
     
     -- Animation states (assuming the table has some frames)
     self.animation:addState('spin', 1, 4)
@@ -63,7 +63,17 @@ function Projectile:update()
         if length > 0 then
             for i = 1, length do
                 local other = collisions[i].other
-                if other:isa(CrewMember) or other:isa(Enemy) then
+                if other:isa(CrewMember) then
+                    print("🎯 Projectile hit CrewMember! Projectile lost.")
+                    if other.stunInfinite then
+                        other:stunInfinite()
+                    end
+                    -- Projectile is lost
+                    self.player.hasProjectile = false
+                    self.player.isPlunging = false -- Unlock movement
+                    self:remove()
+                    return
+                elseif other:isa(Enemy) then
                     self:hitEntity(other)
                     -- Start returning immediately after hit
                     self.returning = true

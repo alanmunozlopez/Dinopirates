@@ -13,6 +13,12 @@ function Player:plunge()
         print("Already plunging!")
         return
     end
+
+    -- Check if player has the projectile
+    if not self.hasProjectile then
+        print("You lost your boomerang! Go find it.")
+        return
+    end
     
     -- Check for valid state
     if not self.isAlive or PlayerData.isGaming ~= true then

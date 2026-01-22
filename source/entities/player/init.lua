@@ -77,6 +77,7 @@ function Player:init(x, y, speed, Zindex)
     self.slidingSpeed = 4
 
     self.isPlunging = false
+    self.hasProjectile = true
 
     -- MARK: Add to scene
     self.dialogUI = dialogScreen()

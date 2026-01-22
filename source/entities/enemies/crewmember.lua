@@ -305,6 +305,10 @@ function CrewMember:taken()
 			else
 				print("🟢 CrewMember marked as taken:", currentIID, "(no crewId)")
 			end
+			-- Restore player's projectile
+			if self.player then
+				self.player.hasProjectile = true
+			end
 			break
 		end
 	end
@@ -313,6 +317,13 @@ function CrewMember:taken()
 	if self.hat then
 		self.hat:remove()
 	end
+end
+
+function CrewMember:stunInfinite()
+    self.isStunnedInfinitely = true
+    self.movementFrames = 0
+    self.animation:setState('idle')
+    print("✨ CrewMember stunned INFINITELY!")
 end
 
 -- Blinds the crew member for a specific number of frames
@@ -388,13 +399,15 @@ function CrewMember:update()
 		return
 	end
 	
-	if self.isBlinded then
-		self.blindFrames = self.blindFrames - 1
-		if self.blindFrames <= 0 then
-			self.isBlinded = false
-			print("👁️ CrewMember no longer blinded")
+	if self.isBlinded or self.isStunnedInfinitely then
+		if self.isBlinded then
+			self.blindFrames = self.blindFrames - 1
+			if self.blindFrames <= 0 then
+				self.isBlinded = false
+				print("👁️ CrewMember no longer blinded")
+			end
 		end
-		-- Return early to skip movement logic while blinded
+		-- Return early to skip movement logic while blinded or stunned infinitely
 		return
 	end
 
