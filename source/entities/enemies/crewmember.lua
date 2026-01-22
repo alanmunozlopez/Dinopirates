@@ -18,6 +18,8 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	-- self.animation:addState('hide', 9, 11, 'hole')
 	self.animation:addState('hide', 12, 13)
 	self.animation.hide.frameDuration = 6
+	self.animation:addState('stunned', 15, 18)
+	self.animation.stunned.frameDuration = 6
 	-- self.animation.hole.frameDuration = 4
 		
 	self:setSize(48, 48)
@@ -322,7 +324,13 @@ end
 function CrewMember:stunInfinite()
     self.isStunnedInfinitely = true
     self.movementFrames = 0
-    self.animation:setState('idle')
+    self.animation:setState('stunned')
+    
+    -- Hide the hat while stunned
+    if self.hat then
+        self.hat:setVisible(false)
+    end
+    
     print("✨ CrewMember stunned INFINITELY!")
 end
 
@@ -407,6 +415,12 @@ function CrewMember:update()
 				print("👁️ CrewMember no longer blinded")
 			end
 		end
+		
+		-- Ensure stunned animation stays active
+		if self.isStunnedInfinitely and self.animation.currentState ~= 'stunned' then
+			self.animation:setState('stunned')
+		end
+		
 		-- Return early to skip movement logic while blinded or stunned infinitely
 		return
 	end

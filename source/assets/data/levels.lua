@@ -46,7 +46,7 @@ levelsLDTK = {
 	  }
 	},
 	customFields = {
-	  shadow = true,
+	  shadow = false,
 	  light = 0.5,
 	  visited = false,
 	  comic_name = "pick-the-device",

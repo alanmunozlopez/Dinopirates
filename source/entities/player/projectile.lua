@@ -19,7 +19,7 @@ function Projectile:init(player, direction)
     self:setSize(24, 24)
     self:setCollideRect(4, 4, 16, 16)
     self:setGroups(CollideGroups.items)
-    self:setCollidesWithGroups({CollideGroups.enemy})
+    self:setCollidesWithGroups({CollideGroups.enemy, CollideGroups.props, CollideGroups.wall})
     
     -- Set initial position and add to scene
     self:add(px, py + 16)
@@ -76,6 +76,10 @@ function Projectile:update()
                 elseif other:isa(Enemy) then
                     self:hitEntity(other)
                     -- Start returning immediately after hit
+                    self.returning = true
+                    break
+                elseif other:isa(PropItem) or other:isa(Box) then
+                    print("🧱 Projectile hit prop/wall! Returning.")
                     self.returning = true
                     break
                 end
