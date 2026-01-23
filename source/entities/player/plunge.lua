@@ -13,6 +13,12 @@ function Player:plunge()
         print("Skill 'Plunge' not available!")
         return
     end
+
+    -- Prevent plungerang if tiny
+    if PlayerData.isTiny then
+        print("Too small to throw the plungerang!")
+        return
+    end
     
     -- Only one projectile at a time
     if self.isPlunging then

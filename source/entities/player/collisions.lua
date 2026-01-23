@@ -119,7 +119,7 @@ function Player:collisionResponse(other)
   
   elseif other:isa(PropItem) and other.isSlime then
     -- If player has plunger boots with battery, can walk over slime
-    if PlayerData.items.hasPlunger == true and PlayerData.battery > 0 then
+    if PlayerData.items.hasPlunger == true then
       if PlayerData.isTiny == true then
         self:drainBattery(0.2)
       else
