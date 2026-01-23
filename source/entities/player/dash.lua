@@ -8,6 +8,12 @@ function Player:dash()
         print("Dash requires boots to be equipped!")
         return
     end
+
+    -- Check if can dash (item + skill)
+    if not PlayerData.items.hasBoots or not PlayerData.skills.canDash then
+        print("Skill 'Dash' not available!")
+        return
+    end
     
     -- Check if dash is on cooldown
     if self.dashCooldown and playdate.getCurrentTimeMilliseconds() < self.dashCooldown then

@@ -102,9 +102,9 @@
 				"iid": "e1699320-d380-11f0-a276-052d46aa38e7",
 				"layer": "Doors",
 				"x": 344,
-				"y": 232,
+				"y": 236,
 				"width": 16,
-				"height": 16,
+				"height": 8,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,

@@ -6,7 +6,13 @@ function Player:grabBoots()
 end
 
 function Player:grabAntiSlip()
+  PlayerData.items.hasAntiSlip = true
+  self:fillBattery()
+end
+
+function Player:grabPlunger()
   PlayerData.items.hasPlunger = true
+  PlayerData.skills.canPlungerang = true
   self:fillBattery()
 end
 

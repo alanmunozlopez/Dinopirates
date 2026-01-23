@@ -2,8 +2,14 @@
 -- Fires a boomerang projectile and locks movement until caught
 
 function Player:plunge()
-    -- Check if can plunge
-    if not PlayerData.skills.canPlunge then
+    -- Validate that plunger is equipped (activeItem == 3)
+    if PlayerData.activeItem ~= 3 then
+        print("Plunge requires plunger to be equipped!")
+        return
+    end
+
+    -- Check if can plunge (item + skill)
+    if not PlayerData.items.hasPlunger or not PlayerData.skills.canPlungerang then
         print("Skill 'Plunge' not available!")
         return
     end

@@ -23,8 +23,8 @@ function Items:init(x, y, type, keyNumber)
   self.animation.boots.frameDuration = 8  
   self.animation:addState('antislip', 38, 41)
   self.animation.antislip.frameDuration = 8  
-  self:setSize(48, 48)
-  self:setCollideRect(0 ,0, 48, 48)
+  self:setSize(32, 32)
+  self:setCollideRect(0 ,0, 32, 32)
   self:setZIndex(ZIndex.items)
   self.type = type
   self.keyNumber = keyNumber  -- Store key number for keycards

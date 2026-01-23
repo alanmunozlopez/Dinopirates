@@ -75,14 +75,15 @@ local DefaultPlayerData = {
 		hasRadio = true,
 		hasNotes = true,
 		hasBoots = false,
-		hasPlunger = true,
+		hasPlunger = false,
+		hasAntiSlip = false,
 		hasBag = false,
 		hasTools = false,
 	},
 	skills ={
 		canFlash = false,
 		canDash = false,
-		canPlunge = true,
+		canPlungerang = false,
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20

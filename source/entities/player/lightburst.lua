@@ -19,9 +19,9 @@ function Player:lightBurst()
         return
     end
     
-    -- Check if lamp is available
-    if not PlayerData.items.hasLamp then
-        print("No lamp available!")
+    -- Check if lamp is available (item + skill)
+    if not PlayerData.items.hasLamp or not PlayerData.skills.canFlash then
+        print("No lamp or flash skill available!")
         return
     end
     

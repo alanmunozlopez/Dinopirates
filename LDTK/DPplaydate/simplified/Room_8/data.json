@@ -114,9 +114,9 @@
 				"iid": "c25a9ea0-d380-11f0-a276-5f29b940eae6",
 				"layer": "Doors",
 				"x": 344,
-				"y": 8,
+				"y": 4,
 				"width": 16,
-				"height": 16,
+				"height": 8,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,
@@ -138,6 +138,21 @@
 				"customFields": {
 					"isTaken": false,
 					"crewID": "CM001"
+				}
+			}
+		],
+		"Lamp": [
+			{
+				"id": "Lamp",
+				"iid": "9ec15d10-d380-11f0-8801-2353ac11ce26",
+				"layer": "Items",
+				"x": 180,
+				"y": 76,
+				"width": 48,
+				"height": 48,
+				"color": 15389866,
+				"customFields": {
+					"type": "lamp"
 				}
 			}
 		],

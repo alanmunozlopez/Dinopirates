@@ -183,7 +183,7 @@ function inGameMenu:selectItem()
     elseif PlayerData.activeItem == 2 and PlayerData.skills.canDash == true then
         print("dash selected!")
         -- Acción para las botas
-    elseif PlayerData.activeItem == 3 and PlayerData.skills.canPlunge == true then
+    elseif PlayerData.activeItem == 3 and PlayerData.skills.canPlungerang == true then
         print("plunge selected!")
         -- Acción para el desatascador
     end
@@ -194,7 +194,7 @@ function inGameMenu:getActiveSkillsCount()
     local count = 0
     if PlayerData.skills.canFlash == true then count = count + 1 end
     if PlayerData.skills.canDash == true then count = count + 1 end
-    if PlayerData.skills.canPlunge == true then count = count + 1 end
+    if PlayerData.skills.canPlungerang == true then count = count + 1 end
     return count
 end
 
@@ -203,7 +203,7 @@ function inGameMenu:getActiveSkillsList()
     local skills = {}
     if PlayerData.skills.canFlash == true then table.insert(skills, 1) end  -- 1 = Flash/Lamp
     if PlayerData.skills.canDash == true then table.insert(skills, 2) end   -- 2 = Dash/Boot
-    if PlayerData.skills.canPlunge == true then table.insert(skills, 3) end  -- 3 = Plunge/Plunger
+    if PlayerData.skills.canPlungerang == true then table.insert(skills, 3) end  -- 3 = Plunge/Plunger
     return skills
 end
 
@@ -253,7 +253,7 @@ function inGameMenu:update()
     if PlayerData.skills.canDash == true then
         bootItem:show(48, 153)
     end
-    if PlayerData.skills.canPlunge == true then
+    if PlayerData.skills.canPlungerang == true then
         plungerItem:show(78, 153) -- Positioned next to boot
     end
   end
