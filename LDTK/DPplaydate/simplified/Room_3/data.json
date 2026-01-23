@@ -131,7 +131,7 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": "tinyKnifeTiny",
+					"tinyScript": "tinyKnife",
 					"conditionalScripts": [
 						"items.hasLamp:nolamp"
 					]

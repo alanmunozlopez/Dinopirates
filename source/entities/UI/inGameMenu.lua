@@ -52,8 +52,8 @@ end
 
 function inGameMenu:drawCrewHats()
     -- Create sprites for captured crew member hats in the menu
-    local hatX = 232  -- Starting X position for hats
-    local hatY = 13  -- Starting Y position for hats
+    local hatX = 43  -- Starting X position for hats
+    local hatY = 108  -- Starting Y position for hats
     local hatSpacing = 20  -- Space between hats
     local rowSpacing = 16  -- Space between rows
     local maxHatsPerRow = 8 -- Max hats before starting a new row
@@ -79,33 +79,28 @@ function inGameMenu:drawCrewHats()
             end
         end
         
-        -- Sort the crew IDs alphabetically (CM001, CM002, CM003, etc.)
-        table.sort(capturedCrewIds)
-        
-        -- Create sprites in sorted order
-        for _, crewId in ipairs(capturedCrewIds) do
-            -- Get the hat image based on crew ID
-            local hatFrameIndex = 1  -- Default to first frame
-            if crewId == "CM001" then
-                hatFrameIndex = 1
-            elseif crewId == "CM002" then
-                hatFrameIndex = 2
-            elseif crewId == "CM003" then
-                hatFrameIndex = 3
-            end
-            
-            -- Create a sprite for this hat
-            local hatImage = hatSpriteSheet:getImage(hatFrameIndex)
-            if hatImage then
-                local hatSprite = Graphics.sprite.new(hatImage)
-                hatSprite:setCenter(0, 0)
-                local row = math.floor(hatIndex / maxHatsPerRow)
-                local col = hatIndex % maxHatsPerRow
-                hatSprite:moveTo(hatX + (col * hatSpacing), hatY + (row * rowSpacing))
-                hatSprite:setZIndex(ZIndex.menu + 9)
-                hatSprite:add()
-                table.insert(self.hatSprites, hatSprite)
-                hatIndex += 1
+        -- Create sprites based on crew ID to ensure fixed positions
+        for crewId, isCaptured in pairs(PlayerData.CrewMemberData.idNumbers) do
+            if isCaptured then
+                -- Get the slot index from the ID (CM001 -> 0, CM002 -> 1, CM003 -> 2)
+                local idSuffix = crewId:match("(%d+)$")
+                local slotIndex = tonumber(idSuffix) - 1
+                
+                -- Get the hat image based on crew ID
+                local hatFrameIndex = tonumber(idSuffix)
+                
+                -- Create a sprite for this hat
+                local hatImage = hatSpriteSheet:getImage(hatFrameIndex)
+                if hatImage then
+                    local hatSprite = Graphics.sprite.new(hatImage)
+                    hatSprite:setCenter(0, 0)
+                    local row = math.floor(slotIndex / maxHatsPerRow)
+                    local col = slotIndex % maxHatsPerRow
+                    hatSprite:moveTo(hatX + (col * hatSpacing), hatY + (row * rowSpacing))
+                    hatSprite:setZIndex(ZIndex.menu + 9)
+                    hatSprite:add()
+                    table.insert(self.hatSprites, hatSprite)
+                end
             end
         end
     end
