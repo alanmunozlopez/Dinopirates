@@ -8,7 +8,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	
 	-- error handling
 	if moveSpeed == nil then
-		moveSpeed = 1
+		moveSpeed = 1.5
 	end
 	-- MARK: Animation states
 	self.animation:addState('walk', 1, 4)
@@ -68,7 +68,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.recentBounceCount = 0 -- How many bounces happened recently  
 	self.bounceCountDecayFrames = 0 -- Frames until bounce count decays
 	self.bounceCountDecayRate = 30 -- Frames before bounce count resets (if no new bounces)
-	self.bouncesRequiredToHide = 3 -- Number of bounces in quick succession to trigger hiding
+	self.bouncesRequiredToHide = 2 -- Number of bounces in quick succession to trigger hiding
 	-- ============================================
 	
 	-- Store original collide rect for restoration
@@ -394,7 +394,7 @@ end
 
 function CrewMember:update()
 	-- Performance: Only update AI every 3 frames
-	self.updateFrameCounter = (self.updateFrameCounter + 1) % 3
+	self.updateFrameCounter = (self.updateFrameCounter + 1) % 2
 	
 	-- If hiding, don't move - just check exit conditions periodically
 	if self.isHiding then
@@ -428,8 +428,8 @@ function CrewMember:update()
 	if self.movementFrames > 0 then
 		self.movementFrames = self.movementFrames - 1
 		
-		-- When tokens are available, move regardless of isActive
-		if self.updateFrameCounter == 0 then
+		-- Performance: Update AI every 2 frames for smoother/faster movement
+		if self.updateFrameCounter % 2 == 0 then
 			self:search(self.player)
 		end
 	else

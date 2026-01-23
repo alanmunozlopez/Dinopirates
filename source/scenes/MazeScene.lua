@@ -288,7 +288,7 @@ function scene:enter()
 				for _, enemy in ipairs(entitiesList) do
 					local cf = enemy.customFields or {}
 					local x, y, id = enemy.x, enemy.y, enemy.iid
-					local speed = cf.speed or 1
+					local speed = cf.speed
 					local dead = cf.dead or false
 	
 					if not dead then
@@ -313,7 +313,7 @@ function scene:enter()
 		for i, crewData in ipairs(entities.CrewMember) do
 			local cf = crewData.customFields or {}
 			local x, y = crewData.x, crewData.y
-			local speed = cf.speed or 1
+			local speed = cf.speed
 			local crewId = cf.crewID or i
 			local crewIid = crewData.iid
 			local taken = cf.isTaken or false
