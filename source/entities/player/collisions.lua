@@ -97,9 +97,9 @@ function Player:collisionResponse(other)
     self:grabBoots()
   return 'overlap'
 
-  elseif other:isa(Items) and other.type == 'antislip' then
+  elseif other:isa(Items) and other.type == 'plunger' then
     other:removeAll()
-    self:grabAntiSlip()
+    self:grabPlunger()
   return 'overlap'
 
   elseif other:isa(PropItem) and other.isHole then
@@ -118,7 +118,7 @@ function Player:collisionResponse(other)
   end
   
   elseif other:isa(PropItem) and other.isSlime then
-    -- If player has antislip boots with battery, can walk over slime
+    -- If player has plunger boots with battery, can walk over slime
     if PlayerData.items.hasPlunger == true and PlayerData.battery > 0 then
       if PlayerData.isTiny == true then
         self:drainBattery(0.2)
@@ -127,7 +127,7 @@ function Player:collisionResponse(other)
       end
       return 'overlap'
     else
-      -- Without antislip or without battery = slide
+      -- Without plunger or without battery = slide
       self:startSliding(self.direction)
       return 'overlap'
     end

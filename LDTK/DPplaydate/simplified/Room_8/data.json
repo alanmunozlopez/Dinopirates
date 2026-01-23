@@ -148,11 +148,41 @@
 				"layer": "Items",
 				"x": 180,
 				"y": 76,
-				"width": 48,
-				"height": 48,
+				"width": 32,
+				"height": 32,
 				"color": 15389866,
 				"customFields": {
 					"type": "lamp"
+				}
+			}
+		],
+		"Boots": [
+			{
+				"id": "Boots",
+				"iid": "29540920-d380-11f0-88fd-c9da4dc03845",
+				"layer": "Items",
+				"x": 244,
+				"y": 76,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "boots"
+				}
+			}
+		],
+		"Plunger": [
+			{
+				"id": "Plunger",
+				"iid": "2b2064b0-d380-11f0-88fd-a38f51cdaa63",
+				"layer": "Items",
+				"x": 308,
+				"y": 76,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "plunger"
 				}
 			}
 		],

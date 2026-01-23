@@ -13,7 +13,7 @@ Items are specialized sprites that grant the player new abilities or resources u
 - **`radio` / `notes`**: Story-relevant items.
 - **`bag`**: Required to capture CrewMembers.
 - **`boots`**: Prevents falling into holes if battery is available.
-- **`antislip`**: Prevents sliding on slime if battery is available.
+- **`plunger`**: Prevents sliding on slime if battery is available.
 
 ### 2. Interaction Flow
 In `collisions.lua`:
@@ -39,7 +39,7 @@ Props share a single image sheet (`props.png`) and use animation states like `ch
 - **Slime (Tile 46)**: Environmental hazard that causes the player to slide.
     - **Sliding**: When stepped on, the player automatically moves in a straight line at a fixed speed (`slidingSpeed = 4`).
     - **Stopping**: The slide ends if the player hits a solid obstacle (wall, solid prop) or exits the slime patch.
-    - **Antislip Protection**: If the player has **Antislip Boots** and battery, they can walk over slime normally while draining battery.
+    - **Antislip Protection**: If the player has **plunger** and battery, they can walk over slime normally while draining battery.
     - **Control**: Manual movement is disabled during a slide.
 
 ### 3. Destruction & Persistence

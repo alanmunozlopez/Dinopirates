@@ -76,7 +76,6 @@ local DefaultPlayerData = {
 		hasNotes = true,
 		hasBoots = false,
 		hasPlunger = false,
-		hasAntiSlip = false,
 		hasBag = false,
 		hasTools = false,
 	},
