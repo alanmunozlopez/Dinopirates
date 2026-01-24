@@ -30,6 +30,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.position = position
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
+	self.damage = 0
 	self.player = player
 	self.Zindex = Zindex
 	self.crewId = crewId  -- Store the crew member ID

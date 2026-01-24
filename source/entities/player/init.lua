@@ -60,6 +60,8 @@ function Player:init(x, y, speed, Zindex)
     PlayerData.isActive = false
     self.loadingPower = false
     self.isAlive = true
+    self.isInvincible = false
+    self.invincibilityTimer = 0
     self.dashCooldown = 0     -- Cooldown timer for dash attack
     self.lightBurstCooldown = 0 -- Cooldown timer for light burst
 

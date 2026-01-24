@@ -18,9 +18,7 @@ function HealthIndicator:update()
     end
     
     if currentHP ~= self.healthPoints then
-        self.healthPoints = currentHP
-        print("❤️ HUD Update | Points: " .. tostring(self.healthPoints) .. " | Source: _G.PlayerData.healthPoints")
-        
+        self.healthPoints = currentHP        
         -- Health indicator is 35x15, same as HUD
         local healthImg = Graphics.image.new(35, 15)
         

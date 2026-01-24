@@ -49,7 +49,7 @@ The `isActive` flag is a critical internal value.
 ## 🤏 Transformation: Size & Collisions
 - **`isTiny`**:
     - Toggled via the **Minifier** prop.
-    - Changes the player's collision rectangle to a smaller 16x16 size.
+    - Changes the player's collision rectangle to a smaller **14x14** size.
     - Enables access to "Hole" props.
     - Changing size triggers specific `tiny` animation states for all directions.
 - **`isBig`**: Managed via the transformation cycle, though currently less used than the tiny state in the primary maze logic.
@@ -60,12 +60,14 @@ The `isActive` flag is a critical internal value.
 - **Items**:
     - `hasLamp`: Enables vision and sanity regeneration. Grants **Lightburst** skill.
     - `hasBoots`: Provides "Hole" safety; player drains battery to walk over holes instead of falling. Grants **Dash** skill.
-    - `hasPlunger`: Provides "Slime" safety; player drains battery to walk over slime instead of sliding.
+    - `hasPlunger`: Provides "Slime" safety; player drains battery to walk over slime instead of sliding. Grants **Plungerang** skill.
     - `hasBag`: Required to capture CrewMembers.
+    - `hasRadio` / `hasNotes`: Story-relevant items that enable specific dialogs/video feeds.
     - `hasTools`: Story-relevant or utility item (used for certain environment interactions).
 - **Skills**:
     - `canFlash` (Lightburst): Costs battery to blind enemies in a radius. Granted by `hasLamp`.
     - `canDash`: Enables a fast dash attack with a cooldown, used to bypass enemies or escape. Granted by `hasBoots`.
+    - `canPlungerang`: Boomerang skill that can stun enemies or interact with props at a distance. Granted by `hasPlunger`.
 
 > [!TIP]
 > Always check `PlayerData.isInDarkness`. Most survival mechanics (Sanity drain, Battery drain, Speed debuffs) are gated by this boolean.

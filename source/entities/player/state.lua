@@ -66,6 +66,11 @@ function Player:transformCycle()
     self.animation:setState('transformCycle')
 end
 
+function Player:startInvincibility(duration)
+    self.isInvincible = true
+    self.invincibilityTimer = duration
+end
+
 function Player:idle()
   if self.isAlive == true then
     if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
@@ -264,6 +269,25 @@ function Player:update()
   if PlayerData.isInDarkness == true and PlayerData.items.hasLamp == false then
     self.speed = 0.5 * self.initialSpeed
   end
+  -- Mark: invincibility timer
+  if self.isInvincible then
+    local refreshRate = playdate.display.getRefreshRate() or 30
+    self.invincibilityTimer -= 1000 / refreshRate
+    
+    -- Visual feedback: Flicker
+    if math.floor(self.invincibilityTimer / 100) % 2 == 0 then
+        self:setVisible(false)
+    else
+        self:setVisible(true)
+    end
+    
+    if self.invincibilityTimer <= 0 then
+      self.isInvincible = false
+      self.invincibilityTimer = 0
+      self:setVisible(true)
+    end
+  end
+
   PlayerData.isActive = false
   -- Performance: Achievement check removed from update loop (handled by events)
 end

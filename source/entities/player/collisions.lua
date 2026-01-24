@@ -6,7 +6,20 @@ function Player:collisionResponse(other)
       PlayerData.lastEnemyTouched.id = other.id
       PlayerData.lastEnemyTouched.x = other.x
       PlayerData.lastEnemyTouched.y = other.y
-      self:fight()
+      
+      -- Add damage logic
+      if not self.isInvincible then
+        PlayerData.healthPoints -= (other.damage or 1)
+        print("💥 Player hit by Brocorat! HP:", PlayerData.healthPoints)
+        
+        -- Trigger dance only if HP < threshold
+        if PlayerData.healthPoints < (PlayerData.danceThresholdHP or 5) then
+          self:fight()
+        else
+          self:startInvincibility(1000) -- 1 second cooldown
+        end
+      end
+      
       return 'overlap'
 
     end
@@ -17,6 +30,19 @@ function Player:collisionResponse(other)
       if other.crewId == 'CM001' then
         -- custom screen here after validating the crewId
       end
+      
+      -- Add damage logic for CrewMember (even if damage is 0)
+      if not self.isInvincible then
+        PlayerData.healthPoints -= (other.damage or 0)
+        print("💥 Player touched CrewMember! HP:", PlayerData.healthPoints)
+        
+        if PlayerData.healthPoints < (PlayerData.danceThresholdHP or 5) then
+          self:fight()
+        else
+          self:startInvincibility(1000)
+        end
+      end
+      
       self.dialogUI:addScreen("gotcha",other.sourceFeed)
     end
     other:taken()

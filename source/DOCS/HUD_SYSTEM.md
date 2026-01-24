@@ -11,12 +11,12 @@ The `playerHud` is a `NobleSprite` that follows the player and coordinates sever
 
 - **Positioning**: Automatically moves to `(player.x, player.y - 36)`.
 - **Sanity States**: The HUD background image changes based on `PlayerData.sanity`.
-    - `sanity100`: > 80
-    - `sanity80`: > 60
-    - `sanity60`: > 40
-    - `sanity40`: > 20
-    - `sanity20`: > 0
-    - `sanity0`: 0
+    - `sanity100`: > 80 (States 1,1)
+    - `sanity80`: > 60 (States 3,4)
+    - `sanity60`: > 40 (States 5,6)
+    - `sanity40`: > 20 (States 7,9)
+    - `sanity20`: > 0 (States 10,11)
+    - `sanity0`: 0 (States 12,13)
 
 ---
 
