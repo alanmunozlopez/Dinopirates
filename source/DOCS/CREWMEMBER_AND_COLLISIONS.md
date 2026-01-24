@@ -15,11 +15,16 @@ The `CrewMember` is a specialized enemy entity with complex behavior for escapin
     - `addMovementFrames(frames)`: Adds raw frames of movement (capped at 90).
     - The `update` loop only processes AI search/movement if `movementFrames > 0`.
 
-### 2. Collision & Bouncing
-In `moveCollision(movementX, movementY, player)`, the entity detects if its movement is blocked by walls or props:
-- **Slide Response**: Returns `'slide'` for walls/props to allow moving along surfaces.
-- **Bounce Mechanic**: If blocked, it increments `recentBounceCount`.
-- **Direction Redirect**: If a collision is detected, it enters a "bounce" state for 20 frames, choosing a perpendicular direction (up/down if horizontal block, left/right if vertical block).
+### 2. Collision & Bouncing [UPDATED]
+The `CrewMember` has restricted collisions to ensure it doesn't get stuck on non-physical entities.
+- **Collision Mask**: It only checks for collisions with `CollideGroups.props` and `CollideGroups.wall`. It ignores the player and other enemies.
+- **Response Logic (`collisionResponse`)**:
+    - **Walls (`Box`)**: Set to `'slide'`.
+    - **Physical Props**: Set to `'slide'` (chairs, tables, etc.).
+    - **Minifier**: Set to `'overlap'` (passes through).
+    - **Items & Triggers**: Set to `'overlap'`. Although they are in the props group, they do not block movement.
+- **Bounce Mechanic**: If blocked by a physical obstacle, it increments `recentBounceCount`.
+- **Direction Redirect**: If blocked, it enters a "bounce" state for 20 frames, choosing a perpendicular direction.
 
 ### 3. Hiding State
 If the `CrewMember` bounces 3 times in quick succession (`bouncesRequiredToHide`), it enters the **Hiding State**:

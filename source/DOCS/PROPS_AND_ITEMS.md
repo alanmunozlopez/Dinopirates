@@ -49,9 +49,14 @@ Props can be destroyed by certain enemies or effects.
 
 ---
 
-## 🌍 World Rendering
-- **Z-Ordering**: Static props and the player use Y-sorting to handle depth correctly.
-- **Occlusion**: `FXshadow` uses prop positions to determine visibility, though mostly it centers on the player's light source.
+## 👥 Entity Interactions
+
+Different entities have distinct rules for interacting with the environment:
+
+- **CrewMember**: Restricted to physical interactions.
+    - **Solid Collisions**: Collide and slide against solid props (chairs, tables, cabinets) and walls.
+    - **Pass-through**: Pass through non-solid props (Minifier pods, blood, debris), pickup items (Keycards, items), and triggers.
+- **Enemies (Brocorat)**: Standard enemies may have different rules, such as being able to "eat" certain edible props depending on their power level.
 
 > [!TIP]
 > Items use a `FXsonar` instance to "ping" their location, helping the player find them in low-visibility or dark areas.

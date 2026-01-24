@@ -74,7 +74,7 @@ function Player:lightBurst()
     -- Distribute motion tokens to enemies/crew
     self:distributeMovementTokens(1) -- 1 Token = ~1 second of movement
     
-    print("✅ Light burst completed!")
+    printDebug("✅ Light burst completed!")
 end
 
 function Player:createLightCone(direction)

@@ -105,7 +105,6 @@ if levelsLDTK then
 			roomsByIid[room.uniqueIdentifer] = room
 		end
 	end
-	print("📋 Room index created with " .. table.getsize(roomsByIid) .. " rooms")
 end
 
 local menu = playdate.getSystemMenu()

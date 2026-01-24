@@ -40,10 +40,8 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	
 	self:setGroups(CollideGroups.enemy)
 	self:setCollidesWithGroups({
-		CollideGroups.player,
 		CollideGroups.props,
-		CollideGroups.wall,
-		CollideGroups.enemy
+		CollideGroups.wall
 	})
 	self.iid = iid
 	self:setZIndex(self.Zindex)
@@ -80,7 +78,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.blindFrames = 0
 	self.blindDuration = 60 -- Default blind duration in frames (approx 2 seconds)
 	
-	print("🧩 CrewMember spawned with IID:", self.iid, "CrewID:", crewId)
+	printDebug("🧩 CrewMember spawned with IID:", self.iid, "CrewID:", crewId)
 end
 
 function CrewMember:addMovementTokens(amount)
@@ -150,11 +148,11 @@ function CrewMember:moveCollision(movementX, movementY, player)
 		self.recentBounceCount = self.recentBounceCount + 1
 		self.bounceCountDecayFrames = self.bounceCountDecayRate
 		
-		print("💥 Bounce detected! Count:", self.recentBounceCount, "/ Required:", self.bouncesRequiredToHide) -- Debug
+		printDebug("💥 Bounce detected! Count:", self.recentBounceCount, "/ Required:", self.bouncesRequiredToHide) -- Debug
 		
 		-- Check if enough bounces to trigger hiding (trapped in corner)
 		if self.recentBounceCount >= self.bouncesRequiredToHide then
-			print("🙈 Too many bounces - entering hiding!") -- Debug
+			printDebug("🙈 Too many bounces - entering hiding!") -- Debug
 			self:enterHiding()
 			return
 		end
@@ -185,16 +183,22 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	end
 end
 function CrewMember:collisionResponse(other)
-	-- Allow overlap with minifier props and triggers
-	if other:isa(PropItem) and other.type == 'minifier' then
-		return 'overlap'
-	elseif other:isa(Trigger) then
-		return 'overlap'
-	elseif other:isa(Wall) then
+	-- Physical collisions (walls and props)
+	if other:isa(Box) then
 		-- Use slide for walls so we can move along them
 		return 'slide'
+	elseif other:isa(PropItem) then
+		if other.type == 'minifier' then
+			-- Pass through minifiers
+			return 'overlap'
+		else
+			-- Slide on other props (chairs, tables, etc.)
+			return 'slide'
+		end
 	else
-		return 'slide'
+		-- Pass through everything else in group 3 (Triggers, Items, etc.)
+		-- Note: player and enemy are already ignored via setCollidesWithGroups
+		return 'overlap'
 	end
 end
 
