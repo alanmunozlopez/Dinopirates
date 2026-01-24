@@ -19,7 +19,12 @@ function Projectile:init(player, direction)
     self:setSize(24, 24)
     self:setCollideRect(4, 4, 16, 16)
     self:setGroups(CollideGroups.items)
-    self:setCollidesWithGroups({CollideGroups.enemy, CollideGroups.props, CollideGroups.wall})
+    self:setCollidesWithGroups({
+        CollideGroups.enemy,
+        CollideGroups.props,
+        CollideGroups.wall,
+        CollideGroups.crewMember
+    })
     
     -- Set initial position and add to scene
     self:add(px, py + 16)

@@ -466,6 +466,11 @@ scene.inputHandler = {
 		if PlayerData.isEquiping == true then
 			inGameEquip:selectItem()
 		end
+
+		-- Trigger minifier if ready
+		if PlayerData.readyToShrink == true and PlayerData.isGaming == true then
+			player:startMinifying()
+		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
@@ -628,46 +633,45 @@ scene.inputHandler = {
 			player:burnCalories(1)
 		end
 		
-		if PlayerData.readyToShrink == true and PlayerData.actualPlayerSize < PlayerData.playerSize and PlayerData.actualPlayerSize > 0 then
-			player:transformCycle()
-		end
-		
 		if PlayerData.isGaming == true then
 			if ticksValue > 0 then
-				if player.loadingPower then
-					-- posible charged skill
-				end
-				
-				if PlayerData.battery < 100 and PlayerData.readyToShrink == false and  PlayerData.isTiny == false then
+				if PlayerData.battery < 100 and PlayerData.readyToShrink == false and PlayerData.isTiny == false then
 					player:chargeBattery(3)
 					if shadow then
 						shadow:refresh()
 					end
 				end
-				
-				if PlayerData.readyToShrink == true and PlayerData.isTiny == true then
-					PlayerData.actualPlayerSize += 1
-					if PlayerData.actualPlayerSize == PlayerData.playerSize then
-						player:grow()
+			end
+		else
+			-- Handle manual transformation when locked on minifier
+			if PlayerData.readyToShrink == true then
+				if ticksValue ~= 0 then
+					player:transformCycle()
+					
+					if not PlayerData.isTiny then
+						-- Shrinking (Counter-clockwise)
+						if ticksValue < 0 then
+							PlayerData.actualPlayerSize -= math.abs(ticksValue)
+							if PlayerData.actualPlayerSize <= 0 then
+								PlayerData.actualPlayerSize = 0
+								player:shrink()
+								player:finishMinifying()
+							end
+						end
+					else
+						-- Growing (Clockwise)
+						if ticksValue > 0 then
+							PlayerData.actualPlayerSize += math.abs(ticksValue)
+							if PlayerData.actualPlayerSize >= PlayerData.playerSize then
+								PlayerData.actualPlayerSize = PlayerData.playerSize
+								player:grow()
+								player:finishMinifying()
+							end
+						end
 					end
 				end
 			end
-			
-			if (ticksValue < 0) then
-				if PlayerData.readyToShrink == true and PlayerData.isTiny == false then
-					PlayerData.actualPlayerSize -= 1
-					if PlayerData.actualPlayerSize == 0 then
-						player:shrink()
-					end
-				end
-			end
-			
 		end
-		
-		
-		
-		
-
 		-- scene:PowerCrank()
 		
 	end,

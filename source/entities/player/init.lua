@@ -34,7 +34,8 @@ function Player:init(x, y, speed, Zindex)
             CollideGroups.enemy,
             CollideGroups.props,
             CollideGroups.items,
-            CollideGroups.wall
+            CollideGroups.wall,
+            CollideGroups.crewMember
         })
     self:setGroups(CollideGroups.player)
 

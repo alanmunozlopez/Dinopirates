@@ -120,6 +120,37 @@ function Player:grow()
     self:setCollideRect(8, 24, 30, 24)
     self:idle()
 end
+
+function Player:startMinifying()
+    if not self.currentMinifier or PlayerData.isTalking or not PlayerData.isGaming then return end
+
+    -- Lock player and center
+    PlayerData.isGaming = false
+    self.triggerEnteredOnce = true -- Stop trigger checks
+    
+    -- Auto center on minifier
+    local targetX = self.currentMinifier.x
+    local targetY = self.currentMinifier.y
+    self:moveTo(targetX, targetY)
+    if shadow then shadow:moveTo(targetX, targetY) end
+
+    -- Show crank prompt
+    if not PlayerData.isTiny then
+        self.uiHud:setCrankAntiClock()
+    else
+        self.uiHud:setCrankClock()
+    end
+    self:showUIHUD()
+
+    -- Reset progress (size goes from playerSize to 0 or vice versa)
+    PlayerData.actualPlayerSize = PlayerData.isTiny and 0 or PlayerData.playerSize
+end
+
+function Player:finishMinifying()
+    PlayerData.isGaming = true
+    self.triggerEnteredOnce = false
+    self.uiHud:setVisible(false)
+end
 function Player:pedometer()
   PlayerData.steps += 0.5
   PlayerData.totalSteps += 0.5

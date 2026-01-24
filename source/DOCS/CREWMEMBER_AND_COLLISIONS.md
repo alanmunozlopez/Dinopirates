@@ -22,7 +22,7 @@ The `CrewMember` has refined collisions to balance navigation and obstacle avoid
     - **Walls (`Box`)**: Set to `'slide'`.
     - **Enemies (`Enemy`)**: Set to `'slide'`. This blocks movement and triggers the bounce logic, allowing crew members to avoid each other and other enemies.
     - **Physical Props**: Set to `'slide'` (chairs, tables, etc.).
-    - **Minifier**: Set to `'overlap'` (passes through).
+    - **Minifier**: Set to `'overlap'`. Crew members pass through the pod freely without triggering interactions.
     - **Items & Triggers**: Set to `'overlap'`.
 - **Bounce Mechanic**: If blocked by a physical obstacle (including enemies), it increments `recentBounceCount`.
 - **Direction Redirect**: If blocked, it enters a "bounce" state for 20 frames, choosing a perpendicular direction.
@@ -37,6 +37,7 @@ If the `CrewMember` bounces 3 times in quick succession (`bouncesRequiredToHide`
 
 ### 4. Special Interactions
 - **Blinding**: `blind(frames)` stops the entity for a duration.
+- **Projectile (Plungerang)**: The `Projectile` entity is configured to hit the `crewMember` group. When hit, it calls `stunInfinite()` on the crew member.
 - **Taking**: `taken()` marks the crew member as captured in `PlayerData`, updates the UI count, and removes the sprite.
 
 ---
@@ -45,8 +46,10 @@ If the `CrewMember` bounces 3 times in quick succession (`bouncesRequiredToHide`
 
 Screens (dialogs/UI overlays) are managed via `PlayerData` and the `dialogUI` component.
 
-### 1. The Collision Hook
+### 1. The Collision Hook [UPDATED]
 In `source/entities/player/collisions.lua`, the `Player:collisionResponse(other)` function handles interactions.
+
+**Note**: Colliding with a `CrewMember` does **NOT** trigger damage, blinking, or invincibility. It only initiates the capture logic.
 
 To show a custom screen when hitting a specific `CrewMember`:
 ```lua

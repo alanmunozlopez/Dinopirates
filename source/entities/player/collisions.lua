@@ -31,17 +31,6 @@ function Player:collisionResponse(other)
         -- custom screen here after validating the crewId
       end
       
-      -- Add damage logic for CrewMember (even if damage is 0)
-      if not self.isInvincible then
-        PlayerData.healthPoints -= (other.damage or 0)
-        print("💥 Player touched CrewMember! HP:", PlayerData.healthPoints)
-        
-        if PlayerData.healthPoints < (PlayerData.danceThresholdHP or 5) then
-          self:fight()
-        else
-          self:startInvincibility(1000)
-        end
-      end
       
       self.dialogUI:addScreen("gotcha",other.sourceFeed)
     end
@@ -162,11 +151,7 @@ function Player:collisionResponse(other)
     self.currentMinifier = other
     PlayerData.readyToShrink = true
     self:showUIHUD()
-    if PlayerData.isTiny == false then
-      self.uiHud:setCrankAntiClock()
-    else
-      self.uiHud:setCrankClock()
-    end
+    self.uiHud:setPressA()
     
   return 'overlap'
 

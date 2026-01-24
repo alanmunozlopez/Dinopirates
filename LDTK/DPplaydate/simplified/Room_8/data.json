@@ -141,13 +141,45 @@
 				}
 			}
 		],
+		"Notes": [
+			{
+				"id": "Notes",
+				"iid": "6552a7b0-d380-11f0-88fd-8d7e941e4618",
+				"layer": "Items",
+				"x": 356,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "notes",
+					"grants": "canFlash:true"
+				}
+			}
+		],
+		"ItemGift": [
+			{
+				"id": "ItemGift",
+				"iid": "733afd00-d380-11f0-88fd-bd64032fb015",
+				"layer": "Items",
+				"x": 276,
+				"y": 148,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "itemGift",
+					"grants": "has:Plunger"
+				}
+			}
+		],
 		"Brocorat": [
 			{
 				"id": "Brocorat",
 				"iid": "e2567b60-d380-11f0-a276-63562531dd93",
 				"layer": "Enemies",
 				"x": 68,
-				"y": 140,
+				"y": 204,
 				"width": 32,
 				"height": 32,
 				"color": 14120515,
