@@ -53,8 +53,8 @@ Props can be destroyed by certain enemies or effects.
 
 Different entities have distinct rules for interacting with the environment:
 
-- **CrewMember**: Restricted to physical interactions.
-    - **Solid Collisions**: Collide and slide against solid props (chairs, tables, cabinets) and walls.
+- **CrewMember**: Now has its own dedicated collision group (`crewMember`).
+    - **Solid Collisions**: Collide and slide against solid props (chairs, tables, cabinets), walls, and other **Enemies**. Colliding with enemies triggers their "bounce" logic.
     - **Pass-through**: Pass through non-solid props (Minifier pods, blood, debris), pickup items (Keycards, items), and triggers.
 - **Enemies (Brocorat)**: Standard enemies may have different rules, such as being able to "eat" certain edible props depending on their power level.
 

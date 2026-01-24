@@ -38,10 +38,12 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	-- Performance: Frame counter for throttling updates
 	self.updateFrameCounter = math.random(0, 2) -- Random offset to stagger enemy updates
 	
-	self:setGroups(CollideGroups.enemy)
+	self:setGroups(CollideGroups.crewMember)
 	self:setCollidesWithGroups({
 		CollideGroups.props,
-		CollideGroups.wall
+		CollideGroups.wall,
+		CollideGroups.enemy,
+		CollideGroups.crewMember
 	})
 	self.iid = iid
 	self:setZIndex(self.Zindex)
@@ -186,6 +188,9 @@ function CrewMember:collisionResponse(other)
 	-- Physical collisions (walls and props)
 	if other:isa(Box) then
 		-- Use slide for walls so we can move along them
+		return 'slide'
+	elseif other:isa(Enemy) then
+		-- Slide on enemies (Brocorat, etc.) to trigger bounce
 		return 'slide'
 	elseif other:isa(PropItem) then
 		if other.type == 'minifier' then

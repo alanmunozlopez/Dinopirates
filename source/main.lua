@@ -69,7 +69,8 @@ CollideGroups = {
 	props = 3,
 	items = 4,
 	wall = 5,
-	noCollide = 6
+	noCollide = 6,
+	crewMember = 7
 }
 
 -- Button type constants
