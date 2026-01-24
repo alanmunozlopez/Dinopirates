@@ -154,7 +154,7 @@ levelsLDTK = {
 		  color = 15389866,
 		  customFields = {
 			type = "notes",
-			grants = "canFlash:true"
+			grants = "canPlungerang:true"
 		  }
 		}
 	  },
@@ -170,7 +170,7 @@ levelsLDTK = {
 		  color = 15389866,
 		  customFields = {
 			type = "itemGift",
-			grants = "has:Plunger"
+			grants = "hasPlunger:true"
 		  }
 		}
 	  },

@@ -32,7 +32,7 @@ function Player:collisionResponse(other)
       end
       
       
-      self.dialogUI:addScreen("gotcha",other.sourceFeed)
+      self.dialogUI:addScreen("gotcha",other.sourceFeed) -- default screen for the 1st time
     end
     other:taken()
 
@@ -89,7 +89,12 @@ function Player:collisionResponse(other)
 
   elseif other:isa(Items) and other.type == 'notes' then
     other:removeAll()
-    self:grabNotes()
+    self:grabNotes(other.grants)
+    return 'overlap'
+
+  elseif other:isa(Items) and (other.type == 'itemgift' or other.type == 'itemGift') then
+    other:removeAll()
+    self:grabItemGift(other.grants)
     return 'overlap'
 
   elseif other:isa(Items) and other.type == 'bag' then

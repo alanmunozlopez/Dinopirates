@@ -4,17 +4,17 @@ class('Items').extends(NobleSprite)
 
 import 'entities/FX/FXsonar'
 
-function Items:init(x, y, type, keyNumber)
+function Items:init(x, y, type, keyNumber, grants)
   Items.super.init(self,'assets/images/items/items-key', true)
   --- animation states
   self.animation:addState('keycard', 13, 15)
   self.animation.keycard.frameDuration = 8 
   self.animation:addState('lamp', 7, 9)
   self.animation.lamp.frameDuration = 8 
-  -- self.animation:addState('radio', 26, 29)
-  -- self.animation.radio.frameDuration = 8 
-  -- self.animation:addState('notes', 30, 33)
-  -- self.animation.notes.frameDuration = 8
+  self.animation:addState('itemgift', 16, 18)
+  self.animation.itemgift.frameDuration = 8 
+  self.animation:addState('notes', 10, 12)
+  self.animation.notes.frameDuration = 8
   -- self.animation:addState('tools', 34, 37)
   -- self.animation.tools.frameDuration = 8
   -- self.animation:addState('bag', 38, 41)
@@ -28,6 +28,7 @@ function Items:init(x, y, type, keyNumber)
   self:setZIndex(ZIndex.items)
   self.type = type
   self.keyNumber = keyNumber  -- Store key number for keycards
+  self.grants = grants        -- Store grants for itemgift and notes
   self.animation:setState(type)
   sonar = FXsonar(self.x,self.y)
   self:setGroups(3)

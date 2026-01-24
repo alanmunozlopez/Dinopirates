@@ -198,7 +198,7 @@ function scene:enter()
 					if isKeyEntity then
 						type = "keycard"
 					else
-						type = cf.type or entityType:lower()
+						type = (cf.type or entityType):lower()
 					end
 					
 					-- Get KeyNumber (try both uppercase and lowercase)
@@ -222,6 +222,20 @@ function scene:enter()
 						local keyNum = keyNumber or 1
 						shouldGenerate = not PlayerData.keys[keyNum]
 						printDebug("🔑 Checking keycard generation - KeyNumber:", keyNum, "shouldGenerate:", shouldGenerate)
+					elseif cf.grants then
+						-- If item has a grants field, check if player already has those items/skills
+						shouldGenerate = true
+						for pair in string.gmatch(cf.grants, "([^,]+)") do
+							local key, value = string.match(pair, "([^:]+):([^:]+)")
+							if key and value then
+								key = key:gsub("%s+", "")
+								-- Check both items and skills tables
+								if PlayerData.items[key] == true or PlayerData.skills[key] == true then
+									shouldGenerate = false
+									break
+								end
+							end
+						end
 					elseif itemRequirements[type] then
 						-- For other items, check the boolean flag in items table
 						local itemPath = itemRequirements[type]
@@ -236,8 +250,8 @@ function scene:enter()
 					
 					-- Generate item if player doesn't have it
 					if shouldGenerate then
-						printDebug("✅ Generating item:", type, "at position (", x, ",", y, ") with keyNumber:", keyNumber)
-						Items(x, y, type, keyNumber)
+						printDebug("✅ Generating item:", type, "at position (", x, ",", y, ") with keyNumber:", keyNumber, "grants:", cf.grants)
+						Items(x, y, type, keyNumber, cf.grants)
 					end
 				end
 			end
