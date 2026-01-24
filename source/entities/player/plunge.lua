@@ -36,7 +36,7 @@ function Player:plunge()
     if not self.isAlive or PlayerData.isGaming ~= true then
         return
     end
-    
+
     -- Check direction - don't fire if idle
     local direction = PlayerData.direction
     if direction == 'idle' or direction == nil then

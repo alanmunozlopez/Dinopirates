@@ -57,17 +57,19 @@ The `isActive` flag is a critical internal value.
 ---
 
 ## 🎒 Inventory & Skills
+Items and skills can be granted either by picking up a fixed item type or dynamically via a `grants` field in level data (common for `itemgift` and `notes`).
+
 - **Items**:
     - `hasLamp`: Enables vision and sanity regeneration. Grants **Lightburst** skill.
     - `hasBoots`: Provides "Hole" safety; player drains battery to walk over holes instead of falling. Grants **Dash** skill.
-    - `hasPlunger`: Provides "Slime" safety; player drains battery to walk over slime instead of sliding. Grants **Plungerang** skill.
+    - `hasPlunger`: Provides "Slime" safety; player can walk over slime instead of sliding. Grants **Plungerang** skill.
     - `hasBag`: Required to capture CrewMembers.
     - `hasRadio` / `hasNotes`: Story-relevant items that enable specific dialogs/video feeds.
     - `hasTools`: Story-relevant or utility item (used for certain environment interactions).
 - **Skills**:
-    - `canFlash` (Lightburst): Costs battery to blind enemies in a radius. Granted by `hasLamp`.
-    - `canDash`: Enables a fast dash attack with a cooldown, used to bypass enemies or escape. Granted by `hasBoots`.
-    - `canPlungerang`: Boomerang skill that can stun enemies or interact with props at a distance. Granted by `hasPlunger`.
+    - `canFlash` (Lightburst): Costs **10 battery**. Blinds enemies in a radius. Granted by `hasLamp`.
+    - `canDash`: Costs **10 battery**. Enables a fast dash attack with a cooldown. Granted by `hasBoots`.
+    - `canPlungerang`: Boomerang skill that can stun enemies or interact with props at a distance. Does not consume battery. Granted by `hasPlunger`.
 
 > [!TIP]
 > Always check `PlayerData.isInDarkness`. Most survival mechanics (Sanity drain, Battery drain, Speed debuffs) are gated by this boolean.

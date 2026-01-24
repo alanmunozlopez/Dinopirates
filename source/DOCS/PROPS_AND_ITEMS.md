@@ -13,13 +13,22 @@ Items are specialized sprites that grant the player new abilities or resources u
 - **`radio` / `notes`**: Story-relevant items.
 - **`bag`**: Required to capture CrewMembers.
 - **`boots`**: Prevents falling into holes if battery is available.
-- **`plunger`**: Prevents sliding on slime if battery is available.
+- **`plunger`**: Prevents sliding on slime.
+- **`itemgift`**: A generic delivery item that can grant any boolean flag in `PlayerData.items` (e.g., `hasPlunger:true`).
 
-### 2. Interaction Flow
+### 2. Dynamic Grants (LDtk)
+Items like `itemgift` and `notes` use a `grants` custom field in LDtk to dynamically update `PlayerData`.
+- **Format**: `"key1:value1,key2:value2"` (e.g., `"hasPlunger:true"` or `"canFlash:true"`).
+- **Processing**:
+    - `itemgift` updates the `PlayerData.items` table.
+    - `notes` updates the `PlayerData.skills` table.
+- **Conditional Rendering**: In `MazeScene.lua`, items with a `grants` field are only spawned if the player **does not** already possess the granted item/skill. This ensures objects disappear from the world permanently once collected.
+
+### 3. Interaction Flow
 In `collisions.lua`:
 - Hitting an item usually calls `other:removeAll()`.
-- It then calls a corresponding "grab" function on the player (e.g., `self:grabKey(num)` or `self:grabLamp()`).
-- Grabbing an item typically updates a boolean in `PlayerData.items` or `PlayerData.keys`.
+- It then calls a corresponding "grab" function on the player (e.g., `self:grabItemGift(other.grants)` or `self:grabNotes(other.grants)`).
+- Grabbing an item typically updates a boolean in `PlayerData.items`, `PlayerData.skills`, or `PlayerData.keys`.
 
 ---
 
@@ -42,7 +51,7 @@ Props share a single image sheet (`props.png`) and use animation states like `ch
 - **Slime (Tile 46)**: Environmental hazard that causes the player to slide.
     - **Sliding**: When stepped on, the player automatically moves in a straight line at a fixed speed (`slidingSpeed = 4`).
     - **Stopping**: The slide ends if the player hits a solid obstacle (wall, solid prop) or exits the slime patch.
-    - **Antislip Protection**: If the player has **plunger**, they can walk over slime normally while draining battery (0.5 units, or 0.2 if Tiny).
+    - **Antislip Protection**: If the player has **plunger**, they can walk over slime normally without consuming battery.
     - **Control**: Manual movement is disabled during a slide.
 
 ### 3. Destruction & Persistence

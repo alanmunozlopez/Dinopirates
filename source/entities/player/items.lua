@@ -66,10 +66,7 @@ function Player:grabNotes(grants)
   if grants then
     self:processGrants(grants, PlayerData.skills)
   else
-    -- Legacy support if grants is not provided
-    PlayerData.items.hasNotes = true
   end
-  Utilities.grantAchievementIfNeeded("notebook")
 end
 
 
