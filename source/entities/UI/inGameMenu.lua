@@ -123,7 +123,7 @@ function inGameMenu:closeMenu()
         end
         self.hatSprites = nil
     end
-    print('closing menu')
+    
     -- remove all the icons also
 end
 
@@ -170,16 +170,16 @@ function inGameMenu:nextItem()
 end
 
 function inGameMenu:selectItem()
-    print("Item selected: " .. PlayerData.activeItem)
+    printDebug("Item selected: " .. PlayerData.activeItem)
     -- Aquí puedes agregar la lógica específica para cada item
     if PlayerData.activeItem == 1 and PlayerData.skills.canFlash == true then
-        print("flash selected!")
+        printDebug("flash selected!")
         -- Acción para la lámpara
     elseif PlayerData.activeItem == 2 and PlayerData.skills.canDash == true then
-        print("dash selected!")
+        printDebug("dash selected!")
         -- Acción para las botas
     elseif PlayerData.activeItem == 3 and PlayerData.skills.canPlungerang == true then
-        print("plunge selected!")
+        print(Debug"plunge selected!")
         -- Acción para el desatascador
     end
 end

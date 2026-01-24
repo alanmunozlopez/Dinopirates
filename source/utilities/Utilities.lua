@@ -374,7 +374,7 @@ function findAndDestroyPropById(propId)
 				if prop.iid == propId then
 					if not cf.destroyed then
 						cf.destroyed = true
-						print("💥 Prop destroyed:", propId, "in", entityType)
+						printDebug("💥 Prop destroyed:", propId, "in", entityType)
 					end
 					return
 				end

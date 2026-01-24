@@ -122,7 +122,7 @@ function Enemy:blind(frames)
         self.animation:setState('idle')
     end
     
-    print("✨ Enemy blinded! Frames:", self.blindFrames)
+    printDebug("✨ Enemy blinded! Frames:", self.blindFrames)
 end
 
 function Enemy:collisionResponse(other)

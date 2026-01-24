@@ -513,8 +513,6 @@ scene.inputHandler = {
 			player:useAbility()
 		end
 		player:distributeMovementTokens(5) 
-		print(PlayerData.playerSize)
-		checkBool(PlayerData.isTiny)
 		-- playerFocus() -- Commented out for ability system
 	end,
 	BButtonHeld = function()

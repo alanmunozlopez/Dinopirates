@@ -169,7 +169,7 @@ function scene:enter()
             self.numberOfButtons = 12
         end
         self.enemyEvolving = true
-        print("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
+        printDebug("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
     
     else
         -- Roll failed: stay basic
@@ -178,7 +178,7 @@ function scene:enter()
         self.bpm = 16
         self.numberOfButtons = 4
     
-        print("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
+        printDebug("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
     end
 
    -- Create ButtonPress instances using enemy pattern profile
