@@ -457,6 +457,24 @@ levelsLDTK = {
 			tinyScript = nil,
 			conditionalScripts = {}
 		  }
+		},
+		{
+		  id = "Triggers",
+		  iid = "54d22370-d380-11f0-88fd-914d0158f881",
+		  layer = "Triggers",
+		  x = 196,
+		  y = 140,
+		  width = 24,
+		  height = 24,
+		  color = 16711748,
+		  customFields = {
+			script = "myGift",
+			usedTrigger = false,
+			type = "Story",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScripts = {}
+		  }
 		}
 	  },
 	  ItemGift = {
