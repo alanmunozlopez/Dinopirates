@@ -368,7 +368,7 @@ levelsLDTK = {
 	  play = nil
 	},
 	layers = {
-	  "Tilemap.png"
+	  "BGTilemap.png"
 	},
 	entities = {
 	  Doors = {
@@ -403,30 +403,6 @@ levelsLDTK = {
 		  }
 		}
 	  },
-	  PlayerSpawnPoints = {
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "0cd9e410-ac70-11f0-aeab-b3666237bf74",
-		  layer = "PSpawnPoints",
-		  x = 364,
-		  y = 116,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
-		},
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "0d9bdf10-ac70-11f0-aeab-cff62883b2fa",
-		  layer = "PSpawnPoints",
-		  x = 196,
-		  y = 196,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
-		}
-	  },
 	  Triggers = {
 		{
 		  id = "Triggers",
@@ -440,7 +416,10 @@ levelsLDTK = {
 		  customFields = {
 			script = "giftFor100",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScripts = {}
 		  }
 		},
 		{
@@ -455,7 +434,10 @@ levelsLDTK = {
 		  customFields = {
 			script = "giftFor233",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScripts = {}
 		  }
 		},
 		{
@@ -470,7 +452,26 @@ levelsLDTK = {
 		  customFields = {
 			script = "entranceMess",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScripts = {}
+		  }
+		}
+	  },
+	  ItemGift = {
+		{
+		  id = "ItemGift",
+		  iid = "ab0e6080-d380-11f0-88fd-23cdcf2dde52",
+		  layer = "Items",
+		  x = 196,
+		  y = 140,
+		  width = 32,
+		  height = 32,
+		  color = 15389866,
+		  customFields = {
+			type = "itemGift",
+			grants = "hasDWatch:true"
 		  }
 		}
 	  },

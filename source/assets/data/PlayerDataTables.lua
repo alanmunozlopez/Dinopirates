@@ -74,6 +74,7 @@ local DefaultPlayerData = {
 	items={
 		hasLamp = false,
 		hasRadio = true,
+		hasDWatch = false,
 		hasNotes = true,
 		hasBoots = false,
 		hasPlunger = false,

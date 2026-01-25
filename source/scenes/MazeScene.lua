@@ -489,7 +489,7 @@ scene.inputHandler = {
 	end,
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
 		-- Your code here
-		if PlayerData.isGaming == true then
+		if PlayerData.isGaming == true and PlayerData.items.hasDWatch == true then
 			inGameEquip:displayMenu(player.x,player.y)
 		end
 	end,

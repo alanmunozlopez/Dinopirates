@@ -34,6 +34,7 @@ function inGameMenu:init()
 end
 
 function inGameMenu:displayMenu()
+    if not PlayerData.items.hasDWatch then return end
     PlayerData.isGaming = false
     PlayerData.isEquiping = true
     

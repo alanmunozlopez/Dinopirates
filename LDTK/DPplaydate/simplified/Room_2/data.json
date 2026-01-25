@@ -139,6 +139,22 @@
 				}
 			}
 		],
+		"ItemGift": [
+			{
+				"id": "ItemGift",
+				"iid": "ab0e6080-d380-11f0-88fd-23cdcf2dde52",
+				"layer": "Items",
+				"x": 196,
+				"y": 140,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "itemGift",
+					"grants": "hasDWatch:true"
+				}
+			}
+		],
 		"Xtree1": [
 			{
 				"id": "Xtree1",
