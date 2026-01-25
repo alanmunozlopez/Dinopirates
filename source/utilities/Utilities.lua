@@ -551,7 +551,6 @@ function Utilities.toggle(value)
   return not value
 end
 
-local TILE_SIZE = 16
 
 function CurrentTile()
 	local floor = PlayerData.actualTilemap or 1

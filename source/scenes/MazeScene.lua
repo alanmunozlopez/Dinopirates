@@ -114,9 +114,7 @@ function scene:enter()
 	
 	-- MARK: UI
 	inGameEquip = inGameMenu()
-	-- MARK: Floor tilemap
-	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
-	
+
 	renderTileMap(tileMapData[PlayerData.actualTilemap], map)
 	
 	floor = Graphics.sprite.new()
