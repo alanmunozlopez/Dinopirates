@@ -94,9 +94,7 @@ local DefaultPlayerData = {
 	CrewMemberData ={
 		amountTaken = 0,
 		idNumbers={
-			CM001 = false,
-			CM002 = false,
-			CM003 = false
+			
 		}
 	}
 }

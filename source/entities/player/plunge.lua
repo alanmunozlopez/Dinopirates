@@ -44,7 +44,7 @@ function Player:plunge()
         return
     end
     
-    printDebugDebug("🪠 Plunge skill activated!")
+    printDebug("🪠 Plunge skill activated!")
     
     self.isPlunging = true
     

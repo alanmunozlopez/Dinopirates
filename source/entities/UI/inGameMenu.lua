@@ -56,9 +56,8 @@ function inGameMenu:drawCrewHats()
     local hatX = 43  -- Starting X position for hats
     local hatY = 108  -- Starting Y position for hats
     local hatSpacing = 20  -- Space between hats
-    local rowSpacing = 16  -- Space between rows
-    local maxHatsPerRow = 8 -- Max hats before starting a new row
-    local hatIndex = 0
+    local rowSpacing = 20  -- Space between rows
+    local maxHatsPerRow = 7 -- Max hats before starting a new row
     
     -- Remove any existing hat sprites first
     if self.hatSprites then
@@ -72,26 +71,19 @@ function inGameMenu:drawCrewHats()
     
     -- Check each crew member and create a sprite for their hat if captured
     if PlayerData.CrewMemberData and PlayerData.CrewMemberData.idNumbers then
-        -- Collect and sort crew IDs to display in order
-        local capturedCrewIds = {}
-        for crewId, isCaptured in pairs(PlayerData.CrewMemberData.idNumbers) do
-            if isCaptured then
-                table.insert(capturedCrewIds, crewId)
-            end
-        end
-        
-        -- Create sprites based on crew ID to ensure fixed positions
-        for crewId, isCaptured in pairs(PlayerData.CrewMemberData.idNumbers) do
-            if isCaptured then
-                -- Get the slot index from the ID (CM001 -> 0, CM002 -> 1, CM003 -> 2)
-                local idSuffix = crewId:match("(%d+)$")
-                local slotIndex = tonumber(idSuffix) - 1
+        -- Iterate through a fixed range of possible IDs to ensure order and filtering
+        -- There are 21 states defined in Hats.lua
+        for i = 1, 21 do
+            local crewId = string.format("CM%03d", i)
+            local isCaptured = PlayerData.CrewMemberData.idNumbers[crewId]
+            
+            -- Explicitly check if the value is TRUE
+            if isCaptured == true then
+                -- Get the slot index from the ID (CM001 -> 0, CM002 -> 1, ...)
+                local slotIndex = i - 1
                 
-                -- Get the hat image based on crew ID
-                local hatFrameIndex = tonumber(idSuffix)
-                
-                -- Create a sprite for this hat
-                local hatImage = hatSpriteSheet:getImage(hatFrameIndex)
+                -- Create a sprite for this hat using its ID as the frame index
+                local hatImage = hatSpriteSheet:getImage(i)
                 if hatImage then
                     local hatSprite = Graphics.sprite.new(hatImage)
                     hatSprite:setCenter(0, 0)
@@ -180,7 +172,7 @@ function inGameMenu:selectItem()
         printDebug("dash selected!")
         -- Acción para las botas
     elseif PlayerData.activeItem == 3 and PlayerData.skills.canPlungerang == true then
-        print(Debug"plunge selected!")
+        printDebug("plunge selected!")
         -- Acción para el desatascador
     end
 end

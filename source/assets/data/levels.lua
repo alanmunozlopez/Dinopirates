@@ -125,6 +125,48 @@ levelsLDTK = {
 			isTaken = false,
 			crewID = "CM001"
 		  }
+		},
+		{
+		  id = "CrewMember",
+		  iid = "ab5be230-d380-11f0-88fd-e1d52cbf931c",
+		  layer = "CrewMembers",
+		  x = 84,
+		  y = 116,
+		  width = 48,
+		  height = 48,
+		  color = 14984818,
+		  customFields = {
+			isTaken = false,
+			crewID = "CM012"
+		  }
+		},
+		{
+		  id = "CrewMember",
+		  iid = "b07c71d0-d380-11f0-88fd-efc30ce22f17",
+		  layer = "CrewMembers",
+		  x = 228,
+		  y = 116,
+		  width = 48,
+		  height = 48,
+		  color = 14984818,
+		  customFields = {
+			isTaken = false,
+			crewID = "CM015"
+		  }
+		},
+		{
+		  id = "CrewMember",
+		  iid = "b4a58210-d380-11f0-88fd-e74a7cb9ec28",
+		  layer = "CrewMembers",
+		  x = 268,
+		  y = 52,
+		  width = 48,
+		  height = 48,
+		  color = 14984818,
+		  customFields = {
+			isTaken = false,
+			crewID = "CM002"
+		  }
 		}
 	  },
 	  Lamp = {
@@ -154,7 +196,7 @@ levelsLDTK = {
 		  color = 15389866,
 		  customFields = {
 			type = "notes",
-			grants = "canPlungerang:true"
+			grants = "canFlash:true"
 		  }
 		}
 	  },
@@ -170,7 +212,7 @@ levelsLDTK = {
 		  color = 15389866,
 		  customFields = {
 			type = "itemGift",
-			grants = "hasPlunger:true"
+			grants = "has:Plunger"
 		  }
 		}
 	  },
