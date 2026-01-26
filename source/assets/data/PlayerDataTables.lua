@@ -78,8 +78,6 @@ local DefaultPlayerData = {
 		hasNotes = true,
 		hasBoots = false,
 		hasPlunger = false,
-		hasBag = false,
-		hasTools = false,
 	},
 	skills ={
 		canFlash = false,

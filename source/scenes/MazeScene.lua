@@ -68,8 +68,7 @@ scene.backgroundColor = Graphics.kColorWhite
 function scene:init()
 	scene.super.init(self)
 	cheat.onComplete = function()
-		PlayerData.battery = 100
-		player:grabBoots()
+		Utilities.iddqd()
 	end
 	playdate.display.setRefreshRate(50)
 	-- Your code here
@@ -207,8 +206,6 @@ function scene:enter()
 						lamp = "items.hasLamp",
 						radio = "items.hasRadio",
 						notes = "items.hasNotes",
-						bag = "items.hasBag",
-						tools = "items.hasTools",
 						boots= "items.hasBoots",
 						plunger = "items.hasPlunger"
 					}

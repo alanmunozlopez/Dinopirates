@@ -22,7 +22,19 @@ function Box:init(x, y, width, height)
 	self:setGroups(CollideGroups.wall)
 end
 
-
+function Utilities.iddqd()
+	print("IDDQD")
+	PlayerData.items.hasLamp = true
+	PlayerData.items.hasRadio = true
+	PlayerData.items.hasDWatch = true
+	PlayerData.items.hasNotes = true
+	PlayerData.items.hasBoots = true
+	PlayerData.items.hasPlunger = true
+	
+	PlayerData.skills.canFlash = true
+	PlayerData.skills.canDash = true
+	PlayerData.skills.canPlungerang = true
+end
 
 -- MARK: Cheat codes
 
