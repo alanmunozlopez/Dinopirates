@@ -130,7 +130,7 @@ function Player:startMinifying()
     
     -- Auto center on minifier
     local targetX = self.currentMinifier.x
-    local targetY = self.currentMinifier.y
+    local targetY = self.currentMinifier.y - 10
     self:moveTo(targetX, targetY)
     if shadow then shadow:moveTo(targetX, targetY) end
 

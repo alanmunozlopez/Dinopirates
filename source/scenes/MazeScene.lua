@@ -506,6 +506,9 @@ scene.inputHandler = {
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
 			inGameEquip:closeMenu()
+		-- Break out of minifier if blocked
+		elseif PlayerData.isGaming == false and PlayerData.readyToShrink == true then
+			player:finishMinifying()
 		-- Trigger ability based on selected item
 		elseif PlayerData.isGaming == true and player.isAlive == true then
 			player:useAbility()
