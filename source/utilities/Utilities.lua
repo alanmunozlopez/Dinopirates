@@ -34,6 +34,29 @@ function Utilities.iddqd()
 	PlayerData.skills.canFlash = true
 	PlayerData.skills.canDash = true
 	PlayerData.skills.canPlungerang = true
+	
+	PlayerData.CrewMemberData.amountTaken = 21
+	PlayerData.CrewMemberData.idNumbers.CM001 = true
+	PlayerData.CrewMemberData.idNumbers.CM002 = true
+	PlayerData.CrewMemberData.idNumbers.CM003 = true
+	PlayerData.CrewMemberData.idNumbers.CM004 = true
+	PlayerData.CrewMemberData.idNumbers.CM005 = true
+	PlayerData.CrewMemberData.idNumbers.CM006 = true
+	PlayerData.CrewMemberData.idNumbers.CM007 = true
+	PlayerData.CrewMemberData.idNumbers.CM008 = true
+	PlayerData.CrewMemberData.idNumbers.CM009 = true
+	PlayerData.CrewMemberData.idNumbers.CM010 = true
+	PlayerData.CrewMemberData.idNumbers.CM011 = true
+	PlayerData.CrewMemberData.idNumbers.CM012 = true
+	PlayerData.CrewMemberData.idNumbers.CM013 = true
+	PlayerData.CrewMemberData.idNumbers.CM014 = true
+	PlayerData.CrewMemberData.idNumbers.CM015 = true
+	PlayerData.CrewMemberData.idNumbers.CM016 = true
+	PlayerData.CrewMemberData.idNumbers.CM017 = true
+	PlayerData.CrewMemberData.idNumbers.CM018 = true 
+	PlayerData.CrewMemberData.idNumbers.CM019 = true
+	PlayerData.CrewMemberData.idNumbers.CM020 = true
+	PlayerData.CrewMemberData.idNumbers.CM021 = true
 end
 
 -- MARK: Cheat codes
