@@ -236,13 +236,13 @@ function inGameMenu:update()
     
     -- Show active skill icons
     if PlayerData.skills.canFlash == true then
-        lampItem:show(18, 151)
+        lampItem:show(320, 64)
     end
     if PlayerData.skills.canDash == true then
-        bootItem:show(48, 153)
+        bootItem:show(288, 128)
     end
     if PlayerData.skills.canPlungerang == true then
-        plungerItem:show(78, 153) -- Positioned next to boot
+        plungerItem:show(256, 128) -- Positioned next to boot
     end
   end
 end
