@@ -62,6 +62,7 @@ Los diálogos se definen en una tabla global llamada `script`. Cada entrada tien
 *   `dialog`: Un array de páginas de diálogo.
     *   `text`: Clave de traducción (localización).
     *   `video`: Nombre del video/animación del personaje (p.ej., `playerSurprise`).
+        *   **Nota**: Si el jugador es "tiny", el sistema buscará automáticamente la versión `-tiny` (ej: `playerSurprise-tiny`).
     *   `screen` (Opcional): Imagen que se muestra en la pantalla de la radio/comunicador.
 
 ```lua
