@@ -20,7 +20,8 @@ local DefaultPlayerData = {
 	y = 200, 
 	speed = 1.5,
 	healthPoints = 10,
-	danceThresholdHP = 5,
+	danceThresholdHP = 1,
+	healedHP = 2,
 	battery = 100, 
 	sanity = 100,
 	calories = 100, -- top 500
@@ -86,7 +87,7 @@ local DefaultPlayerData = {
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20
-		sightRadius = 50, -- min 50
+		sightRadius = 150, -- min 50
 		isEvolved = false,
 	},
 	CrewMemberData ={
