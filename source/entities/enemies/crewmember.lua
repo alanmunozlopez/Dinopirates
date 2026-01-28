@@ -43,7 +43,8 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 		CollideGroups.props,
 		CollideGroups.wall,
 		CollideGroups.enemy,
-		CollideGroups.crewMember
+		CollideGroups.crewMember,
+		CollideGroups.player
 	})
 	self.iid = iid
 	self:setZIndex(self.Zindex)
@@ -182,6 +183,15 @@ function CrewMember:moveCollision(movementX, movementY, player)
 		
 		-- Set bounce frames (how long to maintain this direction)
 		self.bounceFrames = 20
+	end
+
+	-- Check for player contact to trigger interaction
+	if length > 0 then
+		for _, collision in ipairs(collisions) do
+			if collision.other:isa(Player) then
+				collision.other:collisionResponse(self)
+			end
+		end
 	end
 end
 function CrewMember:collisionResponse(other)

@@ -104,6 +104,9 @@ function Enemy:moveCollision(movementX, movementY, player)
                     local bounceY = self.y + (normal.dy * bounceFactor)
                     self:moveTo(bounceX, bounceY)
                 end
+            elseif collideObject:isa(Player) then
+                -- Trigger player interaction when enemy moves into player
+                collideObject:collisionResponse(self)
             end
         end
     end
