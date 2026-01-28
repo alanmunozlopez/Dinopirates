@@ -111,134 +111,13 @@ levelsLDTK = {
 		  }
 		}
 	  },
-	  CrewMember = {
-		{
-		  id = "CrewMember",
-		  iid = "8366b660-d380-11f0-8084-d509bca39075",
-		  layer = "CrewMembers",
-		  x = 124,
-		  y = 60,
-		  width = 48,
-		  height = 48,
-		  color = 14984818,
-		  customFields = {
-			isTaken = false,
-			crewID = "CM001"
-		  }
-		},
-		{
-		  id = "CrewMember",
-		  iid = "ab5be230-d380-11f0-88fd-e1d52cbf931c",
-		  layer = "CrewMembers",
-		  x = 84,
-		  y = 116,
-		  width = 48,
-		  height = 48,
-		  color = 14984818,
-		  customFields = {
-			isTaken = false,
-			crewID = "CM012"
-		  }
-		},
-		{
-		  id = "CrewMember",
-		  iid = "b07c71d0-d380-11f0-88fd-efc30ce22f17",
-		  layer = "CrewMembers",
-		  x = 228,
-		  y = 116,
-		  width = 48,
-		  height = 48,
-		  color = 14984818,
-		  customFields = {
-			isTaken = false,
-			crewID = "CM015"
-		  }
-		},
-		{
-		  id = "CrewMember",
-		  iid = "b4a58210-d380-11f0-88fd-e74a7cb9ec28",
-		  layer = "CrewMembers",
-		  x = 268,
-		  y = 52,
-		  width = 48,
-		  height = 48,
-		  color = 14984818,
-		  customFields = {
-			isTaken = false,
-			crewID = "CM002"
-		  }
-		}
-	  },
-	  Lamp = {
-		{
-		  id = "Lamp",
-		  iid = "73408b10-d380-11f0-88fd-fbddcd5c6de8",
-		  layer = "Items",
-		  x = 348,
-		  y = 196,
-		  width = 32,
-		  height = 32,
-		  color = 15389866,
-		  customFields = {
-			type = "lamp"
-		  }
-		}
-	  },
-	  Notes = {
-		{
-		  id = "Notes",
-		  iid = "6552a7b0-d380-11f0-88fd-8d7e941e4618",
-		  layer = "Items",
-		  x = 356,
-		  y = 68,
-		  width = 32,
-		  height = 32,
-		  color = 15389866,
-		  customFields = {
-			type = "notes",
-			grants = "canFlash:true"
-		  }
-		}
-	  },
-	  ItemGift = {
-		{
-		  id = "ItemGift",
-		  iid = "733afd00-d380-11f0-88fd-bd64032fb015",
-		  layer = "Items",
-		  x = 276,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  color = 15389866,
-		  customFields = {
-			type = "itemGift",
-			grants = "has:Plunger"
-		  }
-		}
-	  },
-	  Brocorat = {
-		{
-		  id = "Brocorat",
-		  iid = "e2567b60-d380-11f0-a276-63562531dd93",
-		  layer = "Enemies",
-		  x = 68,
-		  y = 204,
-		  width = 32,
-		  height = 32,
-		  color = 14120515,
-		  customFields = {
-			speed = 0.5,
-			dead = false
-		  }
-		}
-	  },
 	  Minifier = {
 		{
 		  id = "Minifier",
 		  iid = "e2facc00-d380-11f0-88fd-e7a9eaa6c333",
 		  layer = "Props",
-		  x = 204,
-		  y = 84,
+		  x = 268,
+		  y = 28,
 		  width = 32,
 		  height = 32,
 		  color = 2943221,
@@ -252,9 +131,9 @@ levelsLDTK = {
 	  Slime = {
 		{
 		  id = "Slime",
-		  iid = "e6685470-d380-11f0-88fd-db34493a7ee9",
+		  iid = "3aa8efd0-fa90-11f0-88fd-3b7294d8f50a",
 		  layer = "Props",
-		  x = 244,
+		  x = 164,
 		  y = 204,
 		  width = 32,
 		  height = 32,
@@ -267,9 +146,9 @@ levelsLDTK = {
 		},
 		{
 		  id = "Slime",
-		  iid = "e6c8c3f0-d380-11f0-88fd-47079a9a0ad5",
+		  iid = "3bd53ad0-fa90-11f0-88fd-2d2d5b4a3617",
 		  layer = "Props",
-		  x = 212,
+		  x = 196,
 		  y = 204,
 		  width = 32,
 		  height = 32,
@@ -282,24 +161,9 @@ levelsLDTK = {
 		},
 		{
 		  id = "Slime",
-		  iid = "e810d450-d380-11f0-88fd-5f030745d488",
+		  iid = "3ca05300-fa90-11f0-88fd-b316f227059f",
 		  layer = "Props",
-		  x = 180,
-		  y = 204,
-		  width = 32,
-		  height = 32,
-		  color = 1578021,
-		  customFields = {
-			type = "slime",
-			nocollider = false,
-			destroyed = false
-		  }
-		},
-		{
-		  id = "Slime",
-		  iid = "e8f58f00-d380-11f0-88fd-3115f5984c86",
-		  layer = "Props",
-		  x = 148,
+		  x = 228,
 		  y = 204,
 		  width = 32,
 		  height = 32,
@@ -310,9 +174,140 @@ levelsLDTK = {
 			destroyed = false
 		  }
 		}
+	  },
+	  PcBase = {
+		{
+		  id = "PcBase",
+		  iid = "6b92d910-fa90-11f0-88fd-0b7257f15ca8",
+		  layer = "Props",
+		  x = 36,
+		  y = 124,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "pcBase",
+			nocollider = false,
+			destroyed = false
+		  }
+		},
+		{
+		  id = "PcBase",
+		  iid = "c6ef36f0-fa90-11f0-88fd-132037b9ae30",
+		  layer = "Props",
+		  x = 36,
+		  y = 44,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "pcBase",
+			nocollider = false,
+			destroyed = false
+		  }
+		}
+	  },
+	  PcScreen = {
+		{
+		  id = "PcScreen",
+		  iid = "6d718420-fa90-11f0-88fd-69eb05d27d82",
+		  layer = "Props",
+		  x = 36,
+		  y = 92,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "pcScreen",
+			nocollider = false,
+			destroyed = false
+		  }
+		},
+		{
+		  id = "PcScreen",
+		  iid = "c58b3a20-fa90-11f0-88fd-1f873e2a56ff",
+		  layer = "Props",
+		  x = 36,
+		  y = 12,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "pcScreen",
+			nocollider = false,
+			destroyed = false
+		  }
+		}
+	  },
+	  PcBase2 = {
+		{
+		  id = "PcBase2",
+		  iid = "ae13fe90-fa90-11f0-88fd-b3dcaac7a0e7",
+		  layer = "Props",
+		  x = 372,
+		  y = 84,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "pcBase2",
+			nocollider = false,
+			destroyed = false
+		  }
+		},
+		{
+		  id = "PcBase2",
+		  iid = "b7f94230-fa90-11f0-88fd-d3513f71c7d0",
+		  layer = "Props",
+		  x = 68,
+		  y = 108,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "pcBase2",
+			nocollider = false,
+			destroyed = false
+		  }
+		}
+	  },
+	  PcSiriHappy = {
+		{
+		  id = "PcSiriHappy",
+		  iid = "b324fdd0-fa90-11f0-88fd-f168b14a9e07",
+		  layer = "Props",
+		  x = 372,
+		  y = 52,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "pcSiriHappy",
+			nocollider = false,
+			destroyed = false
+		  }
+		}
+	  },
+	  PcScreen3 = {
+		{
+		  id = "PcScreen3",
+		  iid = "b9f11a90-fa90-11f0-88fd-c9d1bc14afb5",
+		  layer = "Props",
+		  x = 68,
+		  y = 76,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			type = "pcScreen3",
+			nocollider = false,
+			destroyed = false
+		  }
+		}
 	  }
 	}
   },
+		--
 		--
 		--
 {
@@ -516,6 +511,26 @@ levelsLDTK = {
 			mapPercent = 0,
 			tinyScript = nil,
 			conditionalScripts = {}
+		  }
+		},
+		{
+		  id = "Triggers",
+		  iid = "d86c3bd0-fa90-11f0-88fd-7de014001b21",
+		  layer = "Triggers",
+		  x = 180,
+		  y = 60,
+		  width = 96,
+		  height = 24,
+		  color = 16711748,
+		  customFields = {
+			script = "whyXmas",
+			usedTrigger = false,
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScripts = {
+			  "isTiny:hugeXmas"
+			}
 		  }
 		}
 	  },

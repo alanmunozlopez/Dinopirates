@@ -41,6 +41,15 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.animation:addState('holeRight', 31, 31)
   self.animation:addState('holeBottomRight', 32, 32)
   self.animation:addState('debris', 33, 33)
+  self.animation:addState('pcBase', 34, 34)
+  self.animation:addState('pcBase2', 36, 36)
+  self.animation:addState('pcScreen', 35, 35)
+  self.animation:addState('pcScreen2', 41, 41)
+  self.animation:addState('pcScreen3', 42, 42)
+  self.animation:addState('pcBase3', 40, 40)
+  self.animation:addState('pcSiriHappy', 44, 44)
+  self.animation:addState('pcSiriSad', 43, 43)
+  self.animation:addState('pcLoad', 37, 39)
   self.animation:addState('minifier', 45, 45)
   self.animation:addState('slime', 46, 46)
   self.animation:setState(type)
@@ -52,57 +61,59 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.nocollide = nocollide
   self.isDestroyed = isDestroyed
   
-  -- HOLE TYPES CONFIGURATION
-  local holeTypes = {
-    holeLeft = { isHole = true, collideRect = {10, 0, 22, 32} },
-    holeRight = { isHole = true, collideRect = {0, 0, 22, 32} },
-    holeCenter = { isHole = true, collideRect = {0, 0, 32, 32} },
-    holeTopLeft = { isHole = true, collideRect = {10, 10, 22, 22} },
-    holeTop = { isHole = true, collideRect = {0, 10, 32, 22} },
-    holeTopRight = { isHole = true, collideRect = {0, 10, 22, 22} },
-    holeBottomRight = { isHole = true, collideRect = {0, 0, 22, 22} },
-    holeBottom = { isHole = true, collideRect = {0, 0, 32, 22} },
-    holeBottomLeft = { isHole = true, collideRect = {10, 0, 22, 22} },
-    slime = { isSlime = true, collideRect = {0, 0, 32, 32} },
+  -- PROP CONFIGURATIONS
+  local propConfigs = {
+    -- Holes (non-edible, specific colliders)
+    holeLeft        = { isHole = true,  isEdible = false, collideRect = {10, 0, 22, 32} },
+    holeRight       = { isHole = true,  isEdible = false, collideRect = {0, 0, 22, 32} },
+    holeCenter      = { isHole = true,  isEdible = false, collideRect = {0, 0, 32, 32} },
+    holeTopLeft     = { isHole = true,  isEdible = false, collideRect = {10, 10, 22, 22} },
+    holeTop         = { isHole = true,  isEdible = false, collideRect = {0, 10, 32, 22} },
+    holeTopRight    = { isHole = true,  isEdible = false, collideRect = {0, 10, 22, 22} },
+    holeBottomRight = { isHole = true,  isEdible = false, collideRect = {0, 0, 22, 22} },
+    holeBottom      = { isHole = true,  isEdible = false, collideRect = {0, 0, 32, 22} },
+    holeBottomLeft  = { isHole = true,  isEdible = false, collideRect = {10, 0, 22, 22} },
+    
+    -- Special props
+    slime           = { isSlime = true, isEdible = false, collideRect = {0, 0, 32, 32} },
+    minifier        = { collideRect = {0, 12, 32, 18} },
+    
+    -- Props with lower colliders (Trees and PC Screens)
+    ["xtree-1"]     = { collideRect = {2, 30, 28, 12} },
+    ["xtree-2"]     = { collideRect = {2, 30, 28, 12} },
+    pcScreen        = { collideRect = {2, 30, 28, 12} },
+    pcScreen2       = { collideRect = {2, 30, 28, 12} },
+    pcScreen3       = { collideRect = {2, 30, 28, 12} },
+    pcLoad          = { collideRect = {2, 30, 28, 12} },
+    pcSiriHappy     = { collideRect = {2, 30, 28, 12} },
+    pcSiriSad       = { collideRect = {2, 30, 28, 12} },
   }
 
-  -- Check if this is a hole early
-  if holeTypes[type] then
-    self.isHole = holeTypes[type].isHole
-    self.isSlime = holeTypes[type].isSlime
-    self.isEdible = false
-  end
+  local config = propConfigs[type] or {}
+  self.isHole = config.isHole or false
+  self.isSlime = config.isSlime or false
+  self.isEdible = config.isEdible ~= false -- defaults to true
 
-  -- Default collider setup (only if not a hole, not slime and nocollide is false)
-  if self.nocollide == false and not self.isHole and not self.isSlime then
-    if type == "xtree-1" or type == "xtree-2" then
-      self:setCollideRect(2, 26, 28, 4) 
-    else
+  -- Collider setup
+  if self.nocollide == false then
+    if config.collideRect then
+      self:setCollideRect(table.unpack(config.collideRect))
+    elseif not self.isHole and not self.isSlime then
+      -- Default prop collider
       self:setCollideRect(2, 10, 28, 18)
     end
   end
-  
-  -- Apply specific hole or slime configuration
-  if self.isHole or self.isSlime then
-    local config = holeTypes[type]
-    if config.collideRect then
-      self:setCollideRect(table.unpack(config.collideRect))
-    else
-      self:clearCollideRect()
-    end
-    if self.isHole then
-      printDebug("🕳️  Hole created:", type, "at", x, y)
-    else
-      printDebug("💧 Slime created:", type, "at", x, y)
-    end
+
+  -- Debug output for holes and slime
+  if self.isHole then
+    printDebug("🕳️  Hole created:", type, "at", x, y)
+  elseif self.isSlime then
+    printDebug("💧 Slime created:", type, "at", x, y)
   end
 
-  if self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.isSlime == true or self.type == 'minifier' then
+  -- Set static Z-index for certain types
+  if self.nocollide or self.isDestroyed or self.isHole or self.isSlime or self.type == 'minifier' then
     self:setZIndex(ZIndex.props)
-  end
-
-  if self.type == 'minifier' then
-    self:setCollideRect(0, 12, 32, 18)
   end
   
   self:setZIndex(zIndex)

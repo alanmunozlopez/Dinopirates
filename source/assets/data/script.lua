@@ -1,5 +1,33 @@
 script = {
     {
+        name = "hugeXmas",
+        dialog = {
+            {
+        video = 'playerSurprise',
+        text = "hugexmas-01",
+    },
+                    {
+        video = 'player',
+        text = "hugexmas-02",
+    },
+                    {
+        video = 'playerHappy',
+        text = "hugexmas-03",
+    }
+            
+        }
+    },
+    {
+        name = "whyXmas",
+        dialog = {
+            {
+        video = 'player',
+        text = "whyxmas-01",
+    }
+            
+        }
+    },
+    {
         name = "nolamp",
         dialog = {
             {

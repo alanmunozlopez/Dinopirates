@@ -171,7 +171,11 @@ end
 function Player:showUIHUD()
   -- Base position above the player
   local hudX = self.x + self.playerUIX
-  local hudY = self.y - 40 -- normal default above player
+  local hudYOffset = -40
+  if PlayerData.isTiny then
+    hudYOffset = -17
+  end
+  local hudY = self.y + hudYOffset -- normal default above player
 
   -- Adjust for top of screen
   if self.y < 60 then

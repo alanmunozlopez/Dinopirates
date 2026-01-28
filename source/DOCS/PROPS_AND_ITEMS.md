@@ -38,7 +38,11 @@ Props represent the interactive furniture and environmental details.
 ### 1. Visuals and States
 Props share a single image sheet (`props.png`) and use animation states like `chair`, `table`, `microwave`, `fridge`, etc.
 - **Debris**: When a prop is destroyed, its state changes to `debris`.
-- **Z-Index**: Props dynamically update their Z-Index based on their Y position (`update()` loop) unless they are "flat" (like blood or holes).
+- **Z-Index**: Props dynamically update their Z-Index based on their Y position (`update()` loop) unless they are "flat" (like blood or holes) or special (like minifiers).
+- **Configuration System**: `PropItem:init` uses a centralized `propConfigs` table to manage properties and colliders based on the prop `type`.
+  - **Colliders**: Specific `collideRect` values are defined for unique shapes (e.g., trees, screens). Others use a default `(2, 10, 28, 18)`.
+  - **Properties**: Flags like `isEdible`, `isHole`, and `isSlime` are derived from this configuration.
+  - **Z-Index Overrides**: Certain props are set to a static `ZIndex.props` if they are non-collidable, destroyed, or environmental (holes/slime).
 
 ### 2. Environmental Hazards & Utility
 - **Holes**: Defined by type (e.g., `holeCenter`, `holeLeft`).

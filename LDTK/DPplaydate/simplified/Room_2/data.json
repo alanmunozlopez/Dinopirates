@@ -155,6 +155,26 @@
 					"tinyScript": null,
 					"conditionalScripts": []
 				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "d86c3bd0-fa90-11f0-88fd-7de014001b21",
+				"layer": "Triggers",
+				"x": 180,
+				"y": 60,
+				"width": 96,
+				"height": 24,
+				"color": 16711748,
+				"customFields": {
+					"script": "whyXmas",
+					"usedTrigger": false,
+					"type": "Search",
+					"mapPercent": 0,
+					"tinyScript": null,
+					"conditionalScripts": [
+						"isTiny:hugeXmas"
+					]
+				}
 			}
 		],
 		"ItemGift": [
