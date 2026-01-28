@@ -17,7 +17,6 @@ import "entities/player/projectile"
 import "entities/player/plunge"
 local dialogUI = nil
 local uiHud = nil
-local smallCollider = {19, 32, 10, 10}
 
 function Player:init(x, y, speed, Zindex)
     Player.super.init(self, 'assets/images/player/player', true)
@@ -28,7 +27,7 @@ function Player:init(x, y, speed, Zindex)
     self:moveTo(x, y)
     self:setCollideRect(8, 24, 30, 24)
     if PlayerData.isTiny == true then
-        self:setCollideRect(table.unpack(smallCollider))
+        self:setCollideRect(19, 32, 10, 10)
     end
     self:setCollidesWithGroups(
         {
