@@ -111,7 +111,7 @@ end
 
 function Player:shrink()
   PlayerData.isTiny = true
-  self:setCollideRect(17, 32, 14, 14)
+  self:setCollideRect(table.unpack(smallCollider))
   self.animation:setState('transformTo')
 end
 
