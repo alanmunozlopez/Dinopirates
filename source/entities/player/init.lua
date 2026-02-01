@@ -22,7 +22,7 @@ function Player:init(x, y, speed, Zindex)
     Player.super.init(self, 'assets/images/player/player', true)
     self:initAnimations()
     -- MARK: Basic properties
-    self:setSize(48, 52)
+    self:setSize(48, 48)
     self:setZIndex(Zindex)
     self:moveTo(x, y)
     self:setCollideRect(8, 24, 30, 24)
