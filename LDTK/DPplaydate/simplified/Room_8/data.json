@@ -55,7 +55,8 @@
 		"tile": 8,
 		"DoorsConnection": [
 			"Top",
-			"Down"
+			"Down",
+			"Lower"
 		],
 		"play": "Cutscene"
 	},
@@ -107,6 +108,74 @@
 					"NeedsKey": false,
 					"DoorsConnection": "Top",
 					"KeyNumber": null
+				}
+			}
+		],
+		"HoleTopRight": [
+			{
+				"id": "HoleTopRight",
+				"iid": "56a26040-fa90-11f0-b30d-59771141e6c9",
+				"layer": "Holes",
+				"x": 100,
+				"y": 100,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "holeTopRight",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"HoleBottomRight": [
+			{
+				"id": "HoleBottomRight",
+				"iid": "5a54e0f0-fa90-11f0-b30d-b5961b801d7f",
+				"layer": "Holes",
+				"x": 100,
+				"y": 132,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "holeBottomRight",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"HoleBottomLeft": [
+			{
+				"id": "HoleBottomLeft",
+				"iid": "5e928aa0-fa90-11f0-b30d-8918f13ce4e4",
+				"layer": "Holes",
+				"x": 68,
+				"y": 132,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "holeBottomLeft",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"HoleTopLeft": [
+			{
+				"id": "HoleTopLeft",
+				"iid": "622d8bb0-fa90-11f0-b30d-195cca13e64c",
+				"layer": "Holes",
+				"x": 68,
+				"y": 100,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "holeTopLeft",
+					"nocollider": false,
+					"destroyed": false
 				}
 			}
 		]

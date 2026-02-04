@@ -160,6 +160,14 @@ function Player:collisionResponse(other)
     
   return 'overlap'
 
+  elseif other:isa(PropItem) and other.isTube then
+    -- Pneumatic tube, allow climbing up if correct DoorsConnection AND player is tiny
+    if PlayerData.isTiny == true then
+      self:riseAbove()
+      return 'overlap'
+    else
+      return 'freeze'
+    end
 
   elseif other:isa(PropItem) then
   return 'freeze'

@@ -52,6 +52,8 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.animation:addState('pcLoad', 37, 39)
   self.animation:addState('minifier', 45, 45)
   self.animation:addState('slime', 46, 46)
+  self.animation:addState('pneumaticTube', 47, 47)
+  self.animation:addState('Tube', 48, 48)
   self.animation:setState(type)
   
   -- Default properties
@@ -77,6 +79,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
     -- Special props
     slime           = { isSlime = true, isEdible = false, collideRect = {0, 0, 32, 32} },
     minifier        = { collideRect = {0, 12, 32, 18} },
+    pneumaticTube   = { isTube = true, isEdible = false, collideRect = {4, 10, 24, 22} },
     
     -- Props with lower colliders (Trees and PC Screens)
     ["xtree-1"]     = { collideRect = {2, 30, 28, 12} },
@@ -92,13 +95,14 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   local config = propConfigs[type] or {}
   self.isHole = config.isHole or false
   self.isSlime = config.isSlime or false
+  self.isTube = config.isTube or false
   self.isEdible = config.isEdible ~= false -- defaults to true
 
   -- Collider setup
   if self.nocollide == false then
     if config.collideRect then
       self:setCollideRect(table.unpack(config.collideRect))
-    elseif not self.isHole and not self.isSlime then
+    elseif not self.isHole and not self.isSlime and not self.isTube then
       -- Default prop collider
       self:setCollideRect(2, 10, 28, 18)
     end
@@ -109,20 +113,38 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
     printDebug("🕳️  Hole created:", type, "at", x, y)
   elseif self.isSlime then
     printDebug("💧 Slime created:", type, "at", x, y)
+  elseif self.isTube then
+    printDebug("🧪 Pneumatic Tube created:", type, "at", x, y)
   end
 
   -- Set static Z-index for certain types
-  if self.nocollide or self.isDestroyed or self.isHole or self.isSlime or self.type == 'minifier' then
-    self:setZIndex(ZIndex.props)
+  self.isStaticZIndex = false
+
+  if self.nocollide or self.isDestroyed or self.isHole or self.isSlime or self.isTube or self.type == 'minifier' then
+    self.isStaticZIndex = true
+    if self.isTube then
+      self:setZIndex(700)
+    else
+      self:setZIndex(ZIndex.props)
+    end
   end
   
-  self:setZIndex(zIndex)
+  if self.type == "Tube" then
+    self:clearCollideRect()
+    self:setZIndex(700)
+    self.isStaticZIndex = true
+  end
+  
+  if not self.isStaticZIndex then
+      self:setZIndex(zIndex)
+  end
+
   self:setGroups(3)
   self:add(x, y)
 end
 
 function PropItem:update()
-  if not (self.nocollide == true or self.isDestroyed == true or self.isHole == true or self.isSlime == true or self.type == 'minifier') then
+  if not self.isStaticZIndex then
     self:setZIndex(self.y)
   end
 end
