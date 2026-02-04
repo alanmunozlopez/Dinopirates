@@ -120,13 +120,9 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   -- Set static Z-index for certain types
   self.isStaticZIndex = false
 
-  if self.nocollide or self.isDestroyed or self.isHole or self.isSlime or self.isTube or self.type == 'minifier' then
+  if self.nocollide or self.isDestroyed or self.isHole or self.isSlime or self.type == 'minifier' then
     self.isStaticZIndex = true
-    if self.isTube then
-      self:setZIndex(700)
-    else
-      self:setZIndex(ZIndex.props)
-    end
+    self:setZIndex(ZIndex.props)
   end
   
   if self.type == "Tube" then

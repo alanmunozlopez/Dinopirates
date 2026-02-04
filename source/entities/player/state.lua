@@ -276,7 +276,7 @@ function Player:update()
   end
 
   self:setZIndex(self.y)
-
+  
   self:checkTrigger()
   self:checkMinifier()
 
