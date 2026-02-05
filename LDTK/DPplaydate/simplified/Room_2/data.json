@@ -144,8 +144,8 @@
 				"layer": "Triggers",
 				"x": 196,
 				"y": 140,
-				"width": 24,
-				"height": 24,
+				"width": 32,
+				"height": 32,
 				"color": 16711748,
 				"customFields": {
 					"script": "myGift",

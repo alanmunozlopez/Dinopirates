@@ -1,7 +1,34 @@
+-- Handles falling to a lower floor through holes or vertical passages
+-- This function uses the neighbor-based connection system defined in levelsLDTK
+-- 
+-- How it works:
+-- 1. Gets the current room index from PlayerData.floor
+-- 2. Calls GetLowerRoom() which:
+--    a) Checks if "Lower" exists in DoorsConnection (permission check)
+--    b) Searches neighbourLevels for a neighbor with dir = "<"
+--    c) Finds the actual room data using FindRoomByIid()
+--    d) Calculates the full room number (level * 100 + roomNumber)
+-- 3. Validates the lower room exists
+-- 4. Translates room number to scene class (e.g., 308 -> Floor308)
+-- 5. Preserves player X/Y position for seamless transition
+-- 6. Transitions to the lower room with fall animation
+--
+-- Love2D Implementation Notes:
+-- - Replace Noble.transition() with your own scene manager
+-- - Use shaders or sprite-based animations for fall effect
+-- - Consider using bump.lua or HC for collision detection with holes
+-- - You can preload adjacent rooms for faster transitions
+-- - Example: SceneManager:switchTo(nextScene, "fall", 1.5)
 function Player:fallBelow()
   printDebug("💀 Player falling...")
 
-  local currentRoomIndex = PlayerData.floor  -- Current index in levelsLDTK
+  -- Get current room index (this is an index into the levelsLDTK array)
+  -- Love2D: Same approach works, but you can also use hash tables for faster lookup
+  local currentRoomIndex = PlayerData.floor
+  
+  -- Search for lower room using the neighbor connection system
+  -- This validates: 1) DoorsConnection has "Lower", 2) neighbourLevels has dir="<"
+  -- Love2D: Same function works perfectly, no changes needed
   local lowerRoomNumber, lowerRoomData = GetLowerRoom(currentRoomIndex)
 
   if not lowerRoomNumber then
@@ -10,15 +37,29 @@ function Player:fallBelow()
     return
   end
 
+  -- Translate room number to scene class (e.g., 308 -> Floor308)
+  -- Love2D: You'll need to implement your own scene system
+  -- Example: local nextScene = SceneRegistry["Floor" .. lowerRoomNumber]
   local nextScene = RoomTranslate(lowerRoomNumber)
 
   if nextScene then
-    -- Keep X and Y position when falling
+    -- CRITICAL: Preserve player X and Y position for seamless transition
+    -- This allows the player to fall through a hole and land at the same X/Y
+    -- Love2D: Same approach works perfectly
     PlayerData.playerSpawn.x = self.x
     PlayerData.playerSpawn.y = self.y
 
     printDebug("✅ Transitioning to room:", lowerRoomNumber)
 
+    -- Transition with fall animation (Playdate Noble framework)
+    -- Love2D: Replace with your scene manager and custom transition
+    -- Example shader-based fall effect:
+    -- SceneManager:switchTo(nextScene, {
+    --   type = "fall",
+    --   duration = 1.5,
+    --   shader = fallShader,  -- Vertical blur shader
+    --   onComplete = function() self:spawn() end
+    -- })
     Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable, {
       imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
       imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
@@ -31,10 +72,40 @@ function Player:fallBelow()
   end
 end
 
+-- Handles climbing to an upper floor through tubes, ladders, or vertical passages
+-- This function uses the same neighbor-based connection system as fallBelow()
+-- 
+-- How it works:
+-- 1. Gets the current room index from PlayerData.floor
+-- 2. Calls GetUpperRoom() which:
+--    a) Checks if "Upper" exists in DoorsConnection (permission check)
+--    b) Searches neighbourLevels for a neighbor with dir = ">"
+--    c) Finds the actual room data using FindRoomByIid()
+--    d) Calculates the full room number (level * 100 + roomNumber)
+-- 3. Validates the upper room exists
+-- 4. Translates room number to scene class (e.g., 408 -> Floor408)
+-- 5. Preserves player X/Y position for seamless transition
+-- 6. Transitions to the upper room
+--
+-- Love2D Implementation Notes:
+-- - Same as fallBelow() but with different transition animation
+-- - Consider using a "climb" or "fade" transition instead of "fall"
+-- - You can trigger this from collision with tubes/ladders
+-- - Example collision detection with bump.lua:
+--   local items = world:queryRect(self.x, self.y, self.width, self.height)
+--   for i, item in ipairs(items) do
+--     if item.type == "tube" then self:riseAbove() end
+--   end
 function Player:riseAbove()
   printDebug("🚀 Player climbing...")
 
+  -- Get current room index (same as fallBelow)
+  -- Love2D: Same approach works
   local currentRoomIndex = PlayerData.floor
+  
+  -- Search for upper room using the neighbor connection system
+  -- This validates: 1) DoorsConnection has "Upper", 2) neighbourLevels has dir=">"
+  -- Love2D: Same function works perfectly, no changes needed
   local upperRoomNumber, upperRoomData = GetUpperRoom(currentRoomIndex)
 
   if not upperRoomNumber then
@@ -42,14 +113,26 @@ function Player:riseAbove()
     return
   end
 
+  -- Translate room number to scene class (same as fallBelow)
+  -- Love2D: Use your scene registry or scene manager
   local nextScene = RoomTranslate(upperRoomNumber)
 
   if nextScene then
+    -- CRITICAL: Preserve player position (same as fallBelow)
+    -- Love2D: Same approach works perfectly
     PlayerData.playerSpawn.x = self.x
     PlayerData.playerSpawn.y = self.y
 
     printDebug("✅ Transitioning to room:", upperRoomNumber)
 
+    -- Transition with default animation (Playdate Noble framework)
+    -- Love2D: Replace with your scene manager
+    -- Example:
+    -- SceneManager:switchTo(nextScene, {
+    --   type = "fade",  -- or "climb" with upward motion
+    --   duration = 1.5,
+    --   onComplete = function() self:spawn() end
+    -- })
     Noble.transition(nextScene, 1.5, Noble.Transition.Default)
   else
     printDebug("❌ Scene Floor" .. upperRoomNumber .. " not found")
