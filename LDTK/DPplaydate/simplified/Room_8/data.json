@@ -178,6 +178,21 @@
 					"destroyed": false
 				}
 			}
+		],
+		"Plunger": [
+			{
+				"id": "Plunger",
+				"iid": "78afab10-fa90-11f0-9b04-c3a866074af9",
+				"layer": "Items",
+				"x": 276,
+				"y": 100,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "plunger"
+				}
+			}
 		]
 	}
 }

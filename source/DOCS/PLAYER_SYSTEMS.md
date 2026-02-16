@@ -87,7 +87,7 @@ Items and skills can be granted either by picking up a fixed item type or dynami
 - **Skills**:
     - `canFlash` (Lightburst): Costs **10 battery**. Blinds enemies in a radius. Granted by `hasLamp`.
     - `canDash`: Costs **10 battery**. Enables a fast dash attack with a cooldown. Granted by `hasBoots`.
-    - `canPlungerang`: Boomerang skill that can stun enemies or interact with props at a distance. Does not consume battery. Granted by `hasPlunger`.
+    - `canPlungerang`: Boomerang skill that can stun enemies or interact with props at a distance. Does not consume battery. Granted by `hasPlunger`. **Movement is locked while the projectile is in flight.** See [PLUNGERANG.md](file:///Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/PLUNGERANG.md) for exhaustive details and Love2D porting.
 
 > [!TIP]
 > Always check `PlayerData.isInDarkness`. Most survival mechanics (Sanity drain, Battery drain, Speed debuffs) are gated by this boolean.
