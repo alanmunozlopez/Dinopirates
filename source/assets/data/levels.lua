@@ -333,9 +333,9 @@ levelsLDTK = {
 		  }
 		}
 	  },
-	  PcSiriSad = {
+	  PcLoad = {
 		{
-		  id = "PcSiriSad",
+		  id = "PcLoad",
 		  iid = "2832e2a0-fa90-11f0-bb17-5defe973a785",
 		  layer = "Props",
 		  x = 364,
@@ -344,7 +344,7 @@ levelsLDTK = {
 		  height = 32,
 		  color = 12470831,
 		  customFields = {
-			type = "pcSiriSad",
+			type = "pcLoad",
 			nocollider = false,
 			destroyed = false
 		  }

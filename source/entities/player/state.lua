@@ -288,13 +288,13 @@ function Player:update()
   end
   if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
     if PlayerData.battery < 20 then
-      self.speed = 0.5 * self.initialSpeed
+      self.speed = 0.8 * self.initialSpeed
     elseif PlayerData.battery > 20 then
       self.speed = self.initialSpeed
     end
   end
   if PlayerData.isInDarkness == true and PlayerData.items.hasLamp == false then
-    self.speed = 0.5 * self.initialSpeed
+    self.speed = 0.7 * self.initialSpeed
   end
   if self.isInvincible then
     local refreshRate = playdate.display.getRefreshRate() or 30

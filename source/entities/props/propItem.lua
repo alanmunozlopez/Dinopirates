@@ -50,6 +50,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.animation:addState('pcSiriHappy', 44, 44)
   self.animation:addState('pcSiriSad', 43, 43)
   self.animation:addState('pcLoad', 37, 39)
+  self.animation.pcLoad.frameDuration = 12
   self.animation:addState('minifier', 45, 45)
   self.animation:addState('slime', 46, 46)
   self.animation:addState('pneumaticTube', 47, 47)
