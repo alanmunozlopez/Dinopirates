@@ -137,21 +137,6 @@ function Player:collisionResponse(other)
       return 'overlap'
   end
   
-  elseif other:isa(PropItem) and other.isSlime then
-    -- If player has plunger boots, can walk over slime (no battery required)
-    if PlayerData.items.hasPlunger == true then
-      if PlayerData.isTiny == true then
-        -- No battery drain
-      else
-        -- No battery drain
-      end
-      return 'overlap'
-    else
-      -- Without plunger or without battery = slide
-      self:startSliding(self.direction)
-      return 'overlap'
-    end
-  
   elseif other:isa(PropItem) and other.type == 'minifier' then
     self.currentMinifier = other
     PlayerData.readyToShrink = true

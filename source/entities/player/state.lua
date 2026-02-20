@@ -264,6 +264,9 @@ function Player:update()
   -- Update sliding movement if on slime
   self:updateSliding()
 
+  -- Check if player is on a slime tile (IDs 89-97)
+  self:checkSlimeTile()
+
   -- Hide light cone after display time
   if self.lightConeHideTime and playdate.getCurrentTimeMilliseconds() >= self.lightConeHideTime then
     PlayerData.showLightCone = false

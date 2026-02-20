@@ -1,5 +1,24 @@
--- Sliding module for player when on slime
+-- Sliding module for player when on slime tiles (IDs 89-97)
 -- Moves the player in a straight line until they hit a wall or leave the slime
+
+-- Check if the player is standing on a slime tile and start sliding
+function Player:checkSlimeTile()
+    if self.isSliding or self.isDashing or self.isPlunging then
+        return
+    end
+
+    local tileID = GetTileUnderPlayer(self.x, self.y)
+    if not tileID then return end
+
+    if SLIME_TILE_IDS[tileID] then
+        -- Player has plunger = immune to slime
+        if PlayerData.items.hasPlunger == true then
+            return
+        end
+        -- Start sliding in current direction
+        self:startSliding(self.direction)
+    end
+end
 
 function Player:startSliding(direction)
     if self.isSliding or self.isDashing then
@@ -49,39 +68,27 @@ function Player:updateSliding()
     -- Update UI position
     self.uiHud:moveTo(actualX + self.playerUIX, actualY - self.playerUIY)
 
-    -- Logic to decide when to stop sliding:
-    -- 1. Hit a solid object (wall, prop with collision)
-    -- 2. Stopped overlapping with any slime prop
-
+    -- Check if we hit a solid object
     local hitSolid = false
     if length > 0 then
         for i = 1, length do
             local other = collisions[i].other
-            -- Check if we hit a solid object
-            -- PropItems that are NOT slimes and NOT holes are solid (return 'freeze' in collisionResponse)
             if other:isa(PropItem) then
-                if not other.isSlime and not other.isHole and other.type ~= 'minifier' then
+                if not other.isHole and other.type ~= 'minifier' then
                     hitSolid = true
                 end
             elseif not other:isa(Items) and not other:isa(Trigger) and not other:isa(Enemy) and not other:isa(CrewMember) then
-                -- Assume other things (like tilemap walls) are solid
                 hitSolid = true
             end
         end
     end
 
-    -- Check if we are still on slime
-    local overlappingSlime = false
-    local overlapping = self:overlappingSprites()
-    for _, sprite in ipairs(overlapping) do
-        if sprite:isa(PropItem) and sprite.isSlime then
-            overlappingSlime = true
-            break
-        end
-    end
+    -- Check if we are still on a slime tile
+    local tileID = GetTileUnderPlayer(actualX, actualY)
+    local stillOnSlime = tileID and SLIME_TILE_IDS[tileID]
 
-    if hitSolid or not overlappingSlime then
-        printDebug("💧 Slime slide ended. HitSolid:", hitSolid, "StillOnSlime:", overlappingSlime)
+    if hitSolid or not stillOnSlime then
+        printDebug("💧 Slime slide ended. HitSolid:", hitSolid, "StillOnSlime:", tostring(stillOnSlime))
         self:endSliding()
     end
 end

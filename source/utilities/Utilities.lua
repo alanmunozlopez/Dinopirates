@@ -472,6 +472,15 @@ end
 
 local SECTION_TILE_IDS = {
 	 [5] = true,
+	 [89] = true,
+	 [90] = true,
+	 [91] = true,
+	 [92] = true,
+	 [93] = true,
+	 [94] = true,
+	 [95] = true,
+	 [96] = true,
+	 [97] = true,
  }
 local TILE_SIZE = 16
 
@@ -620,6 +629,30 @@ function CurrentTile()
 		"🧭 Piso %d | Player (%.1f, %.1f) | Tile (%d, %d) = %d",
 		floor, x, y, tileX, tileY, tileNumber
 	))
+end
+
+-- Returns the tile ID at a given pixel position (or player position by default)
+function GetTileUnderPlayer(px, py)
+	local floor = PlayerData.actualTilemap or 1
+	local x = px or tonumber(PlayerData.x) or 0
+	local y = py or tonumber(PlayerData.y) or 0
+
+	local tileX = math.floor(x / TILE_SIZE) + 1
+	local tileY = math.floor(y / TILE_SIZE) + 1
+
+	local floorData = tileMapData[floor]
+	if not floorData then return nil end
+
+	local row = floorData[tileY]
+	if not row then return nil end
+
+	return row[tileX]
+end
+
+-- Slime tile IDs (89 to 97)
+SLIME_TILE_IDS = {}
+for i = 89, 97 do
+	SLIME_TILE_IDS[i] = true
 end
 
 local function formatNumberK(n)

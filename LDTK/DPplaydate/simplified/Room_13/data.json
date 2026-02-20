@@ -104,51 +104,6 @@
 				}
 			}
 		],
-		"Lamp": [
-			{
-				"id": "Lamp",
-				"iid": "18872410-fa90-11f0-bb17-f12e592fc400",
-				"layer": "Items",
-				"x": 44,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "lamp"
-				}
-			}
-		],
-		"Plunger": [
-			{
-				"id": "Plunger",
-				"iid": "1d13b110-fa90-11f0-bb17-93fe996547cf",
-				"layer": "Items",
-				"x": 92,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "plunger"
-				}
-			}
-		],
-		"Boots": [
-			{
-				"id": "Boots",
-				"iid": "1fab72f0-fa90-11f0-bb17-3951d104d101",
-				"layer": "Items",
-				"x": 44,
-				"y": 68,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "boots"
-				}
-			}
-		],
 		"Minifier": [
 			{
 				"id": "Minifier",
@@ -161,83 +116,6 @@
 				"color": 2943221,
 				"customFields": {
 					"type": "minifier",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Slime": [
-			{
-				"id": "Slime",
-				"iid": "57aea1d0-fa90-11f0-bb17-cfefd4ffe8c7",
-				"layer": "Props",
-				"x": 236,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 1578021,
-				"customFields": {
-					"type": "slime",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Slime",
-				"iid": "5a396b60-fa90-11f0-bb17-5baafec83565",
-				"layer": "Props",
-				"x": 204,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 1578021,
-				"customFields": {
-					"type": "slime",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Slime",
-				"iid": "5b16ac00-fa90-11f0-bb17-592252329c6a",
-				"layer": "Props",
-				"x": 172,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 1578021,
-				"customFields": {
-					"type": "slime",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Slime",
-				"iid": "5bb201a0-fa90-11f0-bb17-29d64b88036e",
-				"layer": "Props",
-				"x": 140,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 1578021,
-				"customFields": {
-					"type": "slime",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Slime",
-				"iid": "5d39b310-fa90-11f0-bb17-890ea827d74f",
-				"layer": "Props",
-				"x": 108,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 1578021,
-				"customFields": {
-					"type": "slime",
 					"nocollider": false,
 					"destroyed": false
 				}
