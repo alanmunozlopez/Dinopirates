@@ -80,7 +80,7 @@ Items and skills can be granted either by picking up a fixed item type or dynami
 - **Items**:
     - `hasLamp`: Enables vision and sanity regeneration. Grants **Lightburst** skill.
     - `hasBoots`: Provides "Hole" safety; player drains battery to walk over holes instead of falling. Grants **Dash** skill.
-    - `hasPlunger`: Provides "Slime" safety; player can walk over slime instead of sliding. Grants **Plungerang** skill. See [PROPS_AND_ITEMS.md](PROPS_AND_ITEMS.md) for sliding mechanics.
+    - `hasPlunger`: Provides "Slime" safety; player can walk over slime tiles (IDs 89–97) instead of sliding. Grants **Plungerang** skill. See [PROPS_AND_ITEMS.md](PROPS_AND_ITEMS.md) for sliding mechanics.
     - `hasBag`: Required to capture CrewMembers.
     - `hasRadio` / `hasNotes`: Story-relevant items that enable specific dialogs/video feeds.
     - `hasTools`: Story-relevant or utility item (used for certain environment interactions).

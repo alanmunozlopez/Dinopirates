@@ -53,14 +53,16 @@ Props share a single image sheet (`props.png`) and use animation states like `ch
     2.  **Transformation**: The player must manually rotate the physical **crank** to change size. Rotating counter-clockwise shrinks the player, while clockwise returns them to normal size. The `transformCycle` animation plays during this phase.
     3.  **Breakout**: If the player is locked in the minifier state (after pressing A), they can press **B** at any time to cancel the process, hide the HUD, and restore normal movement.
     4.  **Completion**: Once the target size is reached, movement is restored automatically and the player can walk away.
-- **Slime (Tile 46)**: Environmental hazard that causes the player to slide.
-    - **Sliding**: When stepped on, the player automatically moves in a straight line at a fixed speed (`slidingSpeed = 4`).
-    - **Triggering**: Initiated in `collisions.lua` via `self:startSliding(dir)`. It inherits the player's last moving direction.
+- **Slime (Tiles 89–97)**: Environmental hazard that causes the player to slide.
+    - **Detection**: Slime is detected **via the tilemap**, not via prop collisions. Tile IDs `89` through `97` represent slime tiles. The function `GetTileUnderPlayer(px, py)` in `Utilities.lua` returns the tile ID at a given pixel position.
+    - **Triggering**: Each frame, `Player:checkSlimeTile()` (in `sliding.lua`) reads the tile under the player. If it's a slime tile (89–97) and the player lacks the plunger, `startSliding(direction)` is called.
+    - **Sliding**: The player automatically moves in a straight line at a fixed speed (`slidingSpeed = 4`), inheriting the last movement direction.
     - **Stopping**: The slide ends if:
         1. The player hits a solid obstacle (wall or solid prop).
-        2. The player exits the slime patch (no longer overlapping with any `isSlime` prop).
-    - **Antislip Protection**: If the player has the **plunger** item, they can walk over slime normally without sliding.
+        2. The tile under the player is no longer a slime tile.
+    - **Antislip Protection**: If the player has the **plunger** item (`PlayerData.items.hasPlunger`), `checkSlimeTile()` returns early and the player walks normally.
     - **Control**: Manual movement is disabled (`isSliding = true`) while sliding.
+    - **Key Globals**: `SLIME_TILE_IDS` (lookup table) and `GetTileUnderPlayer()` are defined in `Utilities.lua`.
 
 ### 3. Destruction & Persistence
 Props can be destroyed by certain enemies or effects.
@@ -128,24 +130,64 @@ The **Minifier** prop relies on the physical Playdate Crank.
 ### 5. Global Configuration
 The `propConfigs` table in `PropItem.lua` is critical data that defines collision boxes and behaviors (isHole, isEdible).
 - **Action**: **Copy this table exactly**. It is pure data and engine-agnostic.
-- Ensure your `PropItem` constructor in Love2D reads from this table to set the `isHole`, `isSlime`, and collider values correctly.
+- Ensure your `PropItem` constructor in Love2D reads from this table to set the `isHole` and collider values correctly.
 
 ### 6. Specific Prop Behaviors
 - **Holes**: In Love2D, implement "Edges". If a player's center point is within a Hole's bounding box, trigger the fall logic.
-- **Slime Sliding**:
-    - **Detection**: Use `bump:queryRect` or overlapping checks to detect slime contact.
-    - **State Machine**: Implement a `isSliding` state in your Player class that overrides WASD/Joystick input.
-    - **Movement**:
+- **Slime Sliding (Tile-Based)**:
+    Slime is **not** a prop — it is detected by reading tile IDs from the tilemap. Tiles `89` through `97` are slime.
+    - **Detection**: Each frame, read the tile under the player from `tileMapData` and check if it's a slime ID.
+    - **State Machine**: Implement an `isSliding` flag in your Player class that overrides WASD/Joystick input.
+    - **Love2D Implementation**:
         ```lua
-        -- Logic snippet for Love2D update
-        if self.isSliding then
-            local goalX, goalY = self.x + self.slideDX * self.slideSpeed, self.y + self.slideDY * self.slideSpeed
-            local actualX, actualY, cols, len = world:move(self, goalX, goalY, self.collisionFilter)
+        -- 1. Define slime tile IDs
+        local SLIME_TILE_IDS = {}
+        for i = 89, 97 do SLIME_TILE_IDS[i] = true end
+
+        local TILE_SIZE = 16
+
+        -- 2. Get the tile ID under any pixel position
+        function getTileAt(tileData, px, py)
+            local col = math.floor(px / TILE_SIZE) + 1
+            local row = math.floor(py / TILE_SIZE) + 1
+            if tileData[row] then return tileData[row][col] end
+            return nil
+        end
+
+        -- 3. Check for slime every frame (call in love.update)
+        function Player:checkSlimeTile(tileData)
+            if self.isSliding or self.isDashing then return end
+
+            local tileID = getTileAt(tileData, self.x, self.y)
+            if tileID and SLIME_TILE_IDS[tileID] then
+                if self.hasPlunger then return end  -- immune
+                self:startSliding(self.direction)
+            end
+        end
+
+        -- 4. Sliding update loop
+        function Player:updateSliding(tileData, world)
+            if not self.isSliding then return end
+
+            local dx, dy = 0, 0
+            if     self.slideDir == "left"  then dx = -self.slideSpeed
+            elseif self.slideDir == "right" then dx =  self.slideSpeed
+            elseif self.slideDir == "up"    then dy = -self.slideSpeed
+            elseif self.slideDir == "down"  then dy =  self.slideSpeed
+            end
+
+            local goalX, goalY = self.x + dx, self.y + dy
+            local actualX, actualY, cols, len = world:move(
+                self, goalX, goalY, self.collisionFilter
+            )
             self.x, self.y = actualX, actualY
-            
-            -- Stop if we hit something solid or leave slime
-            if len > 0 or not self:onSlime() then
+
+            -- Stop if hitting a solid or leaving slime
+            local tileID = getTileAt(tileData, actualX, actualY)
+            local onSlime = tileID and SLIME_TILE_IDS[tileID]
+            if len > 0 or not onSlime then
                 self:stopSliding()
             end
         end
         ```
+    - **Key difference vs. old system**: No `PropItem.isSlime` checks needed. The tilemap is the single source of truth for slime detection.
