@@ -63,6 +63,30 @@ function Player:initAnimations()
   self.animation:addState('transformCycle', 100, 105)
   self.animation.transformCycle.frameDuration = 3
   
+  self.animation:addState('slideRight', 115, 116)
+  self.animation.slideRight.frameDuration = 3
+  
+  self.animation:addState('slideLeft', 117, 118)
+  self.animation.slideLeft.frameDuration = 3
+
+  self.animation:addState('slideDown', 115, 116)
+  self.animation.slideDown.frameDuration = 3
+
+  self.animation:addState('slideUp', 117, 118)
+  self.animation.slideUp.frameDuration = 3
+
+  self.animation:addState('slideExitRight', 119, 122, 'idle')
+  self.animation.slideExitRight.frameDuration = 3
+
+  self.animation:addState('slideExitLeft', 94, 99, 'idle')
+  self.animation.slideExitLeft.frameDuration = 4
+
+  self.animation:addState('slideExitUp', 94, 99, 'idle')
+  self.animation.slideExitUp.frameDuration = 4
+
+  self.animation:addState('slideExitDown', 94, 99, 'idle')
+  self.animation.slideExitDown.frameDuration = 4
+  
   if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
     self.animation:setState('lampIdle')
   elseif PlayerData.isTiny == true then

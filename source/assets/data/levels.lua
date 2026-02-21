@@ -3107,7 +3107,7 @@ levelsLDTK = {
 	  }
 	},
 	customFields = {
-	  shadow = true,
+	  shadow = false,
 	  light = 0.7,
 	  visited = false,
 	  comic_name = nil,

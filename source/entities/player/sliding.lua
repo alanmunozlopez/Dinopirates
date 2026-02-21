@@ -48,16 +48,16 @@ function Player:updateSliding()
 
     if self.slidingDirection == "left" then
         moveX = -self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyLeft') else self.animation:setState('left') end
+        if PlayerData.isTiny then self.animation:setState('tinyLeft') else self.animation:setState('slideLeft') end
     elseif self.slidingDirection == "right" then
         moveX = self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyRight') else self.animation:setState('right') end
+        if PlayerData.isTiny then self.animation:setState('tinyRight') else self.animation:setState('slideRight') end
     elseif self.slidingDirection == "up" then
         moveY = -self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyUp') else self.animation:setState('up') end
+        if PlayerData.isTiny then self.animation:setState('tinyUp') else self.animation:setState('slideUp') end
     elseif self.slidingDirection == "down" then
         moveY = self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyDown') else self.animation:setState('down') end
+        if PlayerData.isTiny then self.animation:setState('tinyDown') else self.animation:setState('slideDown') end
     end
 
     local targetX = self.x + moveX
@@ -94,10 +94,23 @@ function Player:updateSliding()
 end
 
 function Player:endSliding()
+    local lastDir = self.slidingDirection
     self.isSliding = false
     self.slidingDirection = nil
     
-    -- Restore idle animation
-    self:idle()
+    -- Play exit animation based on direction
+    if lastDir == "right" then
+        self.animation:setState('slideExitRight')
+    elseif lastDir == "left" then
+        self.animation:setState('slideExitLeft')
+    elseif lastDir == "up" then
+        self.animation:setState('slideExitUp')
+    elseif lastDir == "down" then
+        self.animation:setState('slideExitDown')
+    else
+        self:idle()
+    end
+
+    PlayerData.direction = 'idle'
     printDebug("✅ Slime slide completed!")
 end
