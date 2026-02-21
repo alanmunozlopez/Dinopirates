@@ -13,17 +13,16 @@ function Player:checkSlimeTile()
         return
     end
 
-    local tileID = GetTileUnderPlayer(self.x, self.y)
-    if not tileID then return end
-
-    if SLIME_TILE_IDS[tileID] then
-        -- Player has plunger = immune to slime
-        if PlayerData.items.hasPlunger == true then
-            return
-        end
-        -- Start sliding in current direction
-        self:startSliding(self.direction)
+    if not IsPlayerOnSlime(self.x, self.y) then
+        return
     end
+
+    -- Player has plunger = immune to slime
+    if PlayerData.items.hasPlunger == true then
+        return
+    end
+    -- Start sliding in current direction
+    self:startSliding(self.direction)
 end
 
 function Player:startSliding(direction)
@@ -89,9 +88,8 @@ function Player:updateSliding()
         end
     end
 
-    -- Check if we are still on a slime tile
-    local tileID = GetTileUnderPlayer(actualX, actualY)
-    local stillOnSlime = tileID and SLIME_TILE_IDS[tileID]
+    -- Check if we are still on a slime tile (16x16 area at feet)
+    local stillOnSlime = IsPlayerOnSlime(actualX, actualY)
 
     if hitSolid or not stillOnSlime then
         printDebug("💧 Slime slide ended. HitSolid:", hitSolid, "StillOnSlime:", tostring(stillOnSlime))

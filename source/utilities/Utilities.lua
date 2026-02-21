@@ -655,6 +655,27 @@ for i = 89, 97 do
 	SLIME_TILE_IDS[i] = true
 end
 
+-- Checks if the player is standing on a slime tile using a 16x16 area at their feet.
+-- The player sprite is 48x48 with center at (px, py). The feet are at ~py+12.
+-- Samples a 16x16 grid (5 points) to catch overlap with tile edges.
+function IsPlayerOnSlime(px, py)
+	-- Feet center is at py + 12 (bottom of the collider rect)
+	local feetY = py + 12
+	-- Tiny mode collider is 10px wide (±5px), normal is 30px wide (±8px sample)
+	local halfW = PlayerData.isTiny and 5 or 8
+	local xOffsets = { -halfW, 0, halfW }
+	local yOffsets = { -4, 0, 4 }
+	for _, dx in ipairs(xOffsets) do
+		for _, dy in ipairs(yOffsets) do
+			local tileID = GetTileUnderPlayer(px + dx, feetY + dy)
+			if tileID and SLIME_TILE_IDS[tileID] then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 local function formatNumberK(n)
 	if n >= 1000000 then
 		return string.format("%.1fM", n / 1000000):gsub("%.0M", "M")
