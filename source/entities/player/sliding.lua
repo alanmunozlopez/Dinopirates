@@ -7,6 +7,12 @@ function Player:checkSlimeTile()
         return
     end
 
+    -- If the player just hit a wall, don't auto-slide again.
+    -- Wait until they voluntarily move (cleared in startSliding).
+    if self.slideHitWall then
+        return
+    end
+
     local tileID = GetTileUnderPlayer(self.x, self.y)
     if not tileID then return end
 
@@ -89,14 +95,20 @@ function Player:updateSliding()
 
     if hitSolid or not stillOnSlime then
         printDebug("💧 Slime slide ended. HitSolid:", hitSolid, "StillOnSlime:", tostring(stillOnSlime))
-        self:endSliding()
+        self:endSliding(hitSolid)
     end
 end
 
-function Player:endSliding()
+function Player:endSliding(hitWall)
     local lastDir = self.slidingDirection
     self.isSliding = false
     self.slidingDirection = nil
+
+    -- If we hit a wall while still on slime, block auto-re-slide until
+    -- the player picks a new direction voluntarily.
+    if hitWall then
+        self.slideHitWall = true
+    end
     
     -- Play exit animation based on direction
     if lastDir == "right" then

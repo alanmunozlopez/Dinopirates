@@ -78,6 +78,7 @@ function Player:init(x, y, speed, Zindex)
     self.isSliding = false
     self.slidingDirection = nil
     self.slidingSpeed = 4
+    self.slideHitWall = false  -- Prevents re-slide immediately after hitting a wall
 
     self.isPlunging = false
     self.hasProjectile = true
