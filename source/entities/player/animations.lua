@@ -87,7 +87,7 @@ function Player:initAnimations()
   self.animation:addState('slideExitDown', 133, 136, 'idle')
   self.animation.slideExitDown.frameDuration = 4
   
-  self.animation:addState('slideTiny', 142, 145, 'idle')
+  self.animation:addState('slideTiny', 142, 145)
   self.animation.slideTiny.frameDuration = 4
   
   if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then

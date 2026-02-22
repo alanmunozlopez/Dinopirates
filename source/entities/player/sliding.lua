@@ -53,16 +53,16 @@ function Player:updateSliding()
 
     if self.slidingDirection == "left" then
         moveX = -self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyLeft') else self.animation:setState('slideLeft') end
+        if PlayerData.isTiny then self.animation:setState('slideTiny') else self.animation:setState('slideLeft') end
     elseif self.slidingDirection == "right" then
         moveX = self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyRight') else self.animation:setState('slideRight') end
+        if PlayerData.isTiny then self.animation:setState('slideTiny') else self.animation:setState('slideRight') end
     elseif self.slidingDirection == "up" then
         moveY = -self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyUp') else self.animation:setState('slideUp') end
+        if PlayerData.isTiny then self.animation:setState('slideTiny') else self.animation:setState('slideUp') end
     elseif self.slidingDirection == "down" then
         moveY = self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyDown') else self.animation:setState('slideDown') end
+        if PlayerData.isTiny then self.animation:setState('slideTiny') else self.animation:setState('slideDown') end
     end
 
     local targetX = self.x + moveX
@@ -109,7 +109,9 @@ function Player:endSliding(hitWall)
     end
     
     -- Play exit animation based on direction
-    if lastDir == "right" then
+    if PlayerData.isTiny then
+        self:idle()
+    elseif lastDir == "right" then
         self.animation:setState('slideExitRight')
     elseif lastDir == "left" then
         self.animation:setState('slideExitLeft')
