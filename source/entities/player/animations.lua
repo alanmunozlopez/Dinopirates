@@ -69,23 +69,26 @@ function Player:initAnimations()
   self.animation:addState('slideLeft', 117, 118)
   self.animation.slideLeft.frameDuration = 3
 
-  self.animation:addState('slideDown', 115, 116)
+  self.animation:addState('slideDown', 119, 120)
   self.animation.slideDown.frameDuration = 3
 
-  self.animation:addState('slideUp', 117, 118)
+  self.animation:addState('slideUp', 121, 122)
   self.animation.slideUp.frameDuration = 3
 
-  self.animation:addState('slideExitRight', 119, 122, 'idle')
+  self.animation:addState('slideExitRight', 123, 127, 'idle')
   self.animation.slideExitRight.frameDuration = 3
 
-  self.animation:addState('slideExitLeft', 94, 99, 'idle')
+  self.animation:addState('slideExitLeft', 128, 132, 'idle')
   self.animation.slideExitLeft.frameDuration = 4
 
-  self.animation:addState('slideExitUp', 94, 99, 'idle')
+  self.animation:addState('slideExitUp', 137, 141, 'idle')
   self.animation.slideExitUp.frameDuration = 4
 
-  self.animation:addState('slideExitDown', 94, 99, 'idle')
+  self.animation:addState('slideExitDown', 133, 136, 'idle')
   self.animation.slideExitDown.frameDuration = 4
+  
+  self.animation:addState('slideTiny', 142, 145, 'idle')
+  self.animation.slideTiny.frameDuration = 4
   
   if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
     self.animation:setState('lampIdle')
