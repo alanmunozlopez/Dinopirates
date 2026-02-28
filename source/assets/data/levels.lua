@@ -2800,10 +2800,125 @@ levelsLDTK = {
 	  play = nil
 	},
 	layers = {
-	  "Tilemap.png"
+	  "BGTilemap.png"
 	},
-	entities = {}
+	entities = {
+	  Doors = {
+		{
+		  id = "Doors",
+		  iid = "0330c2e0-ac70-11f0-8539-e9c343f3fe6a",
+		  layer = "Doors",
+		  x = 200,
+		  y = 8,
+		  width = 48,
+		  height = 16,
+		  color = 7552569,
+		  customFields = {
+			NeedsKey = false,
+			DoorsConnection = "Top",
+			KeyNumber = nil
+		  }
+		}
+	  },
+	  Boots = {
+		{
+		  id = "Boots",
+		  iid = "14029130-fa90-11f0-9a41-8baf55ac0161",
+		  layer = "Items",
+		  x = 36,
+		  y = 36,
+		  width = 32,
+		  height = 32,
+		  color = 15389866,
+		  customFields = {
+			type = "boots"
+		  }
+		}
+	  },
+	  Notes = {
+		{
+		  id = "Notes",
+		  iid = "186500f0-fa90-11f0-9a41-73a695c798b9",
+		  layer = "Items",
+		  x = 36,
+		  y = 68,
+		  width = 32,
+		  height = 32,
+		  color = 15389866,
+		  customFields = {
+			type = "notes",
+			grants = "canDance:true"
+		  }
+		}
+	  },
+	  Minifier = {
+		{
+		  id = "Minifier",
+		  iid = "21887b30-fa90-11f0-9a41-eb80f350135c",
+		  layer = "Props",
+		  x = 372,
+		  y = 212,
+		  width = 32,
+		  height = 32,
+		  color = 2943221,
+		  customFields = {
+			type = "minifier",
+			nocollider = false,
+			destroyed = false
+		  }
+		}
+	  },
+	  Box = {
+		{
+		  id = "Box",
+		  iid = "26b53fd0-fa90-11f0-9a41-85e6ef5ae7f3",
+		  layer = "Props",
+		  x = 284,
+		  y = 172,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "box"
+		  }
+		},
+		{
+		  id = "Box",
+		  iid = "272ae500-fa90-11f0-9a41-890edd14f601",
+		  layer = "Props",
+		  x = 244,
+		  y = 172,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "box"
+		  }
+		},
+		{
+		  id = "Box",
+		  iid = "27cf6260-fa90-11f0-9a41-b3f1e08f1341",
+		  layer = "Props",
+		  x = 212,
+		  y = 172,
+		  width = 32,
+		  height = 32,
+		  color = 12470831,
+		  customFields = {
+			nocollider = false,
+			destroyed = false,
+			type = "box"
+		  }
+		}
+	  }
+	}
   },
+
+
 {
 	identifier = "Room_10",
 	uniqueIdentifer = "672c4d40-ac70-11f0-997a-7b0342bedabe",
