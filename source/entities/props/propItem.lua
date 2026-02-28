@@ -144,5 +144,17 @@ end
 function PropItem:destroyProp(id)
   findAndDestroyPropById(id) 
   self:clearCollideRect()
-  self.animation:setState('debris')
+  self:setZIndex(ZIndex.props)
+  self.animation:setState('debris') -- add a new animation for debris
+end
+
+function PropItem:hitBoxDash()
+  if self.type == "box" and not self.isDestroyed then
+    -- Apply optional screen shake/sound here
+    playdate.display.setRefreshRate(30) -- small stutter effect
+    playdate.timer.performAfterDelay(100, function() playdate.display.setRefreshRate(0) end)
+    
+    self:destroyProp(self.id)
+    self.isDestroyed = true
+  end
 end
