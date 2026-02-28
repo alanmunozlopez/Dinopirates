@@ -7,28 +7,31 @@ This document details the environment objects (Props) and collectibles (Items) t
 ## 📦 Items (Pickups)
 Items are specialized sprites that grant the player new abilities or resources upon contact.
 
-### 1. Item Types
-- **`keycard`**: Grants access to doors with matching `keyNumber`.
-- **`lamp`**: Enables visibility in dark rooms and triggers sanity regen logic.
-- **`radio` / `notes`**: Story-relevant items.
-- **`bag`**: Required to capture CrewMembers.
-- **`boots`**: Prevents falling into holes if battery is available.
-- **`plunger`**: Prevents sliding on slime.
-- **`itemgift`**: A generic delivery item that can grant any boolean flag in `PlayerData.items` (e.g., `hasPlunger:true`).
+### 1. Item Types & Rendering
+Items are implemented in `entities/items/Items.lua` directly inheriting from the game's sprite system. 
+- **Tileset**: `assets/images/items/items-key-table-32-32.png`
+- **Size & Colliders**: Every item has a visual size and collision box of `32x32` pixels. They are all rendered on the `ZIndex.items` layer.
+- **Animation States / Frames**: All item animations operate at an 8-frame duration.
+  - **`boots`**: (Frames 1-3) Prevents falling into holes if battery is available.
+  - **`plunger`**: (Frames 4-6) Prevents sliding on slime.
+  - **`lamp`**: (Frames 7-9) Enables visibility in dark rooms and triggers sanity regen logic.
+  - **`notes`**: (Frames 10-12) Story-relevant item. Updates `PlayerData.skills`.
+  - **`keycard`**: (Frames 13-15) Grants access to doors with matching `keyNumber`.
+  - **`itemgift`**: (Frames 16-18) A generic delivery item that updates `PlayerData.items` (e.g., `hasPlunger:true`).
 
-### 2. Dynamic Grants (LDtk)
-Items like `itemgift` and `notes` use a `grants` custom field in LDtk to dynamically update `PlayerData`.
+### 2. Positioning & Dynamic Grants (LDtk)
+Items are positioned using LDtk level data. In `MazeScene.lua`, any LDtk entity that resides on the `"Items"` layer or has the custom field `cf.isItem == true` is instantiated as:
+`Items(x, y, type, keyNumber, cf.grants)`
+
+For dynamic items (`itemgift` and `notes`), they use a `grants` custom field to directly update `PlayerData`.
 - **Format**: `"key1:value1,key2:value2"` (e.g., `"hasPlunger:true"` or `"canFlash:true"`).
-- **Processing**:
-    - `itemgift` updates the `PlayerData.items` table.
-    - `notes` updates the `PlayerData.skills` table.
 - **Conditional Rendering**: In `MazeScene.lua`, items with a `grants` field are only spawned if the player **does not** already possess the granted item/skill. This ensures objects disappear from the world permanently once collected.
 
-### 3. Interaction Flow
-In `collisions.lua`:
-- Hitting an item usually calls `other:removeAll()`.
-- It then calls a corresponding "grab" function on the player (e.g., `self:grabItemGift(other.grants)` or `self:grabNotes(other.grants)`).
-- Grabbing an item typically updates a boolean in `PlayerData.items`, `PlayerData.skills`, or `PlayerData.keys`.
+### 3. Collection & Interaction Flow
+When the player collides with an Item (handled in `entities/player/collisions.lua`):
+1. **Removal**: The `other:removeAll()` method is called on the item. This instantly disables the item's `FXsonar` (visual ping) and removes the sprite from the active scene.
+2. **Player Grant logic**: A corresponding "grab" function (`self:grabKey()`, `self:grabBoots()`, `self:grabItemGift()`, etc. located in `entities/player/items.lua`) is invoked on the Player object.
+3. **Data update**: This modifies the universal `PlayerData` state (e.g. `PlayerData.items.hasPlunger = true`, or `PlayerData.keys[keyNumber] = true`), applying the game logic.
 
 ---
 
@@ -53,16 +56,22 @@ Props share a single image sheet (`props.png`) and use animation states like `ch
     2.  **Transformation**: The player must manually rotate the physical **crank** to change size. Rotating counter-clockwise shrinks the player, while clockwise returns them to normal size. The `transformCycle` animation plays during this phase.
     3.  **Breakout**: If the player is locked in the minifier state (after pressing A), they can press **B** at any time to cancel the process, hide the HUD, and restore normal movement.
     4.  **Completion**: Once the target size is reached, movement is restored automatically and the player can walk away.
-- **Slime (Tiles 89–97)**: Environmental hazard that causes the player to slide.
-    - **Detection**: Slime is detected **via the tilemap**, not via prop collisions. Tile IDs `89` through `97` represent slime tiles. The function `GetTileUnderPlayer(px, py)` in `Utilities.lua` returns the tile ID at a given pixel position.
-    - **Triggering**: Each frame, `Player:checkSlimeTile()` (in `sliding.lua`) reads the tile under the player. If it's a slime tile (89–97) and the player lacks the plunger, `startSliding(direction)` is called.
-    - **Sliding**: The player automatically moves in a straight line at a fixed speed (`slidingSpeed = 4`), inheriting the last movement direction.
-    - **Stopping**: The slide ends if:
-        1. The player hits a solid obstacle (wall or solid prop).
-        2. The tile under the player is no longer a slime tile.
-    - **Antislip Protection**: If the player has the **plunger** item (`PlayerData.items.hasPlunger`), `checkSlimeTile()` returns early and the player walks normally.
-    - **Control**: Manual movement is disabled (`isSliding = true`) while sliding.
-    - **Key Globals**: `SLIME_TILE_IDS` (lookup table) and `GetTileUnderPlayer()` are defined in `Utilities.lua`.
+- **Slime (Tiles 89–97)**: Environmental hazard that causes the player to slide continuously without manual control until an obstacle or clear tile is reached.
+    - **Detection**: Slime is detected **via the tilemap**, not via prop collisions. Tile IDs `89` through `97` represent slime tiles. The function `GetTileUnderPlayer(px, py)` (found in `Utilities.lua`) samples the tile ID using the player's 16x16 footprint (feet level).
+    - **Triggering**: Evaluated per frame via `Player:checkSlimeTile()`. If on slime and unequipped (no Plunger), `self:startSliding(direction)` fires. The `direction` inherits the player's current facing direction when they touch the slime.
+    - **Sliding Behavior**: 
+        - **Locks Control**: `isSliding = true`, preventing standard input handling.
+        - **Speed**: Movement is fixed at `slidingSpeed = 4` (faster than a walk, slower than a dash).
+        - **Animations**: The system dynamically changes the animation state based on direction (e.g., `slideRight`, `slideDown`) or context (`slideTiny` if `PlayerData.isTiny`).
+    - **Leaving Slime (Stopping Mechanics)**: The slide logic calls `self:endSliding(hitWall)` if either of two conditions is met:
+        1. **Tile Departure**: The 16x16 footprint is no longer sampling a valid slime tile.
+        2. **Wall Collision**: The player's bounding box hits a solid obstacle (e.g., wall, solid prop).
+    - **State Re-establishment**: When an exit occurs:
+        - Internal tracking `self.isSliding = false` and `self.slidingDirection = nil` is cleared.
+        - Facing resets `PlayerData.direction = 'idle'`.
+        - **Exit Animations**: An exit animation completes the motion visually (`slideExitRight`, `slideExitLeft`, `slideExitUp`, `slideExitDown`). If `isTiny` is true, it simply resets to `idle()`.
+    - **Wall Collision Handling (`slideHitWall`)**: An important edge case. If the player slides into a wall *while still standing on slime*, `self.slideHitWall = true` is set. This blocks the game from immediately re-triggering the slide process every frame, effectively pinning the player against the wall until they manually provide directional input to walk away or start a new slide.
+    - **Antislip Protection**: If the player has the **plunger** item (`PlayerData.items.hasPlunger`), `checkSlimeTile()` returns early and the player walks normally, unaffected.
 
 ### 3. Destruction & Persistence
 Props can be destroyed by certain enemies or effects.
@@ -98,14 +107,22 @@ The game uses `NobleSprite`, a wrapper around the Playdate SDK's `playdate.graph
     - **Animation**: Use a library like `anim8`. The Playdate code uses `imagetables` (sequence of images). In Love2D, this translates to a **Sprite Atlas** (single large image) with **Quads**.
     - **Asset Path**: `assets/images/props/props` should be loaded as a single `Image` object, and the frames defined as `Quad`s based on a grid (32x32 mostly).
 
-### 2. Collision System
+### 2. Item Management & Rendering in Love2D
+When implementing **Items** in Love2D, several core rendering concepts differ from Playdate's SDK:
+- **Tilesets and Quads**: Since Items use a single `assets/images/items/items-key-table-32-32.png` file, you need to load the image once and use `love.graphics.newQuad` to map to the correct 32x32 regions. You can use a library like `anim8` to construct the 3-frame animations for `boot`, `plunger`, `lamp`, etc., replicating the 8-frame duration.
+- **Spawning via LDtk**: Iterating through room data (parsed via a JSON or LDtk library), read the `"Items"` layer and instantiate your `Item` class with `(x, y, type, keyNumber, grants)`.
+- **Despawning / Collection Mechanics**: When bump.lua detects a collision between the Player and an Item, invoke your Lua port of `removeAll()`:
+  - This should immediately drop the `Item` from the `world:remove(item)` (bump.lua tracking) and the scene's draw list `table.remove(scene.items, i)`.
+  - Afterwards, invoke the localized Player functions to push the new abilities to the global `PlayerData` structure.
+
+### 3. Collision System
 Playdate's sprite system handles collisions internally with `moveWithCollisions`.
 - **Logic**: `PropItem.lua` sets a collision rect using `setCollideRect(x, y, w, h)`.
 - **Love2D Implementation**:
     - Use a physics/collision library like **Bump.lua** (AABB collisions).
-    - **Initialization**: When creating a prop, add it to the Bump world: `world:add(prop, prop.x, prop.y, prop.w, prop.h)`.
+    - **Initialization**: When creating a prop or an item, add it to the Bump world: `world:add(entity, entity.x, entity.y, entity.w, entity.h)`.
     - **Update**: Sync the Bump world position if the prop moves (rare for static props, but relevant for "pushed" objects).
-    - **Groups/Filters**: The `setGroups(3)` call in Playdate corresponds to collision layers or filters in Bump. Ensure Props are in a "Solid" or "Item" layer that the Player checks against.
+    - **Groups/Filters**: The `setGroups(3)` call in Playdate corresponds to collision layers or filters in Bump. Ensure Props and Items are in a "Solid" or "Item" layer that the Player checks against for resolving intersections.
 
 ### 3. Z-Indexing (Depth Sorting)
 Playdate sprites have a `zIndex` property and the system automatically sorts draw order.
@@ -185,9 +202,27 @@ The `propConfigs` table in `PropItem.lua` is critical data that defines collisio
             -- Stop if hitting a solid or leaving slime
             local tileID = getTileAt(tileData, actualX, actualY)
             local onSlime = tileID and SLIME_TILE_IDS[tileID]
-            if len > 0 or not onSlime then
-                self:stopSliding()
+            local hitWall = (len > 0)
+            
+            if hitWall or not onSlime then
+                self:endSliding(hitWall)
             end
         end
+
+        -- 5. Sliding State Re-establishment (Crucial for Porting)
+        function Player:endSliding(hitWall)
+            self.isSliding = false
+            self.slideDir = nil
+            self.direction = "idle"  -- Ensures player resets correctly
+            
+            -- Prevent auto-re-slide if pinned to a wall while on slime
+            if hitWall then
+                self.slideHitWall = true
+            end
+            
+            -- Important: Trigger exit animations based on last slide direction here!
+            -- Example: self.animation:gotoState('slideExitRight') or self:idle() if tiny
+        end
         ```
+    - **Handling `slideHitWall`**: Your movement logic must explicitly reset `self.slideHitWall = false` when the player presses a directional key, ensuring they can escape the pinned state.
     - **Key difference vs. old system**: No `PropItem.isSlime` checks needed. The tilemap is the single source of truth for slime detection.

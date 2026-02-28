@@ -103,23 +103,6 @@
 					"conditionalScripts": []
 				}
 			}
-		],
-		"Minifier": [
-			{
-				"id": "Minifier",
-				"iid": "23f3a3f0-fa90-11f0-bb17-79069f78b30d",
-				"layer": "Props",
-				"x": 36,
-				"y": 172,
-				"width": 32,
-				"height": 32,
-				"color": 2943221,
-				"customFields": {
-					"type": "minifier",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
 		]
 	}
 }

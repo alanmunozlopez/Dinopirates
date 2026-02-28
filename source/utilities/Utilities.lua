@@ -651,7 +651,7 @@ end
 
 -- Slime tile IDs (89 to 97)
 SLIME_TILE_IDS = {}
-for i = 89, 97 do
+for i = 89, 98 do
 	SLIME_TILE_IDS[i] = true
 end
 
