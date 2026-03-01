@@ -10,7 +10,7 @@ function Player:dash()
     end
 
     -- Check if can dash (item + skill)
-    if not PlayerData.items.hasBoots or not PlayerData.skills.canDash then
+    if not PlayerData.items.hasBoots or not PlayerData.skills.canDash or PlayerData.isTiny == true then
         printDebug("Skill 'Dash' not available!")
         return
     end
