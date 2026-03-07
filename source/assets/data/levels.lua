@@ -2851,13 +2851,29 @@ levelsLDTK = {
 		  }
 		}
 	  },
+	  Brocorat = {
+		{
+		  id = "Brocorat",
+		  iid = "3af597e0-fa90-11f0-b7cd-9d189686561c",
+		  layer = "Enemies",
+		  x = 340,
+		  y = 36,
+		  width = 32,
+		  height = 32,
+		  color = 14120515,
+		  customFields = {
+			speed = 0.5,
+			dead = false
+		  }
+		}
+	  },
 	  Minifier = {
 		{
 		  id = "Minifier",
 		  iid = "21887b30-fa90-11f0-9a41-eb80f350135c",
 		  layer = "Props",
-		  x = 372,
-		  y = 212,
+		  x = 364,
+		  y = 204,
 		  width = 32,
 		  height = 32,
 		  color = 2943221,
@@ -2917,6 +2933,7 @@ levelsLDTK = {
 	  }
 	}
   },
+		--
 
 
 {
