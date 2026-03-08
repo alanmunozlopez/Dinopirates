@@ -208,17 +208,6 @@ function Player:checkMinifier()
 end
 
 function Player:checkTrigger()
-    -- Check for dialog activation (A button)
-    if self.currentTrigger and playdate.buttonJustPressed(playdate.kButtonA) then
-        local trigger = self.currentTrigger
-
-        PlayerData.isGaming = false
-        PlayerData.isTalking = true
-        self.dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
-
-        Utilities.grantAchievementIfNeeded(trigger.script)
-    end
-
     local distanceMoved = math.abs(self.x - self.lastCheckX) + math.abs(self.y - self.lastCheckY)
     local shouldCheckOverlap = distanceMoved > 5 or self.currentTrigger ~= nil
 

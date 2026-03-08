@@ -25,6 +25,11 @@ function Player:collisionResponse(other)
     end
 
   elseif other:isa(CrewMember) then
+    if PlayerData.isTiny then
+        self.currentTrigger = other
+        return 'overlap'
+    end
+    
     -- Validate having the capture bag
     if PlayerData.CrewMemberData.amountTaken == 0 then
       if other.crewId == 'CM001' then
