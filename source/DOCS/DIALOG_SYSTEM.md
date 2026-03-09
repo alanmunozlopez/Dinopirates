@@ -62,9 +62,13 @@ Triggers of type `Story` or `Cutscene` activate `dialogUI:addScreen` or the cuts
 
 ### Navigating Dialogs
 While `PlayerData.isTalking` is true:
-- Pressing **A** advances the dialog via `dialogUI:nextDialog()`.
+- Pressing **A** advances the dialog via `dialogUI:nextDialog()`. This interaction is explicitly bound to the `AButtonDown` event handler (e.g., in `MazeScene.lua`) to prevent double-firings within the same frame as opening a dialog.
 - Movement and most game logic (including enemies) are paused to allow the player to read.
 - Once the last line is reached, the UI automatically closes and `PlayerData.isTalking` is set to false.
+
+### Missing Dialog Safe-fallbacks [NEW]
+- If a requested script name does not exist in `script.lua`, `self:removeAll()` is immediately called, aborting the dialog safely without throwing a nil-indexing error.
+- Interacting with `CrewMember` entities in tiny mode defaults to looking for `<crewId>_tiny` (e.g. `CM001_tiny`). If the specific crew member has no dialog written, it falls back to a special safety dialog named `default_tiny`.
 
 ---
 
