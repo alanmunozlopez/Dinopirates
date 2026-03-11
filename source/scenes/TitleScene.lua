@@ -11,6 +11,11 @@ local selectedIndex = 1
 local crankTick = 0
 local background = nil
 
+-- menu sound fx 
+local menuNavigationSoundUpFx = nil
+local menuNavigationSoundDownFx = nil
+local menuBackgroundMusic = nil
+
 scene.backgroundColor = Graphics.kColorWhite
 
 local function updateMenuSelection()
@@ -53,18 +58,30 @@ end
 TitleScene.inputHandler = {
 	upButtonDown = function()
 		selectPrevious()
+		if menuNavigationSoundUpFx then
+			menuNavigationSoundUpFx:play()
+		end
 	end,
 	downButtonDown = function()
 		selectNext()
+		if menuNavigationSoundDownFx then
+			menuNavigationSoundDownFx:play()
+		end
 	end,
 	cranked = function(change, _)
 		crankTick = crankTick + change
 		if crankTick > 30 then
 			crankTick = 0
 			selectNext()
+			if menuNavigationSoundDownFx then
+				menuNavigationSoundDownFx:play()
+			end
 		elseif crankTick < -30 then
 			crankTick = 0
 			selectPrevious()
+			if menuNavigationSoundUpFx then
+				menuNavigationSoundUpFx:play()
+			end
 		end
 	end,
 	AButtonDown = function()
@@ -83,6 +100,16 @@ function scene:init()
 	-- Initialize original state if needed (legacy, puedes removerlo después)
 	if not playdate.file.exists('levelOriginal.json') then
 		playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
+	end
+
+	menuNavigationSoundUpFx = playdate.sound.sampleplayer.new('assets/sounds/menu_up_ima.wav')
+	menuNavigationSoundUpFx:setVolume(0.5)
+	menuNavigationSoundDownFx = playdate.sound.sampleplayer.new('assets/sounds/menu_down_ima.wav')
+	menuNavigationSoundDownFx:setVolume(0.5)
+
+	menuBackgroundMusic = playdate.sound.fileplayer.new('assets/sounds/music/game/shadow_dino_explore_intro_ima')
+	if menuBackgroundMusic then
+		menuBackgroundMusic:setVolume(0.4)
 	end
 end
 
@@ -175,9 +202,10 @@ function scene:enter()
 		action = function()
 			SaveSystem.reset()
 			
+			--TODO: Testing fighting scene AM SS
 			-- Iniciar en el primer nivel de tu juego
 			Noble.transition(
-				Floor407,  -- Cambia esto al nivel inicial de tu juego
+				Floor408,  -- Cambia esto al nivel inicial de tu juego
 				1, Noble.Transition.Spotlight, {
 				x = 200,
 				y = 120,
@@ -225,6 +253,10 @@ function scene:enter()
 	-- Set initial selection (Continue if exists, otherwise New Game)
 	selectedIndex = 1
 	updateMenuSelection()
+
+	if menuBackgroundMusic then
+		menuBackgroundMusic:play(0)
+	end
 end
 
 -- This runs once a transition from another scene is complete.
@@ -241,6 +273,9 @@ end
 -- This runs as as soon as a transition to another scene begins.
 function scene:exit()
 	scene.super.exit(self)
+	if menuBackgroundMusic and menuBackgroundMusic:isPlaying() then
+		menuBackgroundMusic:stop()
+	end
 end
 
 -- This runs once a transition to another scene completes.

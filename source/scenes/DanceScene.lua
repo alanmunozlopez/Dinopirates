@@ -21,6 +21,13 @@ local barHeight = 10
 local barY = 56
 local condition = nil
 
+-- Battle Music
+local battleMusicBasic = nil
+local currentBattleMusic = nil
+
+-- Input Sound Effects
+local kickSound = nil
+local snareSound = nil
 
 
 -- Enemy Pattern Profiles
@@ -108,6 +115,32 @@ function scene:init()
 
     -- defaults for button count (may change on enter)
     self.numberOfButtons = 4
+    
+    -- Load battle music
+    battleMusicBasic = playdate.sound.fileplayer.new('assets/sounds/music/battle_music_test_ima')
+    if battleMusicBasic then
+        battleMusicBasic:setVolume(0.7)
+        print("Battle music loaded: battle_music_test_ima.wav")
+    else
+        print("Warning: Could not load battle_music_test_ima.wav")
+    end
+    
+    -- Load input sound effects
+    kickSound = playdate.sound.sampleplayer.new('assets/sounds/music/drums/kick_test_ima')
+    if kickSound then
+        kickSound:setVolume(0.8)
+        print("Kick sound loaded: kick_test_ima.wav")
+    else
+        print("Warning: Could not load kick_test_ima.wav")
+    end
+    
+    snareSound = playdate.sound.sampleplayer.new('assets/sounds/music/drums/snare_test_ima')
+    if snareSound then
+        snareSound:setVolume(0.8)
+        print("Snare sound loaded: snare_test_ima.wav")
+    else
+        print("Warning: Could not load snare_test_ima.wav")
+    end
 end
 
 -- Helper: calculate the probability (0-100) to upgrade difficulty
@@ -216,6 +249,61 @@ function scene:enter()
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
     backgroundDance = BackgroundDance()
     resultsScreen = ResultsScreen()
+    
+    -- ============================================
+    -- BATTLE INFO
+    -- ============================================
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("BATTLE STARTED")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    
+    if self.enemyType == "basic" then
+        print("TYPE: BASIC")
+        print("   REAL BPM: 22")
+        print("   SUGGESTED FILE: battle_basic.wav")
+    elseif self.enemyType == "evolve" then
+        print("TYPE: EVOLVE")
+        print("   REAL BPM: 33")
+        print("   SUGGESTED FILE: battle_evolve.wav")
+    elseif self.enemyType == "badass" then
+        print("TYPE: BADASS")
+        print("   REAL BPM: 38")
+        print("   SUGGESTED FILE: battle_badass.wav")
+    elseif self.enemyType == "boss" then
+        print("TYPE: BOSS")
+        print("   REAL BPM: 43")
+        print("   SUGGESTED FILE: battle_boss.wav")
+    end
+    
+    print("TECHNICAL DETAILS:")
+    print("   BPM CODE: " .. self.bpm)
+    print("   NUMBER OF BUTTONS: " .. self.numberOfButtons)
+    print("   ENEMY EVOLVED: " .. tostring(self.enemyEvolving))
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    
+    -- ============================================
+    -- PLAY BATTLE MUSIC
+    -- ============================================
+    
+    -- Stop exploration music before starting battle
+    if MazeScene.backgroundMusic and MazeScene.backgroundMusic:isPlaying() then
+        MazeScene.backgroundMusic:stop()
+    end
+
+    -- Stop any previous battle music
+    if currentBattleMusic then
+        currentBattleMusic:stop()
+        currentBattleMusic = nil
+    end
+    
+    -- Play music based on battle type
+    if self.enemyType == "basic" and battleMusicBasic then
+        currentBattleMusic = battleMusicBasic
+        currentBattleMusic:play(0) -- 0 = infinite loop
+        print("Playing battle music (looping)")
+    else
+        print("No music for this battle type yet")
+    end
 end
 
 function scene:start()
@@ -380,6 +468,14 @@ function scene:exit()
 	Noble.Input.setCrankIndicatorStatus(false)
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
 	sequence:start();
+	
+	-- Stop battle music when exiting
+	if currentBattleMusic then
+		currentBattleMusic:stop()
+		currentBattleMusic = nil
+		print("⏹️  Battle music stopped")
+	end
+	
     SaveSystem.save()
 end
 
@@ -462,6 +558,12 @@ scene.inputHandler = {
             scene:startBattle()
             return
         end
+        
+        -- Play snare sound on A button press
+        if snareSound and PlayerData.isDancing then
+            snareSound:play(1)
+        end
+        
         scene:danceStep("aButton")
         scene:checkDanceResults()
     end,
@@ -495,7 +597,11 @@ scene.inputHandler = {
     -- D-pad left
     --
     leftButtonDown = function()
-        -- Your code here
+        -- Play kick sound on arrow press
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
+        
         scene:danceStep("leftButton")
     end,
     leftButtonHold = function()
@@ -508,7 +614,11 @@ scene.inputHandler = {
     -- D-pad right
     --
     rightButtonDown = function()
-        -- Your code here
+        -- Play kick sound on arrow press
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
+        
         scene:danceStep("rightButton")
     end,
     rightButtonHold = function()
@@ -521,7 +631,11 @@ scene.inputHandler = {
     -- D-pad up
     --
     upButtonDown = function()
-        -- Your code here
+        -- Play kick sound on arrow press
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
+        
         scene:danceStep("upButton")
     end,
     upButtonHold = function()
@@ -534,7 +648,11 @@ scene.inputHandler = {
     -- D-pad down
     --
     downButtonDown = function()
-        -- Your code here
+        -- Play kick sound on arrow press
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
+        
         scene:danceStep("downButton")
     end,
     downButtonHold = function()
