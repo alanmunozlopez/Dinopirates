@@ -68,74 +68,14 @@
 				"iid": "0330c2e0-ac70-11f0-8539-e9c343f3fe6a",
 				"layer": "Doors",
 				"x": 200,
-				"y": 4,
+				"y": 8,
 				"width": 48,
-				"height": 8,
+				"height": 16,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Top",
 					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "19410d90-fa90-11f0-b8f3-cd81b9328a02",
-				"layer": "Doors",
-				"x": 4,
-				"y": 126,
-				"width": 8,
-				"height": 32,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Left",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "8784bea0-fa90-11f0-b8f3-433dde80761f",
-				"layer": "Doors",
-				"x": 200,
-				"y": 236,
-				"width": 48,
-				"height": 8,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
-				}
-			}
-		],
-		"CrewMember": [
-			{
-				"id": "CrewMember",
-				"iid": "157a0990-fa90-11f0-b8f3-fb166d64f4bf",
-				"layer": "CrewMembers",
-				"x": 28,
-				"y": 196,
-				"width": 48,
-				"height": 48,
-				"color": 14984818,
-				"customFields": {
-					"isTaken": false,
-					"crewID": "CM001"
-				}
-			},
-			{
-				"id": "CrewMember",
-				"iid": "3dc08dc0-fa90-11f0-b8f3-9da883b9e3da",
-				"layer": "CrewMembers",
-				"x": 284,
-				"y": 68,
-				"width": 48,
-				"height": 48,
-				"color": 14984818,
-				"customFields": {
-					"isTaken": false,
-					"crewID": "CM002"
 				}
 			}
 		],
