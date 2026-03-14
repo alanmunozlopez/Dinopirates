@@ -79,18 +79,19 @@
 				}
 			}
 		],
-		"Boots": [
+		"CrewMember": [
 			{
-				"id": "Boots",
-				"iid": "14029130-fa90-11f0-9a41-8baf55ac0161",
-				"layer": "Items",
-				"x": 36,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
+				"id": "CrewMember",
+				"iid": "0c11a640-fa90-11f0-9f0d-c9ca42f46487",
+				"layer": "CrewMembers",
+				"x": 124,
+				"y": 76,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
 				"customFields": {
-					"type": "boots"
+					"isTaken": false,
+					"crewID": "CM001"
 				}
 			}
 		],
@@ -107,6 +108,21 @@
 				"customFields": {
 					"type": "notes",
 					"grants": "canDance:true"
+				}
+			}
+		],
+		"Boots": [
+			{
+				"id": "Boots",
+				"iid": "039a7190-fa90-11f0-9f0d-a162bcc6a422",
+				"layer": "Items",
+				"x": 36,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "boots"
 				}
 			}
 		],
