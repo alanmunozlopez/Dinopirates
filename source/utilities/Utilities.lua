@@ -499,6 +499,7 @@ local SECTION_TILE_IDS = {
 	 [95] = true,
 	 [96] = true,
 	 [97] = true,
+	 [98] = true,
  }
 local TILE_SIZE = 16
 

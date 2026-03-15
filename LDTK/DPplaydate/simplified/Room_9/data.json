@@ -95,53 +95,6 @@
 				}
 			}
 		],
-		"Notes": [
-			{
-				"id": "Notes",
-				"iid": "186500f0-fa90-11f0-9a41-73a695c798b9",
-				"layer": "Items",
-				"x": 36,
-				"y": 68,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "notes",
-					"grants": "canDance:true"
-				}
-			}
-		],
-		"Boots": [
-			{
-				"id": "Boots",
-				"iid": "039a7190-fa90-11f0-9f0d-a162bcc6a422",
-				"layer": "Items",
-				"x": 36,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "boots"
-				}
-			}
-		],
-		"Brocorat": [
-			{
-				"id": "Brocorat",
-				"iid": "3af597e0-fa90-11f0-b7cd-9d189686561c",
-				"layer": "Enemies",
-				"x": 340,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 14120515,
-				"customFields": {
-					"speed": 0.5,
-					"dead": false
-				}
-			}
-		],
 		"Minifier": [
 			{
 				"id": "Minifier",
@@ -162,21 +115,6 @@
 		"Box": [
 			{
 				"id": "Box",
-				"iid": "26b53fd0-fa90-11f0-9a41-85e6ef5ae7f3",
-				"layer": "Props",
-				"x": 284,
-				"y": 172,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "box"
-				}
-			},
-			{
-				"id": "Box",
 				"iid": "272ae500-fa90-11f0-9a41-890edd14f601",
 				"layer": "Props",
 				"x": 244,
@@ -194,7 +132,7 @@
 				"id": "Box",
 				"iid": "27cf6260-fa90-11f0-9a41-b3f1e08f1341",
 				"layer": "Props",
-				"x": 212,
+				"x": 204,
 				"y": 172,
 				"width": 32,
 				"height": 32,

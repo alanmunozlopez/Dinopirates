@@ -99,7 +99,6 @@
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,
-					"tinyScript": null,
 					"conditionalScripts": []
 				}
 			}
