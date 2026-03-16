@@ -43,7 +43,8 @@
 		"tile": 12,
 		"DoorsConnection": [
 			"Left",
-			"Right"
+			"Right",
+			"Lower"
 		],
 		"play": null
 	},
