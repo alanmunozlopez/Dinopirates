@@ -1704,7 +1704,6 @@ levelsLDTK = {
 			type = "Story",
 			mapPercent = 0,
 			conditionalScripts = {
-			  "!isReadyToShrink:test"
 			}
 		  }
 		},
