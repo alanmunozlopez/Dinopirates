@@ -54,7 +54,9 @@
 		"roomNumber": 9,
 		"tile": 9,
 		"DoorsConnection": [
-			"Top"
+			"Top",
+			"Down",
+			"Left"
 		],
 		"play": null
 	},
@@ -75,6 +77,36 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f1da76b0-fa90-11f0-9039-7f762bb19d4f",
+				"layer": "Doors",
+				"x": 200,
+				"y": 235,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "104fb470-fa90-11f0-9039-f5ad4ff8081c",
+				"layer": "Doors",
+				"x": 4,
+				"y": 126,
+				"width": 8,
+				"height": 32,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
 					"KeyNumber": null
 				}
 			}

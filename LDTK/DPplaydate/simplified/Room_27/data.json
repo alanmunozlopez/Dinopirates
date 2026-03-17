@@ -53,5 +53,81 @@
 	"layers": [
 		"BGTilemap.png"
 	],
-	"entities" : {}
+	"entities": {
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "727b6360-fa90-11f0-9039-d7e644e05329",
+				"layer": "Doors",
+				"x": 396,
+				"y": 176,
+				"width": 8,
+				"height": 32,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			}
+		],
+		"Brocorat": [
+			{
+				"id": "Brocorat",
+				"iid": "64f663c0-fa90-11f0-9039-89ac2b33aa4c",
+				"layer": "Enemies",
+				"x": 300,
+				"y": 164,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false
+				}
+			},
+			{
+				"id": "Brocorat",
+				"iid": "66de5da0-fa90-11f0-9039-059cc3f130c6",
+				"layer": "Enemies",
+				"x": 148,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false
+				}
+			},
+			{
+				"id": "Brocorat",
+				"iid": "686fac00-fa90-11f0-9039-c56eb12906d8",
+				"layer": "Enemies",
+				"x": 348,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false
+				}
+			},
+			{
+				"id": "Brocorat",
+				"iid": "6cb82b20-fa90-11f0-9039-4b2b04e1589d",
+				"layer": "Enemies",
+				"x": 156,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false
+				}
+			}
+		]
+	}
 }
