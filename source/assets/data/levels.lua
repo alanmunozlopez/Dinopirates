@@ -2792,23 +2792,7 @@ levelsLDTK = {
 			conditionalScripts = {}
 		  }
 		},
-		{
-		  id = "Triggers",
-		  iid = "bb301630-21a0-11f1-9039-83ec622bfa59",
-		  x = 356,
-		  y = 120,
-		  width = 32,
-		  height = 40,
-		  customFields = {
-			script = "imtiny",
-			usedTrigger = false,
-			type = "Search",
-			mapPercent = 0,
-			conditionalScripts = {
-			  "isTiny:tinyspacesTiny"
-			}
-		  }
-		},
+		
 		{
 		  id = "Triggers",
 		  iid = "ff2dc230-21a0-11f1-9039-03e34eda3ccc",

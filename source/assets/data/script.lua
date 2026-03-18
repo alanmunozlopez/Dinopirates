@@ -437,5 +437,28 @@ script = {
     
         }
     },
+    {
+        name = "smallSpaces",
+        dialog = {
+            {
+        video = 'player',
+        text = "smallspaces-01",
+    },
+                    {
+        video = 'player',
+        text = "smallspaces-02",
+    }
     
+        }
+    },
+    {
+        name = "smallSpacesTiny",
+        dialog = {
+            {
+        video = 'player',
+        text = "smallspacestiny-01",
+    }
+    
+        }
+    },
 }
