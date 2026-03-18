@@ -177,6 +177,39 @@
 				}
 			}
 		],
+		"Notes": [
+			{
+				"id": "Notes",
+				"iid": "399a01d0-21a0-11f1-9039-9fe4fcedee83",
+				"layer": "Items",
+				"x": 68,
+				"y": 148,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "notes",
+					"grants": "canDash:true",
+					"isItem": true
+				}
+			}
+		],
+		"Boots": [
+			{
+				"id": "Boots",
+				"iid": "d82f3840-21a0-11f1-9039-7b59a08b7645",
+				"layer": "Items",
+				"x": 68,
+				"y": 100,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "boots",
+					"isItem": true
+				}
+			}
+		],
 		"PcBase2": [
 			{
 				"id": "PcBase2",
@@ -289,6 +322,23 @@
 					"nocollider": false,
 					"destroyed": false,
 					"type": "box"
+				}
+			}
+		],
+		"TubeExit": [
+			{
+				"id": "TubeExit",
+				"iid": "9fbc56a0-21a0-11f1-9039-37e7cd6f0338",
+				"layer": "Props",
+				"x": 36,
+				"y": 204,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "TubeExit",
+					"nocollider": false,
+					"destroyed": false
 				}
 			}
 		]

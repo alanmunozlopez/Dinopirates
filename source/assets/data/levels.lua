@@ -216,7 +216,8 @@ levelsLDTK = {
 		  height = 32,
 		  customFields = {
 			type = "itemGift",
-			grants = "hasDWatch:true"
+			grants = "hasDWatch:true",
+			isItem = true
 		  }
 		}
 	  },
@@ -1045,8 +1046,8 @@ levelsLDTK = {
 		{
 		  id = "Smalltable",
 		  iid = "d78991a0-d380-11f0-a276-f7b032b235ae",
-		  x = 372,
-		  y = 172,
+		  x = 260,
+		  y = 52,
 		  width = 32,
 		  height = 32,
 		  customFields = {
@@ -1073,8 +1074,8 @@ levelsLDTK = {
 		{
 		  id = "KitchenStorage",
 		  iid = "421f6180-ac70-11f0-8398-3187f4a538f2",
-		  x = 308,
-		  y = 52,
+		  x = 292,
+		  y = 60,
 		  width = 32,
 		  height = 32,
 		  customFields = {
@@ -1087,7 +1088,7 @@ levelsLDTK = {
 		  id = "KitchenStorage",
 		  iid = "f90bc140-d380-11f0-a276-d3e851faf0a1",
 		  x = 276,
-		  y = 76,
+		  y = 92,
 		  width = 32,
 		  height = 32,
 		  customFields = {
@@ -1704,6 +1705,7 @@ levelsLDTK = {
 			type = "Story",
 			mapPercent = 0,
 			conditionalScripts = {
+			  nil
 			}
 		  }
 		},
@@ -2200,6 +2202,35 @@ levelsLDTK = {
 		  }
 		}
 	  },
+	  Notes = {
+		{
+		  id = "Notes",
+		  iid = "399a01d0-21a0-11f1-9039-9fe4fcedee83",
+		  x = 68,
+		  y = 148,
+		  width = 32,
+		  height = 32,
+		  customFields = {
+			type = "notes",
+			grants = "canDash:true",
+			isItem = true
+		  }
+		}
+	  },
+	  Boots = {
+		{
+		  id = "Boots",
+		  iid = "d82f3840-21a0-11f1-9039-7b59a08b7645",
+		  x = 68,
+		  y = 100,
+		  width = 32,
+		  height = 32,
+		  customFields = {
+			type = "boots",
+			isItem = true
+		  }
+		}
+	  },
 	  PcBase2 = {
 		{
 		  id = "PcBase2",
@@ -2365,19 +2396,6 @@ levelsLDTK = {
 	  Doors = {
 		{
 		  id = "Doors",
-		  iid = "0330c2e0-ac70-11f0-8539-e9c343f3fe6a",
-		  x = 200,
-		  y = 8,
-		  width = 48,
-		  height = 16,
-		  customFields = {
-			NeedsKey = false,
-			DoorsConnection = "Top",
-			KeyNumber = nil
-		  }
-		},
-		{
-		  id = "Doors",
 		  iid = "f1da76b0-fa90-11f0-9039-7f762bb19d4f",
 		  x = 200,
 		  y = 235,
@@ -2393,7 +2411,7 @@ levelsLDTK = {
 		  id = "Doors",
 		  iid = "104fb470-fa90-11f0-9039-f5ad4ff8081c",
 		  x = 4,
-		  y = 126,
+		  y = 128,
 		  width = 8,
 		  height = 32,
 		  customFields = {
@@ -2657,9 +2675,9 @@ levelsLDTK = {
 		{
 		  id = "Doors",
 		  iid = "c6e3d930-ac70-11f0-8539-e78eb22c7faf",
-		  x = 392,
+		  x = 396,
 		  y = 120,
-		  width = 16,
+		  width = 8,
 		  height = 48,
 		  customFields = {
 			NeedsKey = false,
@@ -2758,6 +2776,55 @@ levelsLDTK = {
 		  }
 		}
 	  },
+	  Triggers = {
+		{
+		  id = "Triggers",
+		  iid = "91a372e0-21a0-11f1-9039-ffb9ad47dba6",
+		  x = 360,
+		  y = 60,
+		  width = 48,
+		  height = 16,
+		  customFields = {
+			script = "tinyfier",
+			usedTrigger = false,
+			type = "Story",
+			mapPercent = 0,
+			conditionalScripts = {}
+		  }
+		},
+		{
+		  id = "Triggers",
+		  iid = "bb301630-21a0-11f1-9039-83ec622bfa59",
+		  x = 356,
+		  y = 120,
+		  width = 32,
+		  height = 40,
+		  customFields = {
+			script = "imtiny",
+			usedTrigger = false,
+			type = "Search",
+			mapPercent = 0,
+			conditionalScripts = {
+			  "isTiny:tinyspacesTiny"
+			}
+		  }
+		},
+		{
+		  id = "Triggers",
+		  iid = "ff2dc230-21a0-11f1-9039-03e34eda3ccc",
+		  x = 56,
+		  y = 100,
+		  width = 80,
+		  height = 8,
+		  customFields = {
+			script = "abigJump",
+			usedTrigger = false,
+			type = "Search",
+			mapPercent = 0,
+			conditionalScripts = {}
+		  }
+		}
+	  },
 	  Plunger = {
 		{
 		  id = "Plunger",
@@ -2767,20 +2834,8 @@ levelsLDTK = {
 		  width = 32,
 		  height = 32,
 		  customFields = {
-			type = "plunger"
-		  }
-		}
-	  },
-	  Lamp = {
-		{
-		  id = "Lamp",
-		  iid = "d76e9610-fa90-11f0-b965-5fb453bb8492",
-		  x = 52,
-		  y = 68,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			type = "lamp"
+			type = "plunger",
+			isItem = true
 		  }
 		}
 	  },
@@ -2903,6 +2958,35 @@ levelsLDTK = {
 			type = "Story",
 			mapPercent = 0,
 			conditionalScripts = {}
+		  }
+		},
+		{
+		  id = "Triggers",
+		  iid = "e3ff23f0-21a0-11f1-9039-21f5d6ff2f4a",
+		  x = 100,
+		  y = 116,
+		  width = 24,
+		  height = 64,
+		  customFields = {
+			script = "aLamp",
+			usedTrigger = false,
+			type = "Story",
+			mapPercent = 0,
+			conditionalScripts = {}
+		  }
+		}
+	  },
+	  Lamp = {
+		{
+		  id = "Lamp",
+		  iid = "e0de0dd0-21a0-11f1-9039-3d34a18fc4f7",
+		  x = 60,
+		  y = 52,
+		  width = 32,
+		  height = 32,
+		  customFields = {
+			type = "lamp",
+			isItem = true
 		  }
 		}
 	  }
@@ -3260,8 +3344,8 @@ levelsLDTK = {
 	  }
 	},
 	customFields = {
-	  shadow = false,
-	  light = 0,
+	  shadow = true,
+	  light = 0.2,
 	  visited = false,
 	  comic_name = nil,
 	  comic_wasPlayed = false,
@@ -3286,56 +3370,6 @@ levelsLDTK = {
 			NeedsKey = false,
 			DoorsConnection = "Right",
 			KeyNumber = nil
-		  }
-		}
-	  },
-	  Brocorat = {
-		{
-		  id = "Brocorat",
-		  iid = "64f663c0-fa90-11f0-9039-89ac2b33aa4c",
-		  x = 300,
-		  y = 164,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			speed = 0.5,
-			dead = false
-		  }
-		},
-		{
-		  id = "Brocorat",
-		  iid = "66de5da0-fa90-11f0-9039-059cc3f130c6",
-		  x = 148,
-		  y = 44,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			speed = 0.5,
-			dead = false
-		  }
-		},
-		{
-		  id = "Brocorat",
-		  iid = "686fac00-fa90-11f0-9039-c56eb12906d8",
-		  x = 348,
-		  y = 36,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			speed = 0.5,
-			dead = false
-		  }
-		},
-		{
-		  id = "Brocorat",
-		  iid = "6cb82b20-fa90-11f0-9039-4b2b04e1589d",
-		  x = 156,
-		  y = 172,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			speed = 0.5,
-			dead = false
 		  }
 		}
 	  }
@@ -3415,6 +3449,38 @@ levelsLDTK = {
 			NeedsKey = false,
 			DoorsConnection = "Left",
 			KeyNumber = nil
+		  }
+		}
+	  },
+	  Triggers = {
+		{
+		  id = "Triggers",
+		  iid = "6d20e240-21a0-11f1-9039-c1a6c9bc4d54",
+		  x = 364,
+		  y = 116,
+		  width = 40,
+		  height = 72,
+		  customFields = {
+			script = "whereDoor",
+			usedTrigger = false,
+			type = "Search",
+			mapPercent = 0,
+			conditionalScripts = {}
+		  }
+		},
+		{
+		  id = "Triggers",
+		  iid = "cfc0fde0-21a0-11f1-9039-b74e4b1613bb",
+		  x = 108,
+		  y = 156,
+		  width = 48,
+		  height = 48,
+		  customFields = {
+			script = "bigEmptyRoom",
+			usedTrigger = false,
+			type = "Search",
+			mapPercent = 0,
+			conditionalScripts = {}
 		  }
 		}
 	  }
