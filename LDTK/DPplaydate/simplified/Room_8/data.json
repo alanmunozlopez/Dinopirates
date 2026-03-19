@@ -147,14 +147,14 @@
 				"iid": "1966a940-fa90-11f0-bb17-4bab457c7082",
 				"layer": "Triggers",
 				"x": 214,
-				"y": 76,
-				"width": 144,
+				"y": 116,
+				"width": 32,
 				"height": 32,
 				"color": 16711748,
 				"customFields": {
-					"script": "firstCall",
+					"script": "pick-the-device",
 					"usedTrigger": false,
-					"type": "Story",
+					"type": "Cutscene",
 					"mapPercent": 0,
 					"conditionalScripts": []
 				}

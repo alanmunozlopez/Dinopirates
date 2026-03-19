@@ -701,7 +701,7 @@ levelsLDTK = {
 			type = "Search",
 			mapPercent = 0,
 			conditionalScripts = {
-			  "items.hasLamp:nolamp"
+			  "isTiny:tinyKnife"
 			}
 		  }
 		},
@@ -821,19 +821,6 @@ levelsLDTK = {
 		},
 		{
 		  id = "Blood",
-		  iid = "0ed1c290-ac70-11f0-ae64-95329b483a8a",
-		  x = 268,
-		  y = 60,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			type = "blood",
-			nocollider = true,
-			destroyed = false
-		  }
-		},
-		{
-		  id = "Blood",
 		  iid = "0e256780-ac70-11f0-8398-fb5fdad9133f",
 		  x = 196,
 		  y = 212,
@@ -872,60 +859,6 @@ levelsLDTK = {
 		  customFields = {
 			type = "deadrat",
 			nocollider = false,
-			destroyed = false
-		  }
-		}
-	  },
-	  Blood2 = {
-		{
-		  id = "Blood2",
-		  iid = "fb5b9ce0-ac70-11f0-ae64-c17f4252e798",
-		  x = 292,
-		  y = 84,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			type = "blood2",
-			nocollider = true,
-			destroyed = false
-		  }
-		},
-		{
-		  id = "Blood2",
-		  iid = "12214d40-ac70-11f0-8398-31a430f47a22",
-		  x = 228,
-		  y = 196,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			type = "blood2",
-			nocollider = true,
-			destroyed = false
-		  }
-		},
-		{
-		  id = "Blood2",
-		  iid = "1975acd0-ac70-11f0-8398-9b842ef570b6",
-		  x = 164,
-		  y = 196,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			type = "blood2",
-			nocollider = true,
-			destroyed = false
-		  }
-		},
-		{
-		  id = "Blood2",
-		  iid = "1f4d3060-ac70-11f0-8398-2ff5d145c0a9",
-		  x = 204,
-		  y = 196,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			type = "blood2",
-			nocollider = true,
 			destroyed = false
 		  }
 		}
@@ -1046,7 +979,7 @@ levelsLDTK = {
 		{
 		  id = "Smalltable",
 		  iid = "d78991a0-d380-11f0-a276-f7b032b235ae",
-		  x = 260,
+		  x = 268,
 		  y = 52,
 		  width = 32,
 		  height = 32,
@@ -1074,8 +1007,8 @@ levelsLDTK = {
 		{
 		  id = "KitchenStorage",
 		  iid = "421f6180-ac70-11f0-8398-3187f4a538f2",
-		  x = 292,
-		  y = 60,
+		  x = 308,
+		  y = 52,
 		  width = 32,
 		  height = 32,
 		  customFields = {
@@ -1088,12 +1021,53 @@ levelsLDTK = {
 		  id = "KitchenStorage",
 		  iid = "f90bc140-d380-11f0-a276-d3e851faf0a1",
 		  x = 276,
-		  y = 92,
+		  y = 100,
 		  width = 32,
 		  height = 32,
 		  customFields = {
 			type = "kitchenStorage",
 			nocollider = false,
+			destroyed = false
+		  }
+		}
+	  },
+	  Blood2 = {
+		{
+		  id = "Blood2",
+		  iid = "12214d40-ac70-11f0-8398-31a430f47a22",
+		  x = 228,
+		  y = 196,
+		  width = 32,
+		  height = 32,
+		  customFields = {
+			type = "blood2",
+			nocollider = true,
+			destroyed = false
+		  }
+		},
+		{
+		  id = "Blood2",
+		  iid = "1975acd0-ac70-11f0-8398-9b842ef570b6",
+		  x = 164,
+		  y = 196,
+		  width = 32,
+		  height = 32,
+		  customFields = {
+			type = "blood2",
+			nocollider = true,
+			destroyed = false
+		  }
+		},
+		{
+		  id = "Blood2",
+		  iid = "1f4d3060-ac70-11f0-8398-2ff5d145c0a9",
+		  x = 204,
+		  y = 196,
+		  width = 32,
+		  height = 32,
+		  customFields = {
+			type = "blood2",
+			nocollider = true,
 			destroyed = false
 		  }
 		}
@@ -2175,13 +2149,13 @@ levelsLDTK = {
 		  id = "Triggers",
 		  iid = "1966a940-fa90-11f0-bb17-4bab457c7082",
 		  x = 214,
-		  y = 76,
-		  width = 144,
+		  y = 116,
+		  width = 32,
 		  height = 32,
 		  customFields = {
-			script = "firstCall",
+			script = "pick-the-device",
 			usedTrigger = false,
-			type = "Story",
+			type = "Cutscene",
 			mapPercent = 0,
 			conditionalScripts = {}
 		  }
@@ -2199,35 +2173,6 @@ levelsLDTK = {
 			type = "Search",
 			mapPercent = 0,
 			conditionalScripts = {}
-		  }
-		}
-	  },
-	  Notes = {
-		{
-		  id = "Notes",
-		  iid = "399a01d0-21a0-11f1-9039-9fe4fcedee83",
-		  x = 68,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			type = "notes",
-			grants = "canDash:true",
-			isItem = true
-		  }
-		}
-	  },
-	  Boots = {
-		{
-		  id = "Boots",
-		  iid = "d82f3840-21a0-11f1-9039-7b59a08b7645",
-		  x = 68,
-		  y = 100,
-		  width = 32,
-		  height = 32,
-		  customFields = {
-			type = "boots",
-			isItem = true
 		  }
 		}
 	  },
@@ -2331,6 +2276,21 @@ levelsLDTK = {
 			type = "box"
 		  }
 		}
+	  },
+	  TubeExit = {
+		{
+		  id = "TubeExit",
+		  iid = "9fbc56a0-21a0-11f1-9039-37e7cd6f0338",
+		  x = 36,
+		  y = 204,
+		  width = 32,
+		  height = 32,
+		  customFields = {
+			type = "TubeExit",
+			nocollider = false,
+			destroyed = false
+		  }
+		}
 	  }
 	}
   },
@@ -2432,6 +2392,20 @@ levelsLDTK = {
 		  customFields = {
 			isTaken = false,
 			crewID = "CM001"
+		  }
+		}
+	  },
+	  Boots = {
+		{
+		  id = "Boots",
+		  iid = "80778710-21a0-11f1-9039-454013ab8924",
+		  x = 220,
+		  y = 84,
+		  width = 32,
+		  height = 32,
+		  customFields = {
+			type = "boots",
+			isItem = true
 		  }
 		}
 	  },
@@ -2792,7 +2766,6 @@ levelsLDTK = {
 			conditionalScripts = {}
 		  }
 		},
-		
 		{
 		  id = "Triggers",
 		  iid = "ff2dc230-21a0-11f1-9039-03e34eda3ccc",
@@ -2807,13 +2780,30 @@ levelsLDTK = {
 			mapPercent = 0,
 			conditionalScripts = {}
 		  }
+		},
+		{
+		  id = "Triggers",
+		  iid = "e5975f10-21a0-11f1-9039-77e3f5c70270",
+		  x = 340,
+		  y = 140,
+		  width = 8,
+		  height = 40,
+		  customFields = {
+			script = "smallSpaces",
+			usedTrigger = false,
+			type = "Search",
+			mapPercent = 0,
+			conditionalScripts = {
+			  "isTiny:smallSpacesTiny"
+			}
+		  }
 		}
 	  },
 	  Plunger = {
 		{
 		  id = "Plunger",
 		  iid = "f84981f0-fa90-11f0-8164-312164d448cc",
-		  x = 28,
+		  x = 84,
 		  y = 180,
 		  width = 32,
 		  height = 32,
@@ -2947,10 +2937,10 @@ levelsLDTK = {
 		{
 		  id = "Triggers",
 		  iid = "e3ff23f0-21a0-11f1-9039-21f5d6ff2f4a",
-		  x = 100,
-		  y = 116,
-		  width = 24,
-		  height = 64,
+		  x = 60,
+		  y = 52,
+		  width = 32,
+		  height = 32,
 		  customFields = {
 			script = "aLamp",
 			usedTrigger = false,
@@ -3185,7 +3175,7 @@ levelsLDTK = {
 		{
 		  id = "Doors",
 		  iid = "bcc50700-fa90-11f0-9039-e356dc00e5f2",
-		  x = 80,
+		  x = 336,
 		  y = 236,
 		  width = 32,
 		  height = 8,
@@ -3412,7 +3402,7 @@ levelsLDTK = {
 		{
 		  id = "Doors",
 		  iid = "d45ce9f0-fa90-11f0-9039-7ffe57d05b86",
-		  x = 80,
+		  x = 336,
 		  y = 4,
 		  width = 32,
 		  height = 8,
