@@ -2750,6 +2750,20 @@ levelsLDTK = {
 		  }
 		}
 	  },
+	  CrewMember = {
+		{
+		  id = "CrewMember",
+		  iid = "0ff85280-21a0-11f1-a37c-4d07db94935f",
+		  x = 364,
+		  y = 164,
+		  width = 48,
+		  height = 48,
+		  customFields = {
+			isTaken = false,
+			crewID = "CM002"
+		  }
+		}
+	  },
 	  Triggers = {
 		{
 		  id = "Triggers",
@@ -2963,6 +2977,20 @@ levelsLDTK = {
 			isItem = true
 		  }
 		}
+	  },
+	  Brocorat = {
+		{
+		  id = "Brocorat",
+		  iid = "241dcb00-21a0-11f1-a37c-178142f6ba93",
+		  x = 324,
+		  y = 36,
+		  width = 32,
+		  height = 32,
+		  customFields = {
+			speed = 0.5,
+			dead = false
+		  }
+		}
 	  }
 	}
   },
@@ -3021,7 +3049,7 @@ levelsLDTK = {
 		  width = 8,
 		  height = 32,
 		  customFields = {
-			NeedsKey = true,
+			NeedsKey = false,
 			DoorsConnection = "Left",
 			KeyNumber = 1
 		  }

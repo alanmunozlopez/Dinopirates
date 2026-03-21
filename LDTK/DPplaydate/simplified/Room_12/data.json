@@ -171,6 +171,22 @@
 				}
 			}
 		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "0ff85280-21a0-11f1-a37c-4d07db94935f",
+				"layer": "CrewMembers",
+				"x": 364,
+				"y": 164,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "CM002"
+				}
+			}
+		],
 		"Triggers": [
 			{
 				"id": "Triggers",
