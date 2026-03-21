@@ -50,19 +50,12 @@ function SaveSystem.getLevelState()
                         end
 
                         -- Items
-                        if entity.layer == "Items" then
+                        if entity.customFields.isItem == true then
                             entityState.collected = entity.customFields.collected or false
                         end
 
-                        -- Triggers - Save ALL trigger data including 'usedTrigger' status
-                        if entity.customFields.type or entity.customFields.script or entity.customFields.usedTrigger ~= nil then
-                            entityState.type = entity.customFields.type
-                            entityState.script = entity.customFields.script
-                            entityState.usedTrigger = entity.customFields.usedTrigger or false
-                        end
-                        
-                        -- Also check by entityType or layer name
-                        if entityType == "Triggers" or entity.layer == "Triggers" then
+                        -- Triggers
+                        if entityType == "Triggers" then
                             entityState.type = entity.customFields.type
                             entityState.script = entity.customFields.script
                             entityState.usedTrigger = entity.customFields.usedTrigger or false
@@ -117,17 +110,6 @@ function SaveSystem.restoreLevelState(levelState)
             -------------------------------------------------
             for entityType, savedEntities in pairs(state.entities) do
                 local targetList = levelsLDTK[i].entities[entityType]
-
-                -- Fallback: if entityType does not match, try by layer = "Triggers"
-                if not targetList and (entityType == "Triggers") then
-                    for key, list in pairs(levelsLDTK[i].entities) do
-                        if list[1] and list[1].layer == "Triggers" then
-                            
-                            targetList = list
-                            break
-                        end
-                    end
-                end
 
                 if targetList then
                     for _, savedEntity in ipairs(savedEntities) do

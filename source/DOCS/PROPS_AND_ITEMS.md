@@ -20,12 +20,16 @@ Items are implemented in `entities/items/Items.lua` directly inheriting from the
   - **`itemgift`**: (Frames 16-18) A generic delivery item that updates `PlayerData.items` (e.g., `hasPlunger:true`).
 
 ### 2. Positioning & Dynamic Grants (LDtk)
-Items are positioned using LDtk level data. In `MazeScene.lua`, any LDtk entity that resides on the `"Items"` layer or has the custom field `cf.isItem == true` is instantiated as:
+Items are positioned using LDtk level data. In `MazeScene.lua`, any LDtk entity with the custom field `cf.isItem == true` is instantiated as:
 `Items(x, y, type, keyNumber, cf.grants)`
+
+**Important**: `isItem` is a Boolean custom field defined directly on each item entity in LDtk (default `true`). This is the single source of truth — no layer name or code whitelist is needed. To add a new collectible item, create its entity in LDtk and set `isItem = true`.
 
 For dynamic items (`itemgift` and `notes`), they use a `grants` custom field to directly update `PlayerData`.
 - **Format**: `"key1:value1,key2:value2"` (e.g., `"hasPlunger:true"` or `"canFlash:true"`).
 - **Conditional Rendering**: In `MazeScene.lua`, items with a `grants` field are only spawned if the player **does not** already possess the granted item/skill. This ensures objects disappear from the world permanently once collected.
+
+**Item discrimination vs. Props**: Props are identified by having `destroyed`/`nocollider` custom fields. Items have neither — only `type`, optionally `grants`, and `isItem = true`. The spawning loop checks `cf.isItem == true` as the discriminator before any other logic.
 
 ### 3. Collection & Interaction Flow
 When the player collides with an Item (handled in `entities/player/collisions.lua`):
@@ -110,7 +114,7 @@ The game uses `NobleSprite`, a wrapper around the Playdate SDK's `playdate.graph
 ### 2. Item Management & Rendering in Love2D
 When implementing **Items** in Love2D, several core rendering concepts differ from Playdate's SDK:
 - **Tilesets and Quads**: Since Items use a single `assets/images/items/items-key-table-32-32.png` file, you need to load the image once and use `love.graphics.newQuad` to map to the correct 32x32 regions. You can use a library like `anim8` to construct the 3-frame animations for `boot`, `plunger`, `lamp`, etc., replicating the 8-frame duration.
-- **Spawning via LDtk**: Iterating through room data (parsed via a JSON or LDtk library), read the `"Items"` layer and instantiate your `Item` class with `(x, y, type, keyNumber, grants)`.
+- **Spawning via LDtk**: Iterating through room data (parsed via a JSON or LDtk library), check each entity for `customFields.isItem == true` and instantiate your `Item` class with `(x, y, type, keyNumber, grants)`. Do **not** rely on layer names — `isItem` is the canonical flag set per-entity in LDtk.
 - **Despawning / Collection Mechanics**: When bump.lua detects a collision between the Player and an Item, invoke your Lua port of `removeAll()`:
   - This should immediately drop the `Item` from the `world:remove(item)` (bump.lua tracking) and the scene's draw list `table.remove(scene.items, i)`.
   - Afterwards, invoke the localized Player functions to push the new abilities to the global `PlayerData` structure.
