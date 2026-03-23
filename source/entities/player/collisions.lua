@@ -127,21 +127,6 @@ function Player:collisionResponse(other)
     self:grabPlunger()
   return 'overlap'
 
-  elseif other:isa(PropItem) and other.isHole then
-  -- If player has boots with battery, can walk over the hole
-  if PlayerData.items.hasBoots == true and PlayerData.battery > 0 then
-    if PlayerData.isTiny == true then
-      self:drainBattery(Config.Battery.drainHoleTiny)
-    else
-      self:drainBattery(Config.Battery.drainHoleNormal)
-    end
-      return 'overlap'
-  else
-      -- Without boots or without battery = fall
-      self:fallBelow()
-      return 'overlap'
-  end
-  
   elseif other:isa(PropItem) and other.type == 'minifier' then
     self.currentMinifier = other
     PlayerData.readyToShrink = true

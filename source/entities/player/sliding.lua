@@ -79,7 +79,7 @@ function Player:updateSliding()
         for i = 1, length do
             local other = collisions[i].other
             if other:isa(PropItem) then
-                if not other.isHole and other.type ~= 'minifier' then
+                if other.type ~= 'minifier' then
                     hitSolid = true
                 end
             elseif not other:isa(Items) and not other:isa(Trigger) and not other:isa(Enemy) and not other:isa(CrewMember) then

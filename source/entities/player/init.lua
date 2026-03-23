@@ -13,6 +13,7 @@ import "entities/player/dash"
 import "entities/player/abilities"
 import "entities/player/lightburst"
 import "entities/player/sliding"
+import "entities/player/hole"
 import "entities/player/projectile"
 import "entities/player/plunge"
 local dialogUI = nil
@@ -81,6 +82,9 @@ function Player:init(x, y, speed, Zindex)
     self.slidingDirection = nil
     self.slidingSpeed = Config.Slide.speed
     self.slideHitWall = false  -- Prevents re-slide immediately after hitting a wall
+
+    -- Hole state variable
+    self.isFalling = false  -- Prevents fallBelow() firing every frame during transition
 
     self.isPlunging = false
     self.hasProjectile = true

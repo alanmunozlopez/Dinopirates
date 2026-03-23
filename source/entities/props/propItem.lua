@@ -31,15 +31,6 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.animation:addState('kitchenStorage', 21, 21)
   self.animation:addState('pot', 22, 22)
   self.animation:addState('knifeKettle', 23, 23)
-  self.animation:addState('holeTopLeft', 24, 24)
-  self.animation:addState('holeLeft', 25, 25)
-  self.animation:addState('holeBottomLeft', 26, 26)
-  self.animation:addState('holeTop', 27, 27)
-  self.animation:addState('holeCenter', 28, 28)
-  self.animation:addState('holeBottom', 29, 29)
-  self.animation:addState('holeTopRight', 30, 30)
-  self.animation:addState('holeRight', 31, 31)
-  self.animation:addState('holeBottomRight', 32, 32)
   self.animation:addState('debris', 33, 33)
   self.animation:addState('pcBase', 34, 34)
   self.animation:addState('pcBase2', 36, 36)
@@ -59,24 +50,12 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   
   -- Default properties
   self.isEdible = true
-  self.isHole = false
   self:setSize(32, 32)
   self.nocollide = nocollide
   self.isDestroyed = isDestroyed
   
   -- PROP CONFIGURATIONS
   local propConfigs = {
-    -- Holes (non-edible, specific colliders)
-    holeLeft        = { isHole = true,  isEdible = false, collideRect = {10, 0, 22, 32} },
-    holeRight       = { isHole = true,  isEdible = false, collideRect = {0, 0, 22, 32} },
-    holeCenter      = { isHole = true,  isEdible = false, collideRect = {0, 0, 32, 32} },
-    holeTopLeft     = { isHole = true,  isEdible = false, collideRect = {10, 10, 22, 22} },
-    holeTop         = { isHole = true,  isEdible = false, collideRect = {0, 10, 32, 22} },
-    holeTopRight    = { isHole = true,  isEdible = false, collideRect = {0, 10, 22, 22} },
-    holeBottomRight = { isHole = true,  isEdible = false, collideRect = {0, 0, 22, 22} },
-    holeBottom      = { isHole = true,  isEdible = false, collideRect = {0, 0, 32, 22} },
-    holeBottomLeft  = { isHole = true,  isEdible = false, collideRect = {10, 0, 22, 22} },
-    
     -- Special props
     minifier        = { collideRect = {0, 12, 32, 18} },
     pneumaticTube   = { isTube = true, isEdible = false, collideRect = {4, 10, 24, 22} },
@@ -93,7 +72,6 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   }
 
   local config = propConfigs[type] or {}
-  self.isHole = config.isHole or false
   self.isTube = config.isTube or false
   self.isEdible = config.isEdible ~= false -- defaults to true
 
@@ -101,23 +79,21 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   if self.nocollide == false then
     if config.collideRect then
       self:setCollideRect(table.unpack(config.collideRect))
-    elseif not self.isHole and not self.isTube then
+    elseif not self.isTube then
       -- Default prop collider
       self:setCollideRect(2, 10, 28, 18)
     end
   end
 
-  -- Debug output for holes and tubes
-  if self.isHole then
-    printDebug("🕳️  Hole created:", type, "at", x, y)
-  elseif self.isTube then
+  -- Debug output for tubes
+  if self.isTube then
     printDebug("🧪 Pneumatic Tube created:", type, "at", x, y)
   end
 
   -- Set static Z-index for certain types
   self.isStaticZIndex = false
 
-  if self.nocollide or self.isDestroyed or self.isHole or self.type == 'minifier' then
+  if self.nocollide or self.isDestroyed or self.type == 'minifier' then
     self.isStaticZIndex = true
     self:setZIndex(ZIndex.props)
   end

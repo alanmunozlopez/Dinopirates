@@ -669,6 +669,29 @@ function IsPlayerOnSlime(px, py)
 	return false
 end
 
+HOLE_TILE_IDS = {}
+for _, id in ipairs(Config.Tiles.hole) do
+	HOLE_TILE_IDS[id] = true
+end
+
+-- Checks if the player is standing on a hole tile.
+-- Uses the same foot-sampling logic as IsPlayerOnSlime.
+function IsPlayerOnHole(px, py)
+	local feetY = py + 12
+	local halfW = PlayerData.isTiny and 5 or 8
+	local xOffsets = { -halfW, 0, halfW }
+	local yOffsets = { -4, 0, 4 }
+	for _, dx in ipairs(xOffsets) do
+		for _, dy in ipairs(yOffsets) do
+			local tileID = GetTileUnderPlayer(px + dx, feetY + dy)
+			if tileID and HOLE_TILE_IDS[tileID] then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 local function formatNumberK(n)
 	if n >= 1000000 then
 		return string.format("%.1fM", n / 1000000):gsub("%.0M", "M")
