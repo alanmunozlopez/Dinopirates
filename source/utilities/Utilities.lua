@@ -472,10 +472,6 @@ function renderTileMap(tileData, tilemap)
   end
 end
 
-local SECTION_TILE_IDS = {}
-for _, id in ipairs(Config.Tiles.walkable) do
-	SECTION_TILE_IDS[id] = true
-end
 local TILE_SIZE = Config.Tiles.size
 
 --- Creates wall colliders from tilemap data with 2D clustering (horizontal and vertical merging)
@@ -489,15 +485,15 @@ function CreateTileColliders(tileData)
 	local allSegments = {}
 
 	-- Phase 1: Horizontal identification
-	-- We find all contiguous wall tiles (anything NOT in SECTION_TILE_IDS) in each row and store them as segments.
+	-- We find all contiguous wall tiles (IntGrid value == 1) in each row and store them as segments.
 	for y = 1, height do
 		allSegments[y] = {}
 		local x = 1
 		while x <= width do
 			local tileID = tileData[y][x]
-			if not SECTION_TILE_IDS[tileID] then
+			if tileID == Config.Tiles.IntGrid.wall then
 				local startX = x
-				while x <= width and tileData[y][x] and not SECTION_TILE_IDS[tileData[y][x]] do
+				while x <= width and tileData[y][x] == Config.Tiles.IntGrid.wall do
 					x = x + 1
 				end
 				local segmentWidth = x - startX
@@ -643,25 +639,16 @@ function GetTileUnderPlayer(px, py)
 	return row[tileX]
 end
 
-SLIME_TILE_IDS = {}
-for _, id in ipairs(Config.Tiles.slime) do
-	SLIME_TILE_IDS[id] = true
-end
-
--- Checks if the player is standing on a slime tile using a 16x16 area at their feet.
--- The player sprite is 48x48 with center at (px, py). The feet are at ~py+12.
--- Samples a 16x16 grid (5 points) to catch overlap with tile edges.
+-- Checks if the player is standing on a slime tile (IntGrid value 2).
+-- Samples a 3×3 grid of points at the player's feet to catch tile boundary overlaps.
 function IsPlayerOnSlime(px, py)
-	-- Feet center is at py + 12 (bottom of the collider rect)
 	local feetY = py + 12
-	-- Tiny mode collider is 10px wide (±5px), normal is 30px wide (±8px sample)
 	local halfW = PlayerData.isTiny and 5 or 8
 	local xOffsets = { -halfW, 0, halfW }
 	local yOffsets = { -4, 0, 4 }
 	for _, dx in ipairs(xOffsets) do
 		for _, dy in ipairs(yOffsets) do
-			local tileID = GetTileUnderPlayer(px + dx, feetY + dy)
-			if tileID and SLIME_TILE_IDS[tileID] then
+			if GetTileUnderPlayer(px + dx, feetY + dy) == Config.Tiles.IntGrid.slime then
 				return true
 			end
 		end
@@ -669,12 +656,7 @@ function IsPlayerOnSlime(px, py)
 	return false
 end
 
-HOLE_TILE_IDS = {}
-for _, id in ipairs(Config.Tiles.hole) do
-	HOLE_TILE_IDS[id] = true
-end
-
--- Checks if the player is standing on a hole tile.
+-- Checks if the player is standing on a hole tile (IntGrid value 3).
 -- Uses the same foot-sampling logic as IsPlayerOnSlime.
 function IsPlayerOnHole(px, py)
 	local feetY = py + 12
@@ -683,8 +665,7 @@ function IsPlayerOnHole(px, py)
 	local yOffsets = { -4, 0, 4 }
 	for _, dx in ipairs(xOffsets) do
 		for _, dy in ipairs(yOffsets) do
-			local tileID = GetTileUnderPlayer(px + dx, feetY + dy)
-			if tileID and HOLE_TILE_IDS[tileID] then
+			if GetTileUnderPlayer(px + dx, feetY + dy) == Config.Tiles.IntGrid.hole then
 				return true
 			end
 		end

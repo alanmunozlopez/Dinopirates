@@ -106,22 +106,16 @@ function scene:enter()
 	levelsLDTK[room].customFields.visited = true
 	
 	-- MARK: Floor
-	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
-	map = Graphics.tilemap.new()
-	map:setImageTable(tilesMap) 
-	-- map:setSize(16,9)
-	
+	local roomBgPath = 'assets/images/rooms/floor' .. PlayerData.actualLevel
+	                   .. '/' .. levelsLDTK[room].identifier
+	floor = Graphics.sprite.new()
+	floor:setImage(Graphics.image.new(roomBgPath))
+	floor:setZIndex(1)
+	floor:moveTo(200, 120)
+	floor:add()
+
 	-- MARK: UI
 	inGameEquip = inGameMenu()
-
-	renderTileMap(tileMapData[PlayerData.actualTilemap], map)
-	
-	floor = Graphics.sprite.new()
-	floor:setZIndex(1)
-	floor:setTilemap(map)
-	floor:moveTo(0, 0) -- Top-left corner
-	floor:setCenter(0, 0) -- Anchor top-left instead of center
-	floor:add()
 	
 	-- MARK: Tile Colliders
 	if room and levelsLDTK[room] then
