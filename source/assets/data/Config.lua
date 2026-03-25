@@ -31,7 +31,7 @@ Config.Tiles = {
         wall  = 1,
         slime = 2,
         hole  = 3,
-        -- 0 = floor (vacío, default)
+        floor = 4,
     }
 }
 

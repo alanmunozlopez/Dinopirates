@@ -49,7 +49,8 @@
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"BGTilemap.png",
+		"Gameplay.png"
 	],
 	"entities": {
 		"Doors": [
