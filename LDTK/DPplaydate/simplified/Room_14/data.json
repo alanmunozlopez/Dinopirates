@@ -48,7 +48,6 @@
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png",
 		"Gameplay.png"
 	],
 	"entities": {
