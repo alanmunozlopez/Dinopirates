@@ -47,7 +47,8 @@
 		"play": null
 	},
 	"layers": [
-		"Gameplay.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities" : {}
 }

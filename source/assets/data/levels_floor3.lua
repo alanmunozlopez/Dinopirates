@@ -56,7 +56,8 @@ table.insert(levelsLDTK, {
     DoorsConnection = {
       "Upper"
     },
-    play = nil
+    play = nil,
+    hasForeground = true
   },
   entities = {
     Doors = {
@@ -217,7 +218,8 @@ table.insert(levelsLDTK, {
     DoorsConnection = {
       "Top"
     },
-    play = nil
+    play = nil,
+    hasForeground = true
   },
   entities = {
     Doors = {
@@ -283,7 +285,8 @@ table.insert(levelsLDTK, {
     DoorsConnection = {
       "Top"
     },
-    play = nil
+    play = nil,
+    hasForeground = true
   },
   entities = {
     Doors = {

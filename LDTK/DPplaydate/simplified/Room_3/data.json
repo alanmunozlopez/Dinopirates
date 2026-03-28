@@ -48,7 +48,8 @@
 		"play": null
 	},
 	"layers": [
-		"Gameplay.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities": {
 		"Doors": [
@@ -56,9 +57,9 @@
 				"id": "Doors",
 				"iid": "bb73a870-ac70-11f0-8539-03f7dfb4cdc8",
 				"layer": "Doors",
-				"x": 8,
+				"x": 4,
 				"y": 120,
-				"width": 16,
+				"width": 8,
 				"height": 48,
 				"color": 7552569,
 				"customFields": {
@@ -72,9 +73,9 @@
 				"iid": "bf724d50-ac70-11f0-8539-137cb38eca29",
 				"layer": "Doors",
 				"x": 200,
-				"y": 232,
+				"y": 236,
 				"width": 48,
-				"height": 16,
+				"height": 8,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,
