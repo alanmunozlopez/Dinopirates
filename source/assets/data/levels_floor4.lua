@@ -1264,19 +1264,6 @@ table.insert(levelsLDTK, {
           destroyed = false,
           type = "trash"
         }
-      },
-      {
-        id = "Trash",
-        iid = "91764770-ac70-11f0-998c-ab2da21d72a7",
-        x = 292,
-        y = 140,
-        width = 32,
-        height = 32,
-        customFields = {
-          nocollider = false,
-          destroyed = false,
-          type = "trash"
-        }
       }
     },
     Blood = {
@@ -1289,60 +1276,6 @@ table.insert(levelsLDTK, {
         height = 32,
         customFields = {
           type = "blood",
-          nocollider = true,
-          destroyed = false
-        }
-      },
-      {
-        id = "Blood",
-        iid = "9d6f61d0-ac70-11f0-ae64-e33789cc7e0e",
-        x = 76,
-        y = 76,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "blood",
-          nocollider = true,
-          destroyed = false
-        }
-      },
-      {
-        id = "Blood",
-        iid = "f186f080-ac70-11f0-ae64-a96276b15936",
-        x = 148,
-        y = 76,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "blood",
-          nocollider = true,
-          destroyed = false
-        }
-      }
-    },
-    Blood2 = {
-      {
-        id = "Blood2",
-        iid = "945f3690-ac70-11f0-998c-c1bfd067cd84",
-        x = 356,
-        y = 188,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "blood2",
-          nocollider = false,
-          destroyed = false
-        }
-      },
-      {
-        id = "Blood2",
-        iid = "ee1103a0-ac70-11f0-ae64-453fe6771b29",
-        x = 260,
-        y = 68,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "blood2",
           nocollider = true,
           destroyed = false
         }
