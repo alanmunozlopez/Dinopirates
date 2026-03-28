@@ -43,6 +43,7 @@ Config.Player = {
     speedLowBattery  = 0.8,   -- multiplier when battery < batteryThresholdLow with lamp
     collideRect      = {x=8,  y=24, w=30, h=24},
     collideRectTiny  = {x=19, y=32, w=10, h=10},
+    collideRectHead  = {x=8,  y=8, w=16, h=16},
     uiOffsetX        = 30,
     uiOffsetY        = 30,
     hudOffsetY       = -40,
