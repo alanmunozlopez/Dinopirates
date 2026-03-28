@@ -73,6 +73,7 @@ function Brocorat:empty()
 end
 
 function Brocorat:update()
+	self:setZIndex(self.y)
 	-- Performance: Only update AI every 3 frames
 	self.updateFrameCounter = (self.updateFrameCounter + 1) % 3
 	
