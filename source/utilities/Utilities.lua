@@ -474,26 +474,32 @@ end
 
 local TILE_SIZE = Config.Tiles.size
 
---- Creates wall colliders from tilemap data with 2D clustering (horizontal and vertical merging)
+local WALKABLE_TILES = {
+	[Config.Tiles.IntGrid.slime] = true,
+	[Config.Tiles.IntGrid.hole]  = true,
+	[Config.Tiles.IntGrid.floor] = true,
+}
+
+--- Creates colliders for all non-walkable tiles (everything except slime/hole/floor).
 -- @param tileData table The 2D matrix of tile IDs
 -- @return table List of created Box sprites
 function CreateTileColliders(tileData)
 	local colliders = {}
 	local height = #tileData
 	local width = #tileData[1]
-	
+
 	local allSegments = {}
 
 	-- Phase 1: Horizontal identification
-	-- We find all contiguous wall tiles (IntGrid value == 1) in each row and store them as segments.
+	-- Find contiguous non-walkable tiles in each row and store as segments.
 	for y = 1, height do
 		allSegments[y] = {}
 		local x = 1
 		while x <= width do
 			local tileID = tileData[y][x]
-			if tileID == Config.Tiles.IntGrid.wall then
+			if not WALKABLE_TILES[tileID] then
 				local startX = x
-				while x <= width and tileData[y][x] == Config.Tiles.IntGrid.wall do
+				while x <= width and not WALKABLE_TILES[tileData[y][x]] do
 					x = x + 1
 				end
 				local segmentWidth = x - startX
