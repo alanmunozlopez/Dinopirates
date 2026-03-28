@@ -267,7 +267,7 @@ function Player:update()
     self.lightConeHideTime = nil
   end
 
-  self:setZIndex(self.y)
+  self:checkForegroundDepth()
   
   self:checkTrigger()
   self:checkMinifier()
@@ -312,4 +312,24 @@ function Player:update()
   end
 
   PlayerData.isActive = false
+end
+
+function Player:checkForegroundDepth()
+    local TILE_SIZE = Config.Tiles.size
+    local hr = Config.Player.collideRectHead
+    local headX = self.x - 24 + hr.x + hr.w * 0.5
+    local headY = self.y - 24 + hr.y + hr.h * 0.5
+    local tX = math.floor(headX / TILE_SIZE) + 1
+    local tY = math.floor(headY / TILE_SIZE) + 1
+
+    local tileGrid = tileMapData[PlayerData.actualTilemap]
+    local row = tileGrid and tileGrid[tY]
+    local id  = row and row[tX] or 0
+
+    local walkable = { [0]=true,[1]=true,[2]=true,[3]=true,[4]=true,[5]=true }
+    if not walkable[id] then
+        self:setZIndex(ZIndex.foreground + 1)
+    else
+        self:setZIndex(ZIndex.player)
+    end
 end
