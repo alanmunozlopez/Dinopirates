@@ -48,6 +48,7 @@ import "entities/UI/inGameMenu"
 -- MARK: Player related
 local player = nil
 local shadow = nil
+local foregroundSprite = nil
 local inGameMenuActive = nil
 -- MARK: UI
 local uiScreen = nil
@@ -113,6 +114,20 @@ function scene:enter()
 	floor:setZIndex(1)
 	floor:moveTo(200, 120)
 	floor:add()
+
+	-- MARK: Foreground
+	if levelsLDTK[room].customFields.hasForeground == true then
+		local fgPath = 'assets/images/rooms/floor' .. PlayerData.actualLevel
+		               .. '/Fg_' .. levelsLDTK[room].identifier
+		local fgImage = Graphics.image.new(fgPath)
+		if fgImage then
+			foregroundSprite = Graphics.sprite.new()
+			foregroundSprite:setImage(fgImage)
+			foregroundSprite:setZIndex(ZIndex.foreground)
+			foregroundSprite:moveTo(200, 120)
+			foregroundSprite:add()
+		end
+	end
 
 	-- MARK: UI
 	inGameEquip = inGameMenu()
@@ -391,6 +406,10 @@ function scene:exit()
 	
 	uiScreen:removeAll()
 	floor:remove()
+	if foregroundSprite then
+		foregroundSprite:remove()
+		foregroundSprite = nil
+	end
 	if shadow then
 		shadow:removeAll()
 	end

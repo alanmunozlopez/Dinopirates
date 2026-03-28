@@ -2,15 +2,16 @@ Config = {}
 
 -- Rendering layers
 Config.ZIndex = {
-    player = 4,
-    enemy  = 3,
-    props  = 2,
-    items  = 4,
-    fx     = 1999,
-    ui     = 2000,
-    hud    = 2000,
-    menu   = 2100,
-    alert  = 2200,
+    player     = 4,
+    enemy      = 3,
+    props      = 2,
+    items      = 4,
+    foreground = 100,
+    fx         = 1999,
+    ui         = 2000,
+    hud        = 2000,
+    menu       = 2100,
+    alert      = 2200,
 }
 
 -- Collision groups
