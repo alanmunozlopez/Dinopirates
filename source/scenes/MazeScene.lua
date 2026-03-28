@@ -118,7 +118,7 @@ function scene:enter()
 	-- MARK: Foreground
 	if levelsLDTK[room].customFields.hasForeground == true then
 		local fgPath = 'assets/images/rooms/floor' .. PlayerData.actualLevel
-		               .. '/Fg_' .. levelsLDTK[room].identifier
+		               .. '/foreground_' .. PlayerData.actualRoom
 		local fgImage = Graphics.image.new(fgPath)
 		if fgImage then
 			foregroundSprite = Graphics.sprite.new()
