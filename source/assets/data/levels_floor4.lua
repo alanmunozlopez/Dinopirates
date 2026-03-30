@@ -1130,8 +1130,8 @@ table.insert(levelsLDTK, {
       {
         id = "Triggers",
         iid = "04397810-ac70-11f0-ae64-891aa0cc0d18",
-        x = 36,
-        y = 140,
+        x = 92,
+        y = 108,
         width = 48,
         height = 40,
         customFields = {
