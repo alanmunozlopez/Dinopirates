@@ -17,7 +17,7 @@ The skill is triggered when the player uses the **Action** button while the Plun
     - `PlayerData.items.hasPlunger` and `PlayerData.skills.canPlungerang` must be true.
     - **Size Constraint**: The player cannot use the Plungerang while in the `isTiny` state.
     - **One at a Time**: Only one projectile can exist at once (`isPlunging` guard).
-    - **Directional Check**: Cannot be fired if the player is in an `idle` state; must have a directional heading.
+    - **Directional Check**: Cannot be fired if the player is in an `idle` state or if `direction == nil` — both conditions abort the throw.
 
 ### 2. Physical Lifecycle
 When launched, a `Projectile` sprite is created and follows three distinct phases:
@@ -49,7 +49,7 @@ The Plungerang interacts differently depending on the target:
 
 ---
 
-## 🛠️ Love2D Porting Guide
+## 🛠️ Love2D Porting Notes
 
 Implementing the Plungerang in Love2D requires migrating from Playdate's `NobleSprite` to a standard class system with `bump.lua`.
 
@@ -61,7 +61,7 @@ Projectile.__index = Projectile
 function Projectile.new(player, direction)
     local self = setmetatable({}, Projectile)
     self.player = player
-    self.speed = 480 -- Pixels per second (8 * 60)
+    self.speed = 480 -- 8 px/frame on Playdate × 60fps = 480 px/s in Love2D (dt-based)
     self.returning = false
     self.x, self.y = player.x, player.y
     -- Add to bump world

@@ -48,13 +48,18 @@ The scene iterates through the room's `entities` table:
 - **Props**: Spawns `PropItem` instances, checking if they were previously `destroyed`.
 - **Items**: Spawns `Items` (pickups) only if the player doesn't already have them. For `itemgift` and `notes`, it checks the `grants` field to see if the player owns the specific items or skills listed.
 - **Enemies**: Spawns `Brocorat`, `Bosscolli`, or `CrewMember` based on their `dead` or `isTaken` status.
+- **Triggers**: Spawns `Trigger` entities from the `Triggers` entity list, which drive dialogs, cutscenes, counters, and interactive events.
+
+### 4. Foreground & Cutscenes
+- **Foreground**: If the room has a `hasForeground` custom field, a foreground sprite is overlaid at `ZIndex.foreground` to create depth occlusion above the player.
+- **Cutscenes (Panels)**: If `levelsLDTK[room].customFields.comic_wasPlayed` is false and the room has a comic sequence, the Panels library is triggered to play the intro cutscene before gameplay begins.
 
 ---
 
 ## 🔄 Persistence
 State changes are saved back into the `levelsLDTK` table (or mirrored in `PlayerData`):
 - When an enemy is killed or a prop is broken, the `customFields` in the active `levelsLDTK` entry are updated.
-- `MazeScene:finish()` calls `SaveSystem.save()`, ensuring these changes persist across game restarts.
+- `MazeScene:finish()` and `MazeScene:pause()` both call `SaveSystem.save()`, ensuring changes persist when exiting a room or pausing (e.g., opening the system menu).
 
 > [!TIP]
 > The dynamic wall system in `Utilities.lua` is what allows rooms to feel connected; it hides the 12px wall sprites only where a neighbor is detected in LDtk.
@@ -282,21 +287,26 @@ end
 ```
 
 #### `FindRoomByIid(iid)`
-Finds a room by its unique identifier. Uses a hash index (`roomsByIid`) for O(1) lookup, with linear search fallback:
+Finds a room by its unique identifier. Uses a hash index (`roomsByIid`) for O(1) lookup, with linear search fallback.
+
+> [!NOTE]
+> `FindRoomByIid` is defined in **`entities/props/door.lua`**, not in `utilities/Utilities.lua`. It is a local helper used by the door loading system to resolve neighbor rooms from LDtk `levelIid` references.
+
 ```lua
+-- entities/props/door.lua
 function FindRoomByIid(iid)
   -- Fast hash lookup
   if roomsByIid and roomsByIid[iid] then
     return roomsByIid[iid]
   end
-  
+
   -- Fallback: linear search
   for i, room in ipairs(levelsLDTK) do
     if room and room.uniqueIdentifer == iid then
       return room
     end
   end
-  
+
   return nil
 end
 ```

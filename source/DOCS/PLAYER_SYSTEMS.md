@@ -11,8 +11,8 @@ The Battery system is the primary driver of exploration and danger.
     - Drains at **0.5 units per move** when `isInDarkness` is true.
     - Draining occurs in `Player:move` (in `movement.lua`) or via explicit `drainBattery(amount)` calls.
 - **Impacts**:
-    - **Speed**: If battery < 20 and in darkness, player speed is halved.
-    - **Sanity**: Sanity drains faster if battery < 20.
+    - **Speed**: If battery < 20 and in darkness, player speed is reduced by 20% (multiplier `0.8` from `Config.Player.speedLowBattery`).
+    - **Sanity**: Sanity drains at 2 points per tick if `battery < 20` (`batteryThresholdLow`), and at 1 point per tick if `battery < 40` (`batteryThresholdMid`).
     - **Movement**: If the player is in darkness and has no lamp or battery, they are significantly slowed.
 - **Charging**:
     - The player can charge the battery using the crank (via `chargeBattery(amount)`).
@@ -28,8 +28,8 @@ Sanity and Nutrition represent the player's mental and physical health.
     - **Regen**: Recharges if battery > 50 or the player is in light.
     - **Sanity Counter**: Every time sanity hits 0, the `sanityCounter` increments. This increases the global **Enemy Power Level**, making encounters more difficult.
 - **Health**:
-    - **Representation**: Stored as `healthPoints` (default 10).
-    - **HUD**: Represented by 5 hearts, where each heart is 2 points (total 10 bits).
+    - **Representation**: Stored as `healthPoints` (default **3**).
+    - **HUD**: Represented as filled squares — one square per health point. The `xPositions` array supports up to 10 HP. With the default of 3 HP, only 3 squares are filled.
     - **Sync**: Updated in real-time in the HUD via the `HealthIndicator` class.
 - **Calories & Steps**:
     - The `pedometer()` tracks steps. 200 steps = 10 calories burned.
@@ -49,8 +49,8 @@ The `isActive` flag is a critical internal value.
 ## 🤏 Transformation: Size & Collisions
 - **`isTiny`**:
     - Toggled via the **Minifier** prop.
-    - Changes the player's collision rectangle to a smaller **14x14** size.
-    - Enables access to "Hole" props.
+    - Changes the player's collision rectangle to a smaller **10×10** size (`Config.Player.collideRectTiny = {x=19, y=32, w=10, h=10}`).
+    - Enables access to **tube** props (`PropItem.isTube == true`) via `riseAbove()`.
     - Changing size triggers specific `tiny` animation states for all directions.
 - **`isBig`**: Managed via the transformation cycle, though currently less used than the tiny state in the primary maze logic.
 
@@ -66,7 +66,7 @@ Vertical transitions allow the player to move between floors through holes, tube
     3.  Searches `neighbourLevels` for direction `<`.
     4.  Calculates target room number.
 - **Positioning**: Preserves `x` and `y` coordinates for seamless verticality.
-- **Visuals**: Uses a specific `transitionFall` imagetable for a falling effect.
+- **Visuals**: Uses two imagetables for the fall effect: `transitionFallEnter` and `transitionFallOut` (passed as `imagetableEnter`/`imagetableExit` to `Noble.Transition.Imagetable`).
 
 ### `riseAbove()`
 - **Mechanism**: Similar to `fallBelow()` but checks for "Upper" connection and direction `>`.
@@ -77,15 +77,16 @@ Vertical transitions allow the player to move between floors through holes, tube
 ## 🎒 Inventory & Skills
 Items and skills can be granted either by picking up a fixed item type or dynamically via a `grants` field in level data (common for `itemgift` and `notes`).
 
-- **Items**:
+- **Items** (fields in `PlayerData.items`):
     - `hasLamp`: Enables vision and sanity regeneration. Grants **Lightburst** skill.
-    - `hasBoots`: Provides "Hole" safety; player drains battery to walk over holes instead of falling. Grants **Dash** skill.
-    - `hasPlunger`: Provides "Slime" safety; player can walk over slime tiles (IDs 89–97) instead of sliding. Grants **Plungerang** skill. See [PROPS_AND_ITEMS.md](PROPS_AND_ITEMS.md) for sliding mechanics.
-    - `hasBag`: Required to capture CrewMembers.
+    - `hasBoots`: Provides hole safety; player drains battery to walk over holes instead of falling. Grants **Dash** skill.
+    - `hasPlunger`: Provides slime immunity; player walks over slime tiles (IntGrid value `2`) without sliding. Grants **Plungerang** skill. See [PROPS_AND_ITEMS.md](PROPS_AND_ITEMS.md) for sliding mechanics.
+    - `hasDWatch`: Required to open the in-game equipment menu. Without it, the menu does not open.
     - `hasRadio` / `hasNotes`: Story-relevant items that enable specific dialogs/video feeds.
-    - `hasTools`: Story-relevant or utility item (used for certain environment interactions).
+    - `hasBag`: Not in `DefaultPlayerData` — granted dynamically via `grabBag()`. Required to capture CrewMembers.
+    - `hasTools`: Not in `DefaultPlayerData` — granted dynamically via `grabTools()`. Story-relevant item.
 - **Skills**:
-    - `canFlash` (Lightburst): Costs **10 battery**. Blinds enemies in a radius. Granted by `hasLamp`.
+    - `canFlash` (Lightburst): Costs **10 battery**. Blinds entities within a **directional cone** (built as a `playdate.geometry.polygon`). Currently only affects `CrewMember` sprites through the cone filter; enemies are blinded via a separate call path. Granted by `hasLamp`.
     - `canDash`: Costs **10 battery**. Enables a fast dash attack with a cooldown. Granted by `hasBoots`.
     - `canPlungerang`: Boomerang skill that can stun enemies or interact with props at a distance. Does not consume battery. Granted by `hasPlunger`. **Movement is locked while the projectile is in flight.** See [PLUNGERANG.md](PLUNGERANG.md) for exhaustive details and Love2D porting.
 
@@ -136,8 +137,9 @@ Playdate input is polled via `playdate.buttonIsPressed()`.
 The game uses a pseudo-turn-based system driven by `PlayerData.isActive`.
 - **Logic**:
     1.  Player initiates move -> `isActive = true`.
-    2.  `distributeMovementTokens(amount)` gives "action points" to enemies.
+    2.  `distributeMovementFrames(3)` gives movement frames to enemies/NPCs (3 frames per player step).
     3.  Enemies/NPCs only move/update AI if `isActive` was triggered.
+- **Note**: `distributeMovementTokens(amount)` is a different function — it is used specifically by the Lightburst skill (`canFlash`), not by standard movement.
 - **Porting Note**: This logic is platform-agnostic Lua. **Preserve it exactly**. It ensures the "Time Moves When You Move" mechanic works. Do not switch to a standard `dt` based continuous update for enemies.
 
 ### 5. Scene Transitions

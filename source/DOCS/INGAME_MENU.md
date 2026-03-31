@@ -14,7 +14,8 @@ The menu is an extension of `Graphics.sprite`.
 - **Components:**
   - A background image (`menuImage`) showing the UI frame.
   - A map overlay drawn directly onto the menu image (`MapDrawer.drawMap`).
-  - Icons for the available items (Lamp, Boots, Plungerang), managed via `itemMenu` components.
+  - Icons for the available skills (Lamp/Lightburst, Boots/Dash, Plungerang), managed via `itemMenu` components.
+  - An `equippedInfoPanel` (`skillInfo` sprite) shown at `(220, 180)` when any skill is active, displaying a banner for the currently selected skill.
   - Grid of collected crew member hats, instantiated on the fly when the menu opens (`drawCrewHats`).
 
 ### 2. State Management
@@ -26,10 +27,10 @@ The menu state is tightly coupled with two global variables in `_G.PlayerData`:
 Located primarily in `scenes/MazeScene.lua`.
 
 - **Opening the menu (A Button Held):**
-  Holding the **A Button** for 1 second (`AButtonHeld`) triggers `inGameEquip:displayMenu()`. This sets `isGaming = false` and `isEquiping = true`, pausing standard action and showing the menu overlay.
+  Holding the **A Button** for 1 second (`AButtonHeld`) triggers `inGameEquip:displayMenu()`. This sets `isGaming = false` and `isEquiping = true`, pausing standard action and showing the menu overlay. **Requires `PlayerData.items.hasDWatch == true`** — `displayMenu()` returns immediately without the D-Watch.
   
 - **Navigating (D-pad Left/Right):**
-  When `isEquiping` is `true`, pressing Left or Right (`leftButtonDown` / `rightButtonDown`) calls `inGameEquip:prevItem()` and `inGameEquip:nextItem()`. These functions cycle the `PlayerData.activeItem` integer (1: Lamp, 2: Boots, 3: Plungerang), guaranteeing it only selects items the player actually owns.
+  When `isEquiping` is `true`, pressing Left or Right (`leftButtonDown` / `rightButtonDown`) calls `inGameEquip:prevItem()` and `inGameEquip:nextItem()`. These functions cycle the `PlayerData.activeItem` using `getActiveSkillsList()`, which builds the list from **skills** (`PlayerData.skills.canFlash`, `canDash`, `canPlungerang`), not from item ownership flags.
 
 - **Selecting (A Button):**
   Pressing the **A Button** (`AButtonDown`) while the menu is open will invoke `inGameEquip:selectItem()`, committing the selection.
@@ -60,13 +61,14 @@ function InGameMenu:load()
     }
 end
 
+-- NOTE: In the actual Playdate code, cycling is based on SKILLS
+-- (PlayerData.skills.canFlash, canDash, canPlungerang), not item ownership.
+-- The Love2D port should mirror this:
 function InGameMenu:getActiveSkills()
     local active = {}
-    for _, item in ipairs(self.items) do
-        if PlayerData.items[item.hasItem] then
-            table.insert(active, item)
-        end
-    end
+    if PlayerData.skills.canFlash   then table.insert(active, {id=1, name="Lightburst"}) end
+    if PlayerData.skills.canDash    then table.insert(active, {id=2, name="Dash"}) end
+    if PlayerData.skills.canPlungerang then table.insert(active, {id=3, name="Plungerang"}) end
     return active
 end
 

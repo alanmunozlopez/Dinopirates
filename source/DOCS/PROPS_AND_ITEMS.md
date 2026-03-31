@@ -9,7 +9,7 @@ Items are specialized sprites that grant the player new abilities or resources u
 
 ### 1. Item Types & Rendering
 Items are implemented in `entities/items/Items.lua` directly inheriting from the game's sprite system. 
-- **Tileset**: `assets/images/items/items-key-table-32-32.png`
+- **Tileset**: Loaded as `'assets/images/items/items-key'` (the SDK appends `-table-WxH` automatically; do not include the suffix in the path).
 - **Size & Colliders**: Every item has a visual size and collision box of `32x32` pixels. They are all rendered on the `ZIndex.items` layer.
 - **Animation States / Frames**: All item animations operate at an 8-frame duration.
   - **`boots`**: (Frames 1-3) Prevents falling into holes if battery is available.
@@ -17,7 +17,12 @@ Items are implemented in `entities/items/Items.lua` directly inheriting from the
   - **`lamp`**: (Frames 7-9) Enables visibility in dark rooms and triggers sanity regen logic.
   - **`notes`**: (Frames 10-12) Story-relevant item. Updates `PlayerData.skills`.
   - **`keycard`**: (Frames 13-15) Grants access to doors with matching `keyNumber`.
+  - **`fridge1`**: (Frame 19) First fridge variant.
+  - **`fridge2`**: (Frame 20) Second fridge variant.
   - **`itemgift`**: (Frames 16-18) A generic delivery item that updates `PlayerData.items` (e.g., `hasPlunger:true`).
+  - **`radio`**: Calls `grabRadio()` on the player.
+  - **`bag`**: Calls `grabBag()` on the player. Also used for `honk` type items.
+  - **`tools`**: Calls `grabTools()` on the player.
 
 ### 2. Positioning & Dynamic Grants (LDtk)
 Items are positioned using LDtk level data. In `MazeScene.lua`, any LDtk entity with the custom field `cf.isItem == true` is instantiated as:
@@ -48,20 +53,20 @@ Props share a single image sheet (`props.png`) and use animation states like `ch
 - **Z-Index**: Props dynamically update their Z-Index based on their Y position (`update()` loop) unless they are "flat" (like blood or holes) or special (like minifiers).
 - **Configuration System**: `PropItem:init` uses a centralized `propConfigs` table to manage properties and colliders based on the prop `type`.
   - **Colliders**: Specific `collideRect` values are defined for unique shapes (e.g., trees, screens). Others use a default `(2, 10, 28, 18)`.
-  - **Properties**: Flags like `isEdible`, `isHole`, and `isSlime` are derived from this configuration.
+  - **Properties**: The `propConfigs` table contains `collideRect`, `isTube`, and `isEdible` flags. **`isHole` and `isSlime` do NOT exist** in `propConfigs` — holes are detected by IntGrid tile value (`Config.Tiles.IntGrid.hole = 3`) and slime by IntGrid value (`Config.Tiles.IntGrid.slime = 2`).
   - **Z-Index Overrides**: Certain props are set to a static `ZIndex.props` if they are non-collidable, destroyed, or environmental (holes/slime).
 
 ### 2. Environmental Hazards & Utility
-- **Holes**: Defined by type (e.g., `holeCenter`, `holeLeft`).
-    - **Falling**: In `collisions.lua`, hitting a hole without boots/battery triggers `self:fallBelow()`.
+- **Holes**: Detected **via tilemap IntGrid value `3`** (`Config.Tiles.IntGrid.hole`), not via prop types. There are no `holeCenter` or `holeLeft` PropItem types. `IsPlayerOnHole()` in `Utilities.lua` samples the IntGrid value under the player's feet.
+    - **Falling**: In `collisions.lua`, being on a hole tile without boots/battery triggers `self:fallBelow()`.
     - **Walking**: With boots, the player drains battery but remains in the room.
 - **Minifiers**: Special pods used to change the player's size (`isTiny`) via a two-stage interaction:
     1.  **Locking**: Standing on a minifier displays "Press A". Pressing A centers the player and locks movement (`isGaming = false`).
     2.  **Transformation**: The player must manually rotate the physical **crank** to change size. Rotating counter-clockwise shrinks the player, while clockwise returns them to normal size. The `transformCycle` animation plays during this phase.
     3.  **Breakout**: If the player is locked in the minifier state (after pressing A), they can press **B** at any time to cancel the process, hide the HUD, and restore normal movement.
     4.  **Completion**: Once the target size is reached, movement is restored automatically and the player can walk away.
-- **Slime (Tiles 89–97)**: Environmental hazard that causes the player to slide continuously without manual control until an obstacle or clear tile is reached.
-    - **Detection**: Slime is detected **via the tilemap**, not via prop collisions. Tile IDs `89` through `97` represent slime tiles. The function `GetTileUnderPlayer(px, py)` (found in `Utilities.lua`) samples the tile ID using the player's 16x16 footprint (feet level).
+- **Slime**: Environmental hazard that causes the player to slide continuously without manual control until an obstacle or clear tile is reached.
+    - **Detection**: Slime is detected **via the tilemap**, not via prop collisions. The IntGrid value `Config.Tiles.IntGrid.slime` (value **`2`**) identifies slime. The function `IsPlayerOnSlime()` / `GetTileUnderPlayer(px, py)` (in `Utilities.lua`) samples the IntGrid value under the player's 16×16 footprint.
     - **Triggering**: Evaluated per frame via `Player:checkSlimeTile()`. If on slime and unequipped (no Plunger), `self:startSliding(direction)` fires. The `direction` inherits the player's current facing direction when they touch the slime.
     - **Sliding Behavior**: 
         - **Locks Control**: `isSliding = true`, preventing standard input handling.
@@ -149,21 +154,20 @@ The **Minifier** prop relies on the physical Playdate Crank.
     - **Visuals**: The UI usage of the crank indicator should be replaced with a relevant prompt (e.g., "Scroll" or "Hit Triggers").
 
 ### 5. Global Configuration
-The `propConfigs` table in `PropItem.lua` is critical data that defines collision boxes and behaviors (isHole, isEdible).
+The `propConfigs` table in `PropItem.lua` is critical data that defines collision boxes (`collideRect`), `isTube`, and `isEdible` behaviors.
 - **Action**: **Copy this table exactly**. It is pure data and engine-agnostic.
-- Ensure your `PropItem` constructor in Love2D reads from this table to set the `isHole` and collider values correctly.
+- Holes and slime are **not** in `propConfigs` — detect them by IntGrid value (`2` = slime, `3` = hole) from the tilemap.
 
 ### 6. Specific Prop Behaviors
 - **Holes**: In Love2D, implement "Edges". If a player's center point is within a Hole's bounding box, trigger the fall logic.
 - **Slime Sliding (Tile-Based)**:
-    Slime is **not** a prop — it is detected by reading tile IDs from the tilemap. Tiles `89` through `97` are slime.
-    - **Detection**: Each frame, read the tile under the player from `tileMapData` and check if it's a slime ID.
+    Slime is **not** a prop — it is detected by reading the IntGrid value from the tilemap. The slime IntGrid value is **`2`** (`Config.Tiles.IntGrid.slime`).
+    - **Detection**: Each frame, read the IntGrid value under the player from `tileMapData` and check if it equals `2`.
     - **State Machine**: Implement an `isSliding` flag in your Player class that overrides WASD/Joystick input.
     - **Love2D Implementation**:
         ```lua
-        -- 1. Define slime tile IDs
-        local SLIME_TILE_IDS = {}
-        for i = 89, 97 do SLIME_TILE_IDS[i] = true end
+        -- 1. Define slime IntGrid value (matches Config.Tiles.IntGrid.slime)
+        local SLIME_INTGRID = 2
 
         local TILE_SIZE = 16
 
@@ -180,7 +184,7 @@ The `propConfigs` table in `PropItem.lua` is critical data that defines collisio
             if self.isSliding or self.isDashing then return end
 
             local tileID = getTileAt(tileData, self.x, self.y)
-            if tileID and SLIME_TILE_IDS[tileID] then
+            if tileID == SLIME_INTGRID then
                 if self.hasPlunger then return end  -- immune
                 self:startSliding(self.direction)
             end
@@ -205,7 +209,7 @@ The `propConfigs` table in `PropItem.lua` is critical data that defines collisio
 
             -- Stop if hitting a solid or leaving slime
             local tileID = getTileAt(tileData, actualX, actualY)
-            local onSlime = tileID and SLIME_TILE_IDS[tileID]
+            local onSlime = tileID == SLIME_INTGRID
             local hitWall = (len > 0)
             
             if hitWall or not onSlime then
@@ -229,4 +233,4 @@ The `propConfigs` table in `PropItem.lua` is critical data that defines collisio
         end
         ```
     - **Handling `slideHitWall`**: Your movement logic must explicitly reset `self.slideHitWall = false` when the player presses a directional key, ensuring they can escape the pinned state.
-    - **Key difference vs. old system**: No `PropItem.isSlime` checks needed. The tilemap is the single source of truth for slime detection.
+    - **Key difference vs. old system**: No `PropItem.isSlime` checks needed. The tilemap IntGrid value `2` is the single source of truth for slime detection (not tile IDs 89–97).

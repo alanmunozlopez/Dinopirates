@@ -28,7 +28,7 @@ The `CrewMember` has refined collisions to balance navigation and obstacle avoid
 - **Direction Redirect**: If blocked, it enters a "bounce" state for 20 frames, choosing a perpendicular direction.
 
 ### 3. Hiding State
-If the `CrewMember` bounces 3 times in quick succession (`bouncesRequiredToHide`), it enters the **Hiding State**:
+If the `CrewMember` bounces **2** times in quick succession (`bouncesRequiredToHide = 2`), it enters the **Hiding State**:
 - **Invisibility**: Sprite sets its state to `'hide'`.
 - **Non-collidable**: `setCollideRect(0, 0, 0, 0)` and groups are cleared.
 - **Exit Conditions**:
@@ -38,7 +38,7 @@ If the `CrewMember` bounces 3 times in quick succession (`bouncesRequiredToHide`
 ### 4. Special Interactions
 - **Blinding**: `blind(frames)` stops the entity for a duration.
 - **Projectile (Plungerang)**: The `Projectile` entity is configured to hit the `crewMember` group. When hit, it calls `stunInfinite()` on the crew member.
-- **Taking**: `taken()` marks the crew member as captured in `PlayerData`, updates the UI count, and removes the sprite.
+- **Taking**: `taken()` marks the crew member as captured in `PlayerData`, updates the UI count, removes the sprite, and also restores the player's projectile (`self.player.hasProjectile = true`) — returning the plungerang if it was lost.
 
 ### 5. Tiny Mode Interactions [NEW]
 If the player is in Tiny Mode (`PlayerData.isTiny == true`):
@@ -76,7 +76,7 @@ end
 
 ### 2. How `addScreen` Works
 The `dialogUI` (instance of `dialogScreen.lua`) uses `addScreen(scriptName)`:
-- It searches the `script` table (loaded globally, usually from `assets/data/scripts.lua`) for an entry with a matching `name`.
+- It searches the `script` table (loaded globally from `assets/data/script.lua`) for an entry with a matching `name`.
 - It sets `PlayerData.isTalking = true`, which pauses normal gameplay logic.
 - It displays the associated text, video feed, or images defined in the script.
 

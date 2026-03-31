@@ -37,7 +37,8 @@ The main controller. It manages:
 
 ### 2. `videoFeed`
 Displays an animated portrait in the dialog box.
-- Supported states include: `player`, `playerWorry`, `playerSurprise`, `playerHappy`, `playerAngry`, `playerSleepy`, `radioHand`, `radioRing`, `notesHand`, and `tiny`.
+- Supported states: `player`, `radioHand`, `radioPocket`, `radioRing`, `notesHand`, `playerWorry`, `playerSurprise`, `playerHappy`, `playerAngry`, `playerSleepy`, `playerScared`, `playerCry`.
+- There is **no standalone `tiny` state**. Only `-tiny` suffix variants exist (e.g., `player-tiny`, `radioHand-tiny`).
 - **Dynamic "Tiny" States**: If the player is in the "tiny" state (`PlayerData.isTiny == true`), the system automatically appends `-tiny` to the requested video state (e.g., `radioHand-tiny`). This ensures the correct miniature portrait is shown.
 
 ### 3. `imageScreen`
@@ -66,9 +67,10 @@ While `PlayerData.isTalking` is true:
 - Movement and most game logic (including enemies) are paused to allow the player to read.
 - Once the last line is reached, the UI automatically closes and `PlayerData.isTalking` is set to false.
 
-### Missing Dialog Safe-fallbacks [NEW]
-- If a requested script name does not exist in `script.lua`, `self:removeAll()` is immediately called, aborting the dialog safely without throwing a nil-indexing error.
-- Interacting with `CrewMember` entities in tiny mode defaults to looking for `<crewId>_tiny` (e.g. `CM001_tiny`). If the specific crew member has no dialog written, it falls back to a special safety dialog named `default_tiny`.
+### Missing Dialog Behavior
+- If a requested script name does not exist in `script.lua`, `addScreen()` logs a `printDebug` warning and **returns without action**. `removeAll()` is NOT called and `PlayerData.isTalking` is never set to `true` — the game stays in its current state. There is no safe-fallback dialog.
+- Interacting with `CrewMember` entities in tiny mode looks for `<crewId>_tiny` (e.g. `CM001_tiny`). **There is no `default_tiny` fallback script** in `script.lua` — if the specific crew member has no tiny dialog, the call silently fails (see above).
+- `removeAll()` also sets `PlayerData.isGaming = true` when closing the dialog, restoring normal gameplay.
 
 ---
 
@@ -79,3 +81,56 @@ The system uses the standard Playdate `strings` files.
 
 > [!NOTE]
 > Ensure all script names and localization keys follow a consistent naming convention to avoid missing strings.
+
+---
+
+## 🎮 Love2D Porting Notes
+
+### 1. Typewriter Effect
+Replace Playdate's text rendering with a timer-based character reveal:
+```lua
+function DialogScreen:update(dt)
+    if self.typing then
+        self.charTimer = self.charTimer + dt
+        if self.charTimer >= self.charDelay then
+            self.charTimer = 0
+            self.charIndex = self.charIndex + 1
+            if self.charIndex >= #self.currentText then
+                self.typing = false
+            end
+        end
+    end
+end
+
+function DialogScreen:draw()
+    local visible = self.currentText:sub(1, self.charIndex)
+    love.graphics.print(visible, self.x, self.y)
+end
+```
+
+### 2. Advancing Dialog
+Replace `AButtonDown` handler with `love.keypressed`:
+```lua
+function love.keypressed(key)
+    if PlayerData.isTalking and (key == "return" or key == "space") then
+        dialogUI:nextDialog()
+    end
+end
+```
+
+### 3. VideoFeed Portraits
+Load each portrait state as a separate animation using `anim8` or `love.graphics.newQuad` on a sprite sheet. Map state names (`"player"`, `"radioHand"`, etc.) to quad indices. Append `-tiny` suffix when `PlayerData.isTiny`.
+
+### 4. Missing Script Handling
+Since there is no automatic safe-fallback, add explicit guards in Love2D:
+```lua
+function DialogScreen:addScreen(name, sourceFeed)
+    local entry = findScript(name)
+    if not entry then
+        print("Warning: Dialog '" .. name .. "' not found")
+        return  -- stay in current state, same as Playdate behavior
+    end
+    PlayerData.isTalking = true
+    -- ... proceed
+end
+```

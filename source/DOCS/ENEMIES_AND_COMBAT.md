@@ -11,11 +11,11 @@ Enemies (like the `Brocorat`) inherit from the base `Enemy` class and are influe
 ### 1. Global Enemy Data (`PlayerData.EnemiesData`)
 Located in `source/assets/data/PlayerDataTables.lua`, these values scale the difficulty of the game:
 - **`powerLevel`**: (1-20) Increases enemy detection range and determines difficulty profiles in the Dance Scene.
-- **`sightRadius`**: (Base 50) The distance at which an enemy can detect the player.
-- **`isEvolved`**: A boolean flag indicating if enemies have reached a more dangerous state.
+- **`sightRadius`**: The base detection radius, sourced from `PlayerData.EnemiesData.sightRadius`. Each enemy's effective radius is `PlayerData.EnemiesData.sightRadius + self.powerLevel * 3`. There is no hardcoded base value — it is set in `PlayerDataTables.lua`.
+- **`isEvolved`**: This field **does not exist**. Enemy evolution state is computed dynamically each encounter inside `DanceScene:determineEnemyType()`, not stored as a persistent flag.
 
 ### 2. Detection & Movement
-- **`search(player)`**: Checks if the player is within `sightRadius`. If detected, triggers `blindSearch`.
+- **`search(player)`**: Implemented in `Brocorat` (and `CrewMember`) as subclass overrides — **not** in the base `Enemy` class. Checks if the player is within `sightRadius`. If detected, triggers `blindSearch`.
 - **`blindSearch(player)`**: Moves the enemy directly toward the player's current X/Y.
 - **`linealSearch(player)`**: An alternative AI where enemies only move if the player is aligned on the same X or Y axis.
 - **Speed Scaling**: `updateMoveSpeed()` adjusts enemy speed based on the player's battery and darkness. They slow down significantly when the player is in darkness with low battery.
@@ -23,10 +23,10 @@ Located in `source/assets/data/PlayerDataTables.lua`, these values scale the dif
 - **Movement Tokens**: Like CrewMembers, enemies use `movementFrames` to throttle their updates for performance.
 
 ### 3. Special Behaviors
-- **Sonar**: `sonar()` makes enemies "shine" when the player is nearby, focused, and in darkness, providing visual feedback of their presence.
+- **Sonar**: `sonar()` makes enemies "shine" when the player is **more than 60 pixels away** on the X axis (`(PlayerData.x - 60) > self.x OR (PlayerData.x + 60) < self.x`), while also focused and in darkness. This provides visual feedback of off-screen enemies.
 - **Projectile (Plungerang)**: Hit detection logic in `projectile.lua` includes `CollideGroups.enemy`. If hit, `hitEntity(other)` is called, which typically blinds/stuns the enemy for 60 frames.
 - **Blinding**: `blind(frames)` temporarily stops enemy movement when hit by a light flash or projectile.
-- **Edible Props**: Some enemies can "eat" certain `PropItem` objects if their `powerLevel` is high enough.
+- **Edible Props**: Some enemies can "eat" certain `PropItem` objects if their `powerLevel > 25`.
 
 ---
 
@@ -41,26 +41,30 @@ In `collisions.lua`, hitting an `Enemy` calls `self:fight()`, which:
 - Transitions the scene to `DanceScene`.
 
 ### 2. Difficulty Profiles
-The `DanceScene` selects a pattern profile based on `PlayerData.EnemiesData.powerLevel`:
+The `DanceScene` selects a pattern profile based on `PlayerData.EnemiesData.powerLevel`. However, the selection is **probabilistic** — `determineDifficultyUpgrade()` does a weighted random roll first using `PlayerData.sanityCounter` (normalized against 100), calories, and power. If the roll fails, the encounter defaults to `"basic"` regardless of power level.
+
 - **Basic** (1-5): Slow BPM (16), 4 buttons, mostly arrows.
 - **Evolve** (6-12): Faster BPM (24), 6 buttons, mixed input.
 - **Badass** (13-19): Very fast BPM (28), 8 buttons, tough patterns.
 - **Boss** (20): Max speed BPM (32), 12 buttons, high button spam.
 
-### 3. Rhythm Mechanics
+### 3. Pre-Battle "Ready" Screen
+Before the rhythm phase starts, `DanceScene` shows a `ResultsScreen` in a `'ready'` state with `PlayerData.isDancing = false`. The player must press **A** to trigger `startBattle()` and begin the button pattern. This pre-battle moment is separate from the rhythm mechanics.
+
+### 4. Rhythm Mechanics
 - **ButtonPress**: Sprites move from right to left across the screen.
 - **HitZone**: The area on the left where the player must press the corresponding button.
 - **Balance Bar**: A "tug-of-war" indicator.
     - **Correct Press**: Moves balance toward the **Win** side. `A/B` buttons deal damage to enemy HP; **Arrows** increase evade power/accuracy.
     - **Wrong Press/Miss**: Moves balance toward the **Lose** side.
-- **Animations**: `EnemyRatDance` and `PlayerDance` change animations based on inputs and hits.
+- **Animations**: `EnemyRatDance` plays attack animations on A/B button presses. `PlayerDance:changeAnimation()` only responds to the **four directional arrow buttons** — A/B do not change the player sprite animation.
 
-### 4. Outcomes
-- **Win**: The enemy is removed from the world via `findAndKillEnemyById`, player gains 60 calories, and transitions back to the maze.
+### 5. Outcomes
+- **Win**: The enemy is removed from the world via `findAndKillEnemyById`, the player gains 60 calories **and** recovers `PlayerData.healedHP` health points, then transitions back to the maze.
 - **Lose**: Transitions to the `TitleScene` (Game Over).
 
 > [!IMPORTANT]
-> The `determineDifficultyUpgrade()` function in `DanceScene` uses a weighted calculation of Player **Sanity**, **Power**, and **Calories** to decide if an encounter should be harder than the base level.
+> The `determineDifficultyUpgrade()` function in `DanceScene` uses a weighted probability roll based on `PlayerData.sanityCounter` (not the raw `sanity` value), power level, and calories. The result is probabilistic — a high power level increases the *chance* of a hard profile, but a failed roll always defaults to `"basic"`.
 
 ---
 
