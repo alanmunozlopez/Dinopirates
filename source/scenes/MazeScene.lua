@@ -29,6 +29,7 @@ import 'entities/props/door'
 import 'entities/props/trigger'
 
 import 'entities/items/Items'
+import 'entities/props/npc'
 
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
@@ -322,7 +323,16 @@ function scene:enter()
 		end
 	end
 	
-	
+
+	-- MARK: NPCs
+	local npcEntities = levelsLDTK[room].entities
+	if npcEntities and npcEntities.NPC then
+		for _, npcData in ipairs(npcEntities.NPC) do
+			local cf = npcData.customFields or {}
+			NPC(npcData.x, npcData.y, cf.type or "computer", npcData.iid, room, cf.sourceFeed or 0)
+		end
+	end
+
 -- MARK: Dialog triggers
 	local entities = levelsLDTK[room].entities
 	
