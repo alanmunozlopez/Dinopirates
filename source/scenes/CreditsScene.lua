@@ -26,6 +26,7 @@ local credits = {
     { type = "text",  value = "Music" },
     { type = "space", height = 8 },
     { type = "text",  value = "..." },
+    { type = "image", path = "assets/launcher/launchImages/9.png" },
     { type = "space", height = 60 },
     { type = "text",  value = "Thanks for playing!" },
     { type = "space", height = 80 },
@@ -126,6 +127,7 @@ function scene:drawBackground()
                 local img = loadedImages[item.path]
                 if img then
                     local w, _ = img:getSize()
+                    Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
                     img:draw(200 - w // 2, y)
                 end
             end
