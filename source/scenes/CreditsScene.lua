@@ -17,7 +17,8 @@ local START_OFFSET   = 260  -- initial Y of first item (just below screen bottom
 --   { type = "space", height = N }          — empty vertical gap
 local credits = {
     { type = "space", height = 40 },
-    { type = "text",  value = "DinoPirates from inner space" },
+    { type = "text",  value = "DinoPirates from Inner Space" },
+    { type = "text",  value = "Brocolation" },
     { type = "space", height = 30 },
     { type = "text",  value = "A game by" },
     { type = "space", height = 8 },
@@ -25,11 +26,13 @@ local credits = {
     { type = "space", height = 40 },
     { type = "text",  value = "Music" },
     { type = "space", height = 8 },
-    { type = "text",  value = "..." },
-    { type = "image", path = "assets/launcher/launchImages/9.png" },
-    { type = "space", height = 60 },
+    { type = "text",  value = "Alan Muñoz" },
+    { type = "space", height = 40 },
     { type = "text",  value = "Thanks for playing!" },
     { type = "space", height = 80 },
+    { type = "image", path = "assets/launcher/launchImages/9.png" },
+    { type = "space", height = 60 },
+   
 }
 
 scene.backgroundColor = Graphics.kColorBlack
