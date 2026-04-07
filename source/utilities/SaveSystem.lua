@@ -60,6 +60,11 @@ function SaveSystem.getLevelState()
                             entityState.script = entity.customFields.script
                             entityState.usedTrigger = entity.customFields.usedTrigger or false
                         end
+
+                        -- NPCs
+                        if entityType == "NPC" then
+                            entityState.hasGranted = entity.customFields.hasGranted or false
+                        end
                     end
 
                     table.insert(levelState[i].entities[entityType], entityState)
@@ -153,6 +158,11 @@ function SaveSystem.restoreLevelState(levelState)
                                     -- Items
                                     if savedEntity.collected ~= nil then
                                         currentEntity.customFields.collected = savedEntity.collected
+                                    end
+
+                                    -- NPCs
+                                    if savedEntity.hasGranted ~= nil then
+                                        currentEntity.customFields.hasGranted = savedEntity.hasGranted
                                     end
                                 end
                                 break
