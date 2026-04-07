@@ -140,3 +140,8 @@ function scene:exit()
     scene.super.exit(self)
     loadedImages = {}
 end
+
+function scene:finish()
+    scene.super.finish(self)
+    Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
+end
