@@ -127,12 +127,16 @@ function Player:collisionResponse(other)
     self:grabPlunger()
   return 'overlap'
 
+  elseif other:isa(NPC) then
+    self.currentTrigger = other
+    return 'overlap'
+
   elseif other:isa(PropItem) and other.type == 'minifier' then
     self.currentMinifier = other
     PlayerData.readyToShrink = true
     self:showUIHUD()
     self.uiHud:setPressA()
-    
+
   return 'overlap'
 
   elseif other:isa(PropItem) and other.isTube then
