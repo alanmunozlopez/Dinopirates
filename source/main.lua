@@ -15,6 +15,7 @@ import 'scenes/DanceScene'
 import 'scenes/Floors'
 --import 'scenes/StarScene'
 import 'scenes/TestScene'
+import 'scenes/CreditsScene'
 import 'scenes/TitleScene'
 
 import 'assets/data/PlayerDataTables'

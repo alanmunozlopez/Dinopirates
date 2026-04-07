@@ -204,7 +204,20 @@ function scene:enter()
 		end
 	})
 	currentY = currentY + spacing
-	
+
+	-- Add Credits option
+	local creditsSprite = MenuTitle(startX, currentY, 'defAchievements', 100)
+	table.insert(menuItems, {
+		sprite = creditsSprite,
+		defaultState = 'defAchievements',
+		selectedState = 'selAchievements',
+		backgroundState = 'achievements',
+		action = function()
+			Noble.transition(CreditsScene, 0.3, Noble.Transition.MetroNexus)
+		end
+	})
+	currentY = currentY + spacing
+
 	-- Add Playground option only if debug is true
 	if debug then
 		local playgroundSprite = MenuTitle(startX, currentY, 'defPlayground', 100)
