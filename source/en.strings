@@ -138,3 +138,6 @@
 
 "smallspaces-02" = "they are the only ones that fit this spaces, we need them!"
 "smallspacestiny-01" = "ok, now I can get through this."
+
+"npc-test-auth" = "Terminal online. Keycard dispensed."
+"npc-test-default" = "Insufficient clearance."
