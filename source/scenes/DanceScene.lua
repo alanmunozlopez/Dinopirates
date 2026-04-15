@@ -168,19 +168,6 @@ function scene:enter()
         self.enemyType = self:determineEnemyType()
     
         -- Adjust bpm / buttons by enemy type
-        if self.enemyType == "basic" then
-            self.bpm = 16
-            self.numberOfButtons = 4
-        elseif self.enemyType == "evolve" then
-            self.bpm = 24
-            self.numberOfButtons = 6
-        elseif self.enemyType == "badass" then
-            self.bpm = 28
-            self.numberOfButtons = 8
-        elseif self.enemyType == "boss" then
-            self.bpm = 32
-            self.numberOfButtons = 12
-        end
         local diffConfig = Config.Dance[self.enemyType] or Config.Dance.basic
         self.bpm = diffConfig.bpm
         self.numberOfButtons = diffConfig.buttons
