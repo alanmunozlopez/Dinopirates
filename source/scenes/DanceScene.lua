@@ -16,6 +16,17 @@ import "entities/UI/battle/resultsScreen"
 local lifes = nil
 
 local screenCenterX = 200
+
+-- File-scoped sprite references (declared here to allow cleanup in exit)
+local hitzone = nil
+local playerDance = nil
+local enemyDance = nil
+local buttonCover = nil
+local winIndicator = nil
+local loseIndicator = nil
+local backgroundDance = nil
+local resultsScreen = nil
+local sequence = nil
 local barWidth = 8
 local barHeight = 10
 local barY = 56
@@ -144,6 +155,7 @@ function scene:enter()
     scene.super.enter(self)
     local startPoint = 400
     condition = nil
+    if sequence then sequence:stop() end
     sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
     sequence:start()
 
@@ -169,6 +181,9 @@ function scene:enter()
             self.bpm = 32
             self.numberOfButtons = 12
         end
+        local diffConfig = Config.Dance[self.enemyType] or Config.Dance.basic
+        self.bpm = diffConfig.bpm
+        self.numberOfButtons = diffConfig.buttons
         self.enemyEvolving = true
         printDebug("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
     
@@ -176,8 +191,8 @@ function scene:enter()
         -- Roll failed: stay basic
         self.enemyType = "basic"
         self.enemyEvolving = false
-        self.bpm = 16
-        self.numberOfButtons = 4
+        self.bpm = Config.Dance.basic.bpm
+        self.numberOfButtons = Config.Dance.basic.buttons
     
         printDebug("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
     end
@@ -196,18 +211,7 @@ function scene:enter()
        table.insert(self.buttons, b)
    end
 
-    -- Keep backwards compatibility with existing single-named globals used elsewhere
-    -- Convert to local variables to avoid global namespace pollution
-    local button = self.buttons[1]
-    local button2 = self.buttons[2]
-    local button3 = self.buttons[3]
-    local button4 = self.buttons[4]
-    local button5 = self.buttons[5]
-    local button6 = self.buttons[6]
-    local button7 = self.buttons[7]
-    local button8 = self.buttons[8]
-
-    -- Other entities (unchanged)
+    -- Other entities
     hitzone = HitZone(40,30, self.bpm)
     playerDance = PlayerDance(self.bpm)
     enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving)
@@ -230,8 +234,6 @@ end
 
 function scene:drawBackground()
 	scene.super.drawBackground(self)
-    
-	background:draw(0, 0)
 end
 
 function scene:update()
@@ -373,13 +375,31 @@ end
 
 function scene:exit()
 	scene.super.exit(self)
-    
+
+    -- Remove battle sprites
+    if hitzone then hitzone:remove() hitzone = nil end
+    if playerDance then playerDance:remove() playerDance = nil end
+    if enemyDance then enemyDance:remove() enemyDance = nil end
+    if buttonCover then buttonCover:remove() buttonCover = nil end
+    if winIndicator then winIndicator:remove() winIndicator = nil end
+    if loseIndicator then loseIndicator:remove() loseIndicator = nil end
+    if backgroundDance then backgroundDance:remove() backgroundDance = nil end
+    if resultsScreen then resultsScreen:remove() resultsScreen = nil end
+
+    if self.buttons then
+        for _, btn in ipairs(self.buttons) do
+            if btn then btn:remove() end
+        end
+        self.buttons = nil
+    end
+
     -- Player reset
     PlayerData.healthPoints = 2
-    
+
 	Noble.Input.setCrankIndicatorStatus(false)
+    if sequence then sequence:stop() end
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
-	sequence:start();
+	sequence:start()
     SaveSystem.save()
 end
 

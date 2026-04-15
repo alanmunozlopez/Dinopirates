@@ -155,4 +155,17 @@ Config.Pedometer = {
     caloriesPerBurn  = 10,
 }
 
+-- Input
+Config.Input = {
+    crankMenuThreshold = 30,   -- degrees of crank rotation to navigate menu
+}
+
+-- Dance (rhythm combat)
+Config.Dance = {
+    basic  = { bpm = 16, buttons = 4  },
+    evolve = { bpm = 24, buttons = 6  },
+    badass = { bpm = 28, buttons = 8  },
+    boss   = { bpm = 32, buttons = 12 },
+}
+
 return Config

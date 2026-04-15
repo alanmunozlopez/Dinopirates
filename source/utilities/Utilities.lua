@@ -364,6 +364,10 @@ end
 -- Finds and kills an enemy by its unique ID (LDtk version)
 function findAndKillEnemyById(enemyId)
 	local room = PlayerData.floor
+	if not levelsLDTK or not levelsLDTK[room] then
+		printDebug("⚠️ findAndKillEnemyById: invalid room:", room)
+		return
+	end
 	local entities = levelsLDTK[room].entities
 
 	if not entities then

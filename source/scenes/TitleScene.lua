@@ -59,10 +59,10 @@ TitleScene.inputHandler = {
 	end,
 	cranked = function(change, _)
 		crankTick = crankTick + change
-		if crankTick > 30 then
+		if crankTick > Config.Input.crankMenuThreshold then
 			crankTick = 0
 			selectNext()
-		elseif crankTick < -30 then
+		elseif crankTick < -Config.Input.crankMenuThreshold then
 			crankTick = 0
 			selectPrevious()
 		end
@@ -254,6 +254,11 @@ end
 -- This runs as as soon as a transition to another scene begins.
 function scene:exit()
 	scene.super.exit(self)
+	for _, item in ipairs(menuItems) do
+		if item.sprite then item.sprite:remove() end
+	end
+	menuItems = {}
+	if background then background:remove() background = nil end
 end
 
 -- This runs once a transition to another scene completes.
