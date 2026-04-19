@@ -226,7 +226,7 @@ end
 function scene:update()
 	scene.super.update(self)
    if  PlayerData.isDancing == false and condition == nil then
-      resultsScreen:loadingScreen()
+      if resultsScreen then resultsScreen:loadingScreen() end
         
       return
     end

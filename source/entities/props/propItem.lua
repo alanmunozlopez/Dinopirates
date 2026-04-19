@@ -113,7 +113,9 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
 end
 
 function PropItem:update()
-	self:setZIndex(self.y)
+  if not self.isStaticZIndex then
+    self:setZIndex(self.y)
+  end
 end
 
 function PropItem:destroyProp(id)

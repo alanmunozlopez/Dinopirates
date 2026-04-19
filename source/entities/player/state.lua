@@ -330,6 +330,6 @@ function Player:checkForegroundDepth()
     if not walkable[id] then
         self:setZIndex(ZIndex.foreground + 1)
     else
-        self:setZIndex(ZIndex.player)
+        self:setZIndex(self.y)
     end
 end
