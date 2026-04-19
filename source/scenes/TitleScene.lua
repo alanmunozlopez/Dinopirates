@@ -206,11 +206,11 @@ function scene:enter()
 	currentY = currentY + spacing
 
 	-- Add Credits option
-	local creditsSprite = MenuTitle(startX, currentY, 'defAchievements', 100)
+	local creditsSprite = MenuTitle(startX, currentY, 'defCredits', 100)
 	table.insert(menuItems, {
 		sprite = creditsSprite,
-		defaultState = 'defAchievements',
-		selectedState = 'selAchievements',
+		defaultState = 'defCredits',
+		selectedState = 'selCredits',
 		backgroundState = 'achievements',
 		action = function()
 			Noble.transition(CreditsScene, 0.3, Noble.Transition.MetroNexus)
