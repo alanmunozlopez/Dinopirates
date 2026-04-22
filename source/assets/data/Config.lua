@@ -160,6 +160,13 @@ Config.Input = {
     crankMenuThreshold = 30,   -- degrees of crank rotation to navigate menu
 }
 
+-- Enemy AI
+Config.Enemy = {
+    sightRadiusBase  = 150,  -- min 50; scales up with powerLevel * 3 per enemy
+    sightRadiusMin   = 50,
+    powerLevelPerSightBonus = 3,
+}
+
 -- Dance (rhythm combat)
 Config.Dance = {
     basic  = { bpm = 16, buttons = 4  },
