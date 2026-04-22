@@ -10,19 +10,21 @@ local menuItems = {}
 local selectedIndex = 1
 local crankTick = 0
 local background = nil
+local isDebugMenu = false
 
 scene.backgroundColor = Graphics.kColorWhite
 
 local function updateMenuSelection()
 	for i, item in ipairs(menuItems) do
-		if i == selectedIndex then
-			item.sprite.animation:setState(item.selectedState)
-		else
-			item.sprite.animation:setState(item.defaultState)
+		if item.sprite then
+			if i == selectedIndex then
+				item.sprite.animation:setState(item.selectedState)
+			else
+				item.sprite.animation:setState(item.defaultState)
+			end
 		end
 	end
-	
-	-- Update background animation based on selected menu item
+
 	if background and menuItems[selectedIndex] then
 		background:changeState(menuItems[selectedIndex].backgroundState)
 	end
@@ -92,150 +94,118 @@ function scene:enter()
 	scene.super.enter(self)
 	PlayerData.isGaming = false
 	
-	-- Create animated background
-	background = TitleBackground(200, 120, 1)
-	
-	-- Set image draw mode to properly render sprite transparency
 	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
-	
-	-- Clear previous menu items
 	menuItems = {}
-	
-	-- Starting Y position for menu items
-	local startY = 120
-	local startX = 88
-	local spacing = 20
-	local currentY = startY
-	
-	-- Add Continue option if save exists
-	if playdate.file.exists('gameState.json') then
-		local continueSprite = MenuTitle(startX, currentY, 'defContinue', 100)
-		table.insert(menuItems, {
-			sprite = continueSprite,
-			defaultState = 'defContinue',
-			selectedState = 'selContinue',
-			backgroundState = 'continue',
-			action = function() 
-				local success, savedLevel = SaveSystem.load()
-				
-				if success and savedLevel then
-					printDebug("📍 Cargando nivel guardado:", savedLevel)
-					
-					-- Traducir el número de nivel a la escena
-					local nextScene = RoomTranslate(savedLevel)
-					
-					if nextScene then
-						Noble.transition(
-							nextScene,
-							1, Noble.Transition.Spotlight, {
-							x = 200,
-							y = 120,
-							xExit = PlayerData.playerSpawn.x,
-							yExit = PlayerData.playerSpawn.y,
-							holdTime = 0.25,
-							ease = Ease.outInQuad}
-						)
-					else
-						printDebug("❌ ERROR: No se encontró la escena Floor" .. savedLevel)
-						-- Fallback a un nivel por defecto
-						Noble.transition(Floor120, 1, Noble.Transition.Default)
-					end
-				else
-					printDebug("❌ Error cargando el save")
-					-- Opcional: mostrar mensaje de error
-				end
-			end
-		})
-		currentY = currentY + spacing
-	end
-	-- Add Delete Save option if save exists
-	if playdate.file.exists('gameState.json') then
-		local deleteSprite = MenuTitle(startX, currentY, 'defDeleteGame', 100)
-		table.insert(menuItems, {
-			sprite = deleteSprite,
-			defaultState = 'defDeleteGame',
-			selectedState = 'selDeleteGame',
-			backgroundState = 'deleteGame',
-			action = function() 
-				SaveSystem.delete()
-				Utilities.clearAllAchievements()
-				Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
-			end
-		})
-		currentY = currentY + spacing
-	end
-	
-	-- Add New Game option
-	local newGameSprite = MenuTitle(startX, currentY, 'defNewGame', 100)
-	table.insert(menuItems, {
-		sprite = newGameSprite,
-		defaultState = 'defNewGame',
-		selectedState = 'selNewGame',
-		backgroundState = 'newGame',
-		action = function()
-			SaveSystem.reset()
-			
-			-- Iniciar en el primer nivel de tu juego
-			Noble.transition(
-				Floor407,  -- Cambia esto al nivel inicial de tu juego
-				1, Noble.Transition.Spotlight, {
-				x = 200,
-				y = 120,
-				xExit = PlayerData.playerSpawn.x,
-				yExit = PlayerData.playerSpawn.y,
-				holdTime = 0.25,
-				ease = Ease.outInQuad
-			})
-		end
-	})
-	currentY = currentY + spacing
-	
-	
-	-- Add Achievements option
-	local achievementsSprite = MenuTitle(startX, currentY, 'defAchievements', 100)
-	table.insert(menuItems, {
-		sprite = achievementsSprite,
-		defaultState = 'defAchievements',
-		selectedState = 'selAchievements',
-		backgroundState = 'achievements',
-		action = function()
-			Graphics.setImageDrawMode(Graphics.kDrawModeCopy) -- hotfix
-			achievements.viewer.launch()
-		end
-	})
-	currentY = currentY + spacing
+	isDebugMenu = (debug == true)
 
-	-- Add Credits option
-	local creditsSprite = MenuTitle(startX, currentY, 'defCredits', 100)
-	table.insert(menuItems, {
-		sprite = creditsSprite,
-		defaultState = 'defCredits',
-		selectedState = 'selCredits',
-		backgroundState = 'achievements',
-		action = function()
-			Noble.transition(CreditsScene, 0.3, Noble.Transition.MetroNexus)
-		end
-	})
-	currentY = currentY + spacing
-
-	-- Add Playground option only if debug is true
-	if debug then
-		local playgroundSprite = MenuTitle(startX, currentY, 'defPlayground', 100)
+	if isDebugMenu then
+		-- Debug mode: text-only menu, no background or sprites
 		table.insert(menuItems, {
-			sprite = playgroundSprite,
-			defaultState = 'defPlayground',
-			selectedState = 'selPlayground',
-			backgroundState = 'achievements', -- Reuse achievements background (only 4 frames available)
+			label  = "PLAYGROUND",
 			action = function()
 				PlayerData.playerSpawn.x = 200
 				PlayerData.playerSpawn.y = 200
 				Noble.transition(Floor409, 0.3, Noble.Transition.MetroNexus)
 			end
 		})
+	else
+		background = TitleBackground(200, 120, 1)
+
+		local startY = 120
+		local startX = 88
+		local spacing = 20
+		local currentY = startY
+
+		if playdate.file.exists('gameState.json') then
+			local continueSprite = MenuTitle(startX, currentY, 'defContinue', 100)
+			table.insert(menuItems, {
+				sprite = continueSprite,
+				defaultState = 'defContinue',
+				selectedState = 'selContinue',
+				backgroundState = 'continue',
+				action = function()
+					local success, savedLevel = SaveSystem.load()
+					if success and savedLevel then
+						printDebug("📍 Cargando nivel guardado:", savedLevel)
+						local nextScene = RoomTranslate(savedLevel)
+						if nextScene then
+							Noble.transition(nextScene, 1, Noble.Transition.Spotlight, {
+								x = 200, y = 120,
+								xExit = PlayerData.playerSpawn.x,
+								yExit = PlayerData.playerSpawn.y,
+								holdTime = 0.25, ease = Ease.outInQuad
+							})
+						else
+							printDebug("❌ ERROR: No se encontró la escena Floor" .. savedLevel)
+							Noble.transition(Floor120, 1, Noble.Transition.Default)
+						end
+					else
+						printDebug("❌ Error cargando el save")
+					end
+				end
+			})
+			currentY = currentY + spacing
+		end
+
+		if playdate.file.exists('gameState.json') then
+			local deleteSprite = MenuTitle(startX, currentY, 'defDeleteGame', 100)
+			table.insert(menuItems, {
+				sprite = deleteSprite,
+				defaultState = 'defDeleteGame',
+				selectedState = 'selDeleteGame',
+				backgroundState = 'deleteGame',
+				action = function()
+					SaveSystem.delete()
+					Utilities.clearAllAchievements()
+					Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
+				end
+			})
+			currentY = currentY + spacing
+		end
+
+		local newGameSprite = MenuTitle(startX, currentY, 'defNewGame', 100)
+		table.insert(menuItems, {
+			sprite = newGameSprite,
+			defaultState = 'defNewGame',
+			selectedState = 'selNewGame',
+			backgroundState = 'newGame',
+			action = function()
+				SaveSystem.reset()
+				Noble.transition(Floor407, 1, Noble.Transition.Spotlight, {
+					x = 200, y = 120,
+					xExit = PlayerData.playerSpawn.x,
+					yExit = PlayerData.playerSpawn.y,
+					holdTime = 0.25, ease = Ease.outInQuad
+				})
+			end
+		})
 		currentY = currentY + spacing
+
+		local achievementsSprite = MenuTitle(startX, currentY, 'defAchievements', 100)
+		table.insert(menuItems, {
+			sprite = achievementsSprite,
+			defaultState = 'defAchievements',
+			selectedState = 'selAchievements',
+			backgroundState = 'achievements',
+			action = function()
+				Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
+				achievements.viewer.launch()
+			end
+		})
+		currentY = currentY + spacing
+
+		local creditsSprite = MenuTitle(startX, currentY, 'defCredits', 100)
+		table.insert(menuItems, {
+			sprite = creditsSprite,
+			defaultState = 'defCredits',
+			selectedState = 'selCredits',
+			backgroundState = 'achievements',
+			action = function()
+				Noble.transition(CreditsScene, 0.3, Noble.Transition.MetroNexus)
+			end
+		})
 	end
-	
-	-- Set initial selection (Continue if exists, otherwise New Game)
+
 	selectedIndex = 1
 	updateMenuSelection()
 end
@@ -249,6 +219,14 @@ end
 function scene:update()
 	scene.super.update(self)
 	drawVersionNumber()
+
+	if isDebugMenu then
+		Graphics.drawTextAligned("*[ DEBUG MODE ]*", 200, 80, kTextAlignment.center)
+		for i, item in ipairs(menuItems) do
+			local label = i == selectedIndex and ("*> " .. item.label .. " <*") or ("  " .. item.label)
+			Graphics.drawTextAligned(label, 200, 110 + (i - 1) * 20, kTextAlignment.center)
+		end
+	end
 end
 
 -- This runs as as soon as a transition to another scene begins.
