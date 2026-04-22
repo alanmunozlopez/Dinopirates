@@ -130,14 +130,13 @@ function scene:determineDifficultyUpgrade()
 
     -- Normalize each input into [0,1] using assumed maxima.
     -- Tweak these maxima to fit your game's real ranges for better results.
-    local sanityNorm = math.max(0, math.min(1, sanity / 100))   -- assumed max sanity 100
-    local powerNorm = math.max(0, math.min(1, power / 20))      -- assumed max powerLevel 20
-    local caloriesNorm = math.max(0, math.min(1, calories / 500)) -- assumed calories scale up to ~200
+    local sanityNorm   = math.max(0, math.min(1, sanity   / Config.Dance.sanityMax))
+    local powerNorm    = math.max(0, math.min(1, power    / Config.Dance.powerMax))
+    local caloriesNorm = math.max(0, math.min(1, calories / Config.Dance.caloriesMax))
 
-    -- Weights: favor power and sanity a bit more than calories
-    local weightSanity = 0.35
-    local weightPower = 0.45
-    local weightCalories = 0.20
+    local weightSanity   = Config.Dance.weightSanity
+    local weightPower    = Config.Dance.weightPower
+    local weightCalories = Config.Dance.weightCalories
 
     -- Combined normalized score
     local normalizedScore = (sanityNorm * weightSanity) + (powerNorm * weightPower) + (caloriesNorm * weightCalories)

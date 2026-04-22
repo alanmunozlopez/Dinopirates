@@ -22,7 +22,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.id = ID
 	
 	self.powerLevel = PlayerData.EnemiesData.powerLevel + PlayerData.sanityCounter
-	self.stunProc = moveSpeed * 20 -- if speed is below 0.5 the enemy doesnt move
+	self.stunProc = moveSpeed * Config.Enemy.stunProcMultiplier -- enemy stops moving if moveSpeed falls below this threshold
 	self.player = player
 	self.Zindex = Zindex
 	if moveSpeed == nil then

@@ -71,7 +71,7 @@ function Player:move(direction)
       
       local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
       -- Distribute movement frames to NPCs (capped at 90 frames to prevent accumulation)
-      self:distributeMovementFrames(3) -- 3 frames per movement = smooth follow
+      self:distributeMovementFrames(Config.Player.movementFramesPerAction)
       PlayerData.direction = direction
       self:pedometer()
     end

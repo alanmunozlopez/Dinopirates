@@ -48,7 +48,8 @@ Config.Player = {
     uiOffsetY        = 30,
     hudOffsetY       = -40,
     hudOffsetYTiny   = -17,
-    triggerCheckDist = 5,     -- px moved before re-checking triggers
+    triggerCheckDist        = 5,   -- px moved before re-checking triggers
+    movementFramesPerAction = 3,   -- movement frames distributed to NPCs/enemies per player move
 }
 
 -- Dash ability
@@ -76,6 +77,11 @@ Config.Battery = {
     drainMovementDark = 0.5,   -- per frame moving in darkness
     drainHoleNormal   = 0.5,   -- per frame crossing a hole (normal size)
     drainHoleTiny     = 0.2,   -- per frame crossing a hole (tiny)
+
+    -- Shared battery level thresholds used across Sanity, Enemy, and CrewMember systems
+    thresholdCritical = 10,    -- critically low; enemies override speed, crew stops moving
+    thresholdLow      = 20,    -- low; sanity drains faster, enemies slow down
+    thresholdMid      = 60,    -- mid; enemies use reduced speed, crew restores movement
 }
 
 -- Sanity
@@ -84,7 +90,7 @@ Config.Sanity = {
     lossLowBattery       = 2,     -- multiplier per tick when battery < batteryThresholdLow
     lossMidBattery       = 1,     -- multiplier per tick when battery < batteryThresholdMid
     gainHighBattery      = 2,     -- multiplier per tick when battery > batteryThresholdHigh or not dark
-    batteryThresholdLow  = 20,
+    batteryThresholdLow  = Config.Battery.thresholdLow,  -- shared with Enemy
     batteryThresholdMid  = 40,
     batteryThresholdHigh = 50,
     focusCost            = 20,    -- sanity consumed by focus ability
@@ -135,8 +141,8 @@ Config.CrewMember = {
     blindDuration            = 60,   -- frames
     framesPerToken           = 30,
     movementFramesCap        = 90,
-    batteryThresholdStop     = 10,   -- stops moving
-    batteryThresholdRestore  = 60,   -- restores speed
+    batteryThresholdStop     = Config.Battery.thresholdCritical,  -- shared with Enemy.batteryThresholdCritical
+    batteryThresholdRestore  = Config.Battery.thresholdMid,       -- shared with Enemy.batteryThresholdMid
     collideRect              = {x=12, y=24, w=24, h=24},
 }
 
@@ -162,9 +168,23 @@ Config.Input = {
 
 -- Enemy AI
 Config.Enemy = {
-    sightRadiusBase  = 150,  -- min 50; scales up with powerLevel * 3 per enemy
-    sightRadiusMin   = 50,
-    powerLevelPerSightBonus = 3,
+    sightRadiusBase         = 150,  -- min 50; base detection radius stored in PlayerData.EnemiesData.sightRadius
+    sightRadiusMin          = 50,
+    sightRadiusPerPowerLevel = 3,   -- added to sightRadius per powerLevel point
+
+    -- Move speed in darkness depending on player battery level
+    moveSpeedBatteryEmpty   = 0.2,  -- absolute speed when player battery == 0 in darkness
+    moveSpeedBatteryLow     = 0.5,  -- multiplier when battery <= batteryThresholdLow in darkness
+    moveSpeedBatteryMid     = 0.7,  -- multiplier when battery <= batteryThresholdMid in darkness
+    moveSpeedCritical       = 0.5,  -- absolute speed when battery < batteryThresholdCritical in darkness
+    batteryThresholdLow      = Config.Battery.thresholdLow,      -- shared with Sanity.batteryThresholdLow
+    batteryThresholdMid      = Config.Battery.thresholdMid,      -- shared with CrewMember.batteryThresholdRestore
+    batteryThresholdCritical = Config.Battery.thresholdCritical, -- shared with CrewMember.batteryThresholdStop
+
+    bounceFactor            = 3,    -- px pushed back on wall/prop/enemy collision
+    eatPropPowerThreshold   = 25,   -- min powerLevel required for an enemy to eat an edible prop
+    eatPropPowerPenalty     = 5,    -- powerLevel lost after eating a prop (cost of feeding)
+    stunProcMultiplier      = 20,   -- multiplied by moveSpeed to compute stun threshold (enemy stops if below result)
 }
 
 -- Dance (rhythm combat)
@@ -173,6 +193,16 @@ Config.Dance = {
     evolve = { bpm = 24, buttons = 6  },
     badass = { bpm = 28, buttons = 8  },
     boss   = { bpm = 32, buttons = 12 },
+
+    -- Normalization maxima for difficulty roll inputs
+    sanityMax   = 100,  -- assumed sanityCounter ceiling for normalization
+    powerMax    = 20,   -- assumed powerLevel ceiling for normalization (matches PlayerData max)
+    caloriesMax = 500,  -- assumed calories ceiling for normalization
+
+    -- Weights for the weighted difficulty upgrade roll (must sum to 1.0)
+    weightSanity   = 0.35,  -- contribution of sanityCounter to upgrade probability
+    weightPower    = 0.45,  -- contribution of powerLevel to upgrade probability
+    weightCalories = 0.20,  -- contribution of calories to upgrade probability
 }
 
 return Config
