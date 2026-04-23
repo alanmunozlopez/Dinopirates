@@ -121,6 +121,12 @@ function scene:enter()
 				Noble.transition(Floor409, 0.3, Noble.Transition.MetroNexus)
 			end
 		})
+		table.insert(menuItems, {
+			label  = "COCKPIT",
+			action = function()
+				Noble.transition(CockpitScene, 0.3, Noble.Transition.MetroNexus)
+			end
+		})
 	else
 		background = TitleBackground(200, 120, 1)
 

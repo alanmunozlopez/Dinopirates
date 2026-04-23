@@ -205,4 +205,11 @@ Config.Dance = {
     weightCalories = 0.20,  -- contribution of calories to upgrade probability
 }
 
+-- Cockpit scene
+Config.Cockpit = {
+    lerpFactor       = 0.15,  -- pointer smoothing (0=frozen, 1=instant)
+    accelSensitivity = 1.0,   -- multiplier on raw accelerometer tilt
+    pointerRadius    = 6,     -- circle radius in px
+}
+
 return Config
