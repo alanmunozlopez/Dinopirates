@@ -11,6 +11,7 @@ local selectedIndex = 1
 local crankTick = 0
 local background = nil
 local isDebugMenu = false
+local versionSprite = nil
 
 scene.backgroundColor = Graphics.kColorWhite
 
@@ -98,6 +99,18 @@ function scene:enter()
 	menuItems = {}
 	isDebugMenu = (debug == true)
 
+	local version = "* Demo " .. playdate.metadata.version .. "*"
+	local vw, vh = Graphics.getTextSize(version)
+	local versionImage = Graphics.image.new(vw + 4, vh + 4, Graphics.kColorClear)
+	Graphics.pushContext(versionImage)
+		Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
+		Graphics.drawText(version, 0, 0)
+	Graphics.popContext()
+	versionSprite = Graphics.sprite.new(versionImage)
+	versionSprite:setZIndex(200)
+	versionSprite:moveTo(400 - vw / 2 - 2, vh / 2 + 2)
+	versionSprite:add()
+
 	if isDebugMenu then
 		-- Debug mode: text-only menu, no background or sprites
 		table.insert(menuItems, {
@@ -116,7 +129,9 @@ function scene:enter()
 		local spacing = 20
 		local currentY = startY
 
-		if playdate.file.exists('gameState.json') then
+		local hasSave = playdate.file.exists('gameState.json')
+
+		if hasSave then
 			local continueSprite = MenuTitle(startX, currentY, 'defContinue', 100)
 			table.insert(menuItems, {
 				sprite = continueSprite,
@@ -147,7 +162,7 @@ function scene:enter()
 			currentY = currentY + spacing
 		end
 
-		if playdate.file.exists('gameState.json') then
+		if hasSave then
 			local deleteSprite = MenuTitle(startX, currentY, 'defDeleteGame', 100)
 			table.insert(menuItems, {
 				sprite = deleteSprite,
@@ -218,7 +233,6 @@ end
 -- This runs once per frame.
 function scene:update()
 	scene.super.update(self)
-	drawVersionNumber()
 
 	if isDebugMenu then
 		Graphics.drawTextAligned("*[ DEBUG MODE ]*", 200, 80, kTextAlignment.center)
@@ -237,6 +251,7 @@ function scene:exit()
 	end
 	menuItems = {}
 	if background then background:remove() background = nil end
+	if versionSprite then versionSprite:remove() versionSprite = nil end
 end
 
 -- This runs once a transition to another scene completes.
