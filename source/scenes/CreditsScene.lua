@@ -79,6 +79,11 @@ function scene:enter()
     loadedImages = {}
     isDone       = false
 
+    -- CreditsScene has no sprites, so the Playdate sprite system won't
+    -- generate dirty regions to trigger drawBackground. Force an explicit
+    -- redraw so the black background is applied immediately on enter.
+    Graphics.sprite.redrawBackground()
+
     -- Preload all images so drawBackground() never reads from disk
     for _, item in ipairs(credits) do
         if item.type == "image" and not loadedImages[item.path] then
@@ -106,6 +111,7 @@ function scene:update()
 
     local speed = isHoldingA and SCROLL_SPEED_FAST or SCROLL_SPEED
     scrollY = scrollY + speed
+    Graphics.sprite.redrawBackground()
 
     -- All content has scrolled past the top of the screen
     if not isDone and scrollY >= START_OFFSET + totalHeight then
