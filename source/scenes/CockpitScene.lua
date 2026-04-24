@@ -5,13 +5,22 @@ CockpitScene = {}
 class("CockpitScene").extends(NobleScene)
 local scene = CockpitScene
 
-scene.backgroundColor = Graphics.kColorBlack
+scene.backgroundColor = Graphics.kColorWhite
 
-local buttons    = {}
-local pointer    = nil
-local pointerX   = 200
-local pointerY   = 120
+local buttons     = {}
+local pointer     = nil
+local pointerX    = 200
+local pointerY    = 120
 local lastPressed = "--"
+local baseAx      = 0
+local baseAy      = 0
+local calibrated  = false
+
+local function resetPointer()
+    pointerX   = 200
+    pointerY   = 120
+    calibrated = false
+end
 
 scene.inputHandler = {
     AButtonDown = function()
@@ -22,6 +31,7 @@ scene.inputHandler = {
             end
         end
     end,
+    BButtonDown = function() resetPointer() end,
 }
 
 function scene:init()
@@ -32,6 +42,9 @@ function scene:enter()
     scene.super.enter(self)
 
     lastPressed = "--"
+    calibrated  = false
+    baseAx      = 0
+    baseAy      = 0
     pointerX    = 200
     pointerY    = 120
     buttons     = {}
@@ -64,19 +77,28 @@ function scene:update()
     scene.super.update(self)
 
     local ax, ay, _ = playdate.readAccelerometer()
-    local sens = Config.Cockpit.accelSensitivity
-    local targetX = math.max(0, math.min(400, 200 + ax * 200 * sens))
-    local targetY = math.max(0, math.min(240, 120 - ay * 120 * sens))
-    local lf = Config.Cockpit.lerpFactor
+    ax = ax or 0
+    ay = ay or 0
+
+    if not calibrated and (ax ~= 0 or ay ~= 0) then
+        baseAx     = ax
+        baseAy     = ay
+        calibrated = true
+    end
+
+    local sens    = Config.Cockpit.accelSensitivity
+    local targetX = math.max(0, math.min(400, 200 + (ax - baseAx) * 200 * sens))
+    local targetY = math.max(0, math.min(240, 120 - (ay - baseAy) * 120 * sens))
+    local lf      = Config.Cockpit.lerpFactor
     pointerX = pointerX + (targetX - pointerX) * lf
     pointerY = pointerY + (targetY - pointerY) * lf
 
-    pointer:moveTo(pointerX, pointerY)
+    if pointer then pointer:moveTo(pointerX, pointerY) end
 end
 
 function scene:drawBackground()
     scene.super.drawBackground(self)
-    Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+    Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
     Graphics.drawTextAligned(lastPressed, 200, 120, kTextAlignment.center)
     Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 end
