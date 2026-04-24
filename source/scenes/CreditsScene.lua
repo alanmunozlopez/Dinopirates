@@ -30,7 +30,7 @@ local credits = {
     { type = "space", height = 40 },
     { type = "text",  value = "Thanks for playing!" },
     { type = "space", height = 80 },
-    { type = "image", path = "assets/launcher/launchImages/9.png" },
+    { type = "image", path = "assets/credits/credits-tangara.png" },
     { type = "space", height = 60 },
    
 }
