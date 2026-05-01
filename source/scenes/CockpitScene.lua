@@ -1,5 +1,6 @@
 import "entities/UI/cockpit/CockpitButton"
 import "entities/UI/cockpit/CockpitPointer"
+import "entities/UI/cockpit/CockpitBars"
 
 CockpitScene = {}
 class("CockpitScene").extends(NobleScene)
@@ -8,6 +9,7 @@ local scene = CockpitScene
 scene.backgroundColor = Graphics.kColorWhite
 
 local buttons    = {}
+local bars       = nil
 local pointer    = nil
 local pointerX   = 200
 local pointerY   = 120
@@ -24,7 +26,7 @@ local sequences = {
         index   = 1,
     },
     {
-        pattern = { "A", "B", "G", "5", "9" },
+        pattern = { "A", "B", "C", "D" },
         action  = function() Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus) end,
         index   = 1,
     },
@@ -100,42 +102,49 @@ function scene:enter()
     pointerX   = 200
     pointerY   = 120
     buttons    = {}
+    bars       = nil
     resetAllSequences()
 
-    bgImage = Graphics.image.new('assets/images/ui/cockpit/cockpit_background')
+    -- bgImage = Graphics.image.new('assets/images/ui/cockpit/cockpit_background')
 
     playdate.startAccelerometer()
 
+    --[[
+        Central grid layout (grid top-left: x=162, y=130, gap=3):
+
+          ColA(w=18)  ColBCD(w=50)  ColE(w=20)
+        Row0(h=14): [3]  [ BARS     ]  [7]
+        Row1(h=14): [4]  [ BARS     ]  [8]
+        Row2(h=12):      [6:w=22][9:w=24]
+    --]]
     local btnDefs = {
-        -- panel: two large left rectangles
-        { x=144, y=142,  w=44, h=32, label="1" },
-        { x=146, y=176, w=44, h=22, label="2" },
-        -- panel: small center-left boxes
-        { x=174, y=84,  w=26, h=26, label="3" },
-        { x=174, y=116, w=26, h=26, label="4" },
-        -- panel: three dot indicators
-        { x=206, y=87,  w=16, h=16, label="A" },
-        { x=222, y=87,  w=16, h=16, label="B" },
-        { x=238, y=87,  w=16, h=16, label="C" },
-        -- panel: center rectangles
-        { x=229, y=122, w=58, h=44, label="5" },
-        { x=229, y=170, w=58, h=30, label="6" },
-        -- panel: right section
-        { x=278, y=84,  w=28, h=26, label="7" },
-        { x=289, y=127, w=46, h=46, label="8" },
-        { x=281, y=170, w=34, h=26, label="9" },
+        -- left panel rectangles
+        { x=118, y=97,  w=62, h=46, label="1" },
+        { x=118, y=152, w=62, h=42, label="2" },
+        -- central grid: col A
+        { x=171, y=137, w=18, h=14, label="3" },
+        { x=171, y=154, w=18, h=14, label="4" },
+        -- central grid: col E
+        { x=246, y=137, w=20, h=14, label="7" },
+        { x=246, y=154, w=20, h=14, label="8" },
+        -- central grid: row 2 (below bars)
+        { x=190, y=170, w=22, h=12, label="6" },
+        { x=222, y=170, w=24, h=12, label="9" },
         -- far right keypad
-        { x=371, y=68,  w=26, h=20, label="D" },
-        { x=371, y=92,  w=26, h=20, label="E" },
-        { x=371, y=116, w=26, h=20, label="F" },
-        { x=371, y=140, w=26, h=20, label="G" },
-        -- bottom center element
-        { x=208, y=202, w=28, h=22, label="ESC" },
+        { x=372, y=63,  w=28, h=22, label="A" },
+        { x=372, y=89,  w=28, h=22, label="B" },
+        { x=372, y=115, w=28, h=22, label="C" },
+        { x=372, y=141, w=28, h=22, label="D" },
+        -- ESC bottom-right corner
+        { x=385, y=228, w=24, h=18, label="ESC" },
     }
 
     for _, cfg in ipairs(btnDefs) do
         table.insert(buttons, CockpitButton(cfg.x, cfg.y, cfg.w, cfg.h, cfg.label))
     end
+
+    -- bars occupy col BCD rows 0+1: center=(208,145), w=50, h=31
+    bars = CockpitBars(208, 145, 50, 31)
 
     pointer = CockpitPointer()
     pointer:add(pointerX, pointerY)
@@ -210,6 +219,7 @@ function scene:exit()
     for _, btn in ipairs(buttons) do btn:remove() end
     buttons = {}
 
+    if bars    then bars:remove()    bars    = nil end
     if pointer then pointer:remove() pointer = nil end
 end
 
