@@ -16,7 +16,7 @@ local START_OFFSET   = 260  -- initial Y of first item (just below screen bottom
 --   { type = "image", path = "assets/..." } — image centered horizontally
 --   { type = "space", height = N }          — empty vertical gap
 local credits = {
-    { type = "space", height = 40 },
+    { type = "space", height = 20 },
     { type = "text",  value = "DinoPirates from Inner Space" },
     { type = "text",  value = "Brocolation" },
     { type = "space", height = 30 },

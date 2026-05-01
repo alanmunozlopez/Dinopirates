@@ -132,7 +132,8 @@ Rooms connect vertically via `neighbourLevels` (with `dir = "<"` for lower, `dir
 Detailed system documentation lives in `source/DOCS/`:
 - `LEVEL_LOADING.md` — full room loading + vertical navigation
 - `PLAYER_SYSTEMS.md` — battery, sanity, inventory, skills
-- `ENEMIES_AND_COMBAT.md` — AI and DanceScene rhythm system
+- `ENEMIES_AND_COMBAT.md` — AI and DanceScene rhythm system overview
+- `DANCE_SCENE.md` — full DanceScene: lifecycle, difficulty, hit detection, balance bar, animations, outcomes
 - `SAVE_SYSTEM.md` — persistence layer
 - `PLUNGERANG.md` — projectile mechanics
 - `TITLE_SCENE.md` — TitleScene menu modes, input, Continue/NewGame/Delete flow

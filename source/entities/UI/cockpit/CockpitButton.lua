@@ -1,10 +1,9 @@
 class("CockpitButton").extends(Graphics.sprite)
 
-function CockpitButton:init(x, y, size, label, action)
+function CockpitButton:init(x, y, size, label)
     CockpitButton.super.init(self)
-    self.label  = label
-    self.action = action
-    self.size   = size
+    self.label = label
+    self.size  = size
 
     local img = Graphics.image.new(size, size, Graphics.kColorClear)
     Graphics.pushContext(img)

@@ -1,14 +1,10 @@
 class("CockpitPointer").extends(NobleSprite)
 
 function CockpitPointer:init()
-    CockpitPointer.super.init(self)
-    local r   = Config.Cockpit.pointerRadius
-    local d   = r * 2
-    local img = Graphics.image.new(d, d, Graphics.kColorClear)
-    Graphics.pushContext(img)
-        Graphics.setColor(Graphics.kColorBlack)
-        Graphics.fillCircleAtPoint(r, r, r)
-    Graphics.popContext()
-    self:setImage(img)
+    CockpitPointer.super.init(self, 'assets/images/ui/cockpit/ui-pointer', true)
+    self.animation:addState('idle', 1, 2)
+    self.animation.idle.frameDuration = 8
+    self.animation:setState('idle')
+    self:setSize(28, 28)
     self:setZIndex(ZIndex.ui + 10)
 end
