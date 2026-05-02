@@ -127,6 +127,19 @@ Rooms connect vertically via `neighbourLevels` (with `dir = "<"` for lower, `dir
 
 ---
 
+## Workflow
+
+- **Never run `git commit`** during implementation, fixes, or any other work. The user commits manually. Skip all commit steps in plans. Compiling with `pdc` to verify is fine, but stop before committing.
+
+---
+
+## Noble Engine Notes
+
+- D-pad input callbacks use `upButtonHold` / `downButtonHold` / etc. (not `Held` suffix).
+- Per-frame movement should use `playdate.buttonIsPressed()` inside `update()`, not callbacks.
+
+---
+
 ## Key Docs
 
 Detailed system documentation lives in `source/DOCS/`:

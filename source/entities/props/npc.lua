@@ -1,28 +1,23 @@
 NPC = {}
-class('NPC').extends(Graphics.sprite)
+class('NPC').extends(NobleSprite)
 
 function NPC:init(x, y, npcType, iid, room, sourceFeed)
-    NPC.super.init(self)
+    NPC.super.init(self, 'assets/images/props/npc', true)
 
-    self.npcType   = npcType
-    self.iid       = iid
-    self.room      = room
+    self.npcType    = npcType
+    self.iid        = iid
+    self.room       = room
     self.sourceFeed = sourceFeed or 0
-    self.script    = nil  -- Required: MazeScene calls grantAchievementIfNeeded(trigger.script)
-    self.type      = nil  -- Required: state.lua checks self.currentTrigger.type; nil → setPressA() HUD
+    self.script     = nil  -- Required: MazeScene calls grantAchievementIfNeeded(trigger.script)
+    self.type       = nil  -- Required: state.lua checks self.currentTrigger.type; nil → setPressA() HUD
 
-    -- Load sprite image. If missing, NPC is invisible but still functional.
-    local img = Graphics.image.new('assets/images/props/npc_' .. npcType)
-    if img then
-        self:setImage(img)
-        local w, h = self:getSize()
-        self:setCollideRect(0, 0, w, h)
-    else
-        -- Fallback: 32x32 invisible collision zone so interaction still works
-        self:setCollideRect(0, 0, 32, 32)
-        printDebug("⚠️ NPC image not found: assets/images/props/npc_" .. npcType)
-    end
+    -- Spritesheet states: add new NPC types here mapping to frame ranges
+    self.animation:addState('cat', 1, 2)
 
+    self.animation:setState(npcType)
+
+    self:setSize(32, 32)
+    self:setCollideRect(0, 0, 32, 32)
     self:setZIndex(ZIndex.props)
     self:setGroups(CollideGroups.props)   -- Player's collidesWithGroups includes props(3)
     self:setCollidesWithGroups({})        -- NPC doesn't need to detect anything
