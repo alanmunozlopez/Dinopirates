@@ -1,7 +1,7 @@
 CockpitBars = {}
 class("CockpitBars").extends(Graphics.sprite)
 
-local BAR_COUNT   = 7
+local BAR_COUNT   = 5
 local LERP_SPEED  = 0.06
 local CHANGE_RATE = 0.03  -- probability per frame each bar picks a new target
 
@@ -35,7 +35,7 @@ end
 function CockpitBars:draw(x, y, width, height)
     local n   = #self.bars
     local gap = 2
-    local bw  = math.floor((self.bw - 2 - gap * (n - 1)) / n)
+    local rowH = math.floor((self.bh - 2 - gap * (n - 1)) / n)
 
     Graphics.setColor(Graphics.kColorWhite)
     Graphics.fillRect(0, 0, self.bw, self.bh)
@@ -43,9 +43,8 @@ function CockpitBars:draw(x, y, width, height)
     Graphics.drawRect(0, 0, self.bw, self.bh)
 
     for i, bar in ipairs(self.bars) do
-        local bx   = 1 + (i - 1) * (bw + gap)
-        local barH = math.max(1, math.floor(bar.current * (self.bh - 4)))
-        local by   = self.bh - 2 - barH
-        Graphics.fillRect(bx, by, bw, barH)
+        local by   = 1 + (i - 1) * (rowH + gap)
+        local barW = math.max(1, math.floor(bar.current * (self.bw - 4)))
+        Graphics.fillRect(2, by, barW, rowH)
     end
 end

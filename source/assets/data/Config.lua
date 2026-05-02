@@ -210,6 +210,7 @@ Config.Cockpit = {
     lerpFactor       = 0.15,  -- pointer smoothing (0=frozen, 1=instant)
     accelSensitivity = 2.0,   -- multiplier on raw accelerometer tilt
     pointerRadius    = 6,     -- circle radius in px
+    dpadSpeed        = 3,     -- pixels per frame when moving with d-pad
 }
 
 return Config

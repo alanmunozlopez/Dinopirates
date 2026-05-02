@@ -1,6 +1,7 @@
 import "entities/UI/cockpit/CockpitButton"
 import "entities/UI/cockpit/CockpitPointer"
 import "entities/UI/cockpit/CockpitBars"
+import "entities/UI/cockpit/CockpitRadar"
 
 CockpitScene = {}
 class("CockpitScene").extends(NobleScene)
@@ -17,6 +18,7 @@ local baseAx     = 0
 local baseAy     = 0
 local calibrated = false
 local bgImage    = nil
+local radar      = nil
 
 -- Add or modify entries here to create new sequences with different outcomes.
 local sequences = {
@@ -103,6 +105,7 @@ function scene:enter()
     pointerY   = 120
     buttons    = {}
     bars       = nil
+    radar      = nil
     resetAllSequences()
 
     -- bgImage = Graphics.image.new('assets/images/ui/cockpit/cockpit_background')
@@ -110,41 +113,40 @@ function scene:enter()
     playdate.startAccelerometer()
 
     --[[
-        Central grid layout (grid top-left: x=162, y=130, gap=3):
+        Central grid layout (all centers, gap=1px between elements):
 
-          ColA(w=18)  ColBCD(w=50)  ColE(w=20)
-        Row0(h=14): [3]  [ BARS     ]  [7]
-        Row1(h=14): [4]  [ BARS     ]  [8]
-        Row2(h=12):      [6:w=22][9:w=24]
+        Left col (x=171): [3 18×14]  [4 18×14]  [6 22×12]
+        Right col(x=246): [7 20×14]  [8 20×14]  [9 24×12]
+        Bars (x=208,y=170): [BARS 50×31 horizontal] between 6 and 9
+        Left panel (y=137): [1 32×48 x=100] [2 32×48 x=136]
     --]]
     local btnDefs = {
-        -- left panel rectangles
-        { x=118, y=97,  w=62, h=46, label="1" },
-        { x=118, y=152, w=62, h=42, label="2" },
-        -- central grid: col A
-        { x=171, y=137, w=18, h=14, label="3" },
-        { x=171, y=154, w=18, h=14, label="4" },
-        -- central grid: col E
-        { x=246, y=137, w=20, h=14, label="7" },
-        { x=246, y=154, w=20, h=14, label="8" },
-        -- central grid: row 2 (below bars)
-        { x=190, y=170, w=22, h=12, label="6" },
-        { x=222, y=170, w=24, h=12, label="9" },
+        -- left panel: two buttons aligned with central columns
+        { x=26, y=140, w=32, h=48, label="1" },
+        { x=74, y=140, w=32, h=48, label="2" },
+        -- central grid: left column (3, 4, 6 share x=171)
+        { x=166, y=200, w=24, h=16, label="3" },
+        { x=166, y=220, w=24, h=16, label="4" },
+        { x=166, y=180, w=24, h=16, label="6" },
+        -- central grid: right column (7, 8, 9 share x=246)
+        { x=246, y=200, w=24, h=16, label="7" },
+        { x=246, y=220, w=24, h=16, label="8" },
+        { x=246, y=180, w=24, h=16, label="9" },
         -- far right keypad
         { x=372, y=63,  w=28, h=22, label="A" },
         { x=372, y=89,  w=28, h=22, label="B" },
         { x=372, y=115, w=28, h=22, label="C" },
         { x=372, y=141, w=28, h=22, label="D" },
-        -- ESC bottom-right corner
-        { x=385, y=228, w=24, h=18, label="ESC" },
+        -- ESC
+        { x=206, y=228, w=50, h=20, label="ESC" },
     }
 
     for _, cfg in ipairs(btnDefs) do
         table.insert(buttons, CockpitButton(cfg.x, cfg.y, cfg.w, cfg.h, cfg.label))
     end
 
-    -- bars occupy col BCD rows 0+1: center=(208,145), w=50, h=31
-    bars = CockpitBars(208, 145, 50, 31)
+    bars  = CockpitBars(206, 190, 50, 31)
+    radar = CockpitRadar(50, 200, 80, 60)
 
     pointer = CockpitPointer()
     pointer:add(pointerX, pointerY)
@@ -167,7 +169,22 @@ function scene:update()
         calibrated = true
     end
 
-    local sens    = Config.Cockpit.accelSensitivity
+    -- D-pad moves pointer first; then re-anchor accel base so the
+    -- accelerometer lerp doesn't fight the new position next frame.
+    local spd   = Config.Cockpit.dpadSpeed
+    local moved = false
+    if playdate.buttonIsPressed(playdate.kButtonUp)    then pointerY = math.max(0,   pointerY - spd) moved = true end
+    if playdate.buttonIsPressed(playdate.kButtonDown)  then pointerY = math.min(240, pointerY + spd) moved = true end
+    if playdate.buttonIsPressed(playdate.kButtonLeft)  then pointerX = math.max(0,   pointerX - spd) moved = true end
+    if playdate.buttonIsPressed(playdate.kButtonRight) then pointerX = math.min(400, pointerX + spd) moved = true end
+
+    local sens = Config.Cockpit.accelSensitivity
+    if moved then
+        baseAx     = ax - (pointerX - 200) / (200 * sens)
+        baseAy     = ay - (pointerY - 120) / (120 * sens)
+        calibrated = true
+    end
+
     local targetX = math.max(0, math.min(400, 200 + (ax - baseAx) * 200 * sens))
     local targetY = math.max(0, math.min(240, 120 + (ay - baseAy) * 120 * sens))
     local lf      = Config.Cockpit.lerpFactor
@@ -220,6 +237,7 @@ function scene:exit()
     buttons = {}
 
     if bars    then bars:remove()    bars    = nil end
+    if radar   then radar:remove()   radar   = nil end
     if pointer then pointer:remove() pointer = nil end
 end
 

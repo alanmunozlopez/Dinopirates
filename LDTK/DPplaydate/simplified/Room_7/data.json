@@ -134,6 +134,24 @@
 					"conditionalScripts": []
 				}
 			}
+		],
+		"NPC": [
+			{
+				"id": "NPC",
+				"iid": "87ae2560-21a0-11f1-ba67-1170042cfccf",
+				"layer": "Props",
+				"x": 372,
+				"y": 28,
+				"width": 32,
+				"height": 32,
+				"color": 16217634,
+				"customFields": {
+					"type": null,
+					"conditionalScripts": [],
+					"sourceFeed": 0,
+					"hasGranted": false
+				}
+			}
 		]
 	}
 }
