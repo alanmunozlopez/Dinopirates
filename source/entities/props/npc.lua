@@ -21,8 +21,7 @@ function NPC:init(x, y, npcType, iid, room, sourceFeed)
     self:setZIndex(ZIndex.props)
     self:setGroups(CollideGroups.props)   -- Player's collidesWithGroups includes props(3)
     self:setCollidesWithGroups({})        -- NPC doesn't need to detect anything
-    self:moveTo(x, y)
-    self:add()
+    self:add(x, y)
 
     printDebug("🖥️ NPC spawned - type:", npcType, "iid:", iid)
 end

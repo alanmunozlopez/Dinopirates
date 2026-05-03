@@ -497,7 +497,7 @@ table.insert(levelsLDTK, {
         width = 32,
         height = 32,
         customFields = {
-          type = nil,
+          type = "cat",
           conditionalScripts = {},
           sourceFeed = 0,
           hasGranted = false
@@ -798,6 +798,63 @@ table.insert(levelsLDTK, {
         }
       }
     },
+    Lamp = {
+      {
+        id = "Lamp",
+        iid = "c9071260-21a0-11f1-ba67-57b26b37e0ad",
+        x = 268,
+        y = 84,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "lamp",
+          isItem = true
+        }
+      }
+    },
+    ItemGift = {
+      {
+        id = "ItemGift",
+        iid = "e4024490-21a0-11f1-ba67-0fd5f085db6b",
+        x = 316,
+        y = 84,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "itemGift",
+          grants = "hasDWatch:true",
+          isItem = true
+        }
+      }
+    },
+    Plunger = {
+      {
+        id = "Plunger",
+        iid = "0c984850-21a0-11f1-ba67-fb714db81c5a",
+        x = 220,
+        y = 132,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "plunger",
+          isItem = true
+        }
+      }
+    },
+    Brocorat = {
+      {
+        id = "Brocorat",
+        iid = "0531c050-21a0-11f1-ba67-436fa97866a9",
+        x = 36,
+        y = 204,
+        width = 32,
+        height = 32,
+        customFields = {
+          speed = 0.5,
+          dead = false
+        }
+      }
+    },
     Minifier = {
       {
         id = "Minifier",
@@ -810,6 +867,25 @@ table.insert(levelsLDTK, {
           type = "minifier",
           nocollider = false,
           destroyed = false
+        }
+      }
+    },
+    NPC = {
+      {
+        id = "NPC",
+        iid = "0ea7c260-21a0-11f1-ba67-7b68c287fc9b",
+        x = 364,
+        y = 132,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "cat",
+          conditionalScripts = {
+            "!items.hasLamp:catNoLamp",
+            "!items.hasBoots:catNoBoots"
+          },
+          sourceFeed = 0,
+          hasGranted = false
         }
       }
     }

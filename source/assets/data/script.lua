@@ -473,4 +473,32 @@ script = {
             { video = 'player', text = "npc-test-default" }
         }
     },
+    
+    {
+        name = "catWhat",
+        dialog = {
+            { video = 'player', text = "catwhat-01" }
+        }
+    },
+    
+    {
+        name = "catNoLamp",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = "catnolamp-01",
+    }
+    
+        }
+    },
+    {
+        name = "catNoBoots",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = "catnoboots-01",
+    }
+    
+        }
+    },
 }
