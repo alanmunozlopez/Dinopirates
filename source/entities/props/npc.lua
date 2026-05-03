@@ -1,3 +1,15 @@
+NPCCollider = {}
+class('NPCCollider').extends(NobleSprite)
+
+function NPCCollider:init(x, y)
+    NPCCollider.super.init(self)
+    self:setSize(24, 24)
+    self:setCollideRect(0, 0, 24, 24)
+    self:setGroups(CollideGroups.wall)
+    self:setCollidesWithGroups({})
+    self:add(x, y)
+end
+
 NPC = {}
 class('NPC').extends(NobleSprite)
 
@@ -23,7 +35,21 @@ function NPC:init(x, y, npcType, iid, room, sourceFeed)
     self:setCollidesWithGroups({})        -- NPC doesn't need to detect anything
     self:add(x, y)
 
+    self.wall = NPCCollider(x, y)
+
     printDebug("🖥️ NPC spawned - type:", npcType, "iid:", iid)
+end
+
+function NPC:update()
+    self:setZIndex(self.y)
+end
+
+function NPC:remove()
+    if self.wall then
+        Noble.currentScene():removeSprite(self.wall)
+        self.wall = nil
+    end
+    NPC.super.remove(self)
 end
 
 -- Called by MazeScene's AButtonDown handler when player presses A near this NPC.

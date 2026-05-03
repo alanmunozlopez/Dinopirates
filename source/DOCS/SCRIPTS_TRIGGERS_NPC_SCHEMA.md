@@ -277,8 +277,9 @@ dialogUI:nextDialog()
 | Persistencia | `usedTrigger` (se destruye) | `hasGranted` (solo oculta el grant) |
 | Se puede repetir | Depende del `!` en script | Siempre (solo el grant es one-shot) |
 | `sourceFeed` | Campo en LDtk | Campo en LDtk |
-| Fallback script | Campo `script` en LDtk | No hay fallback; falla silencioso |
+| Fallback script | Campo `script` en LDtk | `"true:scriptFallback"` como última entrada en `conditionalScripts` |
 | Format conditionalScripts | `cond:script` o `cond:script!` | `cond:script` o `cond:script:key:val` |
+| Colisión física | Ninguna (solo overlap/freeze) | `NPCCollider` 24×24 en `CollideGroups.wall` — bloquea movimiento |
 
 ---
 

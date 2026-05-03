@@ -38,7 +38,7 @@ Config.Tiles = {
 
 -- Player movement
 Config.Player = {
-    speed            = 1.5,
+    speed            = 2,
     speedDarkNoLamp  = 0.7,   -- multiplier when in darkness without lamp
     speedLowBattery  = 0.8,   -- multiplier when battery < batteryThresholdLow with lamp
     collideRect      = {x=8,  y=24, w=30, h=24},

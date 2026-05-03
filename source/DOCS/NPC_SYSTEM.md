@@ -132,11 +132,26 @@ Add a static image at `assets/images/props/npc_<type>` (e.g., `npc_computer`, `n
 
 ---
 
-## 7. Files Involved
+## 7. Physics
+
+Each NPC spawns two sprites:
+
+| Sprite | Class | Size | Group | Purpose |
+|---|---|---|---|---|
+| Visual / interaction | `NPC` | 32×32 | `CollideGroups.props` | Returns `'overlap'` → player sets `currentTrigger` and presses A |
+| Solid blocker | `NPCCollider` | 24×24 | `CollideGroups.wall` | Blocks player movement (same group as tile walls) |
+
+Both sprites are tracked by Noble Engine and cleaned up automatically on scene transition. `NPCCollider` is invisible and has no image.
+
+**Y-sort**: `NPC:update()` calls `self:setZIndex(self.y)` every frame, same pattern as `PropItem`. This ensures NPCs sort correctly behind/in front of the player based on vertical position.
+
+---
+
+## 8. Files Involved
 
 | File | Role |
 |---|---|
-| `entities/props/npc.lua` | NPC entity class |
+| `entities/props/npc.lua` | `NPC` and `NPCCollider` classes |
 | `scenes/MazeScene.lua` | Import + spawn block |
 | `entities/player/collisions.lua` | Sets NPC as `currentTrigger` on overlap |
 | `assets/data/script.lua` | Dialog content for each NPC |
