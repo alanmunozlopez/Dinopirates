@@ -882,7 +882,8 @@ table.insert(levelsLDTK, {
           type = "cat",
           conditionalScripts = {
             "!items.hasLamp:catNoLamp",
-            "!items.hasBoots:catNoBoots"
+            "!items.hasBoots:catNoBoots",
+            "true:catWhat"
           },
           sourceFeed = 0,
           hasGranted = false
