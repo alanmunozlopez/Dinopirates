@@ -274,7 +274,7 @@ table.insert(levelsLDTK, {
       {
         id = "Triggers",
         iid = "c9660040-ac70-11f0-ae64-094e17987f94",
-        x = 100,
+        x = 92,
         y = 60,
         width = 56,
         height = 32,
@@ -306,8 +306,8 @@ table.insert(levelsLDTK, {
       {
         id = "Triggers",
         iid = "3a47bf50-ac70-11f0-ae64-474c236a6fd7",
-        x = 332,
-        y = 100,
+        x = 340,
+        y = 108,
         width = 56,
         height = 48,
         customFields = {
@@ -352,9 +352,9 @@ table.insert(levelsLDTK, {
     Box = {
       {
         id = "Box",
-        iid = "c7345330-ac70-11f0-ae64-3f2b938fe6d4",
-        x = 100,
-        y = 60,
+        iid = "5ff38f00-21a0-11f1-8318-7fc02d4297e0",
+        x = 44,
+        y = 196,
         width = 32,
         height = 32,
         customFields = {
@@ -459,21 +459,6 @@ table.insert(levelsLDTK, {
       },
       {
         id = "Triggers",
-        iid = "cc4b57d0-ac70-11f0-ae64-f1a43cc2526b",
-        x = 292,
-        y = 140,
-        width = 40,
-        height = 40,
-        customFields = {
-          script = "someTrash",
-          usedTrigger = false,
-          type = "Search",
-          mapPercent = 0,
-          conditionalScripts = {}
-        }
-      },
-      {
-        id = "Triggers",
         iid = "04397810-ac70-11f0-ae64-891aa0cc0d18",
         x = 92,
         y = 108,
@@ -486,21 +471,48 @@ table.insert(levelsLDTK, {
           mapPercent = 0,
           conditionalScripts = {}
         }
+      },
+      {
+        id = "Triggers",
+        iid = "05b2a150-21a0-11f1-8318-ef983af2b1a2",
+        x = 292,
+        y = 140,
+        width = 40,
+        height = 40,
+        customFields = {
+          script = "justBoxes",
+          usedTrigger = false,
+          type = "Search",
+          mapPercent = 0,
+          conditionalScripts = {}
+        }
       }
     },
-    NPC = {
+    Box = {
       {
-        id = "NPC",
-        iid = "87ae2560-21a0-11f1-ba67-1170042cfccf",
-        x = 372,
-        y = 28,
+        id = "Box",
+        iid = "f1bb3db0-21a0-11f1-8318-8978489998a1",
+        x = 92,
+        y = 108,
         width = 32,
         height = 32,
         customFields = {
-          type = "cat",
-          conditionalScripts = {},
-          sourceFeed = 0,
-          hasGranted = false
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Box",
+        iid = "f354f080-21a0-11f1-8318-792ececf426d",
+        x = 292,
+        y = 140,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
         }
       }
     }
@@ -679,6 +691,34 @@ table.insert(levelsLDTK, {
           destroyed = false
         }
       }
+    },
+    Box = {
+      {
+        id = "Box",
+        iid = "5aecde10-21a0-11f1-8318-4d2837a3ba17",
+        x = 276,
+        y = 188,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Box",
+        iid = "5bf59b80-21a0-11f1-8318-8b3a92c6c2ea",
+        x = 276,
+        y = 212,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      }
     }
   }
 })
@@ -784,6 +824,20 @@ table.insert(levelsLDTK, {
         }
       }
     },
+    Brocorat = {
+      {
+        id = "Brocorat",
+        iid = "0531c050-21a0-11f1-ba67-436fa97866a9",
+        x = 36,
+        y = 204,
+        width = 32,
+        height = 32,
+        customFields = {
+          speed = 0.5,
+          dead = false
+        }
+      }
+    },
     Boots = {
       {
         id = "Boots",
@@ -838,20 +892,6 @@ table.insert(levelsLDTK, {
         customFields = {
           type = "plunger",
           isItem = true
-        }
-      }
-    },
-    Brocorat = {
-      {
-        id = "Brocorat",
-        iid = "0531c050-21a0-11f1-ba67-436fa97866a9",
-        x = 36,
-        y = 204,
-        width = 32,
-        height = 32,
-        customFields = {
-          speed = 0.5,
-          dead = false
         }
       }
     },
@@ -1167,20 +1207,6 @@ table.insert(levelsLDTK, {
         customFields = {
           type = "lamp",
           isItem = true
-        }
-      }
-    },
-    Brocorat = {
-      {
-        id = "Brocorat",
-        iid = "241dcb00-21a0-11f1-a37c-178142f6ba93",
-        x = 324,
-        y = 36,
-        width = 32,
-        height = 32,
-        customFields = {
-          speed = 0.5,
-          dead = false
         }
       }
     }

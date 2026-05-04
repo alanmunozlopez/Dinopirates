@@ -113,6 +113,22 @@
 				}
 			}
 		],
+		"Brocorat": [
+			{
+				"id": "Brocorat",
+				"iid": "0531c050-21a0-11f1-ba67-436fa97866a9",
+				"layer": "CrewMembers",
+				"x": 36,
+				"y": 204,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false
+				}
+			}
+		],
 		"Boots": [
 			{
 				"id": "Boots",
@@ -178,27 +194,11 @@
 				}
 			}
 		],
-		"Brocorat": [
-			{
-				"id": "Brocorat",
-				"iid": "0531c050-21a0-11f1-ba67-436fa97866a9",
-				"layer": "Enemies",
-				"x": 36,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 14120515,
-				"customFields": {
-					"speed": 0.5,
-					"dead": false
-				}
-			}
-		],
 		"Minifier": [
 			{
 				"id": "Minifier",
 				"iid": "21887b30-fa90-11f0-9a41-eb80f350135c",
-				"layer": "Props",
+				"layer": "Items",
 				"x": 364,
 				"y": 204,
 				"width": 32,
@@ -215,7 +215,7 @@
 			{
 				"id": "NPC",
 				"iid": "0ea7c260-21a0-11f1-ba67-7b68c287fc9b",
-				"layer": "Props",
+				"layer": "Items",
 				"x": 364,
 				"y": 132,
 				"width": 32,
@@ -226,7 +226,7 @@
 					"conditionalScripts": [
 						"!items.hasLamp:catNoLamp",
 						"!items.hasBoots:catNoBoots",
-						"condition:script:grants"
+						"true:catWhat"
 					],
 					"sourceFeed": 0,
 					"hasGranted": false

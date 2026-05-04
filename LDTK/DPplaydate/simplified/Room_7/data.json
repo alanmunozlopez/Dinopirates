@@ -102,23 +102,6 @@
 			},
 			{
 				"id": "Triggers",
-				"iid": "cc4b57d0-ac70-11f0-ae64-f1a43cc2526b",
-				"layer": "Triggers",
-				"x": 292,
-				"y": 140,
-				"width": 40,
-				"height": 40,
-				"color": 16711748,
-				"customFields": {
-					"script": "someTrash",
-					"usedTrigger": false,
-					"type": "Search",
-					"mapPercent": 0,
-					"conditionalScripts": []
-				}
-			},
-			{
-				"id": "Triggers",
 				"iid": "04397810-ac70-11f0-ae64-891aa0cc0d18",
 				"layer": "Triggers",
 				"x": 92,
@@ -133,23 +116,54 @@
 					"mapPercent": 0,
 					"conditionalScripts": []
 				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "05b2a150-21a0-11f1-8318-ef983af2b1a2",
+				"layer": "Triggers",
+				"x": 292,
+				"y": 140,
+				"width": 40,
+				"height": 40,
+				"color": 16711748,
+				"customFields": {
+					"script": "justBoxes",
+					"usedTrigger": false,
+					"type": "Search",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
 			}
 		],
-		"NPC": [
+		"Box": [
 			{
-				"id": "NPC",
-				"iid": "87ae2560-21a0-11f1-ba67-1170042cfccf",
-				"layer": "Props",
-				"x": 372,
-				"y": 28,
+				"id": "Box",
+				"iid": "f1bb3db0-21a0-11f1-8318-8978489998a1",
+				"layer": "Items",
+				"x": 92,
+				"y": 108,
 				"width": 32,
 				"height": 32,
-				"color": 16217634,
+				"color": 12470831,
 				"customFields": {
-					"type": "cat",
-					"conditionalScripts": [],
-					"sourceFeed": 0,
-					"hasGranted": false
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "f354f080-21a0-11f1-8318-792ececf426d",
+				"layer": "Items",
+				"x": 292,
+				"y": 140,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
 				}
 			}
 		]

@@ -182,7 +182,7 @@
 			{
 				"id": "TubeExit",
 				"iid": "9fbc56a0-21a0-11f1-9039-37e7cd6f0338",
-				"layer": "Props",
+				"layer": "Items",
 				"x": 36,
 				"y": 204,
 				"width": 32,
@@ -190,6 +190,38 @@
 				"color": 2943221,
 				"customFields": {
 					"type": "TubeExit",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Box": [
+			{
+				"id": "Box",
+				"iid": "5aecde10-21a0-11f1-8318-4d2837a3ba17",
+				"layer": "Items",
+				"x": 276,
+				"y": 188,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "5bf59b80-21a0-11f1-8318-8b3a92c6c2ea",
+				"layer": "Items",
+				"x": 276,
+				"y": 212,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
 					"nocollider": false,
 					"destroyed": false
 				}

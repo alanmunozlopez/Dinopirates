@@ -151,22 +151,6 @@
 					"isItem": true
 				}
 			}
-		],
-		"Brocorat": [
-			{
-				"id": "Brocorat",
-				"iid": "241dcb00-21a0-11f1-a37c-178142f6ba93",
-				"layer": "Enemies",
-				"x": 324,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 14120515,
-				"customFields": {
-					"speed": 0.5,
-					"dead": false
-				}
-			}
 		]
 	}
 }
