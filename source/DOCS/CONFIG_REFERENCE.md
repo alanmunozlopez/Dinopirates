@@ -220,6 +220,19 @@ See [CREWMEMBER_AND_COLLISIONS.md](CREWMEMBER_AND_COLLISIONS.md) for full detail
 
 ---
 
+## Config.Cockpit
+
+Controls the debug CockpitScene (accelerometer pointer, D-pad movement).
+
+| Field | Value | Effect |
+|---|---|---|
+| `lerpFactor` | 0.15 | Pointer smoothing factor (0 = frozen, 1 = instant snap) |
+| `accelSensitivity` | 2.0 | Multiplier applied to raw accelerometer tilt |
+| `pointerRadius` | 6 | Circle radius of the cursor in pixels |
+| `dpadSpeed` | 3 | Pixels per frame when moving pointer with D-pad |
+
+---
+
 ## Config.Pedometer
 
 | Field | Value | Effect |
