@@ -52,65 +52,31 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"Doors": [
+		"TKNotes": [
 			{
-				"id": "Doors",
-				"iid": "bb73a870-ac70-11f0-8539-03f7dfb4cdc8",
-				"layer": "Doors",
-				"x": 4,
-				"y": 120,
-				"width": 8,
-				"height": 48,
-				"color": 7552569,
+				"id": "TKNotes",
+				"iid": "9cf74490-21a0-11f1-b443-cb698825c644",
+				"layer": "Notes",
+				"x": 188,
+				"y": 44,
+				"width": 120,
+				"height": 32,
+				"color": 2943221,
 				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Left",
-					"KeyNumber": null
+					"String": "Elementos de cocina"
 				}
 			},
 			{
-				"id": "Doors",
-				"iid": "bf724d50-ac70-11f0-8539-137cb38eca29",
-				"layer": "Doors",
-				"x": 200,
-				"y": 236,
-				"width": 48,
-				"height": 8,
-				"color": 7552569,
+				"id": "TKNotes",
+				"iid": "b13c7a10-21a0-11f1-b443-431cf9e7ab86",
+				"layer": "Notes",
+				"x": 292,
+				"y": 100,
+				"width": 56,
+				"height": 32,
+				"color": 2943221,
 				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "e1699320-d380-11f0-a276-052d46aa38e7",
-				"layer": "Doors",
-				"x": 344,
-				"y": 236,
-				"width": 16,
-				"height": 8,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "49e32660-fa90-11f0-9f0d-3381c910a0b4",
-				"layer": "Doors",
-				"x": 88,
-				"y": 236,
-				"width": 16,
-				"height": 8,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
+					"String": "Pasada solo en tiny"
 				}
 			}
 		],
@@ -207,7 +173,7 @@
 			{
 				"id": "Box",
 				"iid": "5ff38f00-21a0-11f1-8318-7fc02d4297e0",
-				"layer": "Items",
+				"layer": "Items_and_Props",
 				"x": 44,
 				"y": 196,
 				"width": 32,
@@ -217,6 +183,68 @@
 					"type": "box",
 					"nocollider": false,
 					"destroyed": false
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "bb73a870-ac70-11f0-8539-03f7dfb4cdc8",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "bf724d50-ac70-11f0-8539-137cb38eca29",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e1699320-d380-11f0-a276-052d46aa38e7",
+				"layer": "Doors",
+				"x": 344,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "49e32660-fa90-11f0-9f0d-3381c910a0b4",
+				"layer": "Doors",
+				"x": 88,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
 				}
 			}
 		]

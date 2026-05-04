@@ -53,23 +53,6 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"Doors": [
-			{
-				"id": "Doors",
-				"iid": "c6e3d930-ac70-11f0-8539-e78eb22c7faf",
-				"layer": "Doors",
-				"x": 396,
-				"y": 120,
-				"width": 8,
-				"height": 48,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Right",
-					"KeyNumber": null
-				}
-			}
-		],
 		"Triggers": [
 			{
 				"id": "Triggers",
@@ -129,7 +112,7 @@
 			{
 				"id": "Plunger",
 				"iid": "f84981f0-fa90-11f0-8164-312164d448cc",
-				"layer": "Items",
+				"layer": "Items_and_Props",
 				"x": 84,
 				"y": 180,
 				"width": 32,
@@ -145,7 +128,7 @@
 			{
 				"id": "Minifier",
 				"iid": "cef907d0-fa90-11f0-8164-09f23df37bd8",
-				"layer": "Items",
+				"layer": "Items_and_Props",
 				"x": 356,
 				"y": 28,
 				"width": 32,
@@ -155,6 +138,23 @@
 					"type": "minifier",
 					"nocollider": false,
 					"destroyed": false
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "c6e3d930-ac70-11f0-8539-e78eb22c7faf",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
 				}
 			}
 		]

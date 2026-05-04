@@ -52,35 +52,18 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"Doors": [
+		"TKNotes": [
 			{
-				"id": "Doors",
-				"iid": "b3283eb0-ac70-11f0-8539-f3c8ed5b1669",
-				"layer": "Doors",
-				"x": 200,
-				"y": 236,
-				"width": 48,
-				"height": 8,
-				"color": 7552569,
+				"id": "TKNotes",
+				"iid": "6f1ed150-21a0-11f1-b443-37273b02d9b7",
+				"layer": "Notes",
+				"x": 196,
+				"y": 76,
+				"width": 64,
+				"height": 32,
+				"color": 2943221,
 				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "b620e540-ac70-11f0-8539-71a575f15bb9",
-				"layer": "Doors",
-				"x": 396,
-				"y": 120,
-				"width": 8,
-				"height": 48,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Right",
-					"KeyNumber": null
+					"String": "Arbol de navidad y regalos"
 				}
 			}
 		],
@@ -177,7 +160,7 @@
 			{
 				"id": "ItemGift",
 				"iid": "ab0e6080-d380-11f0-88fd-23cdcf2dde52",
-				"layer": "Items",
+				"layer": "Items_and_Props",
 				"x": 196,
 				"y": 140,
 				"width": 32,
@@ -187,6 +170,38 @@
 					"type": "itemGift",
 					"grants": "hasDWatch:true",
 					"isItem": true
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "b3283eb0-ac70-11f0-8539-f3c8ed5b1669",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "b620e540-ac70-11f0-8539-71a575f15bb9",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
 				}
 			}
 		]
