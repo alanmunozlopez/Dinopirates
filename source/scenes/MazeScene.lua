@@ -398,7 +398,7 @@ function scene:update()
 	end
 	
 	-- Mark: Crank notification (only when needed)
-	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true then
+	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true and PlayerData.isTiny == false then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 end
