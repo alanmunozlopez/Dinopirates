@@ -19,6 +19,7 @@ local baseAy     = 0
 local calibrated = false
 local bgImage    = nil
 local radar      = nil
+local failCount  = 0
 
 -- Add or modify entries here to create new sequences with different outcomes.
 local sequences = {
@@ -41,16 +42,25 @@ local function resetAllSequences()
 end
 
 local function pressButton(label)
+    local advanced = false
     for _, seq in ipairs(sequences) do
         if label == seq.pattern[seq.index] then
             seq.index += 1
+            advanced = true
             if seq.index > #seq.pattern then
                 resetAllSequences()
+                failCount = 0
                 seq.action()
                 return
             end
         else
             seq.index = 1
+        end
+    end
+    if not advanced then
+        failCount += 1
+        if failCount >= Config.Cockpit.failLimit then
+            Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
         end
     end
 end
@@ -107,6 +117,7 @@ function scene:enter()
     bars       = nil
     radar      = nil
     resetAllSequences()
+    failCount = 0
 
     -- bgImage = Graphics.image.new('assets/images/ui/cockpit/cockpit_background')
 
@@ -206,24 +217,39 @@ function scene:drawBackground()
 
     if bgImage then bgImage:draw(0, 0) end
 
-    local leading  = leadingSequence()
-    local barY     = 8
-    local barH     = 6
-    local margin   = 40
-    local gap      = 2
-    local segments = #leading.pattern
-    local totalW   = 400 - margin * 2
-    local segW     = math.floor((totalW - gap * (segments - 1)) / segments)
-    local filled   = leading.index - 1
+    local leading = leadingSequence()
+    local filled  = leading.index - 1
+    local n       = #leading.pattern
+
+    -- Indicator 1: sequence progress circles (8×8, radius=4)
+    local circleR   = 4
+    local circleD   = circleR * 2
+    local circleGap = 4
+    local rowW      = n * circleD + (n - 1) * circleGap
+    local startX    = math.floor(200 - rowW / 2) + circleR
+    local circleY   = 8
 
     Graphics.setColor(Graphics.kColorBlack)
-    for i = 1, segments do
-        local x = margin + (i - 1) * (segW + gap)
+    for i = 1, n do
+        local cx = startX + (i - 1) * (circleD + circleGap)
         if i <= filled then
-            Graphics.fillRect(x, barY, segW, barH)
+            Graphics.fillCircleAtPoint(cx, circleY, circleR)
         else
-            Graphics.drawRect(x, barY, segW, barH)
+            Graphics.drawCircleAtPoint(cx, circleY, circleR)
         end
+    end
+
+    -- Indicator 2: failed attempts bar (fills up, never resets mid-session)
+    local barY      = 18
+    local barH      = 5
+    local barMargin = 40
+    local barTotalW = 400 - barMargin * 2
+    local barFillW  = math.floor(math.min(barTotalW, barTotalW * (failCount / Config.Cockpit.failLimit)))
+
+    Graphics.setColor(Graphics.kColorBlack)
+    Graphics.drawRect(barMargin, barY, barTotalW, barH)
+    if barFillW > 0 then
+        Graphics.fillRect(barMargin, barY, barFillW, barH)
     end
 end
 

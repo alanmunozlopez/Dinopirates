@@ -211,6 +211,7 @@ Config.Cockpit = {
     accelSensitivity = 2.0,   -- multiplier on raw accelerometer tilt
     pointerRadius    = 6,     -- circle radius in px
     dpadSpeed        = 3,     -- pixels per frame when moving with d-pad
+    failLimit        = 10,    -- max wrong button presses before returning to TitleScene
 }
 
 return Config
