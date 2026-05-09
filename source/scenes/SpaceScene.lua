@@ -22,6 +22,9 @@ local cursorY    = 120
 local baseAx     = 0
 local baseAy     = 0
 local calibrated = false
+local prevAx     = 0
+local prevAy     = 0
+local idleFrames = 0
 
 local shipX = 200
 local shipY = 150
@@ -38,6 +41,9 @@ function scene:enter()
     baseAx     = 0
     baseAy     = 0
     calibrated = false
+    prevAx     = 0
+    prevAy     = 0
+    idleFrames = 0
 
     ship      = Ship(shipX, shipY, 4, 0, ZIndex.player)
     crosshair = Crosshair(200, 134)
@@ -67,6 +73,9 @@ function scene:update()
         calibrated = true
     end
 
+    local accelMoving = math.abs(ax - prevAx) >= Config.Space.accelIdleThreshold
+                     or math.abs(ay - prevAy) >= Config.Space.accelIdleThreshold
+
     local spd   = Config.Space.crosshairSpeed
     local moved = false
     if playdate.buttonIsPressed(playdate.kButtonUp)    then cursorY = math.max(0,   cursorY - spd) moved = true end
@@ -80,6 +89,19 @@ function scene:update()
         baseAy = ay - (cursorY - 120) / (120 * sens)
         calibrated = true
     end
+
+    if accelMoving or moved then
+        idleFrames = 0
+    else
+        idleFrames = idleFrames + 1
+        if idleFrames >= Config.Space.accelIdleFrames and calibrated then
+            local lr = Config.Space.accelCenterReturnLerp
+            baseAx = baseAx + (ax - baseAx) * lr
+            baseAy = baseAy + (ay - baseAy) * lr
+        end
+    end
+    prevAx = ax
+    prevAy = ay
 
     local targetX = math.max(0, math.min(400, 200 + (ax - baseAx) * 200 * sens))
     local targetY = math.max(0, math.min(240, 120 + (ay - baseAy) * 120 * sens))
@@ -165,8 +187,9 @@ scene.inputHandler = {
         if ship == nil then return end
         ship.changeMode = true
         ship.mode       = 'fighter'
-        ship:moveTo(shipX, shipY)
-        energy:resetPosition(ship)
+        ship.animation:setState('travelToFighter')
+        ship:setTarget(shipX, shipY)
+        energy:resetPosition(shipX, shipY)
         calibrated = false
     end,
 
@@ -175,7 +198,9 @@ scene.inputHandler = {
         ship.changeMode = true
         ship.mode  = 'travel'
         ship.speed = 0
-        ship:moveTo(shipX, shipY + 20)
+        ship.animation:setState('fighterToTravel')
+        ship:setTarget(shipX, shipY + 20)
+        energy:resetPosition(shipX, shipY + 20)
         cursorX    = 200
         cursorY    = 120
         calibrated = false

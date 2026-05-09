@@ -28,6 +28,9 @@ function Ship:init(startX, startY, hull, speed, zIndex)
     self.lastMode      = self.mode
     self.lastDirection = self.direction
 
+    self.targetX = startX
+    self.targetY = startY
+
     self.shooter01 = { x = startX - 28, y = startY - 8 }
     self.shooter02 = { x = startX + 28, y = startY - 8 }
     self.shooter03 = { x = startX - 28, y = startY + 8 }
@@ -35,6 +38,11 @@ function Ship:init(startX, startY, hull, speed, zIndex)
 
     self.animation:setState('fighter')
     self:add(startX, startY)
+end
+
+function Ship:setTarget(x, y)
+    self.targetX = x
+    self.targetY = y
 end
 
 function Ship:move(direction)
@@ -60,21 +68,24 @@ function Ship:boost(mode)
 end
 
 function Ship:update()
-    local modeChanged = self.mode ~= self.lastMode
-    local dirChanged  = self.direction ~= self.lastDirection
+    local dirChanged   = self.direction ~= self.lastDirection
     self.lastMode      = self.mode
     self.lastDirection = self.direction
+
+    local x, y = self:getPosition()
+    local lf   = Config.Space.shipMoveLerp
+    local nx   = x + (self.targetX - x) * lf
+    local ny   = y + (self.targetY - y) * lf
+    if math.abs(nx - x) > 0.5 or math.abs(ny - y) > 0.5 then
+        self:moveTo(nx, ny)
+    end
 
     if self.changeMode then
         self.changeMode = false
         return
     end
 
-    if self.direction == 'default' and (modeChanged or dirChanged) then
-        if self.mode == 'fighter' then
-            self.animation:setState('travelToFighter')
-        elseif self.mode == 'travel' then
-            self.animation:setState('fighterToTravel')
-        end
+    if self.direction == 'default' and dirChanged then
+        self.animation:setState(self.mode == 'fighter' and 'fighter' or 'travel')
     end
 end

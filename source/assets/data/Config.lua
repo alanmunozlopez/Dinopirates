@@ -215,9 +215,13 @@ Config.Cockpit = {
 }
 
 Config.Space = {
-    crosshairSpeed   = 4,    -- d-pad pixels per frame
-    lerpFactor       = 0.08, -- spring toward accel target (0=frozen, 1=instant)
-    accelSensitivity = 1.2,  -- multiplier on raw accelerometer tilt
+    crosshairSpeed        = 4,     -- d-pad pixels per frame
+    lerpFactor            = 0.08,  -- spring toward accel target (0=frozen, 1=instant)
+    accelSensitivity      = 1.2,   -- multiplier on raw accelerometer tilt
+    shipMoveLerp          = 0.12,  -- ship position lerp per frame
+    accelIdleThreshold    = 0.005, -- min accel delta (per frame) to count as moving
+    accelIdleFrames       = 2,     -- frames of stillness before crosshair starts returning
+    accelCenterReturnLerp = 0.04,  -- how fast base drifts back (0=never, 1=instant)
 }
 
 return Config

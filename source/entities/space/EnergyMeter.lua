@@ -54,19 +54,20 @@ function EnergyMeter:fill(ship, amount)
     self:updateEnergy(ship)
 end
 
-function EnergyMeter:resetPosition(ship)
-    self.xPos = ship.x - self.distanceFromShip
-    self.yPos = ship.y - 12
+function EnergyMeter:resetPosition(shipX, shipY)
+    self.xPos = shipX - self.distanceFromShip
+    self.yPos = shipY - 12
     self:setRotation(0)
     self.canister:setRotation(0)
-    self:moveTo(self.xPos, ship.y)
-    self.canister:moveTo(self.xPos + 2, ship.y)
 end
 
 function EnergyMeter:update()
-    if math.abs(self.x - self.xPos) > 2 or math.abs(self.y - self.yPos) > 2 then
-        self:moveTo(self.xPos, self.yPos)
-        self.canister:moveTo(self.xPos + 2, self.yPos)
+    local lf = Config.Space.shipMoveLerp
+    local nx = self.x + (self.xPos - self.x) * lf
+    local ny = self.y + (self.yPos - self.y) * lf
+    if math.abs(nx - self.x) > 0.5 or math.abs(ny - self.y) > 0.5 then
+        self:moveTo(nx, ny)
+        self.canister:moveTo(nx + 2, ny)
     end
 end
 
