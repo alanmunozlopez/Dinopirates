@@ -132,17 +132,17 @@ end
 scene.inputHandler = {
     AButtonDown = function()
         if ship and ship.mode == 'fighter' then
-            laser:draw(ship, crosshair)
+            laser:draw(ship, crosshair, energy)
         end
     end,
 
     BButtonDown = function()
-        if ship and ship.energy > 1 then
+        if ship and ship.mode == 'fighter' and ship.energy > 1 then
             fxspeed.animation:setState('startSpeed')
         end
     end,
     BButtonHeld = function()
-        if ship == nil then return end
+        if ship == nil or ship.mode ~= 'fighter' then return end
         if ship.energy > 0 then
             fxspeed.animation:setState('loopSpeed')
         else
@@ -150,7 +150,7 @@ scene.inputHandler = {
         end
     end,
     BButtonHold = function()
-        if ship == nil then return end
+        if ship == nil or ship.mode ~= 'fighter' then return end
         if ship.energy > 0 then
             ship:boost('fighter')
             energy:drain(ship)
@@ -160,7 +160,7 @@ scene.inputHandler = {
         end
     end,
     BButtonUp = function()
-        if ship == nil then return end
+        if ship == nil or ship.mode ~= 'fighter' then return end
         if ship.energy > 0 and ship.speed > 0 then
             fxspeed.animation:setState('stopSpeed')
         elseif ship.energy == 0 then

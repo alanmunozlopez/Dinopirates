@@ -8,7 +8,7 @@ function Laser:init()
     self:add()
 end
 
-function Laser:draw(ship, crosshair)
+function Laser:draw(ship, crosshair, energy)
     if ship.energy <= 0 then return end
 
     local modX, modY = 0, 0
@@ -28,6 +28,7 @@ function Laser:draw(ship, crosshair)
     playdate.timer.performAfterDelay(6, function()
         self.laserBG:clear(Graphics.kColorClear)
         ship.energy -= 10
+        energy:updateEnergy(ship)
     end)
 end
 
