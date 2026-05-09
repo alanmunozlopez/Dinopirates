@@ -19,6 +19,8 @@ function Items:init(x, y, type, keyNumber, grants)
   self.animation.boots.frameDuration = 8  
   self.animation:addState('plunger', 4, 6)
   self.animation.plunger.frameDuration = 8  
+  self.animation:addState('radio', 19, 21)
+  self.animation.radio.frameDuration = 8  
   self:setSize(32, 32)
   self:setCollideRect(0 ,0, 32, 32)
   self:setZIndex(ZIndex.items)

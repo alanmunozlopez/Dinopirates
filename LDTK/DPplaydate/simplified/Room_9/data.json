@@ -167,8 +167,8 @@
 				"id": "Minifier",
 				"iid": "21887b30-fa90-11f0-9a41-eb80f350135c",
 				"layer": "Items_and_Props",
-				"x": 364,
-				"y": 204,
+				"x": 372,
+				"y": 28,
 				"width": 32,
 				"height": 32,
 				"color": 2943221,
@@ -196,6 +196,24 @@
 						"!items.hasBoots:catNoBoots",
 						"true:catWhat"
 					],
+					"sourceFeed": 0,
+					"hasGranted": false
+				}
+			}
+		],
+		"Computer": [
+			{
+				"id": "Computer",
+				"iid": "066a22a0-48b0-11f1-b67e-85d567dff68f",
+				"layer": "Items_and_Props",
+				"x": 364,
+				"y": 180,
+				"width": 32,
+				"height": 32,
+				"color": 16217634,
+				"customFields": {
+					"type": "computer",
+					"conditionalScripts": [],
 					"sourceFeed": 0,
 					"hasGranted": false
 				}

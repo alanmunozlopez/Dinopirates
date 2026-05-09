@@ -429,7 +429,9 @@ function scene:exit()
 	end
 	tileColliders = {}
 	
-	Graphics.sprite.removeAll()
+	Graphics.sprite.performOnAllSprites(function(s)
+		if s:getZIndex() ~= -32768 then s:remove() end
+	end)
 	
 	PlayerData.playerExit.x = player.x
 	PlayerData.playerExit.y = player.y

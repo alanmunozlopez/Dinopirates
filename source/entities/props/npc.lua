@@ -24,8 +24,9 @@ function NPC:init(x, y, npcType, iid, room, sourceFeed)
     self.type       = nil  -- Required: state.lua checks self.currentTrigger.type; nil → setPressA() HUD
 
     -- Spritesheet states: add new NPC types here mapping to frame ranges
-    self.animation:addState('cat', 1, 2)
-
+    self.animation:addState('cat', 1, 4)
+    self.animation.cat.frameDuration = 12
+    self.animation:addState('computer', 5, 8)
     self.animation:setState(npcType)
 
     self:setSize(32, 32)

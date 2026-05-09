@@ -45,31 +45,16 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Doors = {
+    TKNotes = {
       {
-        id = "Doors",
-        iid = "b3283eb0-ac70-11f0-8539-f3c8ed5b1669",
-        x = 200,
-        y = 236,
-        width = 48,
-        height = 8,
+        id = "TKNotes",
+        iid = "6f1ed150-21a0-11f1-b443-37273b02d9b7",
+        x = 196,
+        y = 76,
+        width = 64,
+        height = 32,
         customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "b620e540-ac70-11f0-8539-71a575f15bb9",
-        x = 396,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Right",
-          KeyNumber = nil
+          String = "Arbol de navidad y regalos"
         }
       }
     },
@@ -77,8 +62,8 @@ table.insert(levelsLDTK, {
       {
         id = "Triggers",
         iid = "04803a80-ac70-11f0-ae64-7fad2120052d",
-        x = 172,
-        y = 100,
+        x = 156,
+        y = 116,
         width = 40,
         height = 40,
         customFields = {
@@ -92,8 +77,8 @@ table.insert(levelsLDTK, {
       {
         id = "Triggers",
         iid = "0f48b230-ac70-11f0-ae64-49bfdc9ab6ce",
-        x = 220,
-        y = 92,
+        x = 228,
+        y = 100,
         width = 40,
         height = 40,
         customFields = {
@@ -150,6 +135,21 @@ table.insert(levelsLDTK, {
             "isTiny:hugeXmas"
           }
         }
+      },
+      {
+        id = "Triggers",
+        iid = "20aea340-48b0-11f1-b67e-6354679cdabc",
+        x = 60,
+        y = 84,
+        width = 40,
+        height = 40,
+        customFields = {
+          script = "justBoxes",
+          usedTrigger = false,
+          type = "Story",
+          mapPercent = 0,
+          conditionalScripts = {}
+        }
       }
     },
     ItemGift = {
@@ -164,6 +164,75 @@ table.insert(levelsLDTK, {
           type = "itemGift",
           grants = "hasDWatch:true",
           isItem = true
+        }
+      }
+    },
+    Box = {
+      {
+        id = "Box",
+        iid = "0ee36e70-48b0-11f1-b67e-0304cf2370db",
+        x = 84,
+        y = 60,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Box",
+        iid = "101a67d0-48b0-11f1-b67e-cb9384f6940e",
+        x = 28,
+        y = 100,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Box",
+        iid = "1162c650-48b0-11f1-b67e-f70975554232",
+        x = 60,
+        y = 84,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "b3283eb0-ac70-11f0-8539-f3c8ed5b1669",
+        x = 200,
+        y = 236,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "b620e540-ac70-11f0-8539-71a575f15bb9",
+        x = 396,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
         }
       }
     }
@@ -216,57 +285,27 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Doors = {
+    TKNotes = {
       {
-        id = "Doors",
-        iid = "bb73a870-ac70-11f0-8539-03f7dfb4cdc8",
-        x = 4,
-        y = 120,
-        width = 8,
-        height = 48,
+        id = "TKNotes",
+        iid = "9cf74490-21a0-11f1-b443-cb698825c644",
+        x = 188,
+        y = 44,
+        width = 120,
+        height = 32,
         customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = nil
+          String = "Elementos de cocina"
         }
       },
       {
-        id = "Doors",
-        iid = "bf724d50-ac70-11f0-8539-137cb38eca29",
-        x = 200,
-        y = 236,
-        width = 48,
-        height = 8,
+        id = "TKNotes",
+        iid = "b13c7a10-21a0-11f1-b443-431cf9e7ab86",
+        x = 292,
+        y = 100,
+        width = 56,
+        height = 32,
         customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "e1699320-d380-11f0-a276-052d46aa38e7",
-        x = 344,
-        y = 236,
-        width = 16,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "49e32660-fa90-11f0-9f0d-3381c910a0b4",
-        x = 88,
-        y = 236,
-        width = 16,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
+          String = "Pasada solo en tiny"
         }
       }
     },
@@ -363,6 +402,60 @@ table.insert(levelsLDTK, {
           destroyed = false
         }
       }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "bb73a870-ac70-11f0-8539-03f7dfb4cdc8",
+        x = 4,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bf724d50-ac70-11f0-8539-137cb38eca29",
+        x = 200,
+        y = 236,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "e1699320-d380-11f0-a276-052d46aa38e7",
+        x = 344,
+        y = 236,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "49e32660-fa90-11f0-9f0d-3381c910a0b4",
+        x = 88,
+        y = 236,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      }
     }
   }
 })
@@ -424,21 +517,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "ad890930-ac70-11f0-8539-b927b406cff9",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      }
-    },
     Triggers = {
       {
         id = "Triggers",
@@ -515,6 +593,21 @@ table.insert(levelsLDTK, {
           destroyed = false
         }
       }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "ad890930-ac70-11f0-8539-b927b406cff9",
+        x = 200,
+        y = 4,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      }
     }
   }
 })
@@ -578,70 +671,38 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Doors = {
+    TKNotes = {
       {
-        id = "Doors",
-        iid = "07b70f50-ac70-11f0-8539-35ff95bfdbdf",
-        x = 200,
-        y = 236,
-        width = 48,
-        height = 8,
+        id = "TKNotes",
+        iid = "f9ee3fa0-21a0-11f1-b443-c7cced9c425f",
+        x = 164,
+        y = 108,
+        width = 64,
+        height = 88,
         customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
+          String = "obstaculos"
         }
       },
       {
-        id = "Doors",
-        iid = "c5a75a30-ac70-11f0-8539-6130c4fb1bfd",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
+        id = "TKNotes",
+        iid = "14eca620-21a0-11f1-b443-a9f5cdba07f0",
+        x = 268,
+        y = 116,
+        width = 56,
+        height = 64,
         customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
+          String = "obstaculos"
         }
       },
       {
-        id = "Doors",
-        iid = "c25a9ea0-d380-11f0-a276-5f29b940eae6",
-        x = 344,
-        y = 4,
-        width = 16,
-        height = 8,
+        id = "TKNotes",
+        iid = "2151dde0-21a0-11f1-b443-4f5e750d34c6",
+        x = 356,
+        y = 196,
+        width = 40,
+        height = 40,
         customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "3bc2f830-fa90-11f0-9f0d-dd4b46089fc2",
-        x = 88,
-        y = 4,
-        width = 16,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "1e6d98b0-fa90-11f0-9039-3be58b1a7a15",
-        x = 396,
-        y = 128,
-        width = 8,
-        height = 32,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Right",
-          KeyNumber = nil
+          String = "Llave"
         }
       }
     },
@@ -650,7 +711,7 @@ table.insert(levelsLDTK, {
         id = "Triggers",
         iid = "1966a940-fa90-11f0-bb17-4bab457c7082",
         x = 214,
-        y = 116,
+        y = 108,
         width = 32,
         height = 32,
         customFields = {
@@ -719,6 +780,102 @@ table.insert(levelsLDTK, {
           destroyed = false
         }
       }
+    },
+    Notes = {
+      {
+        id = "Notes",
+        iid = "18c3f520-48b0-11f1-b67e-f71bda3ced77",
+        x = 356,
+        y = 196,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "notes",
+          grants = "canDance:true",
+          isItem = true
+        }
+      }
+    },
+    Radio = {
+      {
+        id = "Radio",
+        iid = "d912a690-48b0-11f1-b67e-b3bd8fef5a8f",
+        x = 212,
+        y = 108,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "radio",
+          isItem = true
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "07b70f50-ac70-11f0-8539-35ff95bfdbdf",
+        x = 200,
+        y = 236,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "c5a75a30-ac70-11f0-8539-6130c4fb1bfd",
+        x = 200,
+        y = 4,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "c25a9ea0-d380-11f0-a276-5f29b940eae6",
+        x = 344,
+        y = 4,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "3bc2f830-fa90-11f0-9f0d-dd4b46089fc2",
+        x = 88,
+        y = 4,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "1e6d98b0-fa90-11f0-9039-3be58b1a7a15",
+        x = 396,
+        y = 128,
+        width = 8,
+        height = 32,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
+      }
     }
   }
 })
@@ -782,34 +939,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "f1da76b0-fa90-11f0-9039-7f762bb19d4f",
-        x = 200,
-        y = 235,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "104fb470-fa90-11f0-9039-f5ad4ff8081c",
-        x = 4,
-        y = 128,
-        width = 8,
-        height = 32,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = nil
-        }
-      }
-    },
     CrewMember = {
       {
         id = "CrewMember",
@@ -899,8 +1028,8 @@ table.insert(levelsLDTK, {
       {
         id = "Minifier",
         iid = "21887b30-fa90-11f0-9a41-eb80f350135c",
-        x = 364,
-        y = 204,
+        x = 372,
+        y = 28,
         width = 32,
         height = 32,
         customFields = {
@@ -927,6 +1056,34 @@ table.insert(levelsLDTK, {
           },
           sourceFeed = 0,
           hasGranted = false
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "f1da76b0-fa90-11f0-9039-7f762bb19d4f",
+        x = 200,
+        y = 235,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "104fb470-fa90-11f0-9039-f5ad4ff8081c",
+        x = 4,
+        y = 128,
+        width = 8,
+        height = 32,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
+          KeyNumber = nil
         }
       }
     }
@@ -980,21 +1137,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "c6e3d930-ac70-11f0-8539-e78eb22c7faf",
-        x = 396,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Right",
-          KeyNumber = nil
-        }
-      }
-    },
     Triggers = {
       {
         id = "Triggers",
@@ -1072,6 +1214,21 @@ table.insert(levelsLDTK, {
           destroyed = false
         }
       }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "c6e3d930-ac70-11f0-8539-e78eb22c7faf",
+        x = 396,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
+      }
     }
   }
 })
@@ -1106,7 +1263,7 @@ table.insert(levelsLDTK, {
     }
   },
   customFields = {
-    shadow = false,
+    shadow = true,
     light = 0.7,
     visited = false,
     comic_name = nil,
@@ -1123,47 +1280,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "e35e4010-ac70-11f0-8539-cfa071292c9d",
-        x = 4,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "f2cac460-ac70-11f0-8539-f32c05a0c6fe",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "5b6513e0-fa90-11f0-b965-f9db40bfdb74",
-        x = 396,
-        y = 176,
-        width = 8,
-        height = 32,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Right",
-          KeyNumber = nil
-        }
-      }
-    },
     Triggers = {
       {
         id = "Triggers",
@@ -1207,6 +1323,47 @@ table.insert(levelsLDTK, {
         customFields = {
           type = "lamp",
           isItem = true
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "e35e4010-ac70-11f0-8539-cfa071292c9d",
+        x = 4,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "f2cac460-ac70-11f0-8539-f32c05a0c6fe",
+        x = 200,
+        y = 4,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "5b6513e0-fa90-11f0-b965-f9db40bfdb74",
+        x = 396,
+        y = 176,
+        width = 8,
+        height = 32,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
         }
       }
     }

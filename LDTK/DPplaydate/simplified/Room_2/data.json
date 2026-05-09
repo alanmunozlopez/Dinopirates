@@ -72,8 +72,8 @@
 				"id": "Triggers",
 				"iid": "04803a80-ac70-11f0-ae64-7fad2120052d",
 				"layer": "Triggers",
-				"x": 172,
-				"y": 100,
+				"x": 156,
+				"y": 116,
 				"width": 40,
 				"height": 40,
 				"color": 16711748,
@@ -89,8 +89,8 @@
 				"id": "Triggers",
 				"iid": "0f48b230-ac70-11f0-ae64-49bfdc9ab6ce",
 				"layer": "Triggers",
-				"x": 220,
-				"y": 92,
+				"x": 228,
+				"y": 100,
 				"width": 40,
 				"height": 40,
 				"color": 16711748,
@@ -154,6 +154,23 @@
 						"isTiny:hugeXmas"
 					]
 				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "20aea340-48b0-11f1-b67e-6354679cdabc",
+				"layer": "Triggers",
+				"x": 60,
+				"y": 84,
+				"width": 40,
+				"height": 40,
+				"color": 16711748,
+				"customFields": {
+					"script": "justBoxes",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
 			}
 		],
 		"ItemGift": [
@@ -170,6 +187,53 @@
 					"type": "itemGift",
 					"grants": "hasDWatch:true",
 					"isItem": true
+				}
+			}
+		],
+		"Box": [
+			{
+				"id": "Box",
+				"iid": "0ee36e70-48b0-11f1-b67e-0304cf2370db",
+				"layer": "Items_and_Props",
+				"x": 84,
+				"y": 60,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "101a67d0-48b0-11f1-b67e-cb9384f6940e",
+				"layer": "Items_and_Props",
+				"x": 28,
+				"y": 100,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "1162c650-48b0-11f1-b67e-f70975554232",
+				"layer": "Items_and_Props",
+				"x": 60,
+				"y": 84,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
 				}
 			}
 		],

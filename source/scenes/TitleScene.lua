@@ -120,6 +120,18 @@ function scene:enter()
 			end
 		})
 		table.insert(menuItems, {
+			label  = "GAME",
+			action = function()
+				SaveSystem.reset()
+				Noble.transition(Floor407, 1, Noble.Transition.Spotlight, {
+					x = 200, y = 120,
+					xExit = PlayerData.playerSpawn.x,
+					yExit = PlayerData.playerSpawn.y,
+					holdTime = 0.25, ease = Ease.outInQuad
+				})
+			end
+		})
+		table.insert(menuItems, {
 			label  = "PLAYGROUND",
 			action = function()
 				PlayerData.playerSpawn.x = 200

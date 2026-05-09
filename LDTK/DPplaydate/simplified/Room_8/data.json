@@ -112,7 +112,7 @@
 				"iid": "1966a940-fa90-11f0-bb17-4bab457c7082",
 				"layer": "Triggers",
 				"x": 214,
-				"y": 116,
+				"y": 108,
 				"width": 32,
 				"height": 32,
 				"color": 16711748,
@@ -188,6 +188,39 @@
 					"type": "box",
 					"nocollider": false,
 					"destroyed": false
+				}
+			}
+		],
+		"Notes": [
+			{
+				"id": "Notes",
+				"iid": "18c3f520-48b0-11f1-b67e-f71bda3ced77",
+				"layer": "Items_and_Props",
+				"x": 356,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "notes",
+					"grants": "canDance:true",
+					"isItem": true
+				}
+			}
+		],
+		"Radio": [
+			{
+				"id": "Radio",
+				"iid": "d912a690-48b0-11f1-b67e-b3bd8fef5a8f",
+				"layer": "Items_and_Props",
+				"x": 212,
+				"y": 108,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "radio",
+					"isItem": true
 				}
 			}
 		],

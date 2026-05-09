@@ -60,21 +60,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "bcc50700-fa90-11f0-9039-e356dc00e5f2",
-        x = 336,
-        y = 236,
-        width = 32,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      }
-    },
     PneumaticTube = {
       {
         id = "PneumaticTube",
@@ -167,6 +152,21 @@ table.insert(levelsLDTK, {
           type = "Tube",
           nocollider = false,
           destroyed = false
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "bcc50700-fa90-11f0-9039-e356dc00e5f2",
+        x = 336,
+        y = 236,
+        width = 32,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
         }
       }
     }
@@ -289,34 +289,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "d45ce9f0-fa90-11f0-9039-7ffe57d05b86",
-        x = 336,
-        y = 4,
-        width = 32,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "e1168340-fa90-11f0-9039-43e9ae1c70fa",
-        x = 4,
-        y = 176,
-        width = 8,
-        height = 32,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = nil
-        }
-      }
-    },
     Triggers = {
       {
         id = "Triggers",
@@ -346,6 +318,34 @@ table.insert(levelsLDTK, {
           type = "Search",
           mapPercent = 0,
           conditionalScripts = {}
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "d45ce9f0-fa90-11f0-9039-7ffe57d05b86",
+        x = 336,
+        y = 4,
+        width = 32,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "e1168340-fa90-11f0-9039-43e9ae1c70fa",
+        x = 4,
+        y = 176,
+        width = 8,
+        height = 32,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
+          KeyNumber = nil
         }
       }
     }
