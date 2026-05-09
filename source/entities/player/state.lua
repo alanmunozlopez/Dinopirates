@@ -248,7 +248,23 @@ function Player:checkTrigger()
     end
 end
 
+local wakeButtons = {
+  playdate.kButtonA, playdate.kButtonB,
+  playdate.kButtonUp, playdate.kButtonDown,
+  playdate.kButtonLeft, playdate.kButtonRight
+}
+
 function Player:update()
+  if self.isSleeping then
+    for _, btn in ipairs(wakeButtons) do
+      if playdate.buttonJustPressed(btn) then
+        self:onWakePress()
+        break
+      end
+    end
+    return
+  end
+
   -- Update dash movement if dashing
   self:updateDash()
   
@@ -332,4 +348,23 @@ function Player:checkForegroundDepth()
     else
         self:setZIndex(self.y)
     end
+end
+
+function Player:startSleeping()
+    self.isSleeping = true
+    self.wakeupPresses = 0
+    self.animation:setState('sleep')
+end
+
+function Player:onWakePress()
+    self.wakeupPresses += 1
+    if self.wakeupPresses >= 2 then
+        self:wake()
+    end
+end
+
+function Player:wake()
+    self.isSleeping = false
+    self:idle()
+    PlayerData.isGaming = true
 end

@@ -90,8 +90,8 @@ function Player:initAnimations()
   self.animation:addState('slideTiny', 142, 145)
   self.animation.slideTiny.frameDuration = 4
   
-  self.animation:addState('sleep', 145, 148)
-  self.animation.slideTiny.frameDuration = 2
+  self.animation:addState('sleep', 147, 148)
+  self.animation.sleep.frameDuration = 18
   
   if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
     self.animation:setState('lampIdle')

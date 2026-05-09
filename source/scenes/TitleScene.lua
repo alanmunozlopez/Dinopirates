@@ -163,6 +163,7 @@ function scene:enter()
 						printDebug("📍 Cargando nivel guardado:", savedLevel)
 						local nextScene = RoomTranslate(savedLevel)
 						if nextScene then
+							PlayerData.fromTitle = true
 							Noble.transition(nextScene, 1, Noble.Transition.Spotlight, {
 								x = 200, y = 120,
 								xExit = PlayerData.playerSpawn.x,
@@ -205,6 +206,7 @@ function scene:enter()
 			backgroundState = 'newGame',
 			action = function()
 				SaveSystem.reset()
+				PlayerData.fromTitle = true
 				Noble.transition(Floor407, 1, Noble.Transition.Spotlight, {
 					x = 200, y = 120,
 					xExit = PlayerData.playerSpawn.x,

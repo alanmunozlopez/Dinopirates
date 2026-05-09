@@ -359,7 +359,12 @@ end
 function scene:start()
 	scene.super.start(self)
 	self:setDiagonalMovement(diagonalMovement)
-	PlayerData.isGaming = true
+	if PlayerData.fromTitle then
+		PlayerData.fromTitle = false
+		player:startSleeping()
+	else
+		PlayerData.isGaming = true
+	end
 end
 
 -- This runs once per frame.
@@ -473,6 +478,7 @@ scene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
+		if player and player.isSleeping then return end
 		if PlayerData.isTalking == true then
 			player:displayDialog()
 		elseif player.currentTrigger and PlayerData.isGaming == true then
@@ -497,7 +503,7 @@ scene.inputHandler = {
 		-- Your code here
 	end,
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
-		-- Your code here
+		if player and player.isSleeping then return end
 		if PlayerData.isGaming == true and PlayerData.items.hasDWatch == true then
 			inGameEquip:displayMenu(player.x,player.y)
 		end
@@ -510,6 +516,7 @@ scene.inputHandler = {
 	--
 
 	BButtonDown = function()
+		if player and player.isSleeping then return end
 		-- Close equipment menu if open
 		if PlayerData.isGaming == false and PlayerData.isEquiping == true then
 			PlayerData.isGaming = true
@@ -538,6 +545,7 @@ scene.inputHandler = {
 	-- D-pad left
 	--
 	leftButtonDown = function()
+		if player.isSleeping then return end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'left'
@@ -553,6 +561,7 @@ scene.inputHandler = {
 		end
 	end,
 	leftButtonUp = function()
+		if player.isSleeping then return end
 		if currentMoveDirection == 'left' then
 			isPlayerMoving = false
 			currentMoveDirection = nil
@@ -566,6 +575,7 @@ scene.inputHandler = {
 	-- D-pad right
 	--
 	rightButtonDown = function()
+		if player.isSleeping then return end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'right'
@@ -581,6 +591,7 @@ scene.inputHandler = {
 		end
 	end,
 	rightButtonUp = function()
+		if player.isSleeping then return end
 		if currentMoveDirection == 'right' then
 			isPlayerMoving = false
 			currentMoveDirection = nil
@@ -594,6 +605,7 @@ scene.inputHandler = {
 	-- D-pad up
 	--
 	upButtonDown = function()
+		if player.isSleeping then return end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'up'
@@ -606,6 +618,7 @@ scene.inputHandler = {
 		end
 	end,
 	upButtonUp = function()
+		if player.isSleeping then return end
 		if currentMoveDirection == 'up' then
 			isPlayerMoving = false
 			currentMoveDirection = nil
@@ -619,6 +632,7 @@ scene.inputHandler = {
 	-- D-pad down
 	--
 	downButtonDown = function()
+		if player.isSleeping then return end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'down'
@@ -631,6 +645,7 @@ scene.inputHandler = {
 		end
 	end,
 	downButtonUp = function()
+		if player.isSleeping then return end
 		if currentMoveDirection == 'down' then
 			isPlayerMoving = false
 			currentMoveDirection = nil

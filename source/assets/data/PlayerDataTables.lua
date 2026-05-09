@@ -48,6 +48,7 @@ local DefaultPlayerData = {
 	floor = 1,
 	room = 1,
 	isGaming = false,
+	fromTitle = false,
 	isDancing = false,
 	amountDances = 0,
 	isInDarkness = false,

@@ -63,6 +63,8 @@ function Player:init(x, y, speed, Zindex)
 
     PlayerData.isActive = false
     self.loadingPower = false
+    self.isSleeping = false
+    self.wakeupPresses = 0
     self.isAlive = true
     self.isInvincible = false
     self.invincibilityTimer = 0
