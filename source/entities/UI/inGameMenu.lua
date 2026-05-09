@@ -111,7 +111,6 @@ function inGameMenu:closeMenu()
     end
     if menuSprite then
         menuSprite:remove()
-        menuSprite = nil
     end
     -- Remove hat sprites
     if self.hatSprites then

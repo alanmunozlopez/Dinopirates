@@ -13,7 +13,7 @@ import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/DanceScene'
 import 'scenes/Floors'
---import 'scenes/StarScene'
+import 'scenes/SpaceScene'
 import 'scenes/TestScene'
 import 'scenes/CreditsScene'
 import 'scenes/CockpitScene'
@@ -50,7 +50,7 @@ Noble.GameData.setup({
 
 Panels.vars.lang = "en"
 
-debug = false
+debug = true
 diagonalMovement = true
 shinonome = Graphics.font.new('assets/fonts/JF-Dot-Shinonome16')
 Graphics.setFont(shinonome, 'normal')

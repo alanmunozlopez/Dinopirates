@@ -214,4 +214,10 @@ Config.Cockpit = {
     failLimit        = 10,    -- max wrong button presses before returning to TitleScene
 }
 
+Config.Space = {
+    crosshairSpeed   = 4,    -- d-pad pixels per frame
+    lerpFactor       = 0.08, -- spring toward accel target (0=frozen, 1=instant)
+    accelSensitivity = 1.2,  -- multiplier on raw accelerometer tilt
+}
+
 return Config

@@ -120,6 +120,12 @@ function scene:enter()
 			end
 		})
 		table.insert(menuItems, {
+			label  = "SPACE",
+			action = function()
+				Noble.transition(SpaceScene, 0.3, Noble.Transition.MetroNexus)
+			end
+		})
+		table.insert(menuItems, {
 			label  = "GAME",
 			action = function()
 				SaveSystem.reset()
