@@ -453,9 +453,10 @@ end
 
 function scene:pause()
 	scene.super.pause(self)
-	-- Your code here
 	SaveSystem.save()
-	
+	if player and PlayerData.isGaming then
+		player:startSleeping()
+	end
 end
 
 function scene:movePlayer(direction)

@@ -93,7 +93,9 @@ function Player:initAnimations()
   self.animation:addState('sleep', 147, 148)
   self.animation.sleep.frameDuration = 18
   
-  if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
+  if PlayerData.fromTitle then
+    self.animation:setState('sleep')
+  elseif (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
     self.animation:setState('lampIdle')
   elseif PlayerData.isTiny == true then
     self.animation:setState('tinyIdle')

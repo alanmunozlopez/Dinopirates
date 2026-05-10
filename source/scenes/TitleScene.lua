@@ -129,6 +129,7 @@ function scene:enter()
 			label  = "GAME",
 			action = function()
 				SaveSystem.reset()
+				PlayerData.fromTitle = true
 				Noble.transition(Floor407, 1, Noble.Transition.Spotlight, {
 					x = 200, y = 120,
 					xExit = PlayerData.playerSpawn.x,

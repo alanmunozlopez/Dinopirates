@@ -104,11 +104,12 @@ local menuItem, error = menu:addMenuItem("Lang", function()
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
 	debug = Utilities.toggle(debug)
-	checkBool(debug)
-	if Noble.showFPS == false then
-		Noble.showFPS = true
-	else 
-		Noble.showFPS = false
+	if debug == true then
+		if Noble.showFPS == false then
+			Noble.showFPS = true
+		else 
+			Noble.showFPS = false
+		end
 	end
 end)
 
