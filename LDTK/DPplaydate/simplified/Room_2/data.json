@@ -106,10 +106,10 @@
 				"id": "Triggers",
 				"iid": "7d672b30-ac70-11f0-ae64-79d729daa857",
 				"layer": "Triggers",
-				"x": 308,
-				"y": 180,
+				"x": 332,
+				"y": 188,
 				"width": 88,
-				"height": 88,
+				"height": 64,
 				"color": 16711748,
 				"customFields": {
 					"script": "entranceMess",

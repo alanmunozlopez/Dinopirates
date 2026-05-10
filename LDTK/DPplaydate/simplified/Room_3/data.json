@@ -155,9 +155,9 @@
 				"id": "Triggers",
 				"iid": "26163fe0-ac70-11f0-8398-53067febe16c",
 				"layer": "Triggers",
-				"x": 196,
+				"x": 204,
 				"y": 204,
-				"width": 96,
+				"width": 64,
 				"height": 40,
 				"color": 16711748,
 				"customFields": {
