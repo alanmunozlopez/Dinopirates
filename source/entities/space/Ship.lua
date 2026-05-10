@@ -5,10 +5,10 @@ function Ship:init(startX, startY, hull, speed, zIndex)
 
     self.animation:addState('fighter',         9,  9)
     self.animation:addState('travel',          5,  5)
-    self.animation:addState('fighterdown',     3,  3)
-    self.animation:addState('fighterup',       4,  4)
-    self.animation:addState('traveldown',      1,  1)
-    self.animation:addState('travelup',        2,  2)
+    self.animation:addState('fighterup',     3,  3)
+    self.animation:addState('fighterdown',       4,  4)
+    self.animation:addState('travelup',      1,  1)
+    self.animation:addState('traveldown',        2,  2)
     self.animation:addState('travelToFighter', 5,  9, 'fighter', 3)
     self.animation:addState('fighterToTravel', 9, 13, 'travel',  3)
     self.animation:addState('fighterleft',    15, 15)
@@ -17,6 +17,7 @@ function Ship:init(startX, startY, hull, speed, zIndex)
     self:setSize(80, 60)
     self:setZIndex(zIndex)
     self:setGroups(2)
+    self:setCollideRect(20, 10, 40, 40)
 
     self.speed       = speed
     self.mode        = 'fighter'
@@ -62,7 +63,7 @@ end
 
 function Ship:boost(mode)
     if self.energy > 0 and self.mode == mode then
-        self.speed  += 1
+        self.speed  = math.min(self.speed + 1, Config.Space.maxSpeed)
         self.energy -= 1
     end
 end

@@ -215,13 +215,38 @@ Config.Cockpit = {
 }
 
 Config.Space = {
-    crosshairSpeed        = 4,     -- d-pad pixels per frame
-    lerpFactor            = 0.08,  -- spring toward accel target (0=frozen, 1=instant)
-    accelSensitivity      = 1.2,   -- multiplier on raw accelerometer tilt
-    shipMoveLerp          = 0.12,  -- ship position lerp per frame
-    accelIdleThreshold    = 0.005, -- min accel delta (per frame) to count as moving
-    accelIdleFrames       = 2,     -- frames of stillness before crosshair starts returning
-    accelCenterReturnLerp = 0.04,  -- how fast base drifts back (0=never, 1=instant)
+    crosshairSpeed        = 4,
+    lerpFactor            = 0.08,
+    accelSensitivity      = 1.2,
+    shipMoveLerp          = 0.12,
+    accelIdleThreshold    = 0.005,
+    accelIdleFrames       = 2,
+    accelCenterReturnLerp = 0.04,
+
+    -- speed & danger
+    speedDecay            = 0.05,
+    maxSpeed              = 20,
+    minSpeed              = 3,
+    dangerFillRate        = 0.002,
+    dangerDrainRate       = 0.003,
+
+    -- meteorite pools
+    meteoriteNearCount    = 14,
+    meteoriteFarCount     = 10,
+    meteoriteNearSpeed    = 3,
+    meteoriteFarSpeed     = 1.5,
+    meteoriteSpeedMult    = 0.2,
+    parallaxSpeed         = 3,
+    meteoriteFarParallax  = 0.5,
+    meteoriteFarScale     = 0.6,
+
+    -- collision
+    invincibilityFrames   = 60,
+    collisionZoneStart    = 0.90,  -- 0-1; meteorite must be this far into its approach before collision is live
+
+    -- hit shake
+    shakeFrames           = 25,    -- frames the shake lasts
+    shakeMagnitude        = 6,     -- max px offset at start of shake (decays to 0)
 }
 
 return Config

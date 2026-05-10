@@ -4,6 +4,8 @@ import 'entities/space/FXspeed'
 import 'entities/space/Meteorite'
 import 'entities/space/Laser'
 import 'entities/space/EnergyMeter'
+import 'entities/space/DangerBar'
+import 'entities/space/HealthDisplay'
 
 SpaceScene = {}
 class('SpaceScene').extends(NobleScene)
@@ -11,11 +13,16 @@ local scene = SpaceScene
 
 scene.backgroundColor = Graphics.kColorBlack
 
-local ship      = nil
-local crosshair = nil
-local fxspeed   = nil
-local laser     = nil
-local energy    = nil
+local ship          = nil
+local crosshair     = nil
+local fxspeed       = nil
+local laser         = nil
+local energy        = nil
+local dangerBar     = nil
+local healthDisplay = nil
+
+local meteoritesNear = {}
+local meteoritesFar  = {}
 
 local cursorX    = 200
 local cursorY    = 120
@@ -25,6 +32,11 @@ local calibrated = false
 local prevAx     = 0
 local prevAy     = 0
 local idleFrames = 0
+
+local danger     = 0
+local health     = 3
+local invFrames  = 0
+local shakeFrames = 0
 
 local shipX = 200
 local shipY = 150
@@ -44,12 +56,28 @@ function scene:enter()
     prevAx     = 0
     prevAy     = 0
     idleFrames = 0
+    danger      = 0
+    health      = 3
+    invFrames   = 0
+    shakeFrames = 0
 
     ship      = Ship(shipX, shipY, 4, 0, ZIndex.player)
     crosshair = Crosshair(200, 134)
     fxspeed   = FXspeed()
     laser     = Laser()
     energy    = EnergyMeter(ship)
+
+    for i = 1, Config.Space.meteoriteNearCount do
+        meteoritesNear[i] = Meteorite(math.random(0, 400), math.random(8, 232), Config.Space.meteoriteNearSpeed)
+    end
+    for i = 1, Config.Space.meteoriteFarCount do
+        local m = Meteorite(math.random(0, 400), math.random(8, 232), Config.Space.meteoriteFarSpeed)
+        m:setScale(Config.Space.meteoriteFarScale)
+        meteoritesFar[i] = m
+    end
+
+    dangerBar     = DangerBar()
+    healthDisplay = HealthDisplay(energy.xPos - 28, energy.yPos)
 
     playdate.startAccelerometer()
 end
@@ -61,55 +89,152 @@ end
 function scene:update()
     scene.super.update(self)
 
-    if ship == nil or ship.mode ~= 'fighter' then return end
+    if ship == nil then return end
 
-    local ax, ay = playdate.readAccelerometer()
-    ax = ax or 0
-    ay = ay or 0
+    -- crosshair: fighter mode only
+    if ship.mode == 'fighter' then
+        local ax, ay = playdate.readAccelerometer()
+        ax = ax or 0
+        ay = ay or 0
 
-    if not calibrated and (ax ~= 0 or ay ~= 0) then
-        baseAx     = ax
-        baseAy     = ay
-        calibrated = true
+        if not calibrated and (ax ~= 0 or ay ~= 0) then
+            baseAx     = ax
+            baseAy     = ay
+            calibrated = true
+        end
+
+        local accelMoving = math.abs(ax - prevAx) >= Config.Space.accelIdleThreshold
+                         or math.abs(ay - prevAy) >= Config.Space.accelIdleThreshold
+
+        local spd   = Config.Space.crosshairSpeed
+        local moved = false
+        if playdate.buttonIsPressed(playdate.kButtonUp)    then cursorY = math.max(0,   cursorY - spd) moved = true end
+        if playdate.buttonIsPressed(playdate.kButtonDown)  then cursorY = math.min(240, cursorY + spd) moved = true end
+        if playdate.buttonIsPressed(playdate.kButtonLeft)  then cursorX = math.max(0,   cursorX - spd) moved = true end
+        if playdate.buttonIsPressed(playdate.kButtonRight) then cursorX = math.min(400, cursorX + spd) moved = true end
+
+        local sens = Config.Space.accelSensitivity
+        if moved then
+            baseAx = ax - (cursorX - 200) / (200 * sens)
+            baseAy = ay - (cursorY - 120) / (120 * sens)
+            calibrated = true
+        end
+
+        if accelMoving or moved then
+            idleFrames = 0
+        else
+            idleFrames = idleFrames + 1
+            if idleFrames >= Config.Space.accelIdleFrames and calibrated then
+                local lr = Config.Space.accelCenterReturnLerp
+                baseAx = baseAx + (ax - baseAx) * lr
+                baseAy = baseAy + (ay - baseAy) * lr
+            end
+        end
+        prevAx = ax
+        prevAy = ay
+
+        local targetX = math.max(0, math.min(400, 200 + (ax - baseAx) * 200 * sens))
+        local targetY = math.max(0, math.min(240, 120 + (ay - baseAy) * 120 * sens))
+        local lf      = Config.Space.lerpFactor
+        cursorX = cursorX + (targetX - cursorX) * lf
+        cursorY = cursorY + (targetY - cursorY) * lf
+
+        crosshair:moveTo(cursorX, cursorY)
     end
 
-    local accelMoving = math.abs(ax - prevAx) >= Config.Space.accelIdleThreshold
-                     or math.abs(ay - prevAy) >= Config.Space.accelIdleThreshold
-
-    local spd   = Config.Space.crosshairSpeed
-    local moved = false
-    if playdate.buttonIsPressed(playdate.kButtonUp)    then cursorY = math.max(0,   cursorY - spd) moved = true end
-    if playdate.buttonIsPressed(playdate.kButtonDown)  then cursorY = math.min(240, cursorY + spd) moved = true end
-    if playdate.buttonIsPressed(playdate.kButtonLeft)  then cursorX = math.max(0,   cursorX - spd) moved = true end
-    if playdate.buttonIsPressed(playdate.kButtonRight) then cursorX = math.min(400, cursorX + spd) moved = true end
-
-    local sens = Config.Space.accelSensitivity
-    if moved then
-        baseAx = ax - (cursorX - 200) / (200 * sens)
-        baseAy = ay - (cursorY - 120) / (120 * sens)
-        calibrated = true
+    -- speed decay: fighter mode only; travel mode holds speed
+    if ship.mode == 'fighter' then
+        ship.speed = math.max(0, ship.speed - Config.Space.speedDecay)
     end
 
-    if accelMoving or moved then
-        idleFrames = 0
+    -- danger bar
+    if ship.mode == 'fighter' and ship.speed < Config.Space.minSpeed then
+        danger = math.min(1, danger + Config.Space.dangerFillRate)
+    elseif ship.speed >= Config.Space.minSpeed then
+        danger = math.max(0, danger - Config.Space.dangerDrainRate)
+    end
+    dangerBar:setDanger(danger)
+    if danger >= 1 then
+        Noble.transition(TitleScene)
+        return
+    end
+
+    -- meteorite zoom + d-pad parallax
+    local py, px = 0, 0
+    if playdate.buttonIsPressed(playdate.kButtonUp)    then py =  Config.Space.parallaxSpeed end
+    if playdate.buttonIsPressed(playdate.kButtonDown)  then py = -Config.Space.parallaxSpeed end
+    if playdate.buttonIsPressed(playdate.kButtonLeft)  then px =  Config.Space.parallaxSpeed end
+    if playdate.buttonIsPressed(playdate.kButtonRight) then px = -Config.Space.parallaxSpeed end
+
+    local shipBonus = ship.speed * Config.Space.meteoriteSpeedMult
+    local farMult   = Config.Space.meteoriteFarParallax
+
+    for i = 1, #meteoritesNear do
+        meteoritesNear[i]:step(shipBonus)
+        if px ~= 0 or py ~= 0 then meteoritesNear[i]:scrollBy(px, py) end
+    end
+    for i = 1, #meteoritesFar do
+        meteoritesFar[i]:step(shipBonus)
+        if px ~= 0 or py ~= 0 then meteoritesFar[i]:scrollBy(px * farMult, py * farMult) end
+    end
+
+    -- collision detection (Z-gated: only meteorites past collisionZoneStart depth can hit)
+    if invFrames > 0 then
+        invFrames -= 1
     else
-        idleFrames = idleFrames + 1
-        if idleFrames >= Config.Space.accelIdleFrames and calibrated then
-            local lr = Config.Space.accelCenterReturnLerp
-            baseAx = baseAx + (ax - baseAx) * lr
-            baseAy = baseAy + (ay - baseAy) * lr
+        local overlapping = ship:overlappingSprites()
+        local hit = false
+        for _, s in ipairs(overlapping) do
+            for j = 1, #meteoritesNear do
+                local m = meteoritesNear[j]
+                if s == m then
+                    local z = m:getZDepth()
+                    print("OVERLAP near["..j.."] z="..string.format("%.2f",z).." counter="..math.floor(m.counter).." frame="..m.imgTable:getLength())
+                    if z >= Config.Space.collisionZoneStart then
+                        print("  -> HIT near["..j.."]")
+                        hit = true
+                    else
+                        print("  -> too far, skip")
+                    end
+                    break
+                end
+            end
+            if not hit then
+                for j = 1, #meteoritesFar do
+                    local m = meteoritesFar[j]
+                    if s == m then
+                        local z = m:getZDepth()
+                        print("OVERLAP far["..j.."] z="..string.format("%.2f",z).." counter="..math.floor(m.counter))
+                        if z >= Config.Space.collisionZoneStart then
+                            print("  -> HIT far["..j.."]")
+                            hit = true
+                        else
+                            print("  -> too far, skip")
+                        end
+                        break
+                    end
+                end
+            end
+            if hit then break end
+        end
+        if hit then
+            health       -= 1
+            invFrames     = Config.Space.invincibilityFrames
+            shakeFrames   = Config.Space.shakeFrames
+            healthDisplay:setHealth(health)
+            if health <= 0 then
+                Noble.transition(TitleScene)
+                return
+            end
         end
     end
-    prevAx = ax
-    prevAy = ay
 
-    local targetX = math.max(0, math.min(400, 200 + (ax - baseAx) * 200 * sens))
-    local targetY = math.max(0, math.min(240, 120 + (ay - baseAy) * 120 * sens))
-    local lf      = Config.Space.lerpFactor
-    cursorX = cursorX + (targetX - cursorX) * lf
-    cursorY = cursorY + (targetY - cursorY) * lf
-
-    crosshair:moveTo(cursorX, cursorY)
+    -- ship shake on hit: random offset that decays with remaining frames
+    if shakeFrames > 0 then
+        shakeFrames -= 1
+        local mag = math.ceil(shakeFrames / Config.Space.shakeFrames * Config.Space.shakeMagnitude)
+        ship:moveTo(ship.x + math.random(-mag, mag), ship.y + math.random(-mag, mag))
+    end
 end
 
 function scene:exit()
@@ -117,11 +242,18 @@ function scene:exit()
 
     playdate.stopAccelerometer()
 
-    if ship      then ship:remove()      ship      = nil end
-    if crosshair then crosshair:remove() crosshair = nil end
-    if fxspeed   then fxspeed:remove()   fxspeed   = nil end
-    if laser     then laser:remove()     laser     = nil end
-    if energy    then energy:remove()    energy    = nil end
+    if ship          then ship:remove()          ship          = nil end
+    if crosshair     then crosshair:remove()     crosshair     = nil end
+    if fxspeed       then fxspeed:remove()       fxspeed       = nil end
+    if laser         then laser:remove()         laser         = nil end
+    if energy        then energy:remove()        energy        = nil end
+    if dangerBar     then dangerBar:remove()     dangerBar     = nil end
+    if healthDisplay then healthDisplay:remove() healthDisplay = nil end
+
+    for i = 1, #meteoritesNear do meteoritesNear[i]:remove() end
+    for i = 1, #meteoritesFar  do meteoritesFar[i]:remove()  end
+    meteoritesNear = {}
+    meteoritesFar  = {}
 end
 
 function scene:finish()
@@ -137,7 +269,7 @@ scene.inputHandler = {
     end,
 
     BButtonDown = function()
-        if ship and ship.mode == 'fighter' and ship.energy > 1 then
+        if ship and ship.mode == 'fighter' and ship.energy > 0 then
             fxspeed.animation:setState('startSpeed')
         end
     end,
@@ -190,17 +322,18 @@ scene.inputHandler = {
         ship.animation:setState('travelToFighter')
         ship:setTarget(shipX, shipY)
         energy:resetPosition(shipX, shipY)
+        if healthDisplay then healthDisplay:moveTo(energy.xPos - 28, energy.yPos) end
         calibrated = false
     end,
 
     crankUndocked = function()
         if ship == nil then return end
         ship.changeMode = true
-        ship.mode  = 'travel'
-        ship.speed = 0
+        ship.mode       = 'travel'
         ship.animation:setState('fighterToTravel')
         ship:setTarget(shipX, shipY + 20)
         energy:resetPosition(shipX, shipY + 20)
+        if healthDisplay then healthDisplay:moveTo(energy.xPos - 28, energy.yPos) end
         cursorX    = 200
         cursorY    = 120
         calibrated = false
