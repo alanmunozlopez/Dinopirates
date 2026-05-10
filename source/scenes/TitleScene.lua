@@ -145,6 +145,15 @@ function scene:enter()
 				Noble.transition(Floor409, 0.3, Noble.Transition.MetroNexus)
 			end
 		})
+		table.insert(menuItems, {
+			label  = "DANCE",
+			action = function()
+				PlayerData.lastEnemyTouched = { id = "debug", type = "basic", x = 200, y = 120 }
+				PlayerData.isDancing = false
+				DanceScene.debugMode = true
+				Noble.transition(DanceScene, 0.3, Noble.Transition.MetroNexus)
+			end
+		})
 		
 	else
 		background = TitleBackground(200, 120, 1)

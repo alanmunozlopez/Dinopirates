@@ -2,6 +2,7 @@ DanceScene = {}
 class("DanceScene").extends(NobleScene)
 local scene = DanceScene
 scene.backgroundColor = Graphics.kColorBlack
+DanceScene.debugMode = false
 
 import "entities/UI/battle/buttonPress"
 import "entities/UI/battle/hitZone"
@@ -158,29 +159,30 @@ function scene:enter()
     sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
     sequence:start()
 
-    -- Decide whether to upgrade difficulty based on PlayerData
-    local chance = self:determineDifficultyUpgrade()
-    local roll = math.random(0, 100)
-    
-    if roll <= chance then
-        -- Roll succeeded: upgrade enemy according to powerLevel
-        self.enemyType = self:determineEnemyType()
-    
-        -- Adjust bpm / buttons by enemy type
-        local diffConfig = Config.Dance[self.enemyType] or Config.Dance.basic
-        self.bpm = diffConfig.bpm
-        self.numberOfButtons = diffConfig.buttons
-        self.enemyEvolving = true
-        printDebug("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
-    
-    else
-        -- Roll failed: stay basic
+    if DanceScene.debugMode then
         self.enemyType = "basic"
-        self.enemyEvolving = false
         self.bpm = Config.Dance.basic.bpm
         self.numberOfButtons = Config.Dance.basic.buttons
-    
-        printDebug("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
+        self.enemyEvolving = false
+    else
+        -- Decide whether to upgrade difficulty based on PlayerData
+        local chance = self:determineDifficultyUpgrade()
+        local roll = math.random(0, 100)
+
+        if roll <= chance then
+            self.enemyType = self:determineEnemyType()
+            local diffConfig = Config.Dance[self.enemyType] or Config.Dance.basic
+            self.bpm = diffConfig.bpm
+            self.numberOfButtons = diffConfig.buttons
+            self.enemyEvolving = true
+            printDebug("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
+        else
+            self.enemyType = "basic"
+            self.enemyEvolving = false
+            self.bpm = Config.Dance.basic.bpm
+            self.numberOfButtons = Config.Dance.basic.buttons
+            printDebug("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
+        end
     end
 
    -- Create ButtonPress instances using enemy pattern profile
@@ -379,6 +381,8 @@ function scene:exit()
         self.buttons = nil
     end
 
+    DanceScene.debugMode = false
+
     -- Player reset
     PlayerData.healthPoints = 2
 
@@ -425,7 +429,12 @@ function scene:checkDanceResults()
    if condition == "win" then
       condition = nil
       self.totalAccuracy = 0
-            
+
+      if DanceScene.debugMode then
+          Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
+          return
+      end
+
       -- Find an enemy and kill it
       findAndKillEnemyById(PlayerData.lastEnemyTouched.id)
       -- health regain
