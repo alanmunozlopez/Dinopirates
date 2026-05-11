@@ -52,7 +52,10 @@ Scenes extend `NobleScene`. Lifecycle: `init → enter → update → exit`.
 | `TitleScene` | `scenes/TitleScene.lua` | Main menu / title screen |
 | `MazeScene` | `scenes/MazeScene.lua` | Core gameplay — loads rooms, spawns entities |
 | `DanceScene` | `scenes/DanceScene.lua` | Rhythm combat when player touches an enemy |
-| `DeadScene` | `scenes/DeadScene.lua` | Game over |
+| `DeadScene` | `scenes/DeadScene.lua` | Game over — Retry / Exit menu with crank support |
+| `CockpitScene` | `scenes/CockpitScene.lua` | Accelerometer + D-pad button-sequence puzzle; leads to CreditsScene or TitleScene |
+| `SpaceScene` | `scenes/SpaceScene.lua` | Space escape shooter with crank-toggled fighter/travel modes |
+| `CreditsScene` | `scenes/CreditsScene.lua` | Scrolling credits sequence |
 | `FloorXXX` | `scenes/Floors.lua` | Auto-generated scene classes for every room |
 
 `Floors.lua` generates classes from **hardcoded floor number ranges** (not from `levelsLDTK`). Current ranges: 166–180, 231–274, 316–330, 401–415. Each FloorXXX class calls `self:setFloor(level, room)` in `init()` (derived as `level = floor(i/100)`, `room = i % 100`) and sets `PlayerData.saveLevel = i`.
@@ -151,4 +154,6 @@ Detailed system documentation lives in `source/DOCS/`:
 - `PLUNGERANG.md` — projectile mechanics
 - `TITLE_SCENE.md` — TitleScene menu modes, input, Continue/NewGame/Delete flow
 - `CREDITS_SCENE.md` — CreditsScene scrolling system, item types, input
+- `COCKPIT_SCENE.md` — CockpitScene: accelerometer pointer, button layout, sequence matching, fail system
+- `SPACE_SCENE.md` — SpaceScene: ship modes, meteorites, danger bar, accelerometer controls
 - `DOORS_AND_KEYS.md`, `TRIGGER_SYSTEM.md`, `PROPS_AND_ITEMS.md`, `DIALOG_SYSTEM.md`, `HUD_SYSTEM.md`, `TILE_LOADING.md`, `CREWMEMBER_AND_COLLISIONS.md`

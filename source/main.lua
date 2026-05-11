@@ -116,4 +116,8 @@ end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
+function playdate.deviceDidWake()
+	MazeScene.onDeviceSleep()
+end
+
 Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus)

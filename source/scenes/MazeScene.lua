@@ -454,6 +454,9 @@ end
 function scene:pause()
 	scene.super.pause(self)
 	SaveSystem.save()
+end
+
+function MazeScene.onDeviceSleep()
 	if player and PlayerData.isGaming then
 		player:startSleeping()
 	end
