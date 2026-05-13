@@ -201,8 +201,16 @@ function scene:enter()
 
     -- Other entities
     hitzone = HitZone(40,30, self.bpm)
-    playerDance = PlayerDance(self.bpm)
-    enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving)
+
+    local charPath = PlayerData.isTiny
+        and 'assets/images/ui/battle/playerDanceTiny'
+        or  'assets/images/ui/battle/playerDance'
+    playerDance = PlayerDance(self.bpm, charPath)
+
+    local enemyPath = (PlayerData.lastEnemyTouched and PlayerData.lastEnemyTouched.type == "bosscolli")
+        and 'assets/images/ui/battle/enemyBosscolliDance'
+        or  'assets/images/ui/battle/enemyDance'
+    enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving, enemyPath)
     buttonCover = ButtonCover()
     winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)

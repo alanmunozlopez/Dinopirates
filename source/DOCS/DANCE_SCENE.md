@@ -45,7 +45,8 @@ In `entities/player/collisions.lua`, when the player overlaps a Brocorat:
 1. Runs `determineDifficultyUpgrade()` → probabilistic roll → sets `enemyType`.
 2. Reads `Config.Dance[enemyType]` → configures `bpm` and `numberOfButtons`.
 3. Creates `numberOfButtons` `ButtonPress` instances using a `keyProvider` function tied to the enemy's `EnemyPatterns` profile.
-4. Spawns all battle UI sprites (see [UI Entities](#ui-entities)).
+4. Resolves sprite paths for player and enemy based on `PlayerData` (see [Dynamic Sprite Selection](#dynamic-sprite-selection)).
+5. Spawns all battle UI sprites (see [UI Entities](#ui-entities)).
 
 ### `start()`
 - Staggers each `ButtonPress` by `300 ms × index` using `movementDelay()`. This prevents all buttons from starting simultaneously.
@@ -132,6 +133,36 @@ All live in `entities/UI/battle/`. Z-index layering from back to front:
 
 ---
 
+## Dynamic Sprite Selection
+
+Resolved in `enter()` before constructing `PlayerDance` and `EnemyRatDance`. Both constructors accept an optional `spritePath` argument that overrides the default spritesheet.
+
+### Player
+
+```lua
+local charPath = PlayerData.isTiny
+    and 'assets/images/ui/battle/playerDanceTiny'
+    or  'assets/images/ui/battle/playerDance'
+playerDance = PlayerDance(self.bpm, charPath)
+```
+
+`PlayerData.isTiny == true` → `playerDanceTiny-table-246-214.png`. Must use the same frame layout as the default sheet (see [Animations](#animations)).
+
+### Enemy
+
+```lua
+local enemyPath = (PlayerData.lastEnemyTouched and PlayerData.lastEnemyTouched.type == "bosscolli")
+    and 'assets/images/ui/battle/enemyBosscolliDance'
+    or  'assets/images/ui/battle/enemyDance'
+enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving, enemyPath)
+```
+
+`lastEnemyTouched.type == "bosscolli"` → alternate enemy sheet. Replace `"bosscolli"` with the actual type string used in `PlayerData.lastEnemyTouched.type`. Must use the same frame layout as the default sheet.
+
+**Adding more variants:** extend the `and/or` chain or switch to a lookup table keyed by type string. Both constructors fall back to the default path when no `spritePath` is passed — existing call sites require no changes.
+
+---
+
 ## Pre-Battle "Ready" Screen
 
 When the scene first enters, `PlayerData.isDancing = false`. The `update()` loop detects this and calls `resultsScreen:loadingScreen()` (shows `'ready'` state), then returns early — no hit detection runs.
@@ -201,7 +232,11 @@ screenCenterX + balancePosition - barWidth / 2
 
 ## Animations
 
-### PlayerDance (`playerDance-table-246-214.png`)
+### PlayerDance
+
+Constructor: `PlayerDance(bpm, spritePath)` — `spritePath` is optional; defaults to `'assets/images/ui/battle/playerDance'`.
+
+Active spritesheet is selected by `DanceScene:enter()` based on `PlayerData.isTiny` (see [Dynamic Sprite Selection](#dynamic-sprite-selection)). Any alternate sheet must use this exact frame layout:
 
 | Input | Animation State | Frames |
 |---|---|---|
@@ -213,7 +248,13 @@ screenCenterX + balancePosition - barWidth / 2
 
 Arrow inputs only — A/B do not change the player sprite.
 
-### EnemyRatDance (`enemyDance-table-211-214.png`)
+### EnemyRatDance
+
+Constructor: `EnemyRatDance(bpm, evolveType, isEvolving, spritePath)` — `spritePath` is optional; defaults to `'assets/images/ui/battle/enemyDance'`.
+
+Active spritesheet is selected by `DanceScene:enter()` based on `PlayerData.lastEnemyTouched.type` (see [Dynamic Sprite Selection](#dynamic-sprite-selection)). Any alternate sheet must use this exact frame layout:
+
+### EnemyRatDance — default (`enemyDance-table-211-214.png`)
 
 `changeAnimation()` — triggered when a button is **in the zone** (prompt visible):
 
@@ -299,7 +340,8 @@ Config.Dance = {
 | Field | Role in DanceScene |
 |---|---|
 | `isDancing` | `false` = ready screen, `true` = battle active |
-| `lastEnemyTouched` | `{id, type, x, y}` — set before fight(), used to kill enemy on win |
+| `isTiny` | `true` = render `playerDanceTiny` spritesheet instead of default |
+| `lastEnemyTouched` | `{id, type, x, y}` — set before fight(); `type` selects enemy spritesheet; `id` used to kill enemy on win |
 | `danceThresholdHP` | HP value below which fight() triggers (default 5) |
 | `EnemiesData.powerLevel` | Determines enemy type (1–20) |
 | `sanityCounter` | Feeds difficulty roll weight |

@@ -97,7 +97,7 @@ function scene:enter()
 	
 	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 	menuItems = {}
-	isDebugMenu = (debug == true)
+	isDebugMenu = (debugMenu == true)
 
 	local version = "* Demo " .. playdate.metadata.version .. "*"
 	local vw, vh = Graphics.getTextSize(version)
