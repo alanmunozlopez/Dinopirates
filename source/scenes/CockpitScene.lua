@@ -18,6 +18,7 @@ local baseAx     = 0
 local baseAy     = 0
 local calibrated = false
 local bgImage    = nil
+local fgSprite   = nil
 local radar      = nil
 local failCount  = 0
 
@@ -119,7 +120,14 @@ function scene:enter()
     resetAllSequences()
     failCount = 0
 
-    -- bgImage = Graphics.image.new('assets/images/ui/cockpit/cockpit_background')
+    bgImage = Graphics.image.new('assets/images/cockpit/cockpit_background')
+
+    local fgImage = Graphics.image.new('assets/images/cockpit/cockpit_foreground')
+    fgSprite = Graphics.sprite.new(fgImage)
+    fgSprite:setZIndex(ZIndex.menu)
+    fgSprite:setIgnoresDrawOffset(true)
+    fgSprite:moveTo(200, 120)
+    fgSprite:add()
 
     playdate.startAccelerometer()
 
@@ -262,9 +270,11 @@ function scene:exit()
     for _, btn in ipairs(buttons) do btn:remove() end
     buttons = {}
 
-    if bars    then bars:remove()    bars    = nil end
-    if radar   then radar:remove()   radar   = nil end
-    if pointer then pointer:remove() pointer = nil end
+    if bars     then bars:remove()     bars     = nil end
+    if radar    then radar:remove()    radar    = nil end
+    if pointer  then pointer:remove()  pointer  = nil end
+    if fgSprite then fgSprite:remove() fgSprite = nil end
+    bgImage = nil
 end
 
 function scene:finish()
