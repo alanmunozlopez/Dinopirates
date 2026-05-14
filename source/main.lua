@@ -59,27 +59,6 @@ Panels.Settings.path = ""
 ZIndex = Config.ZIndex
 CollideGroups = Config.CollideGroups
 
--- Button type constants
-ButtonTypes = {
-	A = "aButton",
-	B = "bButton",
-	LEFT = "leftButton",
-	RIGHT = "rightButton",
-	UP = "upButton",
-	DOWN = "downButton"
-}
-
--- Direction constants
-Directions = {
-	LEFT = "left",
-	RIGHT = "right",
-	UP = "up",
-	DOWN = "down",
-	IDLE = "idle",
-	TOP = "top",
-	BOTTOM = "down" -- Para puertas
-}
-
 -- playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true) -- Removed: using code-based reset now
 
 SaveSystem.createOriginalBackup()

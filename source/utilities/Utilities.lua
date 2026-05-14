@@ -4,9 +4,6 @@
 
 class('Box').extends(playdate.graphics.sprite)
 
-function Utilities.getZero()
-	return 0
-end
 
 -- mark: Draw collider boxes (walls)
 
@@ -129,22 +126,6 @@ function CheatCode:nextIs(key)
   return keys[key] == self._seq[self.progress]
 end
 
-function RandomScreen(axis)
-	if axis == "x" then
-		return math.random(Config.Screen.randomBoundsX.min, Config.Screen.randomBoundsX.max)
-	elseif axis == "y" then
-		return math.random(Config.Screen.randomBoundsY.min, Config.Screen.randomBoundsY.max)
-	end
-end
-
-function checkBool(bool)
-	local string
-	if bool == true then
-		print('true')
-	elseif (bool == false) then
-		print('false')
-	end
-end
 function printDebug(value)
 	if debug == true then
 		print(value)
@@ -596,40 +577,6 @@ function Utilities.toggle(value)
 end
 
 
-function CurrentTile()
-	local floor = PlayerData.actualTilemap or 1
-	local x = tonumber(PlayerData.x) or 0
-	local y = tonumber(PlayerData.y) or 0
-
-	-- Convertir coordenadas de píxeles a coordenadas de tile
-	local tileX = math.floor(x / TILE_SIZE) + 1
-	local tileY = math.floor(y / TILE_SIZE) + 1
-
-	-- Obtener referencias seguras
-	local floorData = tileMapData[floor]
-	if not floorData then
-		printDebug("⚠️ Piso no encontrado:", floor)
-		return
-	end
-
-	local row = floorData[tileY]
-	if not row then
-		printDebug(string.format("⚠️ Fuera del rango vertical (tileY=%.2f)", tileY))
-		return
-	end
-
-	local tileNumber = row[tileX]
-	if not tileNumber then
-		printDebug(string.format("⚠️ Fuera del rango horizontal (tileX=%.2f)", tileX))
-		return
-	end
-
-	-- ✅ Usa %.2f para floats y %d solo para enteros seguros
-	printDebug(string.format(
-		"🧭 Piso %d | Player (%.1f, %.1f) | Tile (%d, %d) = %d",
-		floor, x, y, tileX, tileY, tileNumber
-	))
-end
 
 -- Returns the tile ID at a given pixel position (or player position by default)
 function GetTileUnderPlayer(px, py)
@@ -691,32 +638,4 @@ local function formatNumberK(n)
 	else
 		return tostring(n)
 	end
-end
-function drawStatusText(image)
-	local xPos = 160
-	local yPos = 128
-	Graphics.pushContext(image)
-	
-	-- Clear text areas
-	Graphics.setColor(Graphics.kColorWhite)
-	Graphics.fillRect(xPos, yPos, 100, 12)
-	Graphics.fillRect(xPos, yPos + 12, 100, 12)
-	Graphics.fillRect(xPos, yPos + 25, 100, 12)
-	Graphics.fillRect(xPos, yPos + 38, 100, 12)
-	
-	local smallFont = Graphics.font.new('assets/fonts/Mini Sans')
-	Graphics.setFont(smallFont)
-	
-	-- Apply formatting to steps
-	local sanityText = ": " .. tostring(PlayerData.sanity)
-	local caloriesText = ": " .. tostring(PlayerData.calories)
-	local stepsText = ": " .. formatNumberK(PlayerData.totalSteps)
-	local mapPercent = ": " .. MapDrawer.calculateMapPercent().."%"
-
-	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
-	Graphics.drawText(sanityText, xPos, yPos)
-	Graphics.drawText(caloriesText, xPos, yPos + 12)
-	Graphics.drawText(stepsText, xPos, yPos + 25)
-	Graphics.drawText(mapPercent, xPos, yPos + 38)
-	Graphics.popContext()
 end
