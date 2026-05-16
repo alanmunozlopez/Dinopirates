@@ -69,6 +69,19 @@ function Player:startInvincibility(duration)
     self.invincibilityTimer = duration
 end
 
+function Player:applyKnockback(enemyX, enemyY)
+    local k = Config.Player.knockbackDistance
+    local dx = 0
+    local dy = 0
+    if self.x ~= enemyX then
+        dx = (self.x > enemyX) and k or -k
+    end
+    if self.y ~= enemyY then
+        dy = (self.y > enemyY) and k or -k
+    end
+    self:moveWithCollisions(self.x + dx, self.y + dy)
+end
+
 function Player:idle()
   if self.isAlive == true then
     if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then

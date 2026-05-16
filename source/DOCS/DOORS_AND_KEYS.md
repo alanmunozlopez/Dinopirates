@@ -85,3 +85,72 @@ end
 
 ### 4. Spawn Coordinates
 Port `Config.Doors.spawnCoords` directly — it is pure data with no Playdate dependencies.
+
+---
+
+## 🌀 Portal Doors
+
+Portal doors teleport the player to any room in the map regardless of adjacency. They are defined as a separate LDtk entity type (`PortalDoors`) and do not interact with the existing `Doors` entity or `CreateDoorsFromLDTK`.
+
+### LDtk Entity: `PortalDoors`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `PortalID` | `Int` | Labels a portal pair for identification. No runtime effect — place a second portal in the destination room to enable return travel. |
+| `DestLevel` | `Int` | Destination level number. |
+| `DestRoom` | `Int` | Destination room number within that level. Combined RoomID = `DestLevel * 100 + DestRoom`. |
+| `SpawnX` | `Int` | X coordinate where the player spawns in the destination room. |
+| `SpawnY` | `Int` | Y coordinate where the player spawns in the destination room. |
+| `Conditions` | `Array<String>` | Entry conditions (same format as Trigger `conditionalScripts`). All must pass. Empty = always open. |
+| `BlockedDialog` | `String` | Dialog key shown when entry is blocked. Defaults to `"nokeys"`. |
+
+### Condition examples
+
+The format is `"conditionExpr:label"` — the label after `:` is ignored by portals (it exists only for compatibility with the Trigger condition format).
+
+```
+"isTiny:enter"               -- player must be tiny
+"!isTiny:enter"              -- player must NOT be tiny
+"inventory.tools==1:enter"   -- player must have tools
+"healthPoints>=3:enter"      -- player must have at least 3 HP
+```
+
+### LDtk setup example
+
+**Scenario:** Portal in room 166 (level 1, sala 66) que lleva a room 408 (level 4, sala 8), solo accesible cuando el jugador es tiny. El portal de regreso está en room 408.
+
+**Portal A** — colocado en room 166:
+```
+Entity type : PortalDoors
+PortalID    : 1
+DestLevel   : 4
+DestRoom    : 8
+SpawnX      : 196
+SpawnY      : 116
+Conditions  : ["isTiny:enter"]
+BlockedDialog: notiny
+```
+
+**Portal B** — colocado en room 408 (el de regreso):
+```
+Entity type : PortalDoors
+PortalID    : 1
+DestLevel   : 1
+DestRoom    : 66
+SpawnX      : 196
+SpawnY      : 116
+Conditions  : []        ← vacío, cualquiera puede regresar
+BlockedDialog:          ← dejar vacío usa el default "nokeys"
+```
+
+> `SpawnX=196, SpawnY=116` es el centro aproximado de la pantalla (400×240). Ajusta según dónde quieras que aparezca el jugador en la sala destino.
+
+### Code path
+
+1. `MazeScene:enter()` calls `CreatePortalDoorsFromLDTK(currentRoom)` after `CreateDoorsFromLDTK`.
+2. `CreatePortalDoorsFromLDTK` iterates `currentRoom.entities.PortalDoors` and instantiates `PortalDoor` per entity.
+3. On player collision: `player/collisions.lua` checks `other:isa(PortalDoor)` → calls `canEnter()` → either `setSpawn() + goTo()` or shows blocked dialog.
+
+### Config
+
+`Config.Portals.collideRect` — default collision rect used when LDtk entity has no explicit size.

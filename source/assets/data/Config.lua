@@ -50,6 +50,7 @@ Config.Player = {
     hudOffsetYTiny   = -17,
     triggerCheckDist        = 5,   -- px moved before re-checking triggers
     movementFramesPerAction = 3,   -- movement frames distributed to NPCs/enemies per player move
+    knockbackDistance       = 2,   -- px pushed on enemy hit
 }
 
 -- Dash ability
@@ -127,6 +128,11 @@ Config.Doors = {
         right = {x=32,  y=116},
         left  = {x=364, y=116},
     },
+}
+
+-- Portal Doors
+Config.Portals = {
+    collideRect = {x=0, y=0, w=24, h=24},
 }
 
 -- CrewMember AI

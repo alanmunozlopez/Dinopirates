@@ -17,6 +17,7 @@ function Player:collisionResponse(other)
           self:fight()
         else
           self:startInvincibility(Config.Invincibility.duration)
+          self:applyKnockback(other.x, other.y)
         end
       end
       
@@ -150,7 +151,16 @@ function Player:collisionResponse(other)
 
   elseif other:isa(PropItem) then
   return 'freeze'
-  
+
+  elseif other:isa(PortalDoor) then
+    if other:canEnter() then
+      other:setSpawn()
+      other:goTo()
+    else
+      self.dialogUI:addScreen(other.blockedDialog or "nokeys")
+    end
+    return 'overlap'
+
   elseif other:isa(Door) then
 
     if other.status == 'open' then

@@ -26,6 +26,7 @@ import "entities/enemies/crewmember"
 
 import 'entities/props/propItem'
 import 'entities/props/door'
+import 'entities/props/portal_door'
 import 'entities/props/trigger'
 
 import 'entities/items/Items'
@@ -159,6 +160,7 @@ function scene:enter()
 		end
 		
 		CreateDoorsFromLDTK(currentRoom)
+		CreatePortalDoorsFromLDTK(currentRoom)
 	else
 		printDebug("❌ ERROR: room is", room, "or levelsLDTK[room] is nil")
 	end
