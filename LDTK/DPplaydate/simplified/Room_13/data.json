@@ -44,7 +44,8 @@
 		"DoorsConnection": [
 			"Top",
 			"Left",
-			"Right"
+			"Right",
+			"Lower"
 		],
 		"play": null
 	},

@@ -1290,7 +1290,8 @@ table.insert(levelsLDTK, {
     DoorsConnection = {
       "Top",
       "Left",
-      "Right"
+      "Right",
+      "Lower"
     },
     play = nil,
     hasForeground = true
