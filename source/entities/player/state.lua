@@ -289,6 +289,7 @@ function Player:update()
 
   -- Check if player is on a hole tile (IDs 104-115)
   self:checkHoleTile()
+  self:checkTinyHoleTile()
 
   -- Hide light cone after display time
   if self.lightConeHideTime and playdate.getCurrentTimeMilliseconds() >= self.lightConeHideTime then

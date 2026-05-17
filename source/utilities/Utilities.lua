@@ -460,9 +460,10 @@ end
 local TILE_SIZE = Config.Tiles.size
 
 local WALKABLE_TILES = {
-	[Config.Tiles.IntGrid.slime] = true,
-	[Config.Tiles.IntGrid.hole]  = true,
-	[Config.Tiles.IntGrid.floor] = true,
+	[Config.Tiles.IntGrid.slime]    = true,
+	[Config.Tiles.IntGrid.hole]     = true,
+	[Config.Tiles.IntGrid.floor]    = true,
+	[Config.Tiles.IntGrid.tinyHole] = true,
 }
 
 --- Creates colliders for all non-walkable tiles (everything except slime/hole/floor).
@@ -623,6 +624,22 @@ function IsPlayerOnHole(px, py)
 	for _, dx in ipairs(xOffsets) do
 		for _, dy in ipairs(yOffsets) do
 			if GetTileUnderPlayer(px + dx, feetY + dy) == Config.Tiles.IntGrid.hole then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- Checks if the player is standing on a tiny hole tile (IntGrid value 32).
+function IsPlayerOnTinyHole(px, py)
+	local feetY = py + 12
+	local halfW = 5
+	local xOffsets = { -halfW, 0, halfW }
+	local yOffsets = { -4, 0, 4 }
+	for _, dx in ipairs(xOffsets) do
+		for _, dy in ipairs(yOffsets) do
+			if GetTileUnderPlayer(px + dx, feetY + dy) == Config.Tiles.IntGrid.tinyHole then
 				return true
 			end
 		end

@@ -1,4 +1,4 @@
--- Player hole tile handling.
+-- Player hole and tiny-hole tile handling.
 -- Mirrors the old PropItem isHole collision logic but driven by tile detection.
 
 function Player:checkHoleTile()
@@ -24,6 +24,28 @@ function Player:checkHoleTile()
     else
         -- Set flag BEFORE fallBelow() to block re-entry on subsequent frames
         -- while the Noble.transition() is still in progress.
+        self.isFalling = true
+        self:fallBelow()
+    end
+end
+
+-- Same logic as checkHoleTile but for tiny-only holes (IntGrid 32).
+-- Normal-size players walk over tiny holes as if they were floor.
+function Player:checkTinyHoleTile()
+    if not PlayerData.isTiny then return end
+    if self.isDashing or self.isSliding or self.isPlunging or self.isFalling then
+        return
+    end
+
+    if not IsPlayerOnTinyHole(self.x, self.y) then
+        return
+    end
+
+    if PlayerData.items.hasBoots == true and PlayerData.battery > 0 then
+        if PlayerData.isActive then
+            self:drainBattery(Config.Battery.drainHoleTiny)
+        end
+    else
         self.isFalling = true
         self:fallBelow()
     end

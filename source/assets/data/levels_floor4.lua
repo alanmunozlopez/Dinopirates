@@ -92,10 +92,10 @@ table.insert(levelsLDTK, {
       {
         id = "Triggers",
         iid = "7d672b30-ac70-11f0-ae64-79d729daa857",
-        x = 308,
-        y = 180,
+        x = 332,
+        y = 188,
         width = 88,
-        height = 88,
+        height = 64,
         customFields = {
           script = "entranceMess",
           usedTrigger = false,
@@ -375,9 +375,9 @@ table.insert(levelsLDTK, {
       {
         id = "Triggers",
         iid = "26163fe0-ac70-11f0-8398-53067febe16c",
-        x = 196,
+        x = 204,
         y = 204,
-        width = 96,
+        width = 64,
         height = 40,
         customFields = {
           script = "notnormalBrocoli",
@@ -1054,6 +1054,22 @@ table.insert(levelsLDTK, {
             "!items.hasBoots:catNoBoots",
             "true:catWhat"
           },
+          sourceFeed = 0,
+          hasGranted = false
+        }
+      }
+    },
+    Computer = {
+      {
+        id = "Computer",
+        iid = "066a22a0-48b0-11f1-b67e-85d567dff68f",
+        x = 364,
+        y = 180,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "computer",
+          conditionalScripts = {},
           sourceFeed = 0,
           hasGranted = false
         }

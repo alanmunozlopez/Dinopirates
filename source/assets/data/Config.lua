@@ -29,10 +29,11 @@ Config.CollideGroups = {
 Config.Tiles = {
     size    = 16,
     IntGrid = {
-        wall  = 1,
-        slime = 2,
-        hole  = 3,
-        floor = 4,
+        wall     = 1,
+        slime    = 2,
+        hole     = 3,
+        floor    = 4,
+        tinyHole = 32,
     }
 }
 

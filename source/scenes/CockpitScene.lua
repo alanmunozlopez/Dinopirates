@@ -2,6 +2,7 @@ import "entities/UI/cockpit/CockpitButton"
 import "entities/UI/cockpit/CockpitPointer"
 import "entities/UI/cockpit/CockpitBars"
 import "entities/UI/cockpit/CockpitRadar"
+import "entities/UI/cockpit/CockpitIndicators"
 
 CockpitScene = {}
 class("CockpitScene").extends(NobleScene)
@@ -20,6 +21,7 @@ local calibrated = false
 local bgImage    = nil
 local fgSprite   = nil
 local radar      = nil
+local indicators = nil
 local failCount  = 0
 
 -- Add or modify entries here to create new sequences with different outcomes.
@@ -124,7 +126,7 @@ function scene:enter()
 
     local fgImage = Graphics.image.new('assets/images/cockpit/cockpit_foreground')
     fgSprite = Graphics.sprite.new(fgImage)
-    fgSprite:setZIndex(ZIndex.menu)
+    fgSprite:setZIndex(ZIndex.ui - 1)
     fgSprite:setIgnoresDrawOffset(true)
     fgSprite:moveTo(200, 120)
     fgSprite:add()
@@ -164,8 +166,9 @@ function scene:enter()
         table.insert(buttons, CockpitButton(cfg.x, cfg.y, cfg.w, cfg.h, cfg.label))
     end
 
-    bars  = CockpitBars(206, 190, 50, 31)
-    radar = CockpitRadar(50, 200, 80, 60)
+    bars       = CockpitBars(206, 190, 50, 31)
+    radar      = CockpitRadar(50, 200, 80, 60)
+    indicators = CockpitIndicators()
 
     pointer = CockpitPointer()
     pointer:add(pointerX, pointerY)
@@ -218,47 +221,16 @@ function scene:update()
             pointer:setIdle()
         end
     end
+
+    if indicators then
+        local leading = leadingSequence()
+        indicators:setData(leading.index - 1, #leading.pattern, math.min(1, failCount / Config.Cockpit.failLimit))
+    end
 end
 
 function scene:drawBackground()
     scene.super.drawBackground(self)
-
     if bgImage then bgImage:draw(0, 0) end
-
-    local leading = leadingSequence()
-    local filled  = leading.index - 1
-    local n       = #leading.pattern
-
-    -- Indicator 1: sequence progress circles (8×8, radius=4)
-    local circleR   = 4
-    local circleD   = circleR * 2
-    local circleGap = 4
-    local rowW      = n * circleD + (n - 1) * circleGap
-    local startX    = math.floor(200 - rowW / 2) + circleR
-    local circleY   = 8
-
-    Graphics.setColor(Graphics.kColorBlack)
-    for i = 1, n do
-        local cx = startX + (i - 1) * (circleD + circleGap)
-        if i <= filled then
-            Graphics.fillCircleAtPoint(cx, circleY, circleR)
-        else
-            Graphics.drawCircleAtPoint(cx, circleY, circleR)
-        end
-    end
-
-    -- Indicator 2: failed attempts bar (fills up, never resets mid-session)
-    local barY      = 18
-    local barH      = 5
-    local barMargin = 40
-    local barTotalW = 400 - barMargin * 2
-    local barFillW  = math.floor(math.min(barTotalW, barTotalW * (failCount / Config.Cockpit.failLimit)))
-
-    Graphics.setColor(Graphics.kColorBlack)
-    Graphics.drawRect(barMargin, barY, barTotalW, barH)
-    if barFillW > 0 then
-        Graphics.fillRect(barMargin, barY, barFillW, barH)
-    end
 end
 
 function scene:exit()
@@ -270,10 +242,11 @@ function scene:exit()
     for _, btn in ipairs(buttons) do btn:remove() end
     buttons = {}
 
-    if bars     then bars:remove()     bars     = nil end
-    if radar    then radar:remove()    radar    = nil end
-    if pointer  then pointer:remove()  pointer  = nil end
-    if fgSprite then fgSprite:remove() fgSprite = nil end
+    if bars       then bars:remove()       bars       = nil end
+    if radar      then radar:remove()      radar      = nil end
+    if pointer    then pointer:remove()    pointer    = nil end
+    if indicators then indicators:remove() indicators = nil end
+    if fgSprite   then fgSprite:remove()   fgSprite   = nil end
     bgImage = nil
 end
 
