@@ -36,7 +36,7 @@ local credits = {
     { type = "text",  value = "Christian Padilla - Game test" },
     { type = "space", height = 8 },
     { type = "text",  value = "This game wouldnt been possible " },
-    { type = "text",  value = "without the support of" },
+    { type = "text",  value = "without the support and love of" },
     { type = "text",  value = "Jenna Heo" },
     { type = "space", height = 40 },
     { type = "text",  value = "Thanks for playing!" },

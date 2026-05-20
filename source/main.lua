@@ -51,7 +51,7 @@ Noble.GameData.setup({
 Panels.vars.lang = "en"
 debugMenu = false
 debug = false
-diagonalMovement = true
+diagonalMovement = false
 shinonome = Graphics.font.new('assets/fonts/JF-Dot-Shinonome16')
 Graphics.setFont(shinonome, 'normal')
 
@@ -83,6 +83,7 @@ local menuItem, error = menu:addMenuItem("Lang", function()
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
 	debug = Utilities.toggle(debug)
+	debugMenu = Utilities.toggle(debugMenu)
 	if debug == true then
 		if Noble.showFPS == false then
 			Noble.showFPS = true
