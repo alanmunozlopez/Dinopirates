@@ -234,12 +234,10 @@ end
 
 function scene:update()
 	scene.super.update(self)
-   if  PlayerData.isDancing == false and condition == nil then
-      if resultsScreen then resultsScreen:loadingScreen() end
-        
-      return
+    if (PlayerData.isDancing == false and condition == nil) or not hitzone then
+        if resultsScreen and condition == nil then resultsScreen:loadingScreen() end
+        return
     end
-    
     local collisions = hitzone:overlappingSprites()
     if table.getsize(collisions) > 0 then
         if self.ButtonPressed == nil then

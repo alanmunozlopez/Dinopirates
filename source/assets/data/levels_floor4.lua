@@ -336,8 +336,8 @@ table.insert(levelsLDTK, {
       {
         id = "Triggers",
         iid = "f2317670-ac70-11f0-ae64-133829c2c353",
-        x = 244,
-        y = 108,
+        x = 268,
+        y = 100,
         width = 32,
         height = 32,
         customFields = {
@@ -1535,7 +1535,7 @@ table.insert(levelsLDTK, {
         customFields = {
           PortalID = 1,
           DestLevel = 4,
-          DestRoom = 8,
+          DestRoom = 3,
           SpawnX = 161,
           SpawnY = 128,
           Conditions = {},
