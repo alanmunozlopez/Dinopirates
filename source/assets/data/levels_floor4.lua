@@ -16,6 +16,10 @@ table.insert(levelsLDTK, {
       dir = "e"
     },
     {
+      levelIid = "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+      dir = "ne"
+    },
+    {
       levelIid = "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
       dir = "sw"
     },
@@ -252,6 +256,10 @@ table.insert(levelsLDTK, {
       dir = "w"
     },
     {
+      levelIid = "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+      dir = "n"
+    },
+    {
       levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
       dir = "e"
     },
@@ -454,6 +462,25 @@ table.insert(levelsLDTK, {
           NeedsKey = false,
           DoorsConnection = "Down",
           KeyNumber = nil
+        }
+      }
+    },
+    PortalDoors = {
+      {
+        id = "PortalDoors",
+        iid = "25b7b320-48b0-11f1-b2c1-f3c6cc9fc228",
+        x = 168,
+        y = 56,
+        width = 16,
+        height = 16,
+        customFields = {
+          PortalID = 1,
+          DestLevel = 4,
+          DestRoom = 81,
+          SpawnX = 200,
+          SpawnY = 184,
+          Conditions = {},
+          BlockedDialog = nil
         }
       }
     }
@@ -1458,6 +1485,61 @@ table.insert(levelsLDTK, {
           NeedsKey = false,
           DoorsConnection = "Top",
           KeyNumber = nil
+        }
+      }
+    }
+  }
+})
+	--81
+table.insert(levelsLDTK, {
+  identifier = "Room_81",
+  uniqueIdentifer = "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+  neighbourLevels = {
+    {
+      levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
+      dir = "sw"
+    },
+    {
+      levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
+      dir = "s"
+    },
+    {
+      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+      dir = "se"
+    }
+  },
+  customFields = {
+    shadow = false,
+    light = 0,
+    visited = false,
+    comic_name = nil,
+    comic_wasPlayed = false,
+    level = 4,
+    roomNumber = 81,
+    tile = 81,
+    DoorsConnection = {
+      "Down"
+    },
+    play = nil,
+    hasForeground = true
+  },
+  entities = {
+    PortalDoors = {
+      {
+        id = "PortalDoors",
+        iid = "6ac094f0-48b0-11f1-b2c1-99bd8a09616d",
+        x = 200,
+        y = 56,
+        width = 16,
+        height = 16,
+        customFields = {
+          PortalID = 1,
+          DestLevel = 4,
+          DestRoom = 8,
+          SpawnX = 161,
+          SpawnY = 128,
+          Conditions = {},
+          BlockedDialog = nil
         }
       }
     }

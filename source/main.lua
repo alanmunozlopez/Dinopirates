@@ -51,7 +51,7 @@ Noble.GameData.setup({
 Panels.vars.lang = "en"
 debugMenu = false
 debug = false
-diagonalMovement = false
+diagonalMovement = true
 shinonome = Graphics.font.new('assets/fonts/JF-Dot-Shinonome16')
 Graphics.setFont(shinonome, 'normal')
 
