@@ -336,8 +336,8 @@ table.insert(levelsLDTK, {
       {
         id = "Triggers",
         iid = "f2317670-ac70-11f0-ae64-133829c2c353",
-        x = 268,
-        y = 100,
+        x = 252,
+        y = 108,
         width = 32,
         height = 32,
         customFields = {
@@ -469,7 +469,7 @@ table.insert(levelsLDTK, {
       {
         id = "PortalDoors",
         iid = "25b7b320-48b0-11f1-b2c1-f3c6cc9fc228",
-        x = 168,
+        x = 152,
         y = 56,
         width = 16,
         height = 16,
@@ -479,8 +479,10 @@ table.insert(levelsLDTK, {
           DestRoom = 81,
           SpawnX = 200,
           SpawnY = 184,
-          Conditions = {},
-          BlockedDialog = nil
+          Conditions = {
+            "isTiny:true"
+          },
+          BlockedDialog = "cabinetHole"
         }
       }
     }
@@ -1528,8 +1530,8 @@ table.insert(levelsLDTK, {
       {
         id = "PortalDoors",
         iid = "6ac094f0-48b0-11f1-b2c1-99bd8a09616d",
-        x = 200,
-        y = 56,
+        x = 168,
+        y = 216,
         width = 16,
         height = 16,
         customFields = {

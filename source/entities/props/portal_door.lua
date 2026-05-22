@@ -72,7 +72,7 @@ function PortalDoor:goTo()
 end
 
 function PortalDoor:collisionResponse()
-    return "overlap"
+    return "slide"
 end
 
 -- Iterates currentRoom.entities.PortalDoors and instantiates each one.

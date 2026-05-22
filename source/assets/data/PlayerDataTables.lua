@@ -18,7 +18,7 @@ end
 local DefaultPlayerData = {
 	x = 200,
 	y = 200, 
-	speed = 1.5,
+	speed = Config.Player.speed,
 	healthPoints = 3,
 	danceThresholdHP = 1,
 	healedHP = 2,
