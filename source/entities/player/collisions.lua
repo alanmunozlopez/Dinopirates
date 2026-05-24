@@ -156,11 +156,11 @@ function Player:collisionResponse(other)
     if other:canEnter() then
       other:setSpawn()
       other:goTo()
-      return 'overlap'
+      return "overlap"
     else
       if not PlayerData.isTalking then
         PlayerData.isGaming = false
-        self.dialogUI:addScreen(other.blockedDialog or "nokeys")
+      self.dialogUI:addScreen(other.blockedDialog or "nokeys")
       end
       return 'freeze'
     end

@@ -501,4 +501,14 @@ script = {
     
         }
     },
+    {
+        name = "cabinetHole",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = "cabinethole-01",
+    }
+    
+        }
+    },
 }

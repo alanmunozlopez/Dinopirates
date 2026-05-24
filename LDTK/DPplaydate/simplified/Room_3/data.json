@@ -106,8 +106,8 @@
 				"id": "Triggers",
 				"iid": "f2317670-ac70-11f0-ae64-133829c2c353",
 				"layer": "Triggers",
-				"x": 268,
-				"y": 100,
+				"x": 252,
+				"y": 108,
 				"width": 32,
 				"height": 32,
 				"color": 16711748,
@@ -268,7 +268,9 @@
 					"DestRoom": 81,
 					"SpawnX": 200,
 					"SpawnY": 184,
-					"Conditions": [],
+					"Conditions": [
+						"isTiny:true"
+					],
 					"BlockedDialog": null
 				}
 			}
