@@ -31,7 +31,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.damage = 1
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
-	self.sightRadius = PlayerData.EnemiesData.sightRadius + self.powerLevel * 3 -- this should be calculated according to the level or power of the enemy.
+	self.sightRadius = math.max(Config.Enemy.sightRadiusMin, PlayerData.EnemiesData.sightRadius + self.powerLevel * Config.Enemy.sightRadiusPerPowerLevel)
 	
 	-- Performance: Frame counter for throttling updates
 	self.updateFrameCounter = math.random(0, 2) -- Random offset to stagger enemy updates

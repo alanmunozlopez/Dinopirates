@@ -196,19 +196,21 @@ function scene:update()
     local spd   = Config.Cockpit.dpadSpeed
     local moved = false
     if playdate.buttonIsPressed(playdate.kButtonUp)    then pointerY = math.max(0,   pointerY - spd) moved = true end
-    if playdate.buttonIsPressed(playdate.kButtonDown)  then pointerY = math.min(240, pointerY + spd) moved = true end
-    if playdate.buttonIsPressed(playdate.kButtonLeft)  then pointerX = math.max(0,   pointerX - spd) moved = true end
-    if playdate.buttonIsPressed(playdate.kButtonRight) then pointerX = math.min(400, pointerX + spd) moved = true end
+    if playdate.buttonIsPressed(playdate.kButtonDown)  then pointerY = math.min(Config.Screen.height, pointerY + spd) moved = true end
+    if playdate.buttonIsPressed(playdate.kButtonLeft)  then pointerX = math.max(0,                    pointerX - spd) moved = true end
+    if playdate.buttonIsPressed(playdate.kButtonRight) then pointerX = math.min(Config.Screen.width,  pointerX + spd) moved = true end
 
-    local sens = Config.Cockpit.accelSensitivity
+    local sens  = Config.Cockpit.accelSensitivity
+    local halfW = Config.Screen.width  / 2
+    local halfH = Config.Screen.height / 2
     if moved then
-        baseAx     = ax - (pointerX - 200) / (200 * sens)
-        baseAy     = ay - (pointerY - 120) / (120 * sens)
+        baseAx     = ax - (pointerX - halfW) / (halfW * sens)
+        baseAy     = ay - (pointerY - halfH) / (halfH * sens)
         calibrated = true
     end
 
-    local targetX = math.max(0, math.min(400, 200 + (ax - baseAx) * 200 * sens))
-    local targetY = math.max(0, math.min(240, 120 + (ay - baseAy) * 120 * sens))
+    local targetX = math.max(0, math.min(Config.Screen.width,  halfW + (ax - baseAx) * halfW * sens))
+    local targetY = math.max(0, math.min(Config.Screen.height, halfH + (ay - baseAy) * halfH * sens))
     local lf      = Config.Cockpit.lerpFactor
     pointerX = pointerX + (targetX - pointerX) * lf
     pointerY = pointerY + (targetY - pointerY) * lf

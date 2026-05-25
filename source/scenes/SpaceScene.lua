@@ -109,14 +109,16 @@ function scene:update()
         local spd   = Config.Space.crosshairSpeed
         local moved = false
         if playdate.buttonIsPressed(playdate.kButtonUp)    then cursorY = math.max(0,   cursorY - spd) moved = true end
-        if playdate.buttonIsPressed(playdate.kButtonDown)  then cursorY = math.min(240, cursorY + spd) moved = true end
-        if playdate.buttonIsPressed(playdate.kButtonLeft)  then cursorX = math.max(0,   cursorX - spd) moved = true end
-        if playdate.buttonIsPressed(playdate.kButtonRight) then cursorX = math.min(400, cursorX + spd) moved = true end
+        if playdate.buttonIsPressed(playdate.kButtonDown)  then cursorY = math.min(Config.Screen.height, cursorY + spd) moved = true end
+        if playdate.buttonIsPressed(playdate.kButtonLeft)  then cursorX = math.max(0,                    cursorX - spd) moved = true end
+        if playdate.buttonIsPressed(playdate.kButtonRight) then cursorX = math.min(Config.Screen.width,  cursorX + spd) moved = true end
 
-        local sens = Config.Space.accelSensitivity
+        local sens  = Config.Space.accelSensitivity
+        local halfW = Config.Screen.width  / 2
+        local halfH = Config.Screen.height / 2
         if moved then
-            baseAx = ax - (cursorX - 200) / (200 * sens)
-            baseAy = ay - (cursorY - 120) / (120 * sens)
+            baseAx = ax - (cursorX - halfW) / (halfW * sens)
+            baseAy = ay - (cursorY - halfH) / (halfH * sens)
             calibrated = true
         end
 
@@ -133,8 +135,8 @@ function scene:update()
         prevAx = ax
         prevAy = ay
 
-        local targetX = math.max(0, math.min(400, 200 + (ax - baseAx) * 200 * sens))
-        local targetY = math.max(0, math.min(240, 120 + (ay - baseAy) * 120 * sens))
+        local targetX = math.max(0, math.min(Config.Screen.width,  halfW + (ax - baseAx) * halfW * sens))
+        local targetY = math.max(0, math.min(Config.Screen.height, halfH + (ay - baseAy) * halfH * sens))
         local lf      = Config.Space.lerpFactor
         cursorX = cursorX + (targetX - cursorX) * lf
         cursorY = cursorY + (targetY - cursorY) * lf
