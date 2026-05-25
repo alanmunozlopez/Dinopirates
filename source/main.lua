@@ -78,20 +78,20 @@ local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus)
 end)
-local menuItem, error = menu:addMenuItem("Lang", function()
-	Utilities.switchLang()
-end)
-local menuItem, error = menu:addMenuItem("debug", function()
-	debug = Utilities.toggle(debug)
-	debugMenu = Utilities.toggle(debugMenu)
-	if debug == true then
-		if Noble.showFPS == false then
-			Noble.showFPS = true
-		else 
-			Noble.showFPS = false
-		end
-	end
-end)
+-- local menuItem, error = menu:addMenuItem("Lang", function()
+-- 	Utilities.switchLang()
+-- end)
+-- local menuItem, error = menu:addMenuItem("debug", function()
+-- 	debug = Utilities.toggle(debug)
+-- 	debugMenu = Utilities.toggle(debugMenu)
+-- 	if debug == true then
+-- 		if Noble.showFPS == false then
+-- 			Noble.showFPS = true
+-- 		else 
+-- 			Noble.showFPS = false
+-- 		end
+-- 	end
+-- end)
 
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
