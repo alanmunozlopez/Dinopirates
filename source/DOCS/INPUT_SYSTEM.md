@@ -1,450 +1,323 @@
-# Input System — Botones y Mapeo a Love2D
+# Input System
 
-Este documento describe el sistema de input completo del juego en Playdate, cómo cambia el comportamiento de cada botón según el estado activo, y cómo mapear todo a Love2D manteniendo exactamente dos botones de acción.
+This document describes the Noble Engine callbacks used, per-frame input with `buttonIsPressed()`, the crank system, the complete MazeScene input map, the `CheatCode` class, and portability notes.
 
 ---
 
-## 🎮 Hardware de entrada del Playdate
+## Playdate Input Hardware
 
-| Control | Descripción |
+| Control | Description |
 |---|---|
-| D-pad | 4 direcciones: `up`, `down`, `left`, `right` |
-| **A** | Botón de acción primario (derecha) |
-| **B** | Botón de acción secundario (izquierda) |
-| Crank | Manivela analógica giratoria — sin equivalente en consolas estándar |
-
-El juego usa exactamente **2 botones de acción + D-pad + Crank**. Esto lo hace ideal para portar a PC o gamepad sin rediseñar la jugabilidad.
+| D-pad | 4 directions: `up`, `down`, `left`, `right` |
+| **A** | Primary action button (right side) |
+| **B** | Secondary action button (left side) |
+| Crank | Analog rotary dial with no equivalent on standard consoles |
 
 ---
 
-## 🗺️ Mapa de estados del juego
+## Noble Engine Callbacks — Exact Naming
 
-El comportamiento de A y B cambia radicalmente según los flags activos en `PlayerData`. Los estados son **mutuamente excluyentes** por diseño:
+Noble Engine uses a specific suffix for button callbacks. The rule is:
+
+- `ButtonDown` — exact frame the button is pressed.
+- `ButtonHold` — called every frame while held down.
+- `ButtonUp` — exact frame the button is released.
+
+**The correct suffix is `Hold`, NOT `Held`.** Example:
+
+```lua
+-- CORRECT
+function MazeScene:upButtonHold()    player:move("up")    end
+function MazeScene:downButtonHold()  player:move("down")  end
+function MazeScene:leftButtonHold()  player:move("left")  end
+function MazeScene:rightButtonHold() player:move("right") end
+
+-- INCORRECT (does not work)
+function MazeScene:upButtonHeld()    ...  end
+```
+
+### Per-Frame Input with `buttonIsPressed()`
+
+For continuous movement that must respond every frame (not just at the start of a hold), use `playdate.buttonIsPressed()` inside `update()`:
+
+```lua
+function MazeScene:update()
+    if playdate.buttonIsPressed(playdate.kButtonUp) then
+        player:move("up")
+    end
+    -- etc.
+end
+```
+
+The practical difference: `ButtonHold` is not called on the first frame of a press (it has a small OS delay); `buttonIsPressed()` in `update()` responds from the very first frame.
+
+---
+
+## Game State Map
+
+`PlayerData` flags determine which actions are active. They are mutually exclusive by design:
 
 ```
-isGaming = true   → gameplay normal
-isGaming = false + isEquiping = true  → menú de equipo abierto
-isGaming = false + readyToShrink = true → minificador activo
-isTalking = true  → diálogo activo (puede solaparse con isGaming)
-isDancing = false → pantalla "ready" del DanceScene
-isDancing = true  → batalla rítmica activa
+isGaming = true                              → normal gameplay
+isGaming = false + isEquiping = true         → equipment menu open
+isGaming = false + readyToShrink = true      → minifier active
+isTalking = true                             → dialog active
+isDancing = false (in DanceScene)            → "ready" screen
+isDancing = true  (in DanceScene)            → active rhythm battle
 ```
 
 ---
 
-## 📋 MazeScene — Tabla completa de inputs
+## MazeScene — Complete Input Table
 
 ### D-pad
 
-| Input | Estado requerido | Acción |
+| Input | Required State | Action |
 |---|---|---|
-| `←↑→↓` (Down) | `isGaming == true`, sin dash/slide/plunge | `player:move(direction)` — mueve el jugador |
-| `←↑→↓` (Hold) | `isGaming == true` | `player:move(direction)` — continúa moviendo |
-| `←↑→↓` (Up) | Siempre | `player:idle()` — detiene y vuelve al estado idle |
-| `←` (Down) | `isEquiping == true` | `inGameEquip:prevItem()` — skill anterior |
-| `→` (Down) | `isEquiping == true` | `inGameEquip:nextItem()` — skill siguiente |
+| `up/down/left/right` (Hold) | `isGaming == true` | `player:move(direction)` — moves the player |
+| `up/down/left/right` (Up) | Always | `player:idle()` — stops movement |
+| `left` (Down) | `isEquiping == true` | `inGameEquip:prevItem()` — previous skill |
+| `right` (Down) | `isEquiping == true` | `inGameEquip:nextItem()` — next skill |
 
-> D-pad `up` y `down` **no tienen función en el menú** — solo `←` y `→` ciclan items.
+`up` and `down` have no function in the equipment menu — only `left` and `right` cycle items.
 
 ---
 
-### Botón A — Multifunción por prioridad
+### Button A — Multi-Function by Priority
 
-El `AButtonDown` evalúa condiciones **en este orden** (la primera que se cumple ejecuta y a veces continúa):
+`AButtonDown` evaluates conditions in this order:
 
 ```
 1. isTalking == true
-   → player:displayDialog()  (avanza/cierra el diálogo actual)
+   → player:displayDialog()
 
 2. currentTrigger != nil  AND  isGaming == true
-   → Activa el trigger Search/Call manualmente:
-     - isGaming = false, isTalking = true
-     - dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
+   → isGaming = false, isTalking = true
+   → dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
 
-3. isEquiping == true  (independiente, siempre se evalúa)
-   → inGameEquip:selectItem()  (confirma el skill seleccionado)
+3. isEquiping == true  (evaluated independently, can stack)
+   → inGameEquip:selectItem()
 
 4. readyToShrink == true  AND  isGaming == true
-   → player:startMinifying()  (activa el minificador)
+   → player:startMinifying()
 ```
 
-| Input | Condición | Acción |
+`AButtonHeld` (after holding for 1 second):
+
+```
+isGaming == true  AND  hasDWatch == true
+→ inGameEquip:displayMenu()
+```
+
+| Input | Condition | Action |
 |---|---|---|
-| `A` (Down) | `isTalking` | Avanzar / cerrar diálogo |
-| `A` (Down) | `currentTrigger` + `isGaming` | Activar trigger manual |
-| `A` (Down) | `isEquiping` | Confirmar skill en menú |
-| `A` (Down) | `readyToShrink` + `isGaming` | Iniciar minificación |
-| `A` (Hold, cada frame) | — | Sin acción |
-| **`A` (Held, 1 segundo)** | `isGaming` + `hasDWatch` | **Abrir menú de equipo** |
-| `A` (Up) | — | Sin acción |
+| `A` (Down) | `isTalking` | Advance / close dialog |
+| `A` (Down) | `currentTrigger` + `isGaming` | Activate manual trigger |
+| `A` (Down) | `isEquiping` | Confirm skill in menu |
+| `A` (Down) | `readyToShrink` + `isGaming` | Start minification |
+| `A` (Hold every frame) | — | No action |
+| **`A` (1 second hold)** | `isGaming` + `hasDWatch` | **Open equipment menu** |
+| `A` (Up) | — | No action |
 
 ---
 
-### Botón B — Multifunción por prioridad
+### Button B — Multi-Function by Priority
+
+`BButtonDown` evaluates in this order:
 
 ```
 1. isGaming == false  AND  isEquiping == true
-   → Cerrar menú: isGaming = true, isEquiping = false
-     inGameEquip:closeMenu()
+   → inGameEquip:closeMenu()
+   → isGaming = true, isEquiping = false
 
 2. isGaming == false  AND  readyToShrink == true
-   → player:finishMinifying()  (cancela/completa la minificación)
+   → player:finishMinifying()
 
 3. isGaming == true  AND  player.isAlive
-   → player:useAbility()  (usa el skill activo según activeItem)
-     - activeItem == 1  → lightBurst()   (requiere canFlash)
-     - activeItem == 2  → dash()         (requiere canDash)
-     - activeItem == 3  → plunge()       (requiere canPlungerang)
+   → player:useAbility()
+       activeItem == 1 + canFlash      → lightBurst()
+       activeItem == 2 + canDash       → dash()
+       activeItem == 3 + canPlungerang → plunge()
 
-4. SIEMPRE (al final)
+4. ALWAYS (at end of B)
    → player:distributeMovementTokens(5)
-     (activa el turno de enemigos/NPCs)
 ```
 
-| Input | Condición | Acción |
+| Input | Condition | Action |
 |---|---|---|
-| `B` (Down) | `!isGaming` + `isEquiping` | Cerrar menú de equipo |
-| `B` (Down) | `!isGaming` + `readyToShrink` | Finalizar minificación |
-| `B` (Down) | `isGaming` + vivo | Usar habilidad activa |
-| `B` (Held/Hold) | — | Sin acción |
-| `B` (Up) | — | Sin acción |
+| `B` (Down) | `!isGaming` + `isEquiping` | Close equipment menu |
+| `B` (Down) | `!isGaming` + `readyToShrink` | Finish minification |
+| `B` (Down) | `isGaming` + alive | Use active ability |
+| `B` (Down) | Always | `distributeMovementTokens(5)` |
+| `B` (Hold) | — | No action |
+| `B` (Up) | — | No action |
 
 ---
 
-### Crank (manivela)
+### Crank
 
-| Input | Condición | Acción |
+The crank uses `playdate.getCrankTicks(4)` — equivalent to 4 clicks per full revolution.
+
+| Input | Condition | Action |
 |---|---|---|
-| Giro (cualquier dirección) | `isAlive` | `player:burnCalories(1)` por tick |
-| Giro positivo | `isGaming` + `battery < 100` + no minificando/tiny | `player:chargeBattery(3)` por tick + refresca la sombra |
-| Giro (cualquier) | `readyToShrink == true` | `player:transformCycle()` — cicla la animación de transformación |
+| Rotation (any direction) | `isAlive == true` | `player:burnCalories(1)` |
+| Positive rotation | `isGaming` + `battery < 100` + not minifying/tiny | `player:chargeBattery(3)` + refresh shadow |
+| Rotation (any) | `readyToShrink == true` | `player:transformCycle()` |
 
-> El crank usa `playdate.getCrankTicks(4)` — equivale a 4 "clicks" por vuelta completa.
+Battery charges 3 points per crank tick. Negative crank rotation does not charge (only positive direction charges).
 
 ---
 
-## 🕺 DanceScene — Tabla de inputs
+## DanceScene — Input Table
 
-El DanceScene usa **todos los botones** como entrada rítmica. El D-pad y A/B son las notas a presionar.
+### Pre-Battle (`isDancing == false`)
 
-### Pre-batalla (pantalla "Ready", `isDancing == false`)
-
-| Input | Acción |
+| Input | Action |
 |---|---|
-| `A` (Down) | `scene:startBattle()` — comienza la batalla rítmica |
-| Cualquier otro | Sin efecto |
+| `A` (Down) | `scene:startBattle()` |
+| Any other | No effect |
 
-### Batalla activa (`isDancing == true`)
+### Active Battle (`isDancing == true`)
 
-Cada botón corresponde a un tipo de nota. El juego genera patrones con pesos según la dificultad:
-
-| Input | Acción | Peso en "basic" | Peso en "boss" |
+| Input | Action | Basic Weight | Boss Weight |
 |---|---|---|---|
-| `←` (Down) | `danceStep("leftButton")` | 20% | 5% |
-| `→` (Down) | `danceStep("rightButton")` | 20% | 5% |
-| `↑` (Down) | `danceStep("upButton")` | 20% | 5% |
-| `↓` (Down) | `danceStep("downButton")` | 20% | 5% |
+| `left` (Down) | `danceStep("leftButton")` | 20% | 5% |
+| `right` (Down) | `danceStep("rightButton")` | 20% | 5% |
+| `up` (Down) | `danceStep("upButton")` | 20% | 5% |
+| `down` (Down) | `danceStep("downButton")` | 20% | 5% |
 | `A` (Down) | `danceStep("aButton")` + `checkDanceResults()` | 20% | 40% |
 | `B` (Down) | `danceStep("bButton")` | 0% | 40% |
-| Cualquier (Up) | `clearButton()` — libera la nota | — | — |
+| Any (Up) | `clearButton()` | — | — |
 
-> El crank no tiene función en DanceScene.
-
----
-
-## 💻 Mapeo a Love2D — Mantener 2 botones
-
-### Filosofía
-El Playdate ya está diseñado con exactamente 2 botones de acción. La traducción a PC/gamepad es 1:1. **No hay que rediseñar nada.**
-
-### Tabla de equivalencias
-
-| Playdate | Teclado PC | Gamepad (Love2D) | Código Love2D |
-|---|---|---|---|
-| D-pad ↑ | `W` / `↑` | Left Stick Up / D-pad Up | `love.keyboard.isDown("w")` |
-| D-pad ↓ | `S` / `↓` | Left Stick Down / D-pad Down | `love.keyboard.isDown("s")` |
-| D-pad ← | `A` / `←` | Left Stick Left / D-pad Left | `love.keyboard.isDown("a")` |
-| D-pad → | `D` / `→` | Left Stick Right / D-pad Right | `love.keyboard.isDown("d")` |
-| **A button** | `Space` / `Z` / `J` | Botón Sur (Cross/A) | `love.keyboard.isDown("space")` |
-| **B button** | `LShift` / `X` / `K` | Botón Oeste (Square/X) | `love.keyboard.isDown("lshift")` |
-| Crank (giro) | `Q` / `E` / Mouse Wheel | Right Stick Y / L2+R2 | `love.keyboard.isDown("q")` |
-| A held 1 seg | `Space` hold | Botón Sur hold | Timer en `love.update` |
+The crank has no function in DanceScene.
 
 ---
 
-### Implementación en Love2D
+## `CheatCode` Class
 
-#### 1. Estructura de input unificada
+Defined in `utilities/Utilities.lua`. Allows registering button sequences with automatic timeout.
+
+### Constructor
 
 ```lua
--- input.lua — sistema de input centralizado
-local Input = {}
+CheatCode("up", "up", "up", "down")
+-- Valid identifiers: "a", "b", "up", "down", "left", "right"
+```
 
--- Estado actual de botones
-local state = {
-    action1 = false,   -- A button
-    action2 = false,   -- B button
-    up = false, down = false, left = false, right = false,
-    crankDelta = 0,
+Internally translates each key to the corresponding Playdate constant:
+
+```lua
+local keys = {
+    a     = playdate.kButtonA,
+    b     = playdate.kButtonB,
+    up    = playdate.kButtonUp,
+    down  = playdate.kButtonDown,
+    left  = playdate.kButtonLeft,
+    right = playdate.kButtonRight,
 }
-
--- Estado del frame anterior (para detectar "just pressed")
-local prev = {}
-
--- Timers para held
-local holdTimers = { action1 = 0, action2 = 0 }
-local HOLD_THRESHOLD = 1.0  -- 1 segundo, igual que Playdate
-
-function Input.update(dt)
-    -- Guardar estado previo
-    for k, v in pairs(state) do prev[k] = v end
-
-    -- Leer teclado
-    state.action1 = love.keyboard.isDown("space", "z", "j")
-    state.action2 = love.keyboard.isDown("lshift", "x", "k")
-    state.up    = love.keyboard.isDown("w", "up")
-    state.down  = love.keyboard.isDown("s", "down")
-    state.left  = love.keyboard.isDown("a", "left")
-    state.right = love.keyboard.isDown("d", "right")
-
-    -- Crank: Q/E o mouse wheel o joystick eje
-    local crankKey = 0
-    if love.keyboard.isDown("e") then crankKey = 1 end
-    if love.keyboard.isDown("q") then crankKey = -1 end
-    state.crankDelta = crankKey  -- reemplazado por wheel en love.wheelmoved
-
-    -- Gamepad (joystick 1 si hay)
-    local gp = love.joystick.getJoysticks()[1]
-    if gp then
-        if gp:isGamepad() then
-            if gp:isGamepadDown("a")  then state.action1 = true end
-            if gp:isGamepadDown("x")  then state.action2 = true end
-            if gp:isGamepadDown("dpup")    then state.up    = true end
-            if gp:isGamepadDown("dpdown")  then state.down  = true end
-            if gp:isGamepadDown("dpleft")  then state.left  = true end
-            if gp:isGamepadDown("dpright") then state.right = true end
-            -- Crank: usar gatillo derecho o eje Y del stick derecho
-            state.crankDelta = gp:getGamepadAxis("righty") * -1
-        end
-    end
-
-    -- Hold timers (equivalente a AButtonHeld / BButtonHeld)
-    if state.action1 then
-        holdTimers.action1 = holdTimers.action1 + dt
-    else
-        holdTimers.action1 = 0
-    end
-    if state.action2 then
-        holdTimers.action2 = holdTimers.action2 + dt
-    else
-        holdTimers.action2 = 0
-    end
-end
-
--- Helpers: "just pressed" (Down), "held 1s" (Held), "just released" (Up)
-function Input.justPressed(btn)  return state[btn] and not prev[btn] end
-function Input.held(btn)         return state[btn] end
-function Input.justReleased(btn) return not state[btn] and prev[btn] end
-function Input.heldFor(btn)      return holdTimers[btn] end
-function Input.justHeld(btn)     -- detecta el momento exacto que supera 1 segundo
-    return holdTimers[btn] >= HOLD_THRESHOLD
-       and (holdTimers[btn] - (love.timer.getDelta and love.timer.getDelta() or 0)) < HOLD_THRESHOLD
-end
-
-function Input.getCrankDelta() return state.crankDelta end
-
--- Mouse wheel → crank
-function love.wheelmoved(x, y)
-    state.crankDelta = y  -- positivo = cargar batería
-end
-
-return Input
 ```
 
-#### 2. Manejador de MazeScene (equivalente al inputHandler)
+### Properties
 
-```lua
--- En tu MazeScene update(dt):
-function MazeScene:handleInput(dt)
-    local I = Input  -- referencia al módulo de input
+| Property | Description |
+|---|---|
+| `self._seq` | Sequence of button constants |
+| `self.progress` | Index of the currently expected button (1-based) |
+| `self.completed` | `true` if the sequence was completed |
+| `self.run_once` | If `true`, does not re-activate after completion |
+| `self.onComplete` | Callback function on completion |
 
-    -- ─── D-PAD: Movimiento ─────────────────────────────────────
-    if PlayerData.isGaming then
-        if I.justPressed("up")    or I.held("up")    then player:move("up")    end
-        if I.justPressed("down")  or I.held("down")  then player:move("down")  end
-        if I.justPressed("left")  or I.held("left")  then player:move("left")  end
-        if I.justPressed("right") or I.held("right") then player:move("right") end
-    end
+### `CheatCode:update()`
 
-    -- D-PAD en menú: ciclar skills
-    if PlayerData.isEquiping then
-        if I.justPressed("left")  then inGameEquip:prevItem() end
-        if I.justPressed("right") then inGameEquip:nextItem() end
-    end
+Called every frame. Uses `playdate.getButtonState()` to read the pressed button:
+- If it matches `_seq[progress]` → advance `progress` and reset the timer.
+- If it does not match → `self:reset()` (returns to progress=1).
+- If `progress > #_seq` → `completed = true`, calls `onComplete()`.
 
-    -- Idle al soltar
-    if I.justReleased("up") or I.justReleased("down")
-    or I.justReleased("left") or I.justReleased("right") then
-        player:idle()
-    end
+### Timeout — `setTimerDelay(ms)`
 
-    -- ─── BOTÓN A ───────────────────────────────────────────────
-    if I.justPressed("action1") then
-        -- 1. Diálogo activo
-        if PlayerData.isTalking then
-            player:displayDialog()
-        -- 2. Trigger manual en juego
-        elseif player.currentTrigger and PlayerData.isGaming then
-            PlayerData.isGaming = false
-            PlayerData.isTalking = true
-            player.dialogUI:addScreen(player.currentTrigger:returnScript(),
-                                      player.currentTrigger.sourceFeed)
-        -- 3. Confirmar en menú (independiente)
-        end
-        if PlayerData.isEquiping then
-            inGameEquip:selectItem()
-        end
-        -- 4. Activar minificador
-        if PlayerData.readyToShrink and PlayerData.isGaming then
-            player:startMinifying()
-        end
-    end
+Default: **400 ms**. If the player takes more than 400ms between buttons, the sequence is automatically reset via a `playdate.timer`.
 
-    -- A held 1 segundo → abrir menú (equivalente a AButtonHeld)
-    if I.justHeld("action1") then
-        if PlayerData.isGaming and PlayerData.items.hasDWatch then
-            inGameEquip:displayMenu()
-        end
-    end
+### Debug Toggle
 
-    -- ─── BOTÓN B ───────────────────────────────────────────────
-    if I.justPressed("action2") then
-        if not PlayerData.isGaming and PlayerData.isEquiping then
-            -- Cerrar menú
-            PlayerData.isGaming = true
-            PlayerData.isEquiping = false
-            inGameEquip:closeMenu()
-        elseif not PlayerData.isGaming and PlayerData.readyToShrink then
-            -- Finalizar minificación
-            player:finishMinifying()
-        elseif PlayerData.isGaming and player.isAlive then
-            -- Usar habilidad activa
-            player:useAbility()
-        end
-        -- Siempre activar turno de enemigos
-        player:distributeMovementTokens(5)
-    end
-
-    -- ─── CRANK → batería y transformación ─────────────────────
-    local crankDelta = I.getCrankDelta()
-    if player.isAlive and crankDelta ~= 0 then
-        player:burnCalories(1)
-        if PlayerData.isGaming and PlayerData.battery < 100
-        and not PlayerData.readyToShrink and not PlayerData.isTiny then
-            if crankDelta > 0 then
-                player:chargeBattery(3)
-            end
-        elseif PlayerData.readyToShrink then
-            player:transformCycle()
-        end
-    end
-end
-```
-
-#### 3. Manejador de DanceScene
-
-```lua
--- En tu DanceScene handleInput(dt):
-function DanceScene:handleInput(dt)
-    local I = Input
-
-    -- Pre-batalla: A para empezar
-    if not PlayerData.isDancing then
-        if I.justPressed("action1") then
-            self:startBattle()
-        end
-        return
-    end
-
-    -- Batalla activa: todos los botones son notas rítmicas
-    if I.justPressed("action1") then
-        self:danceStep("aButton")
-        self:checkDanceResults()
-    end
-    if I.justPressed("action2")  then self:danceStep("bButton") end
-    if I.justPressed("left")     then self:danceStep("leftButton") end
-    if I.justPressed("right")    then self:danceStep("rightButton") end
-    if I.justPressed("up")       then self:danceStep("upButton") end
-    if I.justPressed("down")     then self:danceStep("downButton") end
-
-    -- Clear al soltar (equivalente a *ButtonUp → clearButton)
-    if I.justReleased("action1") or I.justReleased("action2")
-    or I.justReleased("left")   or I.justReleased("right")
-    or I.justReleased("up")     or I.justReleased("down") then
-        self:clearButton()
-    end
-end
-```
+The debug cheat code (`up up up down`) is registered in `main.lua` (commented out in the current code) and calls `Utilities.toggle(debug)`. The sequence can also be activated from the Playdate System Menu with the "debug" item.
 
 ---
 
-## 🎯 Árbol de decisión — A y B en gameplay
+## Complete Decision Tree
 
 ```
 AButtonDown:
-├── isTalking?          → Avanzar diálogo
-├── currentTrigger + isGaming? → Activar trigger manual
-├── isEquiping?         → Confirmar skill (puede acumularse con arriba)
-└── readyToShrink + isGaming? → Iniciar minificación
+├── isTalking?                → displayDialog()
+├── currentTrigger + isGaming? → activate manual trigger
+├── isEquiping?               → selectItem()
+└── readyToShrink + isGaming? → startMinifying()
 
-AButtonHeld (1 seg):
-└── isGaming + hasDWatch → Abrir menú de equipo
+AButtonHeld (1 sec):
+└── isGaming + hasDWatch      → displayMenu()
 
 BButtonDown:
-├── !isGaming + isEquiping   → Cerrar menú
-├── !isGaming + readyToShrink → Finalizar minificación
-├── isGaming + isAlive       → Usar habilidad activa
-│     ├── activeItem=1 + canFlash    → lightBurst()
-│     ├── activeItem=2 + canDash     → dash()
+├── !isGaming + isEquiping    → closeMenu(), isGaming=true
+├── !isGaming + readyToShrink → finishMinifying()
+├── isGaming + isAlive        → useAbility()
+│     ├── activeItem=1 + canFlash      → lightBurst()
+│     ├── activeItem=2 + canDash       → dash()
 │     └── activeItem=3 + canPlungerang → plunge()
-└── SIEMPRE → distributeMovementTokens(5)
+└── ALWAYS → distributeMovementTokens(5)
 ```
 
 ---
 
-## 🔑 Flujo de apertura del menú de equipo
+## Notes for Porting to Love2D
 
+### Button Equivalents
+
+| Playdate | Keyboard | Gamepad | Love2D |
+|---|---|---|---|
+| D-pad up | `W` / `↑` | D-pad up | `love.keyboard.isDown("w")` |
+| D-pad down | `S` / `↓` | D-pad down | `love.keyboard.isDown("s")` |
+| D-pad left | `A` / `←` | D-pad left | `love.keyboard.isDown("a")` |
+| D-pad right | `D` / `→` | D-pad right | `love.keyboard.isDown("d")` |
+| A button | `Space` / `Z` | South (Cross/A) | `love.keyboard.isDown("space")` |
+| B button | `LShift` / `X` | West (Square/X) | `love.keyboard.isDown("lshift")` |
+| Crank (rotation) | `Q`/`E` / Mouse wheel | R Stick Y | `love.keyboard.isDown("e")` |
+| A held 1 sec | `Space` hold | South hold | Timer in `love.update` |
+
+### 1-Second Hold for the Menu
+
+```lua
+local holdTimers = { action1 = 0 }
+local HOLD_THRESHOLD = 1.0
+
+function love.update(dt)
+    if love.keyboard.isDown("space") then
+        holdTimers.action1 = holdTimers.action1 + dt
+        if holdTimers.action1 >= HOLD_THRESHOLD
+        and PlayerData.isGaming and PlayerData.items.hasDWatch then
+            inGameEquip:displayMenu()
+            holdTimers.action1 = 0
+        end
+    else
+        holdTimers.action1 = 0
+    end
+end
 ```
-Jugador mantiene A 1 segundo
-  → displayMenu() (solo si hasDWatch)
-    → isGaming = false, isEquiping = true
-    → menú visible
 
-  D-pad ← / →
-    → prevItem() / nextItem()  [cicla entre skills activos: canFlash → canDash → canPlungerang]
+### Crank → Mouse Wheel
 
-  A (Down mientras isEquiping)
-    → selectItem()  [confirma selección, actualiza activeItem]
-
-  B (Down mientras isEquiping)
-    → closeMenu()
-    → isGaming = true, isEquiping = false
+```lua
+function love.wheelmoved(x, y)
+    if y > 0 and PlayerData.isGaming and PlayerData.battery < 100 then
+        player:chargeBattery(3)
+    end
+    player:burnCalories(1)
+end
 ```
 
----
+### `distributeMovementTokens` Always Runs with B
 
-## 📝 Notas importantes para el port
+Even if no skill was used, B always activates the enemy turn. In Love2D, replicate this behavior exactly.
 
-1. **El crank es el único control sin equivalente directo.** Opciones en PC:
-   - Mouse wheel (más natural para "cargar")
-   - Teclas Q/E
-   - Gatillos del gamepad (L2/R2 analógicos)
-   - El eje Y del stick derecho
+### CheatCode in Love2D
 
-2. **"Held" (1 segundo) para el menú** — en PC con teclado es familiar. Si se usa gamepad, considera también asignarlo a `Start`/`Select` para mayor accesibilidad.
-
-3. **DanceScene en PC** — todos los botones del Playdate ya existen en un gamepad estándar. En teclado: `Space=A`, `Shift=B`, `Flechas=D-pad`. Se puede añadir `WASD` como segundo D-pad alternativo sin romper nada.
-
-4. **`distributeMovementTokens(5)` siempre corre al pulsar B** — incluso si no se usó habilidad. Esto es intencional: el sistema turn-based avanza con B aunque el jugador no tenga skills.
-
-5. **No hay acciones en A-Hold (cada frame)** — solo A-Down y A-Held (1 seg). Esto simplifica el port: no hay lógica de "mientras se mantiene" para A.
+The `CheatCode` class is pure Lua and only needs to replace `playdate.getButtonState()` with `love.keypressed` reading + manual sequence accumulation.

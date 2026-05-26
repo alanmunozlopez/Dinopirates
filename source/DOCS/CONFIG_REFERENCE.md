@@ -1,242 +1,345 @@
 # Config.lua — Complete Reference
 
-`source/assets/data/Config.lua` is the **single source of truth** for all tunable
-constants. No magic numbers should appear in gameplay code — every value that
-controls behavior lives here.
+`source/assets/data/Config.lua` is the **single source of truth** for all tunable game constants. No magic numbers should appear in gameplay code — every value that controls behavior lives here.
 
-Available globally as `Config`. Also aliased in `main.lua`:
-- `ZIndex = Config.ZIndex`
-- `CollideGroups = Config.CollideGroups`
-
-See [ARCHITECTURE.md](ARCHITECTURE.md) for boot order and why aliases exist.
+Available globally as `Config`. Aliased in `main.lua`:
+```lua
+ZIndex = Config.ZIndex
+CollideGroups = Config.CollideGroups
+```
 
 ---
 
-## Config.ZIndex
+## Config.ZIndex — Render Layers
 
-Controls rendering layer order. Higher = drawn on top. Used in every entity's `:setZIndex()` call.
+Controls draw order. Higher value = drawn on top. Used in every entity's `:setZIndex()` call.
 
-| Field | Value | Used by |
-|---|---|---|
-| `player` | 4 | `Player:init` |
-| `enemy` | 3 | `Brocorat:init`, `bosscolli:init` |
-| `props` | 2 | `PropItem:init` |
-| `items` | 4 | `Items:init` |
-| `foreground` | 300 | `MazeScene:enter` foreground sprite |
-| `fx` | 1999 | `FXshadow:init` |
-| `ui` | 2000 | `UIHud` |
-| `hud` | 2000 | `playerHud` |
-| `menu` | 2100 | `inGameMenu`, `skillInfo` |
-| `alert` | 2200 | Toast notifications |
-
-**Love2D equivalent:** Sort your entity list by a numeric `zIndex` field before drawing in `love.draw()`.
+| Section | Name | Value | Unit | Usage Description |
+|---|---|---|---|---|
+| ZIndex | `player` | 4 | layer | Main player |
+| ZIndex | `enemy` | 3 | layer | Brocorat, Bosscolli |
+| ZIndex | `props` | 2 | layer | PropItem, Door sprites |
+| ZIndex | `items` | 4 | layer | Items (pickups) — same layer as player |
+| ZIndex | `foreground` | 300 | layer | Room foreground sprite |
+| ZIndex | `fx` | 1999 | layer | FXshadow (darkness mask) |
+| ZIndex | `ui` | 2000 | layer | UIHud (interaction indicator) |
+| ZIndex | `hud` | 2000 | layer | playerHud, Battery, HealthIndicator |
+| ZIndex | `menu` | 2100 | layer | inGameMenu, itemMenu, skillInfo |
+| ZIndex | `alert` | 2200 | layer | Achievement notification toasts |
 
 ---
 
-## Config.CollideGroups
+## Config.CollideGroups — Collision Groups
 
-Numeric IDs for Playdate's sprite collision system. Every sprite that should interact with
-other sprites must call `:setGroups(id)` and `:setCollidesWithGroups({ids})`.
+Numeric IDs for the Playdate sprite collision system. Each sprite calls `:setGroups(id)` and `:setCollidesWithGroups({ids})`.
 
-| Field | Value | Entity |
-|---|---|---|
-| `player` | 1 | `Player` |
-| `enemy` | 2 | `Brocorat`, `bosscolli` |
-| `props` | 3 | `PropItem` (physical props) |
-| `items` | 4 | `Items` (pickups) |
-| `wall` | 5 | `Box` (tile wall colliders) |
-| `noCollide` | 6 | Decorative/passthrough objects |
-| `crewMember` | 7 | `CrewMember` |
-
-**Love2D equivalent:** bump.lua collision filters — return `"cross"` (ghost), `"touch"`, `"slide"`,
-or `"bounce"` based on the `other` entity type.
+| Section | Name | Value | Entity That Uses It |
+|---|---|---|---|
+| CollideGroups | `player` | 1 | `Player` |
+| CollideGroups | `enemy` | 2 | `Brocorat`, `Bosscolli` |
+| CollideGroups | `props` | 3 | `PropItem`, `Door` |
+| CollideGroups | `items` | 4 | `Items` (pickups), `Projectile` |
+| CollideGroups | `wall` | 5 | `Box` (tile colliders) |
+| CollideGroups | `noCollide` | 6 | Decorative/pass-through objects |
+| CollideGroups | `crewMember` | 7 | `CrewMember` |
 
 ---
 
-## Config.Tiles
+## Config.Tiles — Tilemap
 
-Controls tilemap interpretation. See also [TILE_LOADING.md](TILE_LOADING.md).
-
-| Field | Value | Used by |
-|---|---|---|
-| `size` | 16 | `GetTileUnderPlayer`, tile collider sizing |
-| `IntGrid.wall` | 1 | `CreateTileColliders` — non-walkable tile |
-| `IntGrid.slime` | 2 | `IsPlayerOnSlime()`, `checkSlimeTile()` |
-| `IntGrid.hole` | 3 | `IsPlayerOnHole()` |
-| `IntGrid.floor` | 4 | Walkable, no special effect |
-
-**Critical:** Slime and holes are detected by reading IntGrid values from `tileMapData` at runtime.
-They are NOT prop entities. Any IntGrid value NOT in `{2,3,4}` is treated as a wall.
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Tiles | `size` | 16 | px | Size of each tile; used in `GetTileUnderPlayer` and `CreateTileColliders` |
+| Tiles.IntGrid | `wall` | 1 | id | Non-walkable tile; generates a `Box` collider |
+| Tiles.IntGrid | `slime` | 2 | id | Walkable; activates `IsPlayerOnSlime`, reduces speed |
+| Tiles.IntGrid | `hole` | 3 | id | Walkable; activates `IsPlayerOnHole`, drains battery |
+| Tiles.IntGrid | `floor` | 4 | id | Walkable; no special effect |
+| Tiles.IntGrid | `tinyHole` | 32 | id | Walkable; only accessible in `isTiny` mode |
 
 ---
 
-## Config.Player
+## Config.Player — Player Movement
 
-| Field | Value | Used by |
-|---|---|---|
-| `speed` | 1.5 | `Player:move` — px per frame at 50fps |
-| `speedDarkNoLamp` | 0.7 | Speed multiplier in darkness without lamp |
-| `speedLowBattery` | 0.8 | Speed multiplier when `battery < batteryThresholdLow` |
-| `collideRect` | `{x=8,y=24,w=30,h=24}` | Normal player collision box |
-| `collideRectTiny` | `{x=19,y=32,w=10,h=10}` | Tiny mode collision box |
-| `collideRectHead` | `{x=8,y=8,w=16,h=16}` | Head collider for foreground depth check |
-| `uiOffsetX` | 30 | HUD anchor offset from player |
-| `uiOffsetY` | 30 | HUD anchor offset from player |
-| `hudOffsetY` | -40 | `playerHud` Y offset (normal size) |
-| `hudOffsetYTiny` | -17 | `playerHud` Y offset (tiny mode) |
-| `triggerCheckDist` | 5 | px moved before re-checking trigger overlap |
-
-**Love2D note:** `speed` of 1.5 px/frame at 50fps = 75 px/s. In Love2D multiply by `dt * 50`
-or define as `75` px/s directly.
-
----
-
-## Config.Battery
-
-| Field | Value | Effect |
-|---|---|---|
-| `drainMovementDark` | 0.5 | Drained per frame moved in darkness |
-| `drainHoleNormal` | 0.5 | Drained per frame while crossing a hole (normal size) |
-| `drainHoleTiny` | 0.2 | Drained per frame while crossing a hole (tiny) |
-
-**Love2D note:** Multiply drain values by `dt * targetFPS` to make drain frame-rate independent.
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Player | `speed` | 2 | px/frame | Base movement speed at 50fps |
+| Player | `speedDarkNoLamp` | 0.7 | multiplier | Speed in darkness without lamp |
+| Player | `speedLowBattery` | 0.8 | multiplier | Speed when `battery < thresholdLow` with lamp |
+| Player | `collideRect` | `{x=8,y=24,w=30,h=24}` | px | Collision rect in normal size |
+| Player | `collideRectTiny` | `{x=19,y=32,w=10,h=10}` | px | Collision rect in tiny mode |
+| Player | `collideRectHead` | `{x=8,y=8,w=16,h=16}` | px | Head rect for depth check |
+| Player | `uiOffsetX` | 30 | px | HUD X offset relative to player |
+| Player | `uiOffsetY` | 30 | px | HUD Y offset relative to player |
+| Player | `hudOffsetY` | -40 | px | playerHud Y offset (normal size) |
+| Player | `hudOffsetYTiny` | -17 | px | playerHud Y offset (tiny mode) |
+| Player | `triggerCheckDist` | 5 | px | Pixels moved before re-checking trigger overlap |
+| Player | `movementFramesPerAction` | 3 | frames | Movement frames distributed to NPCs/enemies per move |
+| Player | `knockbackDistance` | 2 | px | Push distance when colliding with an enemy |
 
 ---
 
-## Config.Sanity
+## Config.Dash — Dash Ability
 
-| Field | Value | Effect |
-|---|---|---|
-| `tickInterval` | 2000 ms | How often sanity is recalculated |
-| `lossLowBattery` | 2 pts/tick | When `battery < batteryThresholdLow` (20) |
-| `lossMidBattery` | 1 pt/tick | When `battery < batteryThresholdMid` (40) |
-| `gainHighBattery` | 2 pts/tick | When `battery > batteryThresholdHigh` (50) or not in darkness |
-| `batteryThresholdLow` | 20 | Battery level that triggers fast sanity drain |
-| `batteryThresholdMid` | 40 | Battery level that triggers slow sanity drain |
-| `batteryThresholdHigh` | 50 | Battery level that triggers sanity recovery |
-| `focusCost` | 20 | Sanity consumed by focus ability (unused/legacy) |
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Dash | `speed` | 6 | px/frame | Speed during the dash |
+| Dash | `totalDistance` | 56 | px | Total distance traveled before stopping |
+| Dash | `bounceDistance` | 16 | px | Remaining distance when bounce activates |
+| Dash | `batteryCost` | 10 | units | Battery consumed on activation |
+| Dash | `cooldown` | 500 | ms | Minimum time between dashes |
 
 ---
 
-## Config.Dash
+## Config.Slide — Slime Sliding
 
-| Field | Value | Effect |
-|---|---|---|
-| `speed` | 6 | px per frame during dash |
-| `totalDistance` | 56 | px traveled before stopping |
-| `bounceDistance` | 16 | px remaining when bounce-back triggers |
-| `batteryCost` | 10 | Battery drained on activation |
-| `cooldown` | 500 ms | Minimum time between dashes |
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Slide | `speed` | 4 | px/frame | Sliding speed on slime tiles |
 
 ---
 
-## Config.Slide
+## Config.Invincibility — Post-Hit Invincibility
 
-| Field | Value | Effect |
-|---|---|---|
-| `speed` | 4 | px per frame while sliding on slime |
-
----
-
-## Config.Invincibility
-
-| Field | Value | Effect |
-|---|---|---|
-| `duration` | 1000 ms | How long player is invincible after being hit |
-| `flickerRate` | 100 | Divides the timer for the blink visual effect |
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Invincibility | `duration` | 1000 | ms | Invincibility duration after taking damage |
+| Invincibility | `flickerRate` | 100 | divisor | Divides the timer for the visual flicker effect |
 
 ---
 
-## Config.LightBurst
+## Config.Battery — Battery
 
-| Field | Value | Effect |
-|---|---|---|
-| `batteryCost` | 10 | Battery drained on use |
-| `cooldown` | 1000 ms | Minimum time between flashes |
-| `displayTime` | 1000 ms | How long the cone stays visible |
-| `coneDistance` | 200 px | Depth of the light cone polygon |
-| `coneHeight` | 12 | Width scaling factor of the cone |
-| `blindDuration` | 60 frames | How long hit entities stay blinded |
-
----
-
-## Config.Projectile (Plungerang)
-
-| Field | Value | Effect |
-|---|---|---|
-| `maxDistance` | 100 px | Distance before auto-returning |
-| `speed` | 8 px/frame | Linear movement speed |
-| `blindDuration` | 60 frames | How long hit enemies stay blinded |
-
-See [PLUNGERANG.md](PLUNGERANG.md) for full mechanic details.
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Battery | `drainMovementDark` | 0.5 | units/frame | Drain per frame when moving in darkness |
+| Battery | `drainHoleNormal` | 0.5 | units/frame | Drain per frame when crossing a hole (normal size) |
+| Battery | `drainHoleTiny` | 0.2 | units/frame | Drain per frame when crossing a hole (tiny mode) |
+| Battery | `thresholdCritical` | 10 | % | Critical level; enemies override speed, crew stops |
+| Battery | `thresholdLow` | 20 | % | Low level; sanity drains faster, enemies slow down |
+| Battery | `thresholdMid` | 60 | % | Mid level; enemies use reduced speed, crew restores movement |
 
 ---
 
-## Config.Doors
+## Config.Sanity — Sanity
 
-| Field | Value | Used by |
-|---|---|---|
-| `positions.right` | `{x=393, y=122}` | Door sprite placement on screen |
-| `positions.left` | `{x=4, y=122}` | Door sprite placement |
-| `positions.down` | `{x=203, y=228}` | Door sprite placement |
-| `positions.top` | `{x=203, y=2}` | Door sprite placement |
-| `spawnCoords.top` | `{x=196, y=196}` | Where player spawns entering from top door |
-| `spawnCoords.down` | `{x=196, y=32}` | Where player spawns entering from bottom door |
-| `spawnCoords.right` | `{x=32, y=116}` | Where player spawns entering from right door |
-| `spawnCoords.left` | `{x=364, y=116}` | Where player spawns entering from left door |
-
-See [DOORS_AND_KEYS.md](DOORS_AND_KEYS.md) for full navigation details.
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Sanity | `tickInterval` | 2000 | ms | Interval between sanity checks |
+| Sanity | `lossLowBattery` | 2 | pts/tick | Loss per tick when `battery < batteryThresholdLow` |
+| Sanity | `lossMidBattery` | 1 | pts/tick | Loss per tick when `battery < batteryThresholdMid` |
+| Sanity | `gainHighBattery` | 2 | pts/tick | Gain per tick when `battery > batteryThresholdHigh` or not dark |
+| Sanity | `batteryThresholdLow` | 20 | % | Shared with `Battery.thresholdLow` |
+| Sanity | `batteryThresholdMid` | 40 | % | Mid battery level for sanity |
+| Sanity | `batteryThresholdHigh` | 50 | % | High battery level for sanity recovery |
+| Sanity | `focusCost` | 20 | pts | Sanity consumed by the focus ability (legacy) |
 
 ---
 
-## Config.CrewMember
+## Config.LightBurst — Lamp Flash Ability
 
-| Field | Value | Effect |
-|---|---|---|
-| `bouncesRequiredToHide` | 2 | Consecutive bounces before hiding |
-| `bounceFrames` | 20 | Frames spent in redirected bounce direction |
-| `bounceCountDecayRate` | 30 frames | Frames before recent bounce count resets |
-| `hidingVisionRange` | 80 px | Distance player must be before crew unhides |
-| `hidingTokensRequired` | 3 | Movement tokens needed to exit hiding |
-| `blindDuration` | 60 frames | Frames stunned by plungerang hit |
-| `framesPerToken` | 30 | Frames of movement granted per token |
-| `movementFramesCap` | 90 | Max queued movement frames |
-| `batteryThresholdStop` | 10 | Battery level where crew stops moving |
-| `batteryThresholdRestore` | 60 | Battery level where crew resumes speed |
-| `collideRect` | `{x=12,y=24,w=24,h=24}` | Crew member collision box |
-
-See [CREWMEMBER_AND_COLLISIONS.md](CREWMEMBER_AND_COLLISIONS.md) for full details.
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| LightBurst | `batteryCost` | 10 | units | Battery consumed on flash activation |
+| LightBurst | `cooldown` | 1000 | ms | Minimum time between flashes |
+| LightBurst | `displayTime` | 1000 | ms | Duration of the visible light cone |
+| LightBurst | `coneDistance` | 200 | px | Depth of the light cone polygon |
+| LightBurst | `coneHeight` | 12 | factor | Lateral scale factor of the cone |
+| LightBurst | `blindDuration` | 60 | frames | Frames enemies remain blinded |
 
 ---
 
-## Config.Screen
+## Config.Projectile — Plungerang
 
-| Field | Value | Effect |
-|---|---|---|
-| `width` | 400 | Canvas width (px) |
-| `height` | 240 | Canvas height (px) |
-| `randomBoundsX` | `{min=20, max=380}` | Safe random X range for entity spawning |
-| `randomBoundsY` | `{min=20, max=220}` | Safe random Y range for entity spawning |
-
----
-
-## Config.Cockpit
-
-Controls the debug CockpitScene (accelerometer pointer, D-pad movement).
-
-| Field | Value | Effect |
-|---|---|---|
-| `lerpFactor` | 0.15 | Pointer smoothing factor (0 = frozen, 1 = instant snap) |
-| `accelSensitivity` | 2.0 | Multiplier applied to raw accelerometer tilt |
-| `pointerRadius` | 6 | Circle radius of the cursor in pixels |
-| `dpadSpeed` | 3 | Pixels per frame when moving pointer with D-pad |
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Projectile | `maxDistance` | 100 | px | Distance traveled before automatic return begins |
+| Projectile | `speed` | 8 | px/frame | Linear outgoing speed and homing return speed |
+| Projectile | `blindDuration` | 60 | frames | Blindness frames when hitting an enemy |
 
 ---
 
-## Config.Pedometer
+## Config.Doors — Doors
 
-| Field | Value | Effect |
-|---|---|---|
-| `stepsPerMovement` | 0.5 | Steps added per `player:move()` call |
-| `stepsToTrigger` | 200 | Steps accumulated before burning calories |
-| `caloriesPerBurn` | 10 | Calories burned when threshold reached |
+### Sprite Positions (fallback without LDTK coordinates)
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Doors.positions | `right` | `{x=393, y=122}` | px | Right door sprite position |
+| Doors.positions | `left` | `{x=4, y=122}` | px | Left door sprite position |
+| Doors.positions | `down` | `{x=203, y=228}` | px | Bottom door sprite position |
+| Doors.positions | `top` | `{x=203, y=2}` | px | Top door sprite position |
+
+### Player Spawn Coordinates in Destination Room
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Doors.spawnCoords | `top` | `{x=196, y=196}` | px | Spawn when entering from top door (appears at bottom) |
+| Doors.spawnCoords | `down` | `{x=196, y=32}` | px | Spawn when entering from bottom door (appears at top) |
+| Doors.spawnCoords | `right` | `{x=32, y=116}` | px | Spawn when entering from right door (appears at left) |
+| Doors.spawnCoords | `left` | `{x=364, y=116}` | px | Spawn when entering from left door (appears at right) |
+
+---
+
+## Config.Portals — Portal Doors
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Portals | `collideRect` | `{x=0,y=0,w=24,h=24}` | px | Default collision rect when LDTK provides no size |
+
+---
+
+## Config.CrewMember — Crew AI
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| CrewMember | `hatDelta` | 15 | px | Hat position delta relative to crew member |
+| CrewMember | `hidingTokensRequired` | 3 | tokens | Movement tokens needed to leave hiding spot |
+| CrewMember | `hidingVisionRange` | 80 | px | Maximum player distance for crew member to leave hiding |
+| CrewMember | `cornerDetectionThreshold` | 0.5 | px | Corner detection threshold |
+| CrewMember | `bounceFrames` | 20 | frames | Frames of bounce in redirected direction |
+| CrewMember | `bounceCountDecayRate` | 30 | frames | Frames before bounce counter decays |
+| CrewMember | `bouncesRequiredToHide` | 2 | bounces | Consecutive bounces needed to trigger hiding |
+| CrewMember | `blindDuration` | 60 | frames | Frames stunned when hit by plungerang |
+| CrewMember | `framesPerToken` | 30 | frames | Movement frames per token received |
+| CrewMember | `movementFramesCap` | 90 | frames | Maximum accumulated movement frames |
+| CrewMember | `batteryThresholdStop` | 10 | % | Battery level where crew member stops moving (= `Battery.thresholdCritical`) |
+| CrewMember | `batteryThresholdRestore` | 60 | % | Battery level where crew member restores movement (= `Battery.thresholdMid`) |
+| CrewMember | `collideRect` | `{x=12,y=24,w=24,h=24}` | px | Crew member collision rect |
+
+---
+
+## Config.Screen — Screen Dimensions
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Screen | `width` | 400 | px | Canvas width (Playdate screen) |
+| Screen | `height` | 240 | px | Canvas height |
+| Screen | `randomBoundsX.min` | 20 | px | Minimum X bound for random entity spawning |
+| Screen | `randomBoundsX.max` | 380 | px | Maximum X bound for random spawning |
+| Screen | `randomBoundsY.min` | 20 | px | Minimum Y bound for random spawning |
+| Screen | `randomBoundsY.max` | 220 | px | Maximum Y bound for random spawning |
+
+---
+
+## Config.Pedometer — Pedometer
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Pedometer | `stepsPerMovement` | 0.5 | steps | Steps added per `player:move()` call |
+| Pedometer | `stepsToTrigger` | 200 | steps | Accumulated steps before burning calories |
+| Pedometer | `caloriesPerBurn` | 10 | calories | Calories burned when threshold is reached |
+
+---
+
+## Config.Input — General Input
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Input | `crankMenuThreshold` | 30 | degrees | Crank rotation degrees to navigate menu |
+
+---
+
+## Config.Enemy — Enemy AI
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Enemy | `sightRadiusBase` | 150 | px | Base detection radius (minimum 50) |
+| Enemy | `sightRadiusMin` | 50 | px | Minimum detection radius |
+| Enemy | `sightRadiusPerPowerLevel` | 3 | px/level | Added to radius per powerLevel point |
+| Enemy | `moveSpeedBatteryEmpty` | 0.2 | px/frame | Absolute speed when player battery == 0 in darkness |
+| Enemy | `moveSpeedBatteryLow` | 0.5 | multiplier | Speed when `battery <= thresholdLow` in darkness |
+| Enemy | `moveSpeedBatteryMid` | 0.7 | multiplier | Speed when `battery <= thresholdMid` in darkness |
+| Enemy | `moveSpeedCritical` | 0.5 | px/frame | Absolute speed when `battery < thresholdCritical` in darkness |
+| Enemy | `batteryThresholdLow` | 20 | % | Shared with `Battery.thresholdLow` |
+| Enemy | `batteryThresholdMid` | 60 | % | Shared with `Battery.thresholdMid` |
+| Enemy | `batteryThresholdCritical` | 10 | % | Shared with `Battery.thresholdCritical` |
+| Enemy | `bounceFactor` | 3 | px | Push pixels when colliding with wall/prop/enemy |
+| Enemy | `eatPropPowerThreshold` | 25 | level | Minimum powerLevel for an enemy to eat an edible prop |
+| Enemy | `eatPropPowerPenalty` | 5 | pts | powerLevel lost after eating a prop |
+| Enemy | `stunProcMultiplier` | 20 | factor | Multiplied by moveSpeed to calculate stun threshold |
+
+---
+
+## Config.Dance — Rhythm Combat
+
+### Difficulties
+
+| Section | Name | bpm | buttons | Description |
+|---|---|---|---|---|
+| Dance | `basic` | 16 | 4 | Basic difficulty |
+| Dance | `evolve` | 24 | 6 | Medium difficulty |
+| Dance | `badass` | 28 | 8 | Hard difficulty |
+| Dance | `boss` | 32 | 12 | Boss difficulty |
+
+### Normalization and Weights
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Dance | `sanityMax` | 100 | pts | Assumed sanityCounter ceiling for normalization |
+| Dance | `powerMax` | 20 | pts | Assumed powerLevel ceiling for normalization |
+| Dance | `caloriesMax` | 500 | pts | Assumed calorie ceiling for normalization |
+| Dance | `weightSanity` | 0.35 | weight (0–1) | sanityCounter contribution to upgrade probability |
+| Dance | `weightPower` | 0.45 | weight (0–1) | powerLevel contribution to upgrade probability |
+| Dance | `weightCalories` | 0.20 | weight (0–1) | Calorie contribution to upgrade probability |
+
+Weights sum to exactly 1.0.
+
+---
+
+## Config.Cockpit — Cockpit Scene
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Cockpit | `lerpFactor` | 0.15 | factor (0–1) | Pointer smoothing (0=frozen, 1=instant) |
+| Cockpit | `accelSensitivity` | 2.0 | multiplier | Multiplier over raw accelerometer tilt |
+| Cockpit | `pointerRadius` | 6 | px | Cursor circle radius |
+| Cockpit | `dpadSpeed` | 3 | px/frame | Pointer speed with D-pad |
+| Cockpit | `failLimit` | 10 | presses | Maximum incorrect button presses before returning to TitleScene |
+
+---
+
+## Config.Space — Space Scene
+
+### Movement and Lerp
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Space | `crosshairSpeed` | 4 | px/frame | Crosshair speed |
+| Space | `lerpFactor` | 0.08 | factor | Accelerometer smoothing in space |
+| Space | `accelSensitivity` | 1.2 | multiplier | Accelerometer sensitivity in space |
+| Space | `shipMoveLerp` | 0.12 | factor | Ship movement lerp |
+| Space | `accelIdleThreshold` | 0.005 | units | Threshold to consider accelerometer at rest |
+| Space | `accelIdleFrames` | 2 | frames | Frames at rest before considering idle |
+| Space | `accelCenterReturnLerp` | 0.04 | factor | Return-to-center speed when idle |
+
+### Speed and Danger
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Space | `speedDecay` | 0.05 | units/frame | Speed decay per frame |
+| Space | `maxSpeed` | 20 | units | Maximum ship speed |
+| Space | `minSpeed` | 3 | units | Minimum speed |
+| Space | `dangerFillRate` | 0.002 | units/frame | Danger bar fill rate |
+| Space | `dangerDrainRate` | 0.003 | units/frame | Danger bar drain rate |
+
+### Meteorites
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Space | `meteoriteNearCount` | 14 | count | Number of near meteorites in the pool |
+| Space | `meteoriteFarCount` | 10 | count | Number of far meteorites in the pool |
+| Space | `meteoriteNearSpeed` | 3 | px/frame | Near meteorite speed |
+| Space | `meteoriteFarSpeed` | 1.5 | px/frame | Far meteorite speed |
+| Space | `meteoriteSpeedMult` | 0.2 | multiplier | Additional speed multiplier |
+| Space | `parallaxSpeed` | 3 | px/frame | Base parallax speed |
+| Space | `meteoriteFarParallax` | 0.5 | factor | Far meteorite parallax factor |
+| Space | `meteoriteFarScale` | 0.6 | scale | Visual scale of far meteorites |
+
+### Collision and Effects
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Space | `invincibilityFrames` | 60 | frames | Invincibility frames after impact |
+| Space | `collisionZoneStart` | 0.90 | fraction (0–1) | Meteorite position (0=start, 1=end) at which collision becomes active |
+| Space | `shakeFrames` | 25 | frames | Screen shake duration after impact |
+| Space | `shakeMagnitude` | 6 | px | Maximum shake offset at start (decays to 0) |

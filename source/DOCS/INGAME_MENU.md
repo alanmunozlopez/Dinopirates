@@ -1,205 +1,306 @@
-# In-Game Equipment Menu
+# In-Game Menu (inGameMenu)
 
-The in-game menu (`inGameMenu.lua`) is a specialized UI overlay that allows the player to pause the game, view the map, see collected crew member hats, and equip active items (Lamp, Boots, Plungerang).
-
----
-
-## 🎮 Playdate Implementation
-
-### 1. Structure
-Path: `entities/UI/inGameMenu.lua`
-
-The menu is an extension of `Graphics.sprite`.
-- **Z-Index:** Set very high (`ZIndex.menu` and above) to draw over everything else.
-- **Components:**
-  - A background image (`menuImage`) showing the UI frame.
-  - A map overlay drawn directly onto the menu image (`MapDrawer.drawMap`).
-  - Icons for the available skills (Lamp/Lightburst, Boots/Dash, Plungerang), managed via `itemMenu` components.
-  - An `equippedInfoPanel` (`skillInfo` sprite) shown at `(220, 180)` when any skill is active, displaying a banner for the currently selected skill.
-  - Grid of collected crew member hats, instantiated on the fly when the menu opens (`drawCrewHats`).
-
-### 2. State Management
-The menu state is tightly coupled with two global variables in `_G.PlayerData`:
-- `PlayerData.isGaming`: When `false`, standard game mechanics and inputs are disabled.
-- `PlayerData.isEquiping`: When `true`, it flags the system that the equipment menu is active and hijacking the input.
-
-### 3. Usage & Input Handling
-Located primarily in `scenes/MazeScene.lua`.
-
-- **Opening the menu (A Button Held):**
-  Holding the **A Button** for 1 second (`AButtonHeld`) triggers `inGameEquip:displayMenu()`. This sets `isGaming = false` and `isEquiping = true`, pausing standard action and showing the menu overlay. **Requires `PlayerData.items.hasDWatch == true`** — `displayMenu()` returns immediately without the D-Watch.
-  
-- **Navigating (D-pad Left/Right):**
-  When `isEquiping` is `true`, pressing Left or Right (`leftButtonDown` / `rightButtonDown`) calls `inGameEquip:prevItem()` and `inGameEquip:nextItem()`. These functions cycle the `PlayerData.activeItem` using `getActiveSkillsList()`, which builds the list from **skills** (`PlayerData.skills.canFlash`, `canDash`, `canPlungerang`), not from item ownership flags.
-
-- **Selecting (A Button):**
-  Pressing the **A Button** (`AButtonDown`) while the menu is open will invoke `inGameEquip:selectItem()`, committing the selection.
-
-- **Closing the menu (B Button):**
-  Pressing the **B Button** (`BButtonDown`) sets `isGaming = true`, `isEquiping = false`, and invokes `inGameEquip:closeMenu()`, destroying the temporary sprites and returning logic to the main game.
+This document describes the player's equipment menu: opening and closing, item selection, the equipment system, `activeItem` routing, and the distinction between pause and equipping.
 
 ---
 
-## 🔁 Love2D Implementation Example
+## Files Involved
 
-When porting to Love2D, the logic will likely transfer from being a `Graphics.sprite` to standard `love.graphics.draw()` calls inside your main Game State, with inputs handled in `love.keypressed`.
+| File | Class | Description |
+|---|---|---|
+| `entities/UI/inGameMenu.lua` | `inGameMenu` | Main menu container |
+| `entities/UI/itemMenu.lua` | `itemMenu` | Individual skill/item icon |
+| `entities/UI/skillInfo.lua` | `skillInfo` | Active skill banner panel |
 
-### Example: Basic Structure in Love2D
+---
+
+## `inGameMenu` — Structure
+
+Extends `Graphics.sprite`. Instantiated in `MazeScene:enter()`.
+
+### Visual Components
+
+| Component | Description | Position |
+|---|---|---|
+| `shadow` (400×240) | Semi-transparent background covering the screen | (200, 120) |
+| `menuSprite` | Menu frame image (`assets/images/ui/menu/ingame-menu`) | (200, 120) centered |
+| `lampItem` | Lamp item icon | (320, 64) when visible |
+| `bootItem` | Boots icon | (288, 128) when visible |
+| `plungerItem` | Plunger icon | (256, 128) when visible |
+| `equippedInfoPanel` | Banner for the currently selected skill | (220, 180) when an item is active |
+| `hatSprites` | Array of captured crew member hat sprites | Grid starting at (43, 108) |
+
+### Z-Index
+
+| Element | Z-Index |
+|---|---|
+| `inGameMenu` (shadow) | `ZIndex.menu` (2100) |
+| `menuSprite` | `ZIndex.menu + 2` (2102) |
+| `itemMenu`, `skillInfo` | `ZIndex.menu + 3` (2103) |
+| `equippedInfoPanel` | `ZIndex.menu + 4` (2104) |
+| Hat sprites | `ZIndex.menu + 9` (2109) |
+
+---
+
+## Opening the Menu
+
+### Condition
+
+```lua
+function inGameMenu:displayMenu()
+    if not PlayerData.items.hasDWatch then return end  -- requires D-Watch
+    PlayerData.isGaming = false
+    PlayerData.isEquiping = true
+    self:drawMapOnMenu()
+    if PlayerData.CrewMemberData.amountTaken > 0 then
+        self:drawCrewHats()
+    end
+end
+```
+
+**Mandatory requirement:** `PlayerData.items.hasDWatch == true`. Without the D-Watch, `displayMenu()` returns without doing anything.
+
+### Who Calls It
+
+`MazeScene` calls it from `AButtonHeld` (A held for 1 second).
+
+### State Changes
+
+```
+PlayerData.isGaming   → false   (disables gameplay, movement input, abilities)
+PlayerData.isEquiping → true    (activates menu input)
+```
+
+---
+
+## Closing the Menu
+
+```lua
+function inGameMenu:closeMenu()
+    shadow:clear(Graphics.kColorClear)
+    lampItem:remove()
+    bootItem:remove()
+    plungerItem:remove()
+    equippedInfoPanel:remove()
+    menuSprite:remove()
+    -- Remove hat sprites
+    for _, hatSprite in ipairs(self.hatSprites or {}) do
+        hatSprite:remove()
+    end
+    self.hatSprites = nil
+end
+```
+
+### Who Calls It
+
+`MazeScene` calls it from `BButtonDown` when `isEquiping == true`.
+
+### State Changes After Closing
+
+```
+PlayerData.isGaming   → true    (reactivates gameplay)
+PlayerData.isEquiping → false
+```
+
+---
+
+## Distinction: Pause vs. Equipping
+
+The game **has no real pause system**. Opening the equipment menu simulates a pause by setting `isGaming = false`, which:
+
+- Stops player movement (movement input checks `isGaming`).
+- Stops abilities (B checks `isGaming` to use abilities).
+- Stops the enemy turn (`distributeMovementTokens` only runs when there is active input).
+
+However, `update()` keeps running — the menu draws its components every frame. There is no literal engine freeze.
+
+`SaveSystem.save()` is called in `scene:pause()` (Playdate system menu) and in `scene:finish()` — **not** when opening the equipment menu.
+
+---
+
+## Skill Navigation
+
+### `inGameMenu:getActiveSkillsList()`
+
+Dynamically builds the list of available skills based on the player's **skills**, not item possession:
+
+```lua
+function inGameMenu:getActiveSkillsList()
+    local skills = {}
+    if PlayerData.skills.canFlash      then table.insert(skills, 1) end  -- Lamp/Flash
+    if PlayerData.skills.canDash       then table.insert(skills, 2) end  -- Boot/Dash
+    if PlayerData.skills.canPlungerang then table.insert(skills, 3) end  -- Plunger/Plunge
+    return skills
+end
+```
+
+**Skill IDs:**
+- `1` = Flash (Lamp)
+- `2` = Dash (Boots)
+- `3` = Plungerang (Plunger)
+
+### `inGameMenu:prevItem()` / `inGameMenu:nextItem()`
+
+Cycle `PlayerData.activeItem` within the active list with wraparound:
+
+```lua
+-- nextItem:
+currentIndex = currentIndex + 1
+if currentIndex > #activeSkills then currentIndex = 1 end
+PlayerData.activeItem = activeSkills[currentIndex]
+
+-- prevItem:
+currentIndex = currentIndex - 1
+if currentIndex < 1 then currentIndex = #activeSkills end
+PlayerData.activeItem = activeSkills[currentIndex]
+```
+
+If there are no active skills, `PlayerData.activeItem` is set to `0`.
+
+### `inGameMenu:selectItem()`
+
+Confirms the selection. In the current code it only calls `printDebug`. The actual selection already happened when navigating with `prevItem`/`nextItem` — `activeItem` is updated in real time.
+
+---
+
+## `activeItem` Routing
+
+`PlayerData.activeItem` is the active skill number. It is used in multiple systems:
+
+| Value | Skill | Gameplay Use (B button) |
+|---|---|---|
+| `0` | None | `useAbility()` does nothing |
+| `1` | Flash | `player:lightBurst()` |
+| `2` | Dash | `player:dash()` |
+| `3` | Plungerang | `player:plunge()` |
+
+The menu validates that `activeItem` is always a value within `getActiveSkillsList()`. If it is not, it resets it to the first available skill.
+
+---
+
+## `itemMenu` — Individual Item Icon
+
+Extends `NobleSprite`. Image: `assets/images/ui/menu/menuitems`.
+
+### Animation States
+
+| State | Frame | Condition |
+|---|---|---|
+| `lamp` | 5 | Lamp not selected |
+| `lampSelected` | 6 | `activeItem == 1` |
+| `boot` | 3 | Boots not selected |
+| `bootSelected` | 4 | `activeItem == 2` |
+| `plunger` | 1 | Plunger not selected |
+| `plungerSelected` | 2 | `activeItem == 3` |
+
+`itemMenu:show(x, y)` adds it to the scene at the given position. `itemMenu:remove()` removes it.
+
+---
+
+## `skillInfo` — Skill Information Panel
+
+Extends `NobleSprite`. Image: `assets/images/ui/menu/skillinfo`. Size: 145×42 px.
+
+### Animation States
+
+| State | Frame | Skill Displayed |
+|---|---|---|
+| `plunder` | 1 | Plungerang |
+| `dash` | 2 | Dash |
+| `flash` | 3 | Flash/Lamp |
+
+When created with `__item = 'equipped'`, `update()` reads `PlayerData.activeItem` and changes state automatically to always show the active skill.
+
+`skillInfo:show(x, y)` adds it to the scene.
+
+---
+
+## Crew Hats (`drawCrewHats`)
+
+When opening the menu, if `CrewMemberData.amountTaken > 0`, hat sprites are created for each captured crew member.
+
+### Layout
+
+```
+Start: x=43, y=108
+Horizontal spacing: 20 px
+Vertical spacing: 20 px
+Maximum per row: 7 hats
+```
+
+Calculates the position of each hat by its grid index:
+```lua
+local row = math.floor(slotIndex / maxHatsPerRow)
+local col = slotIndex % maxHatsPerRow
+hatSprite:moveTo(hatX + col*20, hatY + row*20)
+```
+
+Hats are removed in `closeMenu()`.
+
+---
+
+## Game Map in the Menu
+
+On opening, `inGameMenu:drawMapOnMenu()` calls `MapDrawer.drawMap(menuImage)` to draw the explored map directly onto the menu image.
+
+---
+
+## Notes for Porting to Love2D
+
+### Structure in Love2D
 
 ```lua
 -- InGameMenu.lua
 InGameMenu = {}
 
-function InGameMenu:load()
-    self.menuImage = love.graphics.newImage("assets/images/ui/menu/ingame-menu.png")
-    self.font = love.graphics.newFont(16)
-    
-    self.items = {
-        { id = 1, name = "Lamp", hasItem = "hasLamp" },
-        { id = 2, name = "Boots", hasItem = "hasBoots" },
-        { id = 3, name = "Plungerang", hasItem = "hasPlunger" }
-    }
+function InGameMenu:open()
+    if not PlayerData.items.hasDWatch then return end
+    PlayerData.isGaming = false
+    PlayerData.isEquiping = true
 end
 
--- NOTE: In the actual Playdate code, cycling is based on SKILLS
--- (PlayerData.skills.canFlash, canDash, canPlungerang), not item ownership.
--- The Love2D port should mirror this:
-function InGameMenu:getActiveSkills()
-    local active = {}
-    if PlayerData.skills.canFlash   then table.insert(active, {id=1, name="Lightburst"}) end
-    if PlayerData.skills.canDash    then table.insert(active, {id=2, name="Dash"}) end
-    if PlayerData.skills.canPlungerang then table.insert(active, {id=3, name="Plungerang"}) end
-    return active
+function InGameMenu:close()
+    PlayerData.isGaming = true
+    PlayerData.isEquiping = false
 end
 
 function InGameMenu:draw()
     if not PlayerData.isEquiping then return end
-
-    -- Draw Semi-transparent background
+    -- Semi-transparent background
     love.graphics.setColor(0, 0, 0, 0.7)
-    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-    
-    -- Draw Menu Box
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(self.menuImage, 400, 300, 0, 1, 1, self.menuImage:getWidth()/2, self.menuImage:getHeight()/2)
-    
-    -- Draw Skills/Items
-    local activeSkills = self:getActiveSkills()
-    for i, skill in ipairs(activeSkills) do
-        if PlayerData.activeItem == skill.id then
-            love.graphics.setColor(1, 1, 0, 1) -- Highlight selected item in yellow
-        else
-            love.graphics.setColor(1, 1, 1, 1)
-        end
-        love.graphics.print(skill.name, 350, 200 + (i * 30))
-    end
-    
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.rectangle("fill", 0, 0, 400, 240)
+    -- Menu frame
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(self.menuImage, 200, 120, 0, 1, 1,
+        self.menuImage:getWidth()/2, self.menuImage:getHeight()/2)
+    -- Available skills
+    self:drawSkills()
+end
+```
+
+### Active Skill Cycling
+
+```lua
+function InGameMenu:getActiveSkills()
+    local skills = {}
+    if PlayerData.skills.canFlash      then table.insert(skills, {id=1, name="Flash"}) end
+    if PlayerData.skills.canDash       then table.insert(skills, {id=2, name="Dash"}) end
+    if PlayerData.skills.canPlungerang then table.insert(skills, {id=3, name="Plungerang"}) end
+    return skills
 end
 
 function InGameMenu:nextItem()
     local skills = self:getActiveSkills()
     if #skills == 0 then return end
-    
-    local currentIndex = 1
-    for i, skill in ipairs(skills) do
-        if skill.id == PlayerData.activeItem then
-            currentIndex = i
-            break
-        end
+    local idx = 1
+    for i, s in ipairs(skills) do
+        if s.id == PlayerData.activeItem then idx = i; break end
     end
-    
-    currentIndex = currentIndex + 1
-    if currentIndex > #skills then currentIndex = 1 end
-    PlayerData.activeItem = skills[currentIndex].id
-end
-
-function InGameMenu:prevItem()
-    local skills = self:getActiveSkills()
-    if #skills == 0 then return end
-    
-    local currentIndex = 1
-    for i, skill in ipairs(skills) do
-        if skill.id == PlayerData.activeItem then
-            currentIndex = i
-            break
-        end
-    end
-    
-    currentIndex = currentIndex - 1
-    if currentIndex < 1 then currentIndex = #skills end
-    PlayerData.activeItem = skills[currentIndex].id
+    idx = (idx % #skills) + 1
+    PlayerData.activeItem = skills[idx].id
 end
 ```
 
-### Example: Integration in `GameState` (Love2D)
+### Key Difference: Input Held
 
-```lua
--- main.lua or GameState.lua
-
-function love.load()
-    InGameMenu:load()
-    
-    -- Mocking PlayerData for the example
-    PlayerData = {
-        isGaming = true,
-        isEquiping = false,
-        activeItem = 1,
-        items = {
-            hasLamp = true,
-            hasBoots = true,
-            hasPlunger = true,
-            hasDWatch = true
-        }
-    }
-end
-
-function love.update(dt)
-    if PlayerData.isGaming then
-        -- Update game world, player, enemies
-    elseif PlayerData.isEquiping then
-        -- Menu is open, game world is paused
-        -- You might want to update animations or menu specific timers here
-    end
-end
-
-function love.draw()
-    -- Draw your game world and entities here
-    -- ...
-
-    -- Draw UI on top
-    if PlayerData.isEquiping then
-        InGameMenu:draw()
-    end
-end
-
-function love.keypressed(key)
-    if not PlayerData.isEquiping then
-        -- Open Menu logic
-        -- In love2d, to mimic "button held", you might need to track key times in love.update
-        -- For a simple toggle:
-        if key == "tab" and PlayerData.items.hasDWatch then
-            PlayerData.isGaming = false
-            PlayerData.isEquiping = true
-        end
-    else
-        -- Menu Input Logic
-        if key == "right" or key == "d" then
-            InGameMenu:nextItem()
-        elseif key == "left" or key == "a" then
-            InGameMenu:prevItem()
-        elseif key == "escape" or key == "tab" then
-            -- Close Menu
-            PlayerData.isGaming = true
-            PlayerData.isEquiping = false
-        elseif key == "return" or key == "space" then
-            -- Select Item (Optional, activeItem updates instantly in this design)
-            print("Selected item: " .. PlayerData.activeItem)
-        end
-    end
-end
-```
-
-### Key Differences
-- **Rendering:** In Playdate, `Graphics.sprite` automatically adds the menu to the display list. In Love2D, you explicitly call your `InGameMenu:draw()` sequence inside `love.draw()` only when `isEquiping` is true.
-- **Input:** Playdate's `Noble.Input` handler allows functions like `AButtonHeld`. In Love2D, `love.keypressed(key)` fires once per stroke. To detect a held button natively, you check `love.keyboard.isDown("key")` in `love.update(dt)` and accumulate a timer before triggering the menu, or just bind it to a single press (like `tab` or `start` on a gamepad).
+In Playdate, `AButtonHeld` is a Noble Engine callback that fires after 1 second. In Love2D, it must be detected manually with a timer in `love.update(dt)`.

@@ -1,156 +1,312 @@
-# Doors & Keys Documentation
+# Doors and Keys
 
-This document explains how the maze navigation works through doors and the security system using keys.
-
----
-
-## 🚪 Door System
-
-Doors in this game are more than just sprites; they handle the heavy lifting for level transitions.
-
-### 1. Types & Directions
-Doors are initialized based on their location in the room:
-- **Directions**: `top`, `down`, `left`, `right` — converted from LDtk cardinal letters (`n`, `s`, `e`, `w`) via `ConvertLDTKDirection`.
-- **Stairs / Vertical connections**: LDtk symbols `">"` and `"<"` convert to `top` (upper) and `down` (lower) directions respectively. **Staircase Door sprites are NOT created** — `CreateDoorsFromLDTK` comments out the stair `Door()` instantiation. Vertical navigation is handled by `GetLowerRoom()` / `GetUpperRoom()` in `Utilities.lua`, not by Door entities.
-- **Positions**: Spawn coordinates come from `Config.Doors.spawnCoords` per direction: `top→{x=196,y=196}`, `down→{x=196,y=32}`, `right→{x=32,y=116}`, `left→{x=364,y=116}`.
-
-### 2. Room Transitions
-Transitions are handled via `Door:goTo()` and `Door:prevRoom(direction, playerX, playerY)`:
-- **`prevRoom(direction, playerX, playerY)`**: Calculates where the player should spawn in the **next** room based on where they left the current one (e.g., exiting `"top"` spawns at the bottom — Y=196 — of the next room). The player's live X and Y are passed to preserve position on the orthogonal axis. Also sets `PlayerData.lastRoom`.
-- **Navigation**: Uses `Noble.transition` to move to the scene class identified by the room number (e.g. `Floor220`), which is looked up via `RoomTranslate`.
-- **`Door:collisionResponse`**: Returns `"overlap"`. All actual transition and key-check logic is in `player/collisions.lua` — the door's own response is a no-op.
-
-### 3. LDtk Loading
-Doors are generated dynamically in `MazeScene.lua` via `CreateDoorsFromLDTK(currentRoom)`:
-- The primary loop iterates over `currentRoom.entities.Doors` — the LDtk `Doors` entity list defines which doors exist in the room.
-- `neighbourLevels` is used as a lookup to find the neighboring room's data once the door entity's `DoorsConnection` field identifies the direction.
-- LDtk cardinal letters (`n`, `s`, `e`, `w`) and stair symbols (`>`, `<`) are converted to internal directions via `ConvertLDTKDirection`.
+This document describes the complete door system: the `Door` class, coordinate mapping, the key system, construction from LDtk, and portability notes.
 
 ---
 
-## 🔐 Key System
+## `Door` Class
 
-The game features a locking mechanism that gates progress.
+File: `entities/props/door.lua`
 
-### 1. Locking Mechanisms
-- A door can be initialized with a `keyNumber`.
-- In `collisions.lua`, when a player hits a `closed` door:
-    - It checks `PlayerData.keys[requiredKey]`.
-    - If `true`, the door allows passage and transitions the player.
-    - If `false`, it shows the `"nokeys"` dialog screen and returns `'freeze'` to block the player's movement.
+`Door` extends `NobleSprite`. It is the sprite that represents a door on screen and centralizes the room transition logic.
 
-### 2. Global State
-Keys are stored in `PlayerData.keys` as a map of indices (e.g., `{[1] = true}`). This ensures that keys collected on one floor or room are available throughout the game world.
+### Constructor
 
-> [!NOTE]
-> Collision response for doors is actually handled in `player/collisions.lua`, which calls the transition logic directly if the door is open or the key is present.
-
----
-
-## 🎮 Love2D Porting Notes
-
-### 1. Door Entity → bump.lua Sensor
-Replace `NobleSprite` door objects with **bump.lua ghost/sensor rectangles**:
 ```lua
--- Add door as a sensor
-world:add({type="door", direction="top", leadsTo=220}, x, y, w, h)
+Door(direction, status, nextRoom, zIndex, keyNumber, x, y, width, height)
+```
 
--- In player collision filter:
+| Parameter | Type | Description |
+|---|---|---|
+| `direction` | string | `"top"`, `"down"`, `"left"`, `"right"` |
+| `status` | string | `"open"` or `"closed"` |
+| `nextRoom` | number | Destination room number (e.g. 220) |
+| `zIndex` | number | Render layer — normally `ZIndex.props` (2) |
+| `keyNumber` | number or nil | Required key number; `nil` if no key needed |
+| `x`, `y` | number or nil | LDTK entity coordinates; if `nil`, falls back to `Config.Doors.positions` |
+| `width`, `height` | number or nil | LDTK entity dimensions; if `nil`, calculated by direction |
+
+Internally:
+- `self.nextRoom` is resolved with `RoomTranslate(nextRoom)` to get the scene class (e.g. `Floor220`).
+- `self:setGroups(3)` — collision group `props` (ID 3).
+- The collision rect is assigned from `setRectValues(direction)` when no LDTK dimensions are provided.
+
+### Collision Rectangles by Direction
+
+```
+right  → {0, 0, 16, 50}
+left   → {0, 0, 14, 50}
+down   → {0, 0, 50, 16}
+top    → {0, 0, 50, 16}
+```
+
+### Default Sprite Size (without LDTK dimensions)
+
+```
+horizontal (top/down) → 56×10 px
+vertical   (left/right) → 10×56 px
+```
+
+---
+
+## `Config.Doors` — Positions and Spawn Coordinates
+
+Defined in `assets/data/Config.lua`.
+
+### `Config.Doors.positions` — Door Sprite Position on Screen
+
+| Direction | x | y |
+|---|---|---|
+| `right` | 393 | 122 |
+| `left` | 4 | 122 |
+| `down` | 203 | 228 |
+| `top` | 203 | 2 |
+
+These coordinates are the fallback when the LDTK entity does not provide `x`/`y`.
+
+### `Config.Doors.spawnCoords` — Player Spawn Position in Destination Room
+
+| Exit direction | Spawn x | Spawn y |
+|---|---|---|
+| `top` | 196 | 196 |
+| `down` | 196 | 32 |
+| `right` | 32 | 116 |
+| `left` | 364 | 116 |
+
+The logic: if the player exits through the top (`top`), they spawn at the bottom of the new room (y=196); if they exit through the bottom (`down`), they spawn at the top (y=32), etc. The orthogonal axis preserves the player's actual coordinate.
+
+---
+
+## Key System
+
+Doors can require a key to open.
+
+### Data in LDTK
+
+Each `Doors` entity in LDtk can have:
+- `NeedsKey` (`bool`) — if `true`, the door is locked.
+- `KeyNumber` (`int`) — number of the required key.
+
+### Global Storage
+
+Keys are stored in `PlayerData.keys`, a table indexed by number:
+
+```lua
+PlayerData.keys[1] = true   -- player has key #1
+PlayerData.keys[2] = false  -- player does NOT have key #2
+```
+
+### Collision Flow (in `player/collisions.lua`)
+
+1. The player collides with a `Door` (door's response: `"overlap"` — no-op).
+2. `player/collisions.lua` detects the `Door` type.
+3. If `door.status == "closed"`:
+   - Checks `PlayerData.keys[door.keyNumber]`.
+   - If `true` → allows the transition by calling `door:prevRoom()` + `door:goTo()`.
+   - If `false` → shows the `"nokeys"` dialog and returns `'freeze'` to block player movement.
+4. If `door.status == "open"` → direct transition.
+
+> The `Door` class always returns `"overlap"` in `collisionResponse`. All actual key and transition logic lives in `player/collisions.lua`.
+
+---
+
+## `Door:prevRoom(direction, playerX, playerY)`
+
+Configures player spawn in the destination room before the transition.
+
+```lua
+function Door:prevRoom(direction, playerX, playerY)
+    PlayerData.lastRoom = direction
+    local sc = Config.Doors.spawnCoords
+    local spawnCoordinates = {
+        top   = {x = playerX or sc.top.x,   y = sc.top.y  },
+        down  = {x = playerX or sc.down.x,  y = sc.down.y },
+        right = {x = sc.right.x, y = playerY or sc.right.y},
+        left  = {x = sc.left.x,  y = playerY or sc.left.y },
+    }
+    PlayerData.playerSpawn.x = spawnCoordinates[direction].x
+    PlayerData.playerSpawn.y = spawnCoordinates[direction].y
+end
+```
+
+- For horizontal doors (`left`/`right`), `playerY` is preserved so the player appears at the same height.
+- For vertical doors (`top`/`down`), `playerX` is preserved so they appear in the same column.
+- `PlayerData.lastRoom` stores the entry direction so the destination scene knows where the player came from.
+
+---
+
+## `Door:goTo()`
+
+Executes the scene transition.
+
+```lua
+function Door:goTo()
+    Noble.transition(self.nextRoom, 1.5, Noble.Transition.Default)
+end
+```
+
+- `self.nextRoom` is the scene class (e.g. `Floor220`), obtained in the constructor via `RoomTranslate(nextRoom)`.
+- Fade duration: **1.5 seconds**.
+- Transition: `Noble.Transition.Default`.
+
+---
+
+## `CreateDoorsFromLDTK(currentRoom)` — Step by Step
+
+Global function defined in `entities/props/door.lua`, called from `MazeScene:enter()`.
+
+**Step 1 — Initial Validation**
+- If `currentRoom` is nil → return.
+- If `currentRoom.entities.Doors` is empty → return.
+- If `currentRoom.neighbourLevels` is nil → return.
+
+**Step 2 — Build Neighbor Map by Direction**
+
+```lua
+local neighborsByDir = {}
+for _, neighbor in ipairs(neighbourLevels) do
+    neighborsByDir[neighbor.dir] = neighbor   -- key: "n", "s", "e", "w", ">", "<"
+end
+```
+
+**Step 3 — Iterate `Doors` Entities**
+
+For each entity in `currentRoom.entities.Doors`:
+
+1. Read `doorEntity.customFields.DoorsConnection` (e.g. `"top"`, `"right"`, `"lower"`).
+2. Convert to LDTK code with `doorDirectionMap`:
+   ```lua
+   top→"n", down→"s", right→"e", left→"w", upper→">", lower→"<"
+   ```
+3. Look up the neighbor with `neighborsByDir[ldtkDir]`.
+4. If no neighbor → skip (no door is created).
+5. Convert `ldtkDir` to internal direction with `ConvertLDTKDirection`.
+6. Read `NeedsKey` and `KeyNumber` from the entity's customField.
+
+**Step 4 — Create the Door (cardinal doors only)**
+
+For cardinal directions (`n`, `s`, `e`, `w`):
+- Call `FindRoomByIid(neighbor.levelIid)` to get the neighboring room.
+- Calculate `leadsTo` with `CalculateLeadsTo`.
+- `open = needsKey and "closed" or "open"`.
+- Instantiate `Door(direction, open, leadsTo, ZIndex.props, keyNumber, doorEntity.x, doorEntity.y, doorEntity.width, doorEntity.height)`.
+
+**Note on stairs (`>` and `<`):** The `Door` sprite creation is commented out in the code. Stairs are navigated exclusively by `fallBelow()` / `riseAbove()` on the player, which call `GetLowerRoom()` / `GetUpperRoom()`. No Door sprite exists for stairs.
+
+---
+
+## `ConvertLDTKDirection(dir)` — Full Table
+
+| LDTK Input | Internal Output | Visual Meaning |
+|---|---|---|
+| `">"` | `"down"` | Staircase up (visually at the back of the screen) |
+| `"<"` | `"top"` | Staircase down (visually at the top of the screen) |
+| `"n"` | `"top"` | North door |
+| `"s"` | `"down"` | South door |
+| `"e"` | `"right"` | East door |
+| `"w"` | `"left"` | West door |
+| `"o"` | `"left"` | Alias for west |
+| any other | unchanged | Returns the original value |
+
+---
+
+## `CalculateLeadsTo(currentLevel, currentRoomNumber, direction, neighborRoom)` — Formula
+
+```lua
+-- Staircase up: level+1, same room number
+if direction == ">" then
+    result = (currentLevel + 1) * 100 + currentRoomNumber
+
+-- Staircase down: level-1, same room number
+elseif direction == "<" then
+    result = (currentLevel - 1) * 100 + currentRoomNumber
+
+-- Cardinal door: uses level and roomNumber from the neighbor
+else
+    local neighborLevel  = neighborRoom.customFields.level or 1
+    local neighborRoomNum = neighborRoom.customFields.roomNumber or 0
+    result = neighborLevel * 100 + neighborRoomNum
+end
+```
+
+Example: level 2, room 20 with staircase `">"` → `(2+1)*100 + 20 = 320`.
+
+---
+
+## `FindRoomByIid(iid)` — Hash vs. Linear Search
+
+```lua
+function FindRoomByIid(iid)
+    -- 1. O(1) hash lookup
+    if roomsByIid and roomsByIid[iid] then
+        return roomsByIid[iid]
+    end
+
+    -- 2. Fallback: O(n) linear search through levelsLDTK
+    for i, room in ipairs(levelsLDTK) do
+        if room and room.uniqueIdentifer == iid then
+            return room
+        end
+    end
+    return nil
+end
+```
+
+`roomsByIid` is built in `main.lua` at game startup:
+```lua
+roomsByIid = {}
+for _, room in ipairs(levelsLDTK) do
+    if room and room.uniqueIdentifer then
+        roomsByIid[room.uniqueIdentifer] = room
+    end
+end
+```
+
+The linear search is the fallback for the unlikely case that the hash is unavailable.
+
+---
+
+## Notes for Porting to Love2D
+
+### Doors as bump.lua Sensors
+
+Replace the NobleSprite `Door` sprites with bump.lua sensor rectangles:
+
+```lua
+-- Add door as sensor
+world:add({type="door", direction="top", leadsTo=220, keyNumber=nil},
+           x, y, doorW, doorH)
+
+-- Filter on the player
 local function playerFilter(item, other)
-    if other.type == "door" then return "cross" end  -- ghost: detect but don't block
+    if other.type == "door" then return "cross" end
     return "slide"
 end
 ```
 
-### 2. Room Transitions
-Replace `Noble.transition` with your scene manager:
+### Room Transition
+
 ```lua
--- On door overlap detected in love.update:
+-- When overlap with a door is detected:
 if col.other.type == "door" then
-    PlayerData.lastRoom = currentRoom
-    PlayerData.playerSpawn = Door.spawnCoords[col.other.direction]
-    SceneManager:switchTo(RoomTranslate(col.other.leadsTo), "slide", 0.4)
+    local door = col.other
+    if door.keyNumber and not PlayerData.keys[door.keyNumber] then
+        showDialog("nokeys")
+        return
+    end
+    -- Configure spawn
+    PlayerData.lastRoom = door.direction
+    local sc = Config.Doors.spawnCoords
+    PlayerData.playerSpawn.x = sc[door.direction].x
+    PlayerData.playerSpawn.y = sc[door.direction].y
+    SceneManager:switchTo(RoomTranslate(door.leadsTo), "fade", 1.5)
 end
 ```
 
-### 3. Key System
-`PlayerData.keys` is a plain Lua table — it transfers to Love2D unchanged. Check it on door overlap:
-```lua
-if door.keyNumber and not PlayerData.keys[door.keyNumber] then
-    -- Show "nokeys" dialog
-    dialogUI:addScreen("nokeys")
-    return  -- block transition
-end
-```
+### `PlayerData.keys` — Direct Transfer
 
-### 4. Spawn Coordinates
-Port `Config.Doors.spawnCoords` directly — it is pure data with no Playdate dependencies.
+The `PlayerData.keys` table is pure Lua and requires no changes for Love2D.
 
----
+### `Config.Doors.spawnCoords` — Pure Data
 
-## 🌀 Portal Doors
-
-Portal doors teleport the player to any room in the map regardless of adjacency. They are defined as a separate LDtk entity type (`PortalDoors`) and do not interact with the existing `Doors` entity or `CreateDoorsFromLDTK`.
-
-### LDtk Entity: `PortalDoors`
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `PortalID` | `Int` | Labels a portal pair for identification. No runtime effect — place a second portal in the destination room to enable return travel. |
-| `DestLevel` | `Int` | Destination level number. |
-| `DestRoom` | `Int` | Destination room number within that level. Combined RoomID = `DestLevel * 100 + DestRoom`. |
-| `SpawnX` | `Int` | X coordinate where the player spawns in the destination room. |
-| `SpawnY` | `Int` | Y coordinate where the player spawns in the destination room. |
-| `Conditions` | `Array<String>` | Entry conditions (same format as Trigger `conditionalScripts`). All must pass. Empty = always open. |
-| `BlockedDialog` | `String` | Dialog key shown when entry is blocked. Defaults to `"nokeys"`. |
-
-### Condition examples
-
-The format is `"conditionExpr:label"` — the label after `:` is ignored by portals (it exists only for compatibility with the Trigger condition format).
-
-```
-"isTiny:enter"               -- player must be tiny
-"!isTiny:enter"              -- player must NOT be tiny
-"inventory.tools==1:enter"   -- player must have tools
-"healthPoints>=3:enter"      -- player must have at least 3 HP
-```
-
-### LDtk setup example
-
-**Scenario:** Portal in room 166 (level 1, sala 66) que lleva a room 408 (level 4, sala 8), solo accesible cuando el jugador es tiny. El portal de regreso está en room 408.
-
-**Portal A** — colocado en room 166:
-```
-Entity type : PortalDoors
-PortalID    : 1
-DestLevel   : 4
-DestRoom    : 8
-SpawnX      : 196
-SpawnY      : 116
-Conditions  : ["isTiny:enter"]
-BlockedDialog: notiny
-```
-
-**Portal B** — colocado en room 408 (el de regreso):
-```
-Entity type : PortalDoors
-PortalID    : 1
-DestLevel   : 1
-DestRoom    : 66
-SpawnX      : 196
-SpawnY      : 116
-Conditions  : []        ← vacío, cualquiera puede regresar
-BlockedDialog:          ← dejar vacío usa el default "nokeys"
-```
-
-> `SpawnX=196, SpawnY=116` es el centro aproximado de la pantalla (400×240). Ajusta según dónde quieras que aparezca el jugador en la sala destino.
-
-### Code path
-
-1. `MazeScene:enter()` calls `CreatePortalDoorsFromLDTK(currentRoom)` after `CreateDoorsFromLDTK`.
-2. `CreatePortalDoorsFromLDTK` iterates `currentRoom.entities.PortalDoors` and instantiates `PortalDoor` per entity.
-3. On player collision: `player/collisions.lua` checks `other:isa(PortalDoor)` → calls `canEnter()` → either `setSpawn() + goTo()` or shows blocked dialog.
-
-### Config
-
-`Config.Portals.collideRect` — default collision rect used when LDtk entity has no explicit size.
+The spawn coordinates have no Playdate dependencies and transfer without modification.
