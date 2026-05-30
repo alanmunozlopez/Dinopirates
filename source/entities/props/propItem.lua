@@ -125,12 +125,12 @@ function PropItem:destroyProp(id)
   self.animation:setState('debris') -- add a new animation for debris
 end
 
-function PropItem:hitBoxDash()
+function PropItem:smash()
   if self.type == "box" and not self.isDestroyed then
     -- Apply optional screen shake/sound here
     playdate.display.setRefreshRate(30) -- small stutter effect
     playdate.timer.performAfterDelay(100, function() playdate.display.setRefreshRate(0) end)
-    
+
     self:destroyProp(self.id)
     self.isDestroyed = true
   end

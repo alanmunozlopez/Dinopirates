@@ -513,11 +513,6 @@ scene.inputHandler = {
 			Utilities.grantAchievementIfNeeded(trigger.script)
 		end
 		
-		-- Seleccionar item cuando está en el menú de equipamiento
-		if PlayerData.isEquiping == true then
-			inGameEquip:selectItem()
-		end
-
 		-- Trigger minifier if ready
 		if PlayerData.readyToShrink == true and PlayerData.isGaming == true then
 			player:startMinifying()
@@ -573,9 +568,6 @@ scene.inputHandler = {
 			currentMoveDirection = 'left'
 			scene:movePlayer('left')
 		end
-		if PlayerData.isEquiping == true then
-			inGameEquip:prevItem()
-		end
 	end,
 	leftButtonHold = function()
 		if isDiagonalMovementEnabled or (isPlayerMoving and currentMoveDirection == 'left') then
@@ -602,9 +594,6 @@ scene.inputHandler = {
 			isPlayerMoving = true
 			currentMoveDirection = 'right'
 			scene:movePlayer('right')
-		end
-		if PlayerData.isEquiping == true then
-			inGameEquip:nextItem()
 		end
 	end,
 	rightButtonHold = function()

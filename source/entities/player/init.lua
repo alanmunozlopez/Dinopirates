@@ -9,7 +9,6 @@ import "entities/player/movement"
 import "entities/player/sanity"
 import "entities/player/items"
 import "entities/player/state"
-import "entities/player/dash"
 import "entities/player/abilities"
 import "entities/player/lightburst"
 import "entities/player/sliding"
@@ -69,16 +68,7 @@ function Player:init(x, y, speed, Zindex)
     self.isAlive = true
     self.isInvincible = false
     self.invincibilityTimer = 0
-    self.dashCooldown = 0     -- Cooldown timer for dash attack
     self.lightBurstCooldown = 0 -- Cooldown timer for light burst
-
-    -- Dash state variables
-    self.isDashing = false
-    self.dashDirection = nil
-    self.dashProgress = 0
-    self.dashSpeed = Config.Dash.speed
-    self.dashTotalDistance = Config.Dash.totalDistance
-    self.dashBounceDistance = Config.Dash.bounceDistance
 
     -- Sliding state variables
     self.isSliding = false

@@ -29,7 +29,6 @@ Effective movement is resolved with `self:moveWithCollisions(movementX, movement
 
 `Player:move()` returns without doing anything if:
 - `PlayerData.isGaming == false`
-- `self.isDashing == true`
 - `self.isSliding == true`
 - `self.isPlunging == true`
 - `self.isAlive == false`
@@ -53,7 +52,7 @@ Each time `Player:move()` executes successfully, `PlayerData.isActive = true` is
 
 ## 2. Battery
 
-**Files**: `entities/player/sanity.lua` (drain/charge), `entities/player/movement.lua` (drain on movement), `entities/player/hole.lua` (drain in holes), `entities/player/dash.lua`, `entities/player/lightburst.lua`
+**Files**: `entities/player/sanity.lua` (drain/charge), `entities/player/movement.lua` (drain on movement), `entities/player/hole.lua` (drain in holes), `entities/player/lightburst.lua`
 
 ### Range and limits
 
@@ -67,7 +66,6 @@ Each time `Player:move()` executes successfully, `PlayerData.isActive = true` is
 | Moving in darkness | `Config.Battery.drainMovementDark = 0.5` per frame | `Player:move()`, only if `isInDarkness == true` |
 | Crossing hole (normal size) | `Config.Battery.drainHoleNormal = 0.5` per frame | `checkHoleTile()`, only if `isActive` |
 | Crossing hole (tiny) | `Config.Battery.drainHoleTiny = 0.2` per frame | `checkHoleTile()` / `checkTinyHoleTile()`, only if `isActive` |
-| Using Dash | `Config.Dash.batteryCost = 10` (fixed cost) | `dash()` on activation |
 | Using LightBurst | `Config.LightBurst.batteryCost = 10` (fixed cost) | `lightBurst()` on activation |
 | Walking with DWatch | `0.5` per frame (disabled) | Flag `DRAIN_BATTERY_ON_WALK = false` in `movement.lua` |
 
@@ -231,59 +229,11 @@ end
 - **Special holes**: `checkTinyHoleTile()` detects tiles with IntGrid ID `32` (tinyHole). Only the tiny player falls into these holes; the normal player ignores them.
 - **Pneumatic tubes**: `collisionResponse` allows `riseAbove()` when colliding with `PropItem.isTube == true` only if `isTiny == true`. Otherwise it returns `'freeze'`.
 - **Minifier**: The transformation is triggered from `Player:startMinifying()` using the crank. `PlayerData.actualPlayerSize` goes from `playerSize (10)` to `0` (tiny) or vice versa.
-- **Dash blocked**: `Player:dash()` returns without executing if `PlayerData.isTiny == true`.
 - **Plungerang blocked**: `Player:plunge()` returns without executing if `PlayerData.isTiny == true`.
 
 ---
 
-## 7. Dash
-
-**File**: `entities/player/dash.lua`
-
-### Parameters (Config.Dash)
-
-```
-speed          = 6    -- px/frame during the dash
-totalDistance  = 56   -- total px before ending the dash
-bounceDistance = 16   -- px of bounce when hitting a solid
-batteryCost    = 10   -- battery consumed on activation
-cooldown       = 500  -- ms between uses
-```
-
-### Activation conditions
-
-`Player:dash()` only executes if:
-- `PlayerData.activeItem == 2` (boots equipped)
-- `PlayerData.items.hasBoots == true` AND `PlayerData.skills.canDash == true`
-- `PlayerData.isTiny == false`
-- No active dash (`self.isDashing == false`)
-- Cooldown expired (`getCurrentTimeMilliseconds() >= self.dashCooldown`)
-- `PlayerData.battery >= 10`
-- `PlayerData.direction != 'idle'` (there is a last-faced direction)
-
-### Execution (Player:updateDash)
-
-Each frame while `isDashing == true`:
-1. `moveX`/`moveY` is calculated based on `dashDirection` with speed `dashSpeed = 6`.
-2. `moveWithCollisions` is called.
-3. Collisions are filtered: only "solid" are undestroyed 'box' PropItems and any object that is not a `Trigger` or `Items`.
-4. If there is a solid collision and it is a destructible box → `hitBoxDash()`. Then bounce `bounceDistance = 16` px in the opposite direction and `endDash()`.
-5. If there is no collision, `dashProgress += dashSpeed`. When `dashProgress >= totalDistance (56)` → `endDash()`.
-
-### Movement blocking
-
-During `isDashing == true`, `Player:move()` returns immediately at the start. The dash also blocks `checkSlimeTile()`.
-
-### Cooldown
-
-When `dash()` activates (not when movement ends), the following is set:
-```lua
-self.dashCooldown = getCurrentTimeMilliseconds() + 500
-```
-
----
-
-## 8. LightBurst
+## 7. LightBurst
 
 **File**: `entities/player/lightburst.lua`
 
@@ -300,11 +250,11 @@ blindDuration = 60    -- frames enemies remain blind
 
 ### Activation conditions
 
-- `PlayerData.activeItem == 1` (lamp equipped)
 - `PlayerData.items.hasLamp == true` AND `PlayerData.skills.canFlash == true`
 - Cooldown expired
 - `PlayerData.battery >= 10`
 - `PlayerData.direction != 'idle'`
+- Triggered by B while in darkness (`useAbility()` routes to the lamp when `isInDarkness`)
 
 ### Cone geometry (playdate.geometry.polygon)
 
@@ -340,7 +290,7 @@ The polygon is closed with `lightCone:close()`.
 
 ---
 
-## 9. Plungerang
+## 8. Plungerang
 
 **Files**: `entities/player/plunge.lua`, `entities/player/projectile.lua`
 
@@ -354,12 +304,12 @@ blindDuration = 60   -- frames of blindness when hitting an enemy
 
 ### Activation conditions (Player:plunge)
 
-- `PlayerData.activeItem == 3` (plunger equipped)
 - `PlayerData.items.hasPlunger == true` AND `PlayerData.skills.canPlungerang == true`
 - `PlayerData.isTiny == false`
 - `self.isPlunging == false` (only one projectile at a time)
 - `self.hasProjectile == true` (not lost)
 - `PlayerData.direction != 'idle'`
+- Triggered by B while in a lit room (`useAbility()` routes to the plungerang when not `isInDarkness`)
 
 ### Projectile logic (Projectile:update)
 
@@ -381,14 +331,14 @@ blindDuration = 60   -- frames of blindness when hitting an enemy
 
 ---
 
-## 10. Slime sliding
+## 9. Slime sliding
 
 **File**: `entities/player/sliding.lua`
 
 ### Detection
 
 `Player:checkSlimeTile()` is called in `update()`. Calls `IsPlayerOnSlime(self.x, self.y)` (a utility function that tile-samples the player's foot area, IDs 89–97). Detection is skipped if:
-- `isSliding`, `isDashing`, or `isPlunging` are active.
+- `isSliding` or `isPlunging` are active.
 - `slideHitWall == true` (just bounced off a wall).
 - `PlayerData.items.hasPlunger == true` (slime immunity).
 
@@ -398,7 +348,7 @@ blindDuration = 60   -- frames of blindness when hitting an enemy
 ```lua
 self.isSliding = true
 self.slidingDirection = direction  -- direction the player was moving
-self.slidingSpeed = 4              -- hardcoded, faster than normal speed (~2), slower than dash (6)
+self.slidingSpeed = 4              -- hardcoded, faster than normal speed (~2)
 ```
 
 The slide direction is inherited from `direction` param → `self.direction` → `PlayerData.direction`, in that order.
@@ -423,7 +373,7 @@ The slide ends (`endSliding`) if:
 
 ---
 
-## 11. Turn-based sync — isActive
+## 10. Turn-based sync — isActive
 
 **File**: `entities/player/init.lua`, `entities/player/movement.lua`, `entities/player/sanity.lua`
 
@@ -457,7 +407,7 @@ Called by a B ability **when it actually fires**, with `amount = Config.Player.m
 
 ---
 
-## 12. Animation state machine
+## 11. Animation state machine
 
 **File**: `entities/player/animations.lua`
 
@@ -477,10 +427,6 @@ All states are defined in `Player:initAnimations()` on `self.animation` (Noble E
 | `lampLeft` | 6–10 | 8 | — |
 | `lampDown` | 31–35 | 8 | — |
 | `charge` | 36–40 | 12 | — |
-| `dashRight` | 65–68 | 3 | — |
-| `dashLeft` | 69–72 | 3 | — |
-| `dashUp` | 65–68 | 3 | — |
-| `dashDown` | 65–68 | 3 | — |
 | `tinyIdle` | 73–81 | 4 | — |
 | `tinyRight` | 82–84 | 4 | — |
 | `tinyLeft` | 85–87 | 4 | — |
@@ -534,7 +480,7 @@ Default → idle
 
 ---
 
-## 13. Dead state
+## 12. Dead state
 
 **File**: `entities/player/state.lua`
 
@@ -550,7 +496,7 @@ Falling into a hole without boots and without an available lower room also resul
 
 ---
 
-## 14. Notes for Love2D port
+## 13. Notes for Love2D port
 
 ### Movement and collisions
 

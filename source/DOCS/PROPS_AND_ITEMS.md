@@ -20,7 +20,7 @@ All props share a single image sheet: `assets/images/props/props`. The Playdate 
 |------------------|----------|-------|
 | `chair`          | 1        | Normal chair |
 | `fellchair`      | 2        | Fallen chair |
-| `box`            | 3        | Destructible box (the only type that responds to dash) |
+| `box`            | 3        | Destructible box (the only type the plungerang can smash) |
 | `trash`          | 4        | Trash can |
 | `toxic`          | 5        | Toxic barrel |
 | `table`          | 6        | Large table |
@@ -140,10 +140,10 @@ end
 
 `findAndDestroyPropById(id)` is a utility function that locates the entity by its LDtk `iid` within the global `levelsLDTK` table and sets the `destroyed = true` field. On the next visit to the room, `MazeScene` skips spawning props with `destroyed == true`.
 
-### 1.8 hitBoxDash()
+### 1.8 smash()
 
 ```lua
-function PropItem:hitBoxDash()
+function PropItem:smash()
   if self.type == "box" and not self.isDestroyed then
     playdate.display.setRefreshRate(30)  -- 100ms stutter
     playdate.timer.performAfterDelay(100, function()
@@ -155,12 +155,12 @@ function PropItem:hitBoxDash()
 end
 ```
 
-Only the `box` type responds to dash. On impact:
+Called by the plungerang projectile when it collides with a box (see `PLUNGERANG.md`). Only the `box` type responds. On impact:
 1. The framerate is forced to 30 fps for 100 ms (visual stutter effect).
 2. `destroyProp` is called to persist the destruction and change the sprite to `debris`.
 3. `self.isDestroyed = true` is set so that future calls are ignored.
 
-No other prop type has a dash response.
+No other prop type can be smashed.
 
 ---
 
@@ -471,7 +471,7 @@ All animations have `frameDuration = 8`.
 
 | Type | Frames | Player function | Effect on PlayerData |
 |------|--------|-----------------|----------------------|
-| `boots` | 1-3 | `Player:grabBoots()` | `items.hasBoots = true`, `skills.canDash = true`, `fillBattery()` |
+| `boots` | 1-3 | `Player:grabBoots()` | `items.hasBoots = true`, `fillBattery()` |
 | `plunger` | 4-6 | `Player:grabPlunger()` | `items.hasPlunger = true`, `skills.canPlungerang = true`, `fillBattery()` |
 | `lamp` | 7-9 | `Player:grabLamp()` | `items.hasLamp = true`, `skills.canFlash = true`, `fillBattery()` |
 | `notes` | 10-12 | `Player:grabNotes(grants)` | Updates fields in `PlayerData.skills` via `processGrants` |
@@ -486,10 +486,9 @@ There is no `bag` or `tools` type in the current `Items.lua` or `player/items.lu
 **boots** — `Player:grabBoots()`
 ```lua
 PlayerData.items.hasBoots = true
-PlayerData.skills.canDash = true
 self:fillBattery()
 ```
-Unlocks the dash and prevents falling through holes (with battery available).
+Prevents falling through holes (while battery is available).
 
 **plunger** — `Player:grabPlunger()`
 ```lua
@@ -699,7 +698,6 @@ items = {
 },
 skills = {
     canFlash      = false,
-    canDash       = false,
     canPlungerang = false,
 },
 keys = {},  -- empty table; keys[N] = true when key N is collected

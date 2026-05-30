@@ -24,7 +24,7 @@ Controls draw order. Higher value = drawn on top. Used in every entity's `:setZI
 | ZIndex | `fx` | 1999 | layer | FXshadow (darkness mask) |
 | ZIndex | `ui` | 2000 | layer | UIHud (interaction indicator) |
 | ZIndex | `hud` | 2000 | layer | playerHud, Battery, HealthIndicator |
-| ZIndex | `menu` | 2100 | layer | inGameMenu, itemMenu, skillInfo |
+| ZIndex | `menu` | 2100 | layer | inGameMenu (map + crew hats) |
 | ZIndex | `alert` | 2200 | layer | Achievement notification toasts |
 
 ---
@@ -75,18 +75,6 @@ Numeric IDs for the Playdate sprite collision system. Each sprite calls `:setGro
 | Player | `triggerCheckDist` | 5 | px | Pixels moved before re-checking trigger overlap |
 | Player | `movementFramesPerAction` | 3 | frames | Movement frames distributed to NPCs/enemies per move |
 | Player | `knockbackDistance` | 2 | px | Push distance when colliding with an enemy |
-
----
-
-## Config.Dash — Dash Ability
-
-| Section | Name | Value | Unit | Description |
-|---|---|---|---|---|
-| Dash | `speed` | 6 | px/frame | Speed during the dash |
-| Dash | `totalDistance` | 56 | px | Total distance traveled before stopping |
-| Dash | `bounceDistance` | 16 | px | Remaining distance when bounce activates |
-| Dash | `batteryCost` | 10 | units | Battery consumed on activation |
-| Dash | `cooldown` | 500 | ms | Minimum time between dashes |
 
 ---
 

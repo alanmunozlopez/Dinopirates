@@ -57,15 +57,6 @@ Config.Player = {
     knockbackDistance       = 2,   -- px pushed on enemy hit
 }
 
--- Dash ability
-Config.Dash = {
-    speed          = 6,
-    totalDistance  = 56,
-    bounceDistance = 16,
-    batteryCost    = 10,
-    cooldown       = 500,   -- ms
-}
-
 -- Dark Reveal skill (hold B + crank in darkness)
 Config.DarkReveal = {
     minBattery            = 80,    -- minimum battery % required to start the crank charge

@@ -31,7 +31,6 @@ function Utilities.iddqd()
 	PlayerData.battery = 100
 	
 	PlayerData.skills.canFlash = true
-	PlayerData.skills.canDash = true
 	PlayerData.skills.canPlungerang = true
 	
 	PlayerData.CrewMemberData.amountTaken = 21

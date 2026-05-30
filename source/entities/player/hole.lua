@@ -2,7 +2,7 @@
 -- Mirrors the old PropItem isHole collision logic but driven by tile detection.
 
 -- True while the player is standing on a hole tile. While on a hole the player may only walk:
--- no skill activation and no battery recharge (see abilities/dash/grapple/sanity guards).
+-- no skill activation and no battery recharge (see abilities/grapple/sanity guards).
 function Player:isOnHole()
     if IsPlayerOnHole(self.x, self.y) then return true end
     if PlayerData.isTiny and IsPlayerOnTinyHole(self.x, self.y) then return true end
@@ -12,7 +12,7 @@ end
 function Player:checkHoleTile()
     -- Guard: skip if already transitioning or in a special movement state
     -- (grapple pull flies the player over holes instead of falling in)
-    if self.isDashing or self.isSliding or self.isPlunging or self.isFalling or self.isGrapplePulling then
+    if self.isSliding or self.isPlunging or self.isFalling or self.isGrapplePulling then
         return
     end
 
@@ -42,7 +42,7 @@ end
 -- Normal-size players walk over tiny holes as if they were floor.
 function Player:checkTinyHoleTile()
     if not PlayerData.isTiny then return end
-    if self.isDashing or self.isSliding or self.isPlunging or self.isFalling or self.isGrapplePulling then
+    if self.isSliding or self.isPlunging or self.isFalling or self.isGrapplePulling then
         return
     end
 

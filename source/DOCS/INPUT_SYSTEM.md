@@ -76,10 +76,8 @@ isDancing = true  (in DanceScene)            → active rhythm battle
 |---|---|---|
 | `up/down/left/right` (Hold) | `isGaming == true` | `player:move(direction)` — moves the player |
 | `up/down/left/right` (Up) | Always | `player:idle()` — stops movement |
-| `left` (Down) | `isEquiping == true` | `inGameEquip:prevItem()` — previous skill |
-| `right` (Down) | `isEquiping == true` | `inGameEquip:nextItem()` — next skill |
 
-`up` and `down` have no function in the equipment menu — only `left` and `right` cycle items.
+The in-game menu is purely visual (map + crew hats); the D-pad has no menu actions.
 
 ---
 
@@ -95,10 +93,7 @@ isDancing = true  (in DanceScene)            → active rhythm battle
    → isGaming = false, isTalking = true
    → dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
 
-3. isEquiping == true  (evaluated independently, can stack)
-   → inGameEquip:selectItem()
-
-4. readyToShrink == true  AND  isGaming == true
+3. readyToShrink == true  AND  isGaming == true
    → player:startMinifying()
 ```
 
@@ -263,7 +258,6 @@ The debug cheat code (`up up up down`) is registered in `main.lua` (commented ou
 AButtonDown:
 ├── isTalking?                → displayDialog()
 ├── currentTrigger + isGaming? → activate manual trigger
-├── isEquiping?               → selectItem()
 └── readyToShrink + isGaming? → startMinifying()
 
 AButtonHeld (1 sec):

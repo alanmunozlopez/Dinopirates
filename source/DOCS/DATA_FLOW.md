@@ -29,13 +29,12 @@ or add a feature.
 │    player/items.lua      → items.*, skills.*, keys[n]           │
 │    player/state.lua      → isTiny, isBig, playerSize, floor     │
 │    player/collisions.lua → lastEnemyTouched, readyToShrink      │
-│    player/dash.lua       → battery (cost)                        │
 │    player/lightburst.lua → battery (cost)                        │
 │    MazeScene.lua         → isGaming, isCutscene, floor, room,   │
 │                            actualLevel, actualRoom, actualTilemap│
 │                            isInDarkness, visited (via levelsLDTK)│
 │    DanceScene.lua        → isDancing, amountDances, calories     │
-│    inGameMenu.lua        → isEquiping, activeItem                │
+│    inGameMenu.lua        → isEquiping                            │
 │    dialogScreen.lua      → isTalking, isGaming                  │
 │    Panels callback       → isCutscene, isGaming                  │
 │                                                                  │

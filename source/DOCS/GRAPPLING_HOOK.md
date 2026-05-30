@@ -177,7 +177,7 @@ sprite exists (flight + return); the pull has no rope.
 ## Movement Locks
 
 `Player:move()` returns early while `self.isGrappling` (hook in flight) **or**
-`self.isGrapplePulling` (being pulled) is true — alongside `isDashing` / `isSliding` /
+`self.isGrapplePulling` (being pulled) is true — alongside `isSliding` /
 `isPlunging`. Locking during flight keeps the boomerang-return target stable so the hook
 always converges and `onGrappleFinished` reliably fires (preventing a stuck `isGrappling`).
 

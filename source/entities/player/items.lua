@@ -1,7 +1,6 @@
 
 function Player:grabBoots()
   PlayerData.items.hasBoots = true
-  PlayerData.skills.canDash = true
   self:fillBattery()
 end
 
