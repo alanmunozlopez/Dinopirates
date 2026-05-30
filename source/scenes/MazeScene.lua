@@ -527,31 +527,23 @@ scene.inputHandler = {
 
 	BButtonDown = function()
 		if player and player.isSleeping then return end
-		-- Close equipment menu if open
 		if PlayerData.isGaming == false and PlayerData.isEquiping == true then
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
 			inGameEquip:closeMenu()
-		-- Break out of minifier if blocked
 		elseif PlayerData.isGaming == false and PlayerData.readyToShrink == true then
 			player:finishMinifying()
-		-- Trigger ability based on selected item
 		elseif PlayerData.isGaming == true and player.isAlive == true then
-			if PlayerData.isInDarkness then
-				player:beginDarkCharge()
-			else
-				player:useAbility()
-			end
+			player:useAbility()
 		end
-		player:distributeMovementTokens(5) 
-		-- playerFocus() -- Commented out for ability system
-	end,
-	BButtonHeld = function()
-		
-		
+		player:distributeMovementTokens(5)
 	end,
 	BButtonHold = function()
-		
+	end,
+	BButtonHeld = function()
+		if player and player.isAlive and PlayerData.isGaming == true then
+			player:beginDarkCharge()
+		end
 	end,
 	BButtonUp = function()
 		if player then player:endDarkCharge() end

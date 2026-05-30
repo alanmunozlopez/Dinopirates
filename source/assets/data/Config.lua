@@ -108,6 +108,7 @@ Config.Sanity = {
 -- Light Burst (lamp ability)
 Config.LightBurst = {
     batteryCost   = 10,
+    minBattery    = 80,     -- minimum battery % required to use
     cooldown      = 1000,   -- ms
     displayTime   = 1000,   -- ms the cone stays visible
     coneDistance  = 200,    -- px forward

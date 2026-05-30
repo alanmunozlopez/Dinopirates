@@ -19,6 +19,8 @@ end
 
 function Player:beginDarkCharge()
     if not PlayerData.isInDarkness or not PlayerData.items.hasLamp then return end
+    if PlayerData.battery < 100 then return end
+    if self.isDarkCharging then return end
     self.isDarkCharging = true
     self.darkCrankAccum = 0
     self.uiHud.animation:setState('crankClock')
@@ -35,7 +37,7 @@ function Player:endDarkCharge()
     self.isDarkCharging = false
     self.uiHud:setRotation(0)
     self.uiHud:setVisible(false)
-    if self.darkCrankAccum >= Config.DarkReveal.crankThreshold then
+    if self.darkCrankAccum >= Config.DarkReveal.crankThreshold and PlayerData.battery >= 100 then
         self:activateDarkReveal()
     else
         self:useLampAbility()

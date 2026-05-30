@@ -2,12 +2,6 @@
 -- Activates when lamp is equipped and affects entities within light cone
 
 function Player:lightBurst()
-    -- Validate that lamp is equipped (activeItem == 1)
-    if PlayerData.activeItem ~= 1 then
-        printDebug("Light burst requires lamp to be equipped!")
-        return
-    end
-    
     -- Check if light burst is on cooldown
     if self.lightBurstCooldown and playdate.getCurrentTimeMilliseconds() < self.lightBurstCooldown then
         printDebug("Light burst on cooldown!")
@@ -25,10 +19,9 @@ function Player:lightBurst()
         return
     end
     
-    -- Check if there's enough battery
-    local batteryCost = Config.LightBurst.batteryCost
-    if PlayerData.battery < batteryCost then
-        printDebug("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
+    -- Check if battery meets minimum threshold
+    if PlayerData.battery < Config.LightBurst.minBattery then
+        printDebug("⚠️ Not enough battery! Need " .. Config.LightBurst.minBattery .. "% (current: " .. PlayerData.battery .. ")")
         return
     end
     
