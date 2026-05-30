@@ -89,6 +89,8 @@ function Player:init(x, y, speed, Zindex)
     self.isFalling = false  -- Prevents fallBelow() firing every frame during transition
 
     self.isPlunging = false
+    self.isDarkCharging  = false
+    self.darkCrankAccum  = 0
     self.hasProjectile = true
 
     -- MARK: Add to scene

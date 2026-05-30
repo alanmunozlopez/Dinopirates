@@ -63,6 +63,13 @@ Config.Dash = {
     cooldown       = 500,   -- ms
 }
 
+-- Dark Reveal skill (hold B + crank in darkness)
+Config.DarkReveal = {
+    crankThreshold        = 720,   -- degrees of total crank rotation required
+    revealDuration        = 3000,  -- ms the full light lasts after activation
+    rechargeBlockDuration = 3000,  -- ms recharge is blocked after reveal ends
+}
+
 -- Slide (slime)
 Config.Slide = {
     speed = 4,

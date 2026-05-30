@@ -409,7 +409,7 @@ function scene:update()
 	end
 	
 	-- Mark: Crank notification (only when needed)
-	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true and PlayerData.isTiny == false then
+	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true and PlayerData.isTiny == false and not PlayerData.showFullLight and not PlayerData.rechargeBlocked then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 end
@@ -537,7 +537,11 @@ scene.inputHandler = {
 			player:finishMinifying()
 		-- Trigger ability based on selected item
 		elseif PlayerData.isGaming == true and player.isAlive == true then
-			player:useAbility()
+			if PlayerData.isInDarkness then
+				player:beginDarkCharge()
+			else
+				player:useAbility()
+			end
 		end
 		player:distributeMovementTokens(5) 
 		-- playerFocus() -- Commented out for ability system
@@ -550,7 +554,7 @@ scene.inputHandler = {
 		
 	end,
 	BButtonUp = function()
-		-- playerDefocus() -- Commented out for dash attack
+		if player then player:endDarkCharge() end
 	end,
 	-- D-pad left
 	--
@@ -675,7 +679,12 @@ scene.inputHandler = {
 		
 		local ticksValue = playdate.getCrankTicks(4) -- maybe its better use change or acceleratedChange
 		if not player.isAlive then return end
-		
+
+		if player.isDarkCharging then
+			player:addDarkCrankDelta(change)
+			return
+		end
+
 		if ticksValue > 0 then
 			player:burnCalories(1)
 		end

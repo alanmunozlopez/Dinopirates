@@ -297,6 +297,7 @@ function Player:update()
     self.lightConeHideTime = nil
   end
 
+
   self:checkForegroundDepth()
   
   self:checkTrigger()

@@ -64,14 +64,22 @@ function playerHud:update()
 			yOffset = -22
 		end
 		local ty = self.player.y + yOffset
-		self:moveTo(tx, ty)
-		
-		if self.batteryIndicator then
-			self.batteryIndicator:moveTo(tx , ty-3)
+
+		local wx, wy = 0, 0
+		if self.player.isDarkCharging and math.abs(playdate.getCrankChange()) > 0
+			and self.player.darkCrankAccum < Config.DarkReveal.crankThreshold then
+			wx = math.random(-2, 2)
+			wy = math.random(-2, 2)
 		end
-		
+
+		self:moveTo(tx + wx, ty + wy)
+
+		if self.batteryIndicator then
+			self.batteryIndicator:moveTo(tx + wx, ty - 3 + wy)
+		end
+
 		if self.healthIndicator then
-			self.healthIndicator:moveTo(tx, ty)
+			self.healthIndicator:moveTo(tx + wx, ty + wy)
 		end
 	end
 
