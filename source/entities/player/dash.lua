@@ -30,7 +30,10 @@ function Player:dash()
     if not self.isAlive or PlayerData.isGaming ~= true then
         return
     end
-    
+
+    -- On a hole the player may only walk — no dash
+    if self:isOnHole() then return end
+
     -- Get the last direction the player was facing
     local direction = PlayerData.direction
     

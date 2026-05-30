@@ -45,7 +45,7 @@ function GrappleHook:update()
         return
     end
 
-    -- Fly out in the launch direction (no collisions).
+    -- Fly out in the launch direction (no sprite collisions; detection is tile sampling).
     local moveX, moveY = 0, 0
     if self.direction == 'left' then moveX = -self.speed
     elseif self.direction == 'right' then moveX = self.speed
@@ -55,7 +55,8 @@ function GrappleHook:update()
     self:moveTo(self.x + moveX, self.y + moveY)
 
     -- Sample the tile under the hook's center.
-    if GetTileUnderPlayer(self.x, self.y) == Config.Tiles.IntGrid.grapplePoint then
+    local tile = GetTileUnderPlayer(self.x, self.y)
+    if tile == Config.Tiles.IntGrid.grapplePoint then
         local ts = Config.Tiles.size
         local cx = math.floor(self.x / ts) * ts + ts / 2
         local cy = math.floor(self.y / ts) * ts + ts / 2
@@ -63,6 +64,10 @@ function GrappleHook:update()
         self.player:startGrapplePull(cx, cy - Config.Player.feetOffsetY)
         self:remove()
         if self.player.onGrappleFinished then self.player:onGrappleFinished() end
+        return
+    elseif not IsTileWalkable(tile) then
+        -- Hit a wall (or left the map) — bounce back like the boomerang.
+        self.returning = true
         return
     end
 
@@ -118,6 +123,7 @@ end
 -- ===== Player charge / fire =====
 function Player:beginGrappleCharge()
     if PlayerData.isInDarkness then return end
+    if self:isOnHole() then return end  -- on a hole the player may only walk
     if not PlayerData.items.hasPlunger or not PlayerData.skills.canPlungerang then return end
     if not self.hasProjectile then return end  -- lost to a CrewMember; recover it before grappling
     if PlayerData.isTiny then return end
@@ -146,6 +152,7 @@ function Player:endGrappleCharge()
         self.grappleCrankAccum = 0
         return
     end
+    if self:isOnHole() then self.grappleCrankAccum = 0; return end  -- walked onto a hole: cancel, no skill
 
     local g = Config.Grapple
     local distance = g.minDistance + self.grappleCrankAccum * g.pixelsPerDegree

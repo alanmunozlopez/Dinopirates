@@ -2,6 +2,7 @@ function Player:useAbility()
     if not self.isAlive or PlayerData.isGaming ~= true then
         return
     end
+    if self:isOnHole() then return end  -- on a hole the player may only walk
     if PlayerData.isInDarkness then
         self:useLampAbility()
     else
@@ -19,6 +20,7 @@ end
 
 function Player:beginDarkCharge()
     if not PlayerData.isInDarkness or not PlayerData.items.hasLamp then return end
+    if self:isOnHole() then return end  -- on a hole the player may only walk
     if PlayerData.battery < Config.DarkReveal.minBattery then return end
     if self.isDarkCharging then return end
     self.isDarkCharging = true
@@ -37,6 +39,7 @@ function Player:endDarkCharge()
     self.isDarkCharging = false
     self.uiHud:setRotation(0)
     self.uiHud:setVisible(false)
+    if self:isOnHole() then self.darkCrankAccum = 0; return end  -- walked onto a hole: cancel, no skill
     if self.darkCrankAccum >= Config.DarkReveal.crankThreshold and PlayerData.battery >= Config.DarkReveal.minBattery then
         self:activateDarkReveal()
     else

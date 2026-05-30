@@ -3,8 +3,9 @@
 A charged hold-and-release variant of the plungerang, usable **only in lit rooms** (the
 plain boomerang plungerang still fires on a quick B tap). The hook flies in the direction the
 player is facing and, if it reaches a walkable **tile value 33**, pulls the player to that
-tile with a fast slide. The hook ignores every sprite — enemies, props, crew, walls — and
-only reacts to tile 33.
+tile with a fast slide. It ignores every **sprite** — enemies, props, crew — and reacts only
+to the tiles it flies over: tile 33 (grapple) and walls (it bounces back). Both are detected by
+tile sampling, never by sprite collision.
 
 This mirrors the dark-room B scheme:
 
@@ -132,7 +133,8 @@ state `spin`: frames 1–4, duration 4.
 samples the tile under its own center:
 
 ```lua
-if GetTileUnderPlayer(self.x, self.y) == Config.Tiles.IntGrid.grapplePoint then
+local tile = GetTileUnderPlayer(self.x, self.y)
+if tile == Config.Tiles.IntGrid.grapplePoint then
     local ts = Config.Tiles.size
     local cx = math.floor(self.x / ts) * ts + ts / 2
     local cy = math.floor(self.y / ts) * ts + ts / 2
@@ -140,11 +142,19 @@ if GetTileUnderPlayer(self.x, self.y) == Config.Tiles.IntGrid.grapplePoint then
     self:remove()
     self.player:onGrappleFinished()
     return
+elseif not IsTileWalkable(tile) then
+    -- Hit a wall (or left the map) — bounce back like the boomerang.
+    self.returning = true
+    return
 end
 
 self.distanceTravelled += self.speed
 if self.distanceTravelled >= self.maxDistance then self.returning = true end
 ```
+
+Walls are detected by `IsTileWalkable(tile)` (`utilities/Utilities.lua`), which returns false
+for any value outside `WALKABLE_TILES` and for `nil` (off-map). Walkable tiles the hook flies
+over (floor, slime, hole, tinyHole) do not stop it; only tile 33 grapples and only walls return.
 
 **Return phase (miss):** homes on the player's current position and finishes when within
 `speed` (uses `<=`), calling `onGrappleFinished()`. No player movement results.
@@ -213,7 +223,8 @@ point means placing IntGrid value 33 in a room's matrix in `assets/data/tilemap.
 ## Behavior Summary
 
 - **No battery cost.** The grapple never touches `PlayerData.battery`.
-- **No sprite interaction.** Passes through enemies, crew, props, and walls; only tile 33
-  matters (so a tile 33 behind a wall is reachable).
-- **Miss → boomerang return**, no player movement (placeholder; richer miss handling deferred).
+- **No sprite interaction.** Passes through enemies, crew, and props (sprites). Walls are
+  detected by tile sampling, not collision: hitting a non-walkable tile — or leaving the map —
+  bounces the hook back, so a tile 33 behind a wall is **not** reachable.
+- **Miss / wall → boomerang return**, no player movement (placeholder; richer miss handling deferred).
 - **Does not activate in darkness** — that path is the dark reveal instead.

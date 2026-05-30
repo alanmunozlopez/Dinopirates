@@ -467,6 +467,12 @@ local WALKABLE_TILES = {
 	[Config.Tiles.IntGrid.grapplePoint] = true,  -- walkable; no wall collider generated
 }
 
+--- Returns true if the given IntGrid tile value is walkable (not a wall).
+-- nil (out of bounds) and any value outside WALKABLE_TILES count as a wall.
+function IsTileWalkable(tileValue)
+	return WALKABLE_TILES[tileValue] == true
+end
+
 --- Creates colliders for all non-walkable tiles (everything except slime/hole/floor).
 -- @param tileData table The 2D matrix of tile IDs
 -- @return table List of created Box sprites
