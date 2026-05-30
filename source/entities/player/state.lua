@@ -284,6 +284,9 @@ function Player:update()
   -- Update sliding movement if on slime
   self:updateSliding()
 
+  -- Update grappling-hook pull if active
+  self:updateGrapplePull()
+
   -- Check if player is on a slime tile (IDs 89-97)
   self:checkSlimeTile()
 

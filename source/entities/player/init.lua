@@ -16,6 +16,7 @@ import "entities/player/sliding"
 import "entities/player/hole"
 import "entities/player/projectile"
 import "entities/player/plunge"
+import "entities/player/grapple"
 local dialogUI = nil
 local uiHud = nil
 
@@ -92,6 +93,12 @@ function Player:init(x, y, speed, Zindex)
     self.isDarkCharging  = false
     self.darkCrankAccum  = 0
     self.hasProjectile = true
+
+    -- Grappling hook state variables
+    self.isGrappleCharging = false
+    self.isGrappling = false
+    self.isGrapplePulling = false
+    self.grappleCrankAccum = 0
 
     -- MARK: Add to scene
     self.dialogUI = dialogScreen()

@@ -41,10 +41,13 @@ function Player:plunge()
     printDebug("🪠 Plunge skill activated!")
     
     self.isPlunging = true
-    
+
     -- Create the projectile
     self.projectile = Projectile(self, direction)
-    
+
+    -- Grant enemy/crew movement tokens now that the plungerang actually fired
+    self:distributeMovementTokens(Config.Player.movementTokensPerAction)
+
     -- Set animation state to idle while plunging (locked)
     self:idle()
 end

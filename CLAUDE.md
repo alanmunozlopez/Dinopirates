@@ -152,6 +152,7 @@ Detailed system documentation lives in `source/DOCS/`:
 - `DANCE_SCENE.md` — full DanceScene: lifecycle, difficulty, hit detection, balance bar, animations, outcomes
 - `SAVE_SYSTEM.md` — persistence layer
 - `PLUNGERANG.md` — projectile mechanics
+- `GRAPPLING_HOOK.md` — charged plungerang in lit rooms: tile-33 grapple, charge/pull, tokens
 - `TITLE_SCENE.md` — TitleScene menu modes, input, Continue/NewGame/Delete flow
 - `CREDITS_SCENE.md` — CreditsScene scrolling system, item types, input
 - `COCKPIT_SCENE.md` — CockpitScene: accelerometer pointer, button layout, sequence matching, fail system

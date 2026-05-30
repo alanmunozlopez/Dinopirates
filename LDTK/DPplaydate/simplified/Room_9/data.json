@@ -56,7 +56,8 @@
 		"DoorsConnection": [
 			"Top",
 			"Down",
-			"Left"
+			"Left",
+			"Lower"
 		],
 		"play": null
 	},
@@ -70,8 +71,8 @@
 				"id": "CrewMember",
 				"iid": "0c11a640-fa90-11f0-9f0d-c9ca42f46487",
 				"layer": "CM_and_enemies",
-				"x": 124,
-				"y": 76,
+				"x": 60,
+				"y": 44,
 				"width": 48,
 				"height": 48,
 				"color": 14984818,
@@ -94,71 +95,6 @@
 				"customFields": {
 					"speed": 0.5,
 					"dead": false
-				}
-			}
-		],
-		"Boots": [
-			{
-				"id": "Boots",
-				"iid": "80778710-21a0-11f1-9039-454013ab8924",
-				"layer": "Items_and_Props",
-				"x": 220,
-				"y": 84,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "boots",
-					"isItem": true
-				}
-			}
-		],
-		"Lamp": [
-			{
-				"id": "Lamp",
-				"iid": "c9071260-21a0-11f1-ba67-57b26b37e0ad",
-				"layer": "Items_and_Props",
-				"x": 268,
-				"y": 84,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "lamp",
-					"isItem": true
-				}
-			}
-		],
-		"ItemGift": [
-			{
-				"id": "ItemGift",
-				"iid": "e4024490-21a0-11f1-ba67-0fd5f085db6b",
-				"layer": "Items_and_Props",
-				"x": 316,
-				"y": 84,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "itemGift",
-					"grants": "hasDWatch:true",
-					"isItem": true
-				}
-			}
-		],
-		"Plunger": [
-			{
-				"id": "Plunger",
-				"iid": "0c984850-21a0-11f1-ba67-fb714db81c5a",
-				"layer": "Items_and_Props",
-				"x": 220,
-				"y": 132,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "plunger",
-					"isItem": true
 				}
 			}
 		],

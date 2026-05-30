@@ -385,9 +385,14 @@ function scene:update()
 	
 	-- MARK: Custom B hold-to-charge (shorter than the SDK's fixed 1s Held)
 	if bButtonDownTime and player and player.isAlive and PlayerData.isGaming == true
-		and not player.isDarkCharging then
-		if playdate.getCurrentTimeMilliseconds() - bButtonDownTime >= Config.DarkReveal.holdDelay then
-			player:beginDarkCharge()
+		and not player.isDarkCharging and not player.isGrappleCharging then
+		local holdDelay = PlayerData.isInDarkness and Config.DarkReveal.holdDelay or Config.Grapple.holdDelay
+		if playdate.getCurrentTimeMilliseconds() - bButtonDownTime >= holdDelay then
+			if PlayerData.isInDarkness then
+				player:beginDarkCharge()
+			else
+				player:beginGrappleCharge()
+			end
 		end
 	end
 
@@ -545,7 +550,8 @@ scene.inputHandler = {
 		elseif PlayerData.isGaming == true and player.isAlive == true then
 			player:useAbility()
 		end
-		player:distributeMovementTokens(5)
+		-- Tokens are granted by each ability when it actually fires (flash / plungerang /
+		-- grapple launch), not here — so merely starting a charge while idle costs nothing.
 		-- Start the custom hold timer; update() begins the dark charge after holdDelay.
 		bButtonDownTime = playdate.getCurrentTimeMilliseconds()
 	end,
@@ -553,7 +559,10 @@ scene.inputHandler = {
 	end,
 	BButtonUp = function()
 		bButtonDownTime = nil
-		if player then player:endDarkCharge() end
+		if player then
+			player:endDarkCharge()
+			player:endGrappleCharge()
+		end
 	end,
 	-- D-pad left
 	--
@@ -681,6 +690,11 @@ scene.inputHandler = {
 
 		if player.isDarkCharging then
 			player:addDarkCrankDelta(change)
+			return
+		end
+
+		if player.isGrappleCharging then
+			player:addGrappleCrankDelta(change)
 			return
 		end
 

@@ -336,7 +336,7 @@ The polygon is closed with `lightCone:close()`.
 
 - `PlayerData.showLightCone = true` → FXshadow draws the cone visually.
 - `lightConeHideTime = getCurrentTimeMilliseconds() + displayTime` → in `update()`, when reached, `showLightCone = false`.
-- `distributeMovementTokens(1)` → gives 1 movement token to all enemies/crew (equivalent to ~1 second of action).
+- `distributeMovementTokens(Config.Player.movementTokensPerAction)` → grants movement tokens (5) to all enemies/crew because the flash actually fired.
 
 ---
 
@@ -448,12 +448,12 @@ Called inside `Player:move()` after `moveWithCollisions`, with `frames = Config.
 
 ### distributeMovementTokens(amount)
 
-Called by `Player:lightBurst()` with `amount = 1`. Unlike `distributeMovementFrames`, it does NOT check `isActive` — it always iterates all sprites. Calls `sprite:addMovementTokens(amount)`.
+Called by a B ability **when it actually fires**, with `amount = Config.Player.movementTokensPerAction` (5): `lightBurst()` (flash), `plunge()` (plungerang), `endGrappleCharge()` (grapple launch), and `activateDarkReveal()` (dark reveal). Unlike `distributeMovementFrames`, it does NOT check `isActive` — it always iterates all sprites. Calls `sprite:addMovementTokens(amount)`. Merely pressing B, or holding B to charge while idle, grants nothing.
 
 | Function | When | Amount | isActive guard |
 |---|---|---|---|
 | `distributeMovementFrames` | On each successful `move()` | 3 frames | Yes |
-| `distributeMovementTokens` | Only on LightBurst | 1 token | No |
+| `distributeMovementTokens` | When a B ability fires (flash / plungerang / grapple / dark reveal) | 5 tokens | No |
 
 ---
 

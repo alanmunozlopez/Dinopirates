@@ -222,9 +222,11 @@ Each NPC (Brocorat, CrewMember) in their update():
   ├─ Process one step of AI movement
   └─ Consume their movement frame budget
 
-Player presses B (use ability, no direction):
-  └─ distributeMovementTokens(5)         ← grants 5 tokens instead of frames
+Player fires a B ability (flash / plungerang / grapple launch / dark reveal):
+  └─ distributeMovementTokens(Config.Player.movementTokensPerAction = 5)  ← tokens, not frames
        (Tokens are converted to frames by framesPerToken in Config.CrewMember)
+       Only happens when the ability actually fires — not on every B press,
+       and not while holding B to charge.
 ```
 
 ---

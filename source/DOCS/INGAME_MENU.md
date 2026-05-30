@@ -110,7 +110,7 @@ The game **has no real pause system**. Opening the equipment menu simulates a pa
 
 - Stops player movement (movement input checks `isGaming`).
 - Stops abilities (B checks `isGaming` to use abilities).
-- Stops the enemy turn (`distributeMovementTokens` only runs when there is active input).
+- Stops the enemy turn (`distributeMovementTokens` only runs when a B ability fires, which requires `isGaming == true`).
 
 However, `update()` keeps running — the menu draws its components every frame. There is no literal engine freeze.
 

@@ -3,7 +3,8 @@
 
 function Player:checkHoleTile()
     -- Guard: skip if already transitioning or in a special movement state
-    if self.isDashing or self.isSliding or self.isPlunging or self.isFalling then
+    -- (grapple pull flies the player over holes instead of falling in)
+    if self.isDashing or self.isSliding or self.isPlunging or self.isFalling or self.isGrapplePulling then
         return
     end
 
@@ -33,7 +34,7 @@ end
 -- Normal-size players walk over tiny holes as if they were floor.
 function Player:checkTinyHoleTile()
     if not PlayerData.isTiny then return end
-    if self.isDashing or self.isSliding or self.isPlunging or self.isFalling then
+    if self.isDashing or self.isSliding or self.isPlunging or self.isFalling or self.isGrapplePulling then
         return
     end
 

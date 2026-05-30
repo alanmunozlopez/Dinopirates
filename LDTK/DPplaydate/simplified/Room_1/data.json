@@ -46,21 +46,5 @@
 		"Gameplay.png",
 		"Foreground.png"
 	],
-	"entities": {
-		"TKNotes": [
-			{
-				"id": "TKNotes",
-				"iid": "714b7400-48b0-11f1-9f4d-7fb912775f6b",
-				"layer": "Notes",
-				"x": 124,
-				"y": 76,
-				"width": 8,
-				"height": 8,
-				"color": 2943221,
-				"customFields": {
-					"String": null
-				}
-			}
-		]
-	}
+	"entities" : {}
 }

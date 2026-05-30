@@ -50,6 +50,9 @@ function Player:activateDarkReveal()
     PlayerData.rechargeBlocked = true
     PlayerData.showFullLight = true
 
+    -- Grant enemy/crew movement tokens now that the dark reveal actually activated
+    self:distributeMovementTokens(Config.Player.movementTokensPerAction)
+
     playdate.timer.performAfterDelay(Config.DarkReveal.revealDuration, function()
         PlayerData.showFullLight = false
 

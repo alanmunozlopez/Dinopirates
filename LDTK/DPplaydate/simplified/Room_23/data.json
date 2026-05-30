@@ -191,6 +191,21 @@
 					"DoorsConnection": "Down",
 					"KeyNumber": null
 				}
+			},
+			{
+				"id": "Doors",
+				"iid": "c9a6f920-48b0-11f1-b354-c9bfb305a719",
+				"layer": "Doors",
+				"x": 392,
+				"y": 136,
+				"width": 16,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
 			}
 		]
 	}

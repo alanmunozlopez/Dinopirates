@@ -460,10 +460,11 @@ end
 local TILE_SIZE = Config.Tiles.size
 
 local WALKABLE_TILES = {
-	[Config.Tiles.IntGrid.slime]    = true,
-	[Config.Tiles.IntGrid.hole]     = true,
-	[Config.Tiles.IntGrid.floor]    = true,
-	[Config.Tiles.IntGrid.tinyHole] = true,
+	[Config.Tiles.IntGrid.slime]        = true,
+	[Config.Tiles.IntGrid.hole]         = true,
+	[Config.Tiles.IntGrid.floor]        = true,
+	[Config.Tiles.IntGrid.tinyHole]     = true,
+	[Config.Tiles.IntGrid.grapplePoint] = true,  -- walkable; no wall collider generated
 }
 
 --- Creates colliders for all non-walkable tiles (everything except slime/hole/floor).

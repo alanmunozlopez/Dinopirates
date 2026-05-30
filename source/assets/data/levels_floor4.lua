@@ -12,6 +12,10 @@ table.insert(levelsLDTK, {
       dir = "w"
     },
     {
+      levelIid = "a82c8680-48b0-11f1-9f4d-49a4be703c65",
+      dir = "n"
+    },
+    {
       levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
       dir = "e"
     },
@@ -256,6 +260,10 @@ table.insert(levelsLDTK, {
       dir = "w"
     },
     {
+      levelIid = "a82c8680-48b0-11f1-9f4d-49a4be703c65",
+      dir = "nw"
+    },
+    {
       levelIid = "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
       dir = "n"
     },
@@ -482,7 +490,7 @@ table.insert(levelsLDTK, {
           Conditions = {
             "isTiny:true"
           },
-          BlockedDialog = "cabinetHole"
+          BlockedDialog = nil
         }
       }
     }
@@ -962,7 +970,8 @@ table.insert(levelsLDTK, {
     DoorsConnection = {
       "Top",
       "Down",
-      "Left"
+      "Left",
+      "Lower"
     },
     play = nil,
     hasForeground = true
@@ -972,8 +981,8 @@ table.insert(levelsLDTK, {
       {
         id = "CrewMember",
         iid = "0c11a640-fa90-11f0-9f0d-c9ca42f46487",
-        x = 124,
-        y = 76,
+        x = 60,
+        y = 44,
         width = 48,
         height = 48,
         customFields = {
@@ -996,69 +1005,12 @@ table.insert(levelsLDTK, {
         }
       }
     },
-    Boots = {
-      {
-        id = "Boots",
-        iid = "80778710-21a0-11f1-9039-454013ab8924",
-        x = 220,
-        y = 84,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "boots",
-          isItem = true
-        }
-      }
-    },
-    Lamp = {
-      {
-        id = "Lamp",
-        iid = "c9071260-21a0-11f1-ba67-57b26b37e0ad",
-        x = 268,
-        y = 84,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "lamp",
-          isItem = true
-        }
-      }
-    },
-    ItemGift = {
-      {
-        id = "ItemGift",
-        iid = "e4024490-21a0-11f1-ba67-0fd5f085db6b",
-        x = 316,
-        y = 84,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "itemGift",
-          grants = "hasDWatch:true",
-          isItem = true
-        }
-      }
-    },
-    Plunger = {
-      {
-        id = "Plunger",
-        iid = "0c984850-21a0-11f1-ba67-fb714db81c5a",
-        x = 220,
-        y = 132,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "plunger",
-          isItem = true
-        }
-      }
-    },
     Minifier = {
       {
         id = "Minifier",
         iid = "21887b30-fa90-11f0-9a41-eb80f350135c",
-        x = 372,
-        y = 28,
+        x = 356,
+        y = 36,
         width = 32,
         height = 32,
         customFields = {
@@ -1309,7 +1261,7 @@ table.insert(levelsLDTK, {
   },
   customFields = {
     shadow = true,
-    light = 0,
+    light = 0.7,
     visited = false,
     comic_name = nil,
     comic_wasPlayed = false,
@@ -1502,6 +1454,10 @@ table.insert(levelsLDTK, {
       dir = "sw"
     },
     {
+      levelIid = "a82c8680-48b0-11f1-9f4d-49a4be703c65",
+      dir = "w"
+    },
+    {
       levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
       dir = "s"
     },
@@ -1530,9 +1486,9 @@ table.insert(levelsLDTK, {
       {
         id = "PortalDoors",
         iid = "6ac094f0-48b0-11f1-b2c1-99bd8a09616d",
-        x = 168,
+        x = 200,
         y = 216,
-        width = 16,
+        width = 112,
         height = 16,
         customFields = {
           PortalID = 1,

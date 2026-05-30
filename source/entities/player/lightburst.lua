@@ -65,8 +65,8 @@ function Player:lightBurst()
     self.lightBurstCooldown = playdate.getCurrentTimeMilliseconds() + Config.LightBurst.cooldown
     self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + Config.LightBurst.displayTime
     
-    -- Distribute motion tokens to enemies/crew
-    self:distributeMovementTokens(1) -- 1 Token = ~1 second of movement
+    -- Distribute motion tokens to enemies/crew (only happens because the flash actually fired)
+    self:distributeMovementTokens(Config.Player.movementTokensPerAction)
     
     printDebug("✅ Light burst completed!")
 end
