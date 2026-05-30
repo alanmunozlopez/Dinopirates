@@ -19,29 +19,33 @@ function Player:lightBurst()
         return
     end
     
+    -- Light burst is directional, like the plungerang: do nothing while idle.
+    -- Checked before consuming battery so a held-while-idle B can charge instead.
+    local direction = PlayerData.direction
+    if direction == 'idle' or direction == nil then
+        return
+    end
+
     -- Check if battery meets minimum threshold
     if PlayerData.battery < Config.LightBurst.minBattery then
         printDebug("⚠️ Not enough battery! Need " .. Config.LightBurst.minBattery .. "% (current: " .. PlayerData.battery .. ")")
         return
     end
-    
+
     printDebug("💡 Light burst activated!")
-    
+
     -- Consume battery
+    local batteryCost = Config.LightBurst.batteryCost
     PlayerData.battery = PlayerData.battery - batteryCost
     printDebug("🔋 Battery consumed: -" .. batteryCost .. " (remaining: " .. PlayerData.battery .. ")")
-    
+
     -- Show the light cone
     PlayerData.showLightCone = true
-    
-    -- Get the current direction
-    local direction = PlayerData.direction
-    
+
     -- Create light cone polygon
     local lightPolygon = self:createLightCone(direction)
-    
+
     if not lightPolygon then
-        printDebug("Cannot create light cone in idle state")
         PlayerData.showLightCone = false
         return
     end

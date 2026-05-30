@@ -61,6 +61,7 @@ local cheat = CheatCode("up", "up", "up", "down")
 local crankIsMoving = false
 local crankStopTimer = 0
 local CRANK_STOP_THRESHOLD = 0.1 -- seconds of inactivity before considering crank stopped
+local bButtonDownTime = nil -- ms timestamp when B was pressed; drives custom hold-to-charge (SDK Held is fixed at 1s)
 local tileColliders = {}
 
 -- This is the background color of this scene.
@@ -382,6 +383,14 @@ function scene:update()
 		cheat:update()
 	end
 	
+	-- MARK: Custom B hold-to-charge (shorter than the SDK's fixed 1s Held)
+	if bButtonDownTime and player and player.isAlive and PlayerData.isGaming == true
+		and not player.isDarkCharging then
+		if playdate.getCurrentTimeMilliseconds() - bButtonDownTime >= Config.DarkReveal.holdDelay then
+			player:beginDarkCharge()
+		end
+	end
+
 	-- MARK: Crank stop detection
 	if crankIsMoving then
 		crankStopTimer += (1/50) -- Increment by frame time (assuming 50fps)
@@ -537,15 +546,13 @@ scene.inputHandler = {
 			player:useAbility()
 		end
 		player:distributeMovementTokens(5)
+		-- Start the custom hold timer; update() begins the dark charge after holdDelay.
+		bButtonDownTime = playdate.getCurrentTimeMilliseconds()
 	end,
 	BButtonHold = function()
 	end,
-	BButtonHeld = function()
-		if player and player.isAlive and PlayerData.isGaming == true then
-			player:beginDarkCharge()
-		end
-	end,
 	BButtonUp = function()
+		bButtonDownTime = nil
 		if player then player:endDarkCharge() end
 	end,
 	-- D-pad left

@@ -65,6 +65,8 @@ Config.Dash = {
 
 -- Dark Reveal skill (hold B + crank in darkness)
 Config.DarkReveal = {
+    minBattery            = 80,    -- minimum battery % required to start the crank charge
+    holdDelay             = 400,   -- ms holding B before the crank charge starts (custom; SDK Held is fixed at 1000)
     crankThreshold        = 720,   -- degrees of total crank rotation required
     revealDuration        = 3000,  -- ms the full light lasts after activation
     rechargeBlockDuration = 3000,  -- ms recharge is blocked after reveal ends
@@ -108,7 +110,7 @@ Config.Sanity = {
 -- Light Burst (lamp ability)
 Config.LightBurst = {
     batteryCost   = 10,
-    minBattery    = 80,     -- minimum battery % required to use
+    minBattery    = 10,     -- minimum battery % required to use (just enough to cover batteryCost)
     cooldown      = 1000,   -- ms
     displayTime   = 1000,   -- ms the cone stays visible
     coneDistance  = 200,    -- px forward
