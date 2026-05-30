@@ -50,9 +50,10 @@ Validations (all must pass, else returns silently):
 ```
 1. PlayerData.isInDarkness == false       (lit rooms only)
 2. PlayerData.items.hasPlunger == true     AND PlayerData.skills.canPlungerang == true
-3. PlayerData.isTiny == false
-4. self.isAlive == true  AND  PlayerData.isGaming == true
-5. not already isGrappleCharging / isPlunging / isGrapplePulling / isGrappling
+3. self.hasProjectile == true              (not lost to a CrewMember; recover it first)
+4. PlayerData.isTiny == false
+5. self.isAlive == true  AND  PlayerData.isGaming == true
+6. not already isGrappleCharging / isPlunging / isGrapplePulling / isGrappling
 ```
 
 On success: `isGrappleCharging = true`, `grappleCrankAccum = 0`, shows the `crankClock` HUD
@@ -150,6 +151,19 @@ if self.distanceTravelled >= self.maxDistance then self.returning = true end
 
 ---
 
+## `GrappleRope` Class (the rope visual)
+
+A `Graphics.sprite` (like `FXshadow`) created in `endGrappleCharge` alongside the hook and
+removed in `onGrappleFinished`. Each frame it sizes itself to the bounding box of the two
+endpoints and draws a `Config.Grapple.ropeWidth` (2 px) black line from the player's feet
+(`player.y + Config.Player.feetOffsetY`) to the hook's center. Because the camera is fixed
+(world space == screen space), the sprite uses
+`setCenter(0, 0)` so its local coordinates map 1:1 to world coordinates. Z-index
+`ZIndex.player + 9` — above the player, just under the hook. The rope lives only while the hook
+sprite exists (flight + return); the pull has no rope.
+
+---
+
 ## Movement Locks
 
 `Player:move()` returns early while `self.isGrappling` (hook in flight) **or**
@@ -184,6 +198,7 @@ point means placing IntGrid value 33 in a room's matrix in `assets/data/tilemap.
 | `projectileSpeed` | 8 px/frame | Hook flight speed |
 | `pullSpeed` | 8 px/frame | Player slide speed toward the tile |
 | `cooldown` | 500 ms | Reserved — not yet enforced |
+| `ropeWidth` | 2 px | Width of the black rope drawn from player to hook |
 
 ### Shared
 

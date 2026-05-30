@@ -84,6 +84,7 @@ Config.Grapple = {
     projectileSpeed = 8,     -- px/frame the hook flies out
     pullSpeed       = 8,     -- px/frame the player slides toward the tile
     cooldown        = 500,   -- ms between uses (reserved; not yet enforced)
+    ropeWidth       = 2,     -- px width of the black rope drawn from player to hook
 }
 
 -- Slide (slime)

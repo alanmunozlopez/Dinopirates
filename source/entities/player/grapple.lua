@@ -72,10 +72,54 @@ function GrappleHook:update()
     end
 end
 
+-- ===== Rope (black line drawn from the player to the hook) =====
+-- The camera is fixed (world space == screen space, like FXshadow), so the sprite is sized to
+-- the line's bounding box each frame and the line is drawn in the sprite's local coordinates.
+GrappleRope = {}
+class('GrappleRope').extends(Graphics.sprite)
+
+function GrappleRope:init(player, hook)
+    GrappleRope.super.init(self)
+    self.player = player
+    self.hook = hook
+    self:setCenter(0, 0)                 -- position == top-left, so local coords map to world
+    self:setZIndex(ZIndex.player + 9)    -- above the player, just under the hook (player + 10)
+    self:add()
+    self:refreshBounds()
+end
+
+function GrappleRope:refreshBounds()
+    -- Anchor on the player's lower body, reusing the same feet offset as the grapple landing.
+    local x1, y1 = self.player.x, self.player.y + Config.Player.feetOffsetY
+    local x2, y2 = self.hook.x, self.hook.y       -- hook sprite center
+    local pad = Config.Grapple.ropeWidth
+    local minX = math.min(x1, x2) - pad
+    local minY = math.min(y1, y2) - pad
+    self:setSize(math.abs(x2 - x1) + pad * 2, math.abs(y2 - y1) + pad * 2)
+    self:moveTo(minX, minY)
+    -- Endpoints relative to the sprite's top-left.
+    self.p1x, self.p1y = x1 - minX, y1 - minY
+    self.p2x, self.p2y = x2 - minX, y2 - minY
+    self:markDirty()
+end
+
+function GrappleRope:update()
+    self:refreshBounds()
+end
+
+function GrappleRope:draw()
+    Graphics.pushContext()
+        Graphics.setColor(Graphics.kColorBlack)
+        Graphics.setLineWidth(Config.Grapple.ropeWidth)
+        Graphics.drawLine(self.p1x, self.p1y, self.p2x, self.p2y)
+    Graphics.popContext()
+end
+
 -- ===== Player charge / fire =====
 function Player:beginGrappleCharge()
     if PlayerData.isInDarkness then return end
     if not PlayerData.items.hasPlunger or not PlayerData.skills.canPlungerang then return end
+    if not self.hasProjectile then return end  -- lost to a CrewMember; recover it before grappling
     if PlayerData.isTiny then return end
     if not self.isAlive or PlayerData.isGaming ~= true then return end
     if self.isGrappleCharging or self.isPlunging or self.isGrapplePulling or self.isGrappling then return end
@@ -110,6 +154,7 @@ function Player:endGrappleCharge()
 
     self.isGrappling = true
     self.grappleHook = GrappleHook(self, dir, distance)
+    self.grappleRope = GrappleRope(self, self.grappleHook)
     -- Grant enemy/crew movement tokens now that the grapple actually launched
     self:distributeMovementTokens(Config.Player.movementTokensPerAction)
     self:idle()
@@ -118,6 +163,10 @@ end
 function Player:onGrappleFinished()
     self.isGrappling = false
     self.grappleHook = nil
+    if self.grappleRope then
+        self.grappleRope:remove()
+        self.grappleRope = nil
+    end
 end
 
 -- ===== Player pull (fast slide to the tile) =====
