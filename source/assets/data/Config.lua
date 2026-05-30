@@ -122,6 +122,7 @@ Config.LightBurst = {
     coneDistance  = 200,    -- px forward
     coneHeight    = 12,     -- scaling factor
     blindDuration = 60,     -- frames enemies stay blinded
+    selfDamage    = 1,      -- HP the player loses each time the flash fires (0 = no self-damage)
 }
 
 -- Projectile (plungerang)

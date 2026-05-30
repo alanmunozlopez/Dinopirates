@@ -133,6 +133,7 @@ Numeric IDs for the Playdate sprite collision system. Each sprite calls `:setGro
 | LightBurst | `coneDistance` | 200 | px | Depth of the light cone polygon |
 | LightBurst | `coneHeight` | 12 | factor | Lateral scale factor of the cone |
 | LightBurst | `blindDuration` | 60 | frames | Frames enemies remain blinded |
+| LightBurst | `selfDamage` | 1 | HP | HP the player loses each time the flash fires (0 = off) |
 
 ---
 

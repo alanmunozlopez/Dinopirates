@@ -32,6 +32,14 @@ function Player:lightBurst()
         return
     end
 
+    -- Block the flash if its self-damage would leave the player without life.
+    -- The cost ignores invincibility, so it is always real; refuse to fire when lethal.
+    local selfDamage = Config.LightBurst.selfDamage or 0
+    if selfDamage > 0 and (PlayerData.healthPoints - selfDamage) < (PlayerData.danceThresholdHP or 5) then
+        printDebug("🚫 Flash blocked: not enough HP (self-damage would leave the player without life)")
+        return
+    end
+
     printDebug("💡 Light burst activated!")
 
     -- Consume battery
@@ -61,7 +69,15 @@ function Player:lightBurst()
     if #affectedEntities == 0 then
         printDebug("No entities affected by light burst")
     end
-    
+
+    -- The flash burns the player: it always costs HP and ignores invincibility.
+    -- The lethal case was already rejected in the validations above, so this can
+    -- never drop the player below the dance threshold.
+    if selfDamage > 0 then
+        PlayerData.healthPoints -= selfDamage
+        printDebug("🔥 Flash self-damage: -" .. selfDamage .. " HP (now " .. PlayerData.healthPoints .. ")")
+    end
+
     self.lightBurstCooldown = playdate.getCurrentTimeMilliseconds() + Config.LightBurst.cooldown
     self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + Config.LightBurst.displayTime
     

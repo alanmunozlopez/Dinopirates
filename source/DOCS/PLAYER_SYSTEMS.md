@@ -246,6 +246,7 @@ displayTime   = 1000  -- ms the cone remains visible
 coneDistance  = 200   -- px forward (cone projection)
 coneHeight    = 12    -- lateral scale factor
 blindDuration = 60    -- frames enemies remain blind
+selfDamage    = 1     -- HP the player loses each time the flash fires (0 = off)
 ```
 
 ### Activation conditions
@@ -275,6 +276,18 @@ Vertices: (ix, iy), (ix-4h, iy-d), (ix-3.5h, iy-1.1d),
 ```
 
 The polygon is closed with `lightCone:close()`.
+
+### Self-damage
+
+Each time the flash actually fires it costs the player `Config.LightBurst.selfDamage` HP
+(default `1`; set to `0` to disable). The cost is **always real** — it ignores
+invincibility (`self.isInvincible`).
+
+Because it cannot be absorbed, the flash is **refused** when it would be lethal: during the
+validations (right after the battery check) `lightBurst()` returns early if
+`healthPoints - selfDamage` would fall below `PlayerData.danceThresholdHP`. No battery is
+consumed and the cone never appears. As a result the HP deduction that runs after the cone
+resolves can never drop the player into the DanceScene.
 
 ### Entity detection
 
