@@ -25,6 +25,7 @@ local DefaultPlayerData = {
 	battery = 100, 
 	sanity = 100,
 	calories = 100, -- top 500
+	food = 0, -- raw food carried; cooked at a microwave to heal
 	steps = 0,
 	totalSteps = 1000,
 	sanityCounter = 0, -- top 100
@@ -32,6 +33,7 @@ local DefaultPlayerData = {
 	keys = {}, -- Table to store collected keys by number: {[1] = true, [2] = true, ...}
 	canDance = false,
 	readyToShrink = false,
+	readyToCook = false,
 	isTiny = false,
 	isBig = false,
 	playerSize = 10 ,

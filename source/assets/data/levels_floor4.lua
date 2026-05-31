@@ -981,8 +981,8 @@ table.insert(levelsLDTK, {
       {
         id = "CrewMember",
         iid = "0c11a640-fa90-11f0-9f0d-c9ca42f46487",
-        x = 60,
-        y = 44,
+        x = 36,
+        y = 28,
         width = 48,
         height = 48,
         customFields = {
@@ -1038,21 +1038,77 @@ table.insert(levelsLDTK, {
           sourceFeed = 0,
           hasGranted = false
         }
-      }
-    },
-    Computer = {
+      },
       {
-        id = "Computer",
-        iid = "066a22a0-48b0-11f1-b67e-85d567dff68f",
+        id = "NPC",
+        iid = "f9918570-48b0-11f1-b3b6-e7169d94681e",
         x = 364,
         y = 180,
         width = 32,
         height = 32,
         customFields = {
           type = "computer",
-          conditionalScripts = {},
+          conditionalScripts = {
+            "condition:script:grants"
+          },
           sourceFeed = 0,
           hasGranted = false
+        }
+      }
+    },
+    Microwave = {
+      {
+        id = "Microwave",
+        iid = "f4f92e10-48b0-11f1-b3b6-6f4db105fcd8",
+        x = 356,
+        y = 84,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "microwave",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
+    Food = {
+      {
+        id = "Food",
+        iid = "01ab7460-48b0-11f1-b3b6-af7062196e83",
+        x = 292,
+        y = 204,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "food",
+          grants = "hasitemname:bool",
+          isItem = true
+        }
+      },
+      {
+        id = "Food",
+        iid = "029f7150-48b0-11f1-b3b6-d79f21369ebc",
+        x = 324,
+        y = 204,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "food",
+          grants = "hasitemname:bool",
+          isItem = true
+        }
+      },
+      {
+        id = "Food",
+        iid = "03bf1220-48b0-11f1-b3b6-e7ea6e59f7b0",
+        x = 292,
+        y = 172,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "food",
+          grants = "hasitemname:bool",
+          isItem = true
         }
       }
     },

@@ -32,7 +32,7 @@ All props share a single image sheet: `assets/images/props/props`. The Playdate 
 | `xtree-2`        | 12       | Christmas tree variant 2 |
 | `xtree-3`        | 13       | Christmas tree variant 3 |
 | `xtree-4`        | 14       | Christmas tree variant 4 |
-| `microwave`      | 15       | Microwave |
+| `microwave`      | 15       | Microwave — cooking station; stand on it to heal (see section 2.5). Reuses frame 15 as placeholder art |
 | `gifts`          | 16       | Gift pile |
 | `gift`           | 17       | Single gift |
 | `smallTable`     | 18       | Small table |
@@ -63,6 +63,7 @@ When `nocollide == false`, the collision rect is applied according to the `propC
 | Type | collideRect (x, y, w, h) | Notes |
 |------|--------------------------|-------|
 | `minifier` | `{0, 12, 32, 18}` | Low rect so the player can enter from above |
+| `microwave` | `{0, 12, 32, 18}` | Same low rect as the minifier; player stands on it to cook (see section 2.5) |
 | `pneumaticTube` | `{4, 10, 24, 22}` | isTube=true, isEdible=false; no active collideRect because isTube bypasses the default path |
 | `xtree-1` | `{2, 30, 28, 12}` | Collider at the base of the tree |
 | `xtree-2` | `{2, 30, 28, 12}` | Same as xtree-1 |
@@ -99,6 +100,7 @@ The system distinguishes two Z modes:
 - `nocollide == true`
 - `isDestroyed == true`
 - `type == 'minifier'`
+- `type == 'microwave'`
 
 Special exception: the `Tube` type has a static Z fixed at `700` (hardcoded value, not `ZIndex.props`).
 
@@ -448,13 +450,31 @@ Cancellation (B during process):
     -> transformation does not complete, isTiny does not change
 ```
 
+### 2.5 Microwave (type='microwave') — mirrors the minifier
+
+The microwave is a second "stand-on, crank-driven" prop, built on the same pattern as the
+minifier. Instead of resizing the player, it **cooks raw food to restore HP**.
+
+- **PropItem config**: `microwave = { collideRect = {0, 12, 32, 18} }` (same low rect as the
+  minifier), animation frame 15 (placeholder), `isStaticZIndex = true`, listed in the overlap
+  (non-blocking) branch so the player can stand on it.
+- **Arm**: `collisions.lua` sets `self.currentMicrowave = other` and `PlayerData.readyToCook = true`,
+  showing the "Press A" prompt.
+- **A** → `Player:startCooking()` (centers + locks, guards on food > 0 and HP < max).
+- **Crank** → consumes food for HP in the `MazeScene.cranked` locked branch.
+- **B / auto** → `Player:finishCooking()` (full HP or 0 food auto-finishes).
+- **Walk off** → `Player:checkMicrowave()` clears `currentMicrowave` and `readyToCook`.
+
+The microwave has **no per-use state to persist** — it is reusable. Full details, Config, the
+calorie byproduct, and persistence are in `MICROWAVE_AND_FOOD.md`.
+
 ---
 
 ## 3. Items System (Collectibles)
 
 **File**: `entities/items/Items.lua`
 
-`Items` extends `NobleSprite`. It is initialized with `Items:init(x, y, type, keyNumber, grants)`.
+`Items` extends `NobleSprite`. It is initialized with `Items:init(x, y, type, keyNumber, grants, iid)`. The trailing `iid` (LDtk entity id) is stored as `self.iid` and used for per-instance persistence of stackable items such as `food`.
 
 ### 3.1 Common Configuration for All Items
 
@@ -478,6 +498,7 @@ All animations have `frameDuration = 8`.
 | `keycard` | 13-15 | `Player:grabKey(keyNumber)` | `keys[keyNumber] = true` |
 | `itemgift` | 16-18 | `Player:grabItemGift(grants)` | Updates fields in `PlayerData.items` via `processGrants` |
 | `radio` | 19-21 | `Player:grabRadio()` | `items.hasRadio = true` |
+| `food` | 10-12 (placeholder, `-- TODO art`; reuses `notes` frames) | `Player:grabFood()` | `food = min(food + Config.Microwave.perPickup, carryMax)`. Pickup also marks the entity `collected` per `iid` (`findAndCollectItemById`). See `MICROWAVE_AND_FOOD.md` |
 
 There is no `bag` or `tools` type in the current `Items.lua` or `player/items.lua` code — no `grabBag()` or `grabTools()` functions are defined.
 
@@ -530,6 +551,16 @@ Processes the `grants` string and applies it to `PlayerData.items`.
 self:processGrants(grants, PlayerData.skills)
 ```
 Processes the `grants` string and applies it to `PlayerData.skills`.
+
+**food** — `Player:grabFood()`
+```lua
+PlayerData.food = math.min((PlayerData.food or 0) + Config.Microwave.perPickup, Config.Microwave.carryMax)
+```
+Adds `perPickup` (1) raw food to `PlayerData.food`, clamped to `carryMax` (10). Raw food does
+not heal — it is later cooked at a microwave. Unlike other items, the collision branch first
+calls `findAndCollectItemById(other.iid)` to mark the LDtk entity `collected = true`, so each
+placed food is grabbed once and does not respawn (many food items may share a room). See
+`MICROWAVE_AND_FOOD.md`.
 
 ### 3.4 Grants Format (processGrants)
 

@@ -25,6 +25,10 @@ function Player:grabRadio()
   PlayerData.items.hasRadio = true
 end
 
+function Player:grabFood()
+  PlayerData.food = math.min((PlayerData.food or 0) + Config.Microwave.perPickup, Config.Microwave.carryMax)
+end
+
 function Player:processGrants(grants, targetTable)
   if not grants or grants == "" then return end
   

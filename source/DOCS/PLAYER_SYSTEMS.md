@@ -134,6 +134,22 @@ On each tick, in order:
 PlayerData.healthPoints -= (other.damage or 1)
 ```
 
+Health is **capped at `Config.Player.maxHealthPoints` (10)** — the `HealthIndicator` HUD
+draws up to 10 dots. The cap is enforced in three places: an upper clamp in `Player:update()`,
+the microwave cook loop, and the `DanceScene` win heal (all via `math.min`).
+
+### Recovery (microwave + DanceScene)
+
+There are two ways to restore HP:
+
+1. **Winning a `DanceScene`** restores `PlayerData.healedHP` (clamped to the cap) and kills
+   the enemy.
+2. **Cooking food at a microwave** — pick up `food` items, stand on a `microwave` prop, press
+   **A**, and crank: each `Config.Microwave.crankPerFood` ticks consumes 1 food for
+   `+Config.Microwave.hpPerFood` HP (and a `+caloriesPerFood` calorie byproduct). It auto-stops
+   at full HP or 0 food; **B** cancels. The mechanic mirrors the minifier. There is no passive
+   regen and no instant heal pickup. See `MICROWAVE_AND_FOOD.md` for the full system.
+
 ### Combat threshold
 
 If `healthPoints < danceThresholdHP (1)` after taking damage, `self:fight()` is called → transition to `DanceScene`. If `healthPoints >= danceThresholdHP`, the player only receives knockback and temporary invincibility.
@@ -185,6 +201,13 @@ Each time `Player:move()` completes (after `moveWithCollisions`), it calls `Play
 
 `PlayerData.calories` is one of the three inputs to the `DanceScene` difficulty system. In `determineDifficultyUpgrade()` it is normalized against `Config.Dance.caloriesMax = 500` and weighted with `Config.Dance.weightCalories = 0.20` to calculate the probability of scaling the combat level.
 
+Besides the pedometer burn, calories are **gained** by cooking food at a microwave
+(`+Config.Microwave.caloriesPerFood` per food) and by winning a `DanceScene` (`+60`); both
+gains are clamped to `Config.Dance.caloriesMax`. Note the per-tick crank burn
+(`burnCalories(1)`) is skipped while cooking so the cooking byproduct is not cancelled out —
+see `MICROWAVE_AND_FOOD.md`. Because higher calories raise dance difficulty, healing at a
+microwave makes the next fight harder.
+
 ---
 
 ## 6. Transformation (tiny/big)
@@ -230,6 +253,7 @@ end
 - **Pneumatic tubes**: `collisionResponse` allows `riseAbove()` when colliding with `PropItem.isTube == true` only if `isTiny == true`. Otherwise it returns `'freeze'`.
 - **Minifier**: The transformation is triggered from `Player:startMinifying()` using the crank. `PlayerData.actualPlayerSize` goes from `playerSize (10)` to `0` (tiny) or vice versa.
 - **Plungerang blocked**: `Player:plunge()` returns without executing if `PlayerData.isTiny == true`.
+- **Microwave cooking blocked**: `Player:startCooking()` returns without executing if `PlayerData.isTiny == true` (cooking is big-only; the "Press A" prompt is also hidden while tiny).
 
 ---
 

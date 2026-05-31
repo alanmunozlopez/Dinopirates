@@ -404,6 +404,32 @@ function findAndDestroyPropById(propId)
 	end
 end
 
+-- Marks an item entity as collected by its iid (per-instance persistence, e.g. food)
+function findAndCollectItemById(itemId)
+	local room = PlayerData.floor
+	if not levelsLDTK or not levelsLDTK[room] then
+		printDebug("⚠️ findAndCollectItemById: invalid room:", room)
+		return
+	end
+	local entities = levelsLDTK[room].entities
+
+	if not entities then
+		printDebug("⚠️ No entities found in room:", room)
+		return
+	end
+
+	for entityType, entitiesList in pairs(entities) do
+		for _, item in ipairs(entitiesList) do
+			local cf = item.customFields or {}
+			if cf.isItem == true and item.iid == itemId then
+				cf.collected = true
+				printDebug("🍔 Item collected:", itemId, "in", entityType)
+				return
+			end
+		end
+	end
+end
+
 -- Grants an achievement if it hasn't been granted yet
 function Utilities.grantAchievementIfNeeded(name)
 	-- Check if the ID exists in achievementData

@@ -227,6 +227,9 @@ function scene:enter()
 								end
 							end
 						end
+					elseif itemType == "food" then
+						-- Food is stackable: persist per-iid via the 'collected' flag
+						shouldGenerate = cf.collected ~= true
 					elseif itemRequirements[itemType] then
 						local itemPath = itemRequirements[itemType]
 						if itemPath:match("^items%.") then
@@ -239,7 +242,7 @@ function scene:enter()
 
 					if shouldGenerate then
 						printDebug("Generating item:", itemType, "at (", x, ",", y, ")")
-						Items(x, y, itemType, keyNumber, cf.grants)
+						Items(x, y, itemType, keyNumber, cf.grants, item.iid)
 					end
 				end
 			end
@@ -517,6 +520,11 @@ scene.inputHandler = {
 		if PlayerData.readyToShrink == true and PlayerData.isGaming == true then
 			player:startMinifying()
 		end
+
+		-- Trigger microwave cooking if ready
+		if PlayerData.readyToCook == true and PlayerData.isGaming == true then
+			player:startCooking()
+		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
@@ -542,6 +550,8 @@ scene.inputHandler = {
 			inGameEquip:closeMenu()
 		elseif PlayerData.isGaming == false and PlayerData.readyToShrink == true then
 			player:finishMinifying()
+		elseif PlayerData.isGaming == false and PlayerData.readyToCook == true then
+			player:finishCooking()
 		elseif PlayerData.isGaming == true and player.isAlive == true then
 			player:useAbility()
 		end
@@ -687,7 +697,11 @@ scene.inputHandler = {
 			return
 		end
 
-		if ticksValue > 0 then
+		-- Cranking burns calories, EXCEPT while cooking at a microwave:
+		-- cooking's calorie byproduct (Config.Microwave.caloriesPerFood) must be the
+		-- only calorie effect, otherwise this per-tick burn cancels it out.
+		local isCooking = (PlayerData.isGaming == false and PlayerData.readyToCook == true)
+		if ticksValue > 0 and not isCooking then
 			player:burnCalories(1)
 		end
 		
@@ -701,6 +715,24 @@ scene.inputHandler = {
 				end
 			end
 		else
+			-- Handle microwave cooking when locked on a microwave
+			if PlayerData.readyToCook == true then
+				if ticksValue ~= 0 then
+					player.cookProgress = (player.cookProgress or 0) + math.abs(ticksValue)
+					while player.cookProgress >= Config.Microwave.crankPerFood
+							and (PlayerData.food or 0) > 0
+							and PlayerData.healthPoints < Config.Player.maxHealthPoints do
+						player.cookProgress -= Config.Microwave.crankPerFood
+						PlayerData.food -= 1
+						PlayerData.healthPoints = math.min(PlayerData.healthPoints + Config.Microwave.hpPerFood, Config.Player.maxHealthPoints)
+						PlayerData.calories = math.min((PlayerData.calories or 0) + Config.Microwave.caloriesPerFood, Config.Dance.caloriesMax)
+					end
+					-- Auto-finish when full or out of food
+					if PlayerData.healthPoints >= Config.Player.maxHealthPoints or (PlayerData.food or 0) <= 0 then
+						player:finishCooking()
+					end
+				end
+			end
 			-- Handle manual transformation when locked on minifier
 			if PlayerData.readyToShrink == true then
 				if ticksValue ~= 0 then

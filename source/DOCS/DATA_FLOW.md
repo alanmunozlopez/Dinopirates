@@ -26,9 +26,11 @@ or add a feature.
 │    SaveSystem.lua        → overwrites on load                    │
 │    player/movement.lua   → x, y, direction, isActive, battery   │
 │    player/sanity.lua     → sanity, sanityCounter                 │
-│    player/items.lua      → items.*, skills.*, keys[n]           │
+│    player/items.lua      → items.*, skills.*, keys[n], food     │
 │    player/state.lua      → isTiny, isBig, playerSize, floor     │
-│    player/collisions.lua → lastEnemyTouched, readyToShrink      │
+│    player/collisions.lua → lastEnemyTouched, readyToShrink,     │
+│                            readyToCook                           │
+│    MazeScene.cranked     → food, healthPoints, calories (cook)  │
 │    player/lightburst.lua → battery (cost)                        │
 │    MazeScene.lua         → isGaming, isCutscene, floor, room,   │
 │                            actualLevel, actualRoom, actualTilemap│
@@ -138,7 +140,9 @@ Items "bag" / "honk"        → grabBag()
 Items "tools"               → grabTools()
 Items "boots"               → grabBoots()
 Items "plunger"             → grabPlunger()
+Items "food"                → collect by iid, grabFood() [food += perPickup]
 PropItem "minifier"         → readyToShrink=true, show "Press A" HUD
+PropItem "microwave"        → readyToCook=true, show "Press A" HUD [cook to heal]
 PropItem (isTube==true)     → riseAbove() [only if PlayerData.isTiny]
 PropItem (other)            → return 'freeze'
 Door (open / has key)       → prevRoom() + goTo() [scene transition]

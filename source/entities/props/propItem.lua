@@ -58,6 +58,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   local propConfigs = {
     -- Special props
     minifier        = { collideRect = {0, 12, 32, 18} },
+    microwave       = { collideRect = {0, 12, 32, 18} }, -- TODO art: dedicated frame (reuses existing 'microwave' frame 15)
     pneumaticTube   = { isTube = true, isEdible = false, collideRect = {4, 10, 24, 22} },
     
     -- Props with lower colliders (Trees and PC Screens)
@@ -93,7 +94,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   -- Set static Z-index for certain types
   self.isStaticZIndex = false
 
-  if self.nocollide or self.isDestroyed or self.type == 'minifier' then
+  if self.nocollide or self.isDestroyed or self.type == 'minifier' or self.type == 'microwave' then
     self.isStaticZIndex = true
     self:setZIndex(ZIndex.props)
   end

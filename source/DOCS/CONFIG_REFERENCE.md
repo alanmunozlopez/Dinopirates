@@ -75,6 +75,21 @@ Numeric IDs for the Playdate sprite collision system. Each sprite calls `:setGro
 | Player | `triggerCheckDist` | 5 | px | Pixels moved before re-checking trigger overlap |
 | Player | `movementFramesPerAction` | 3 | frames | Movement frames distributed to NPCs/enemies per move |
 | Player | `knockbackDistance` | 2 | px | Push distance when colliding with an enemy |
+| Player | `maxHealthPoints` | 10 | HP | Hard cap on `healthPoints`; HUD draws up to 10 dots. Enforced in `Player:update()`, the cook loop, and the DanceScene win heal |
+
+---
+
+## Config.Microwave — Food Healing
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| Microwave | `hpPerFood` | 1 | HP | HP restored per food cooked (1:1 for now; tune later) |
+| Microwave | `caloriesPerFood` | 1 | calories | Calories gained per food cooked (byproduct; tune later) |
+| Microwave | `carryMax` | 10 | food | Max food the player can carry (`grabFood` clamp) |
+| Microwave | `perPickup` | 1 | food | Food granted per food item picked up |
+| Microwave | `crankPerFood` | 1 | crank ticks | Crank ticks (`getCrankTicks(4)`, ~90° each) to cook 1 food — NOT degrees |
+
+See `MICROWAVE_AND_FOOD.md` for the full system.
 
 ---
 

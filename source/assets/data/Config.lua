@@ -55,6 +55,16 @@ Config.Player = {
     movementFramesPerAction = 3,   -- movement frames distributed to NPCs/enemies per player move
     movementTokensPerAction = 5,   -- movement tokens granted to enemies/crew when a B-ability actually fires
     knockbackDistance       = 2,   -- px pushed on enemy hit
+    maxHealthPoints         = 10,  -- hard cap on healthPoints (HUD draws up to 10 dots)
+}
+
+-- Microwave + Food healing
+Config.Microwave = {
+    hpPerFood       = 1,   -- HP restored per food cooked (1:1 for now; tune later)
+    caloriesPerFood = 1,   -- calories gained per food cooked (byproduct; tune later)
+    carryMax        = 10,  -- max food the player can carry
+    perPickup       = 1,   -- food granted per food item picked up
+    crankPerFood    = 1,   -- crank ticks (getCrankTicks(4)) accumulated to cook 1 food (~90 deg)
 }
 
 -- Dark Reveal skill (hold B + crank in darkness)

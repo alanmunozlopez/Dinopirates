@@ -55,6 +55,8 @@ function Player:init(x, y, speed, Zindex)
     self.direction = PlayerData.direction -- Initialize self.direction
     self.triggerEnteredOnce = false
     self.currentMinifier = nil
+    self.currentMicrowave = nil
+    self.cookProgress = 0
 
     -- Performance: Cache for optimization
     self.lastZIndexY = y

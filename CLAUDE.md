@@ -153,6 +153,7 @@ Detailed system documentation lives in `source/DOCS/`:
 - `SAVE_SYSTEM.md` — persistence layer
 - `PLUNGERANG.md` — projectile mechanics
 - `GRAPPLING_HOOK.md` — charged plungerang in lit rooms: tile-33 grapple, charge/pull, tokens
+- `MICROWAVE_AND_FOOD.md` — pick up food, cook it at a microwave by cranking to heal HP (mirrors the minifier); calorie byproduct, persistence, Config
 - `TITLE_SCENE.md` — TitleScene menu modes, input, Continue/NewGame/Delete flow
 - `CREDITS_SCENE.md` — CreditsScene scrolling system, item types, input
 - `COCKPIT_SCENE.md` — CockpitScene: accelerometer pointer, button layout, sequence matching, fail system

@@ -95,6 +95,9 @@ The in-game menu is purely visual (map + crew hats); the D-pad has no menu actio
 
 3. readyToShrink == true  AND  isGaming == true
    → player:startMinifying()
+
+4. readyToCook == true  AND  isGaming == true   (independent `if`)
+   → player:startCooking()   (microwave — see MICROWAVE_AND_FOOD.md)
 ```
 
 `AButtonHeld` (after holding for 1 second):
@@ -110,6 +113,7 @@ isGaming == true  AND  hasDWatch == true
 | `A` (Down) | `currentTrigger` + `isGaming` | Activate manual trigger |
 | `A` (Down) | `isEquiping` | Confirm skill in menu |
 | `A` (Down) | `readyToShrink` + `isGaming` | Start minification |
+| `A` (Down) | `readyToCook` + `isGaming` + **not tiny** | Start cooking at microwave (`startCooking()`) — big-only |
 | `A` (Hold every frame) | — | No action |
 | **`A` (1 second hold)** | `isGaming` + `hasDWatch` | **Open equipment menu** |
 | `A` (Up) | — | No action |
@@ -128,6 +132,9 @@ isGaming == true  AND  hasDWatch == true
 2. isGaming == false  AND  readyToShrink == true
    → player:finishMinifying()
 
+2b. isGaming == false  AND  readyToCook == true
+   → player:finishCooking()   (cancel/finish microwave cooking)
+
 3. isGaming == true  AND  player.isAlive
    → player:useAbility()   (instant; requires a facing direction — idle does nothing)
        isInDarkness → lightBurst()  (flash)
@@ -142,6 +149,7 @@ actually fires**, not on every B press.
 |---|---|---|
 | `B` (Down) | `!isGaming` + `isEquiping` | Close equipment menu |
 | `B` (Down) | `!isGaming` + `readyToShrink` | Finish minification |
+| `B` (Down) | `!isGaming` + `readyToCook` | Finish/cancel microwave cooking (`finishCooking()`) |
 | `B` (Down) | `isGaming` + alive | Use instant ability — `lightBurst()` (dark) or `plunge()` (lit); requires a direction |
 | `B` (Hold) | `isGaming` + alive, after `holdDelay` | Start charge — `beginDarkCharge()` (dark) or `beginGrappleCharge()` (lit) |
 | `B` (Up) | charge active | End charge — dark reveal / grapple launch (nothing if undercharged) |
@@ -168,9 +176,10 @@ The crank uses `playdate.getCrankTicks(4)` — equivalent to 4 clicks per full r
 | Input | Condition | Action |
 |---|---|---|
 | Rotation (any) | `isDarkCharging` or `isGrappleCharging` | Routes delta to the active charge (`addDarkCrankDelta` / `addGrappleCrankDelta`); returns early, skipping battery charge |
-| Rotation (any direction) | `isAlive == true` | `player:burnCalories(1)` |
+| Positive rotation | `isAlive == true` AND **not** cooking | `player:burnCalories(1)` — **skipped while cooking** (`isGaming==false` + `readyToCook==true`) so the cook calorie byproduct isn't cancelled |
 | Positive rotation | `isGaming` + `battery < 100` + not minifying/tiny | `player:chargeBattery(3)` + refresh shadow |
 | Rotation (any) | `readyToShrink == true` | `player:transformCycle()` |
+| Rotation (any) | `!isGaming` + `readyToCook == true` | Cook food: accumulate `cookProgress`; each `Config.Microwave.crankPerFood` ticks consumes 1 food for `+hpPerFood` HP and `+caloriesPerFood` calories (both clamped); auto-finishes at full HP or 0 food. See `MICROWAVE_AND_FOOD.md` |
 
 Battery charges 3 points per crank tick. Negative crank rotation does not charge (only positive direction charges).
 
@@ -258,7 +267,8 @@ The debug cheat code (`up up up down`) is registered in `main.lua` (commented ou
 AButtonDown:
 ├── isTalking?                → displayDialog()
 ├── currentTrigger + isGaming? → activate manual trigger
-└── readyToShrink + isGaming? → startMinifying()
+├── readyToShrink + isGaming? → startMinifying()
+└── readyToCook + isGaming?   → startCooking()   (microwave)
 
 AButtonHeld (1 sec):
 └── isGaming + hasDWatch      → displayMenu()
@@ -266,6 +276,7 @@ AButtonHeld (1 sec):
 BButtonDown:
 ├── !isGaming + isEquiping    → closeMenu(), isGaming=true
 ├── !isGaming + readyToShrink → finishMinifying()
+├── !isGaming + readyToCook   → finishCooking()   (microwave)
 └── isGaming + isAlive        → useAbility()   (instant; needs a direction)
       ├── isInDarkness → lightBurst()  (flash)
       └── else         → plunge()      (plungerang)

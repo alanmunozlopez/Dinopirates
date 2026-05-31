@@ -28,13 +28,14 @@ PlayerData = deepcopy(DefaultPlayerData) -- resets to default values (without re
 
 | Field | Lua type | Default | Valid range | Who writes | Who reads | Persisted |
 |---|---|---|---|---|---|---|
-| `healthPoints` | number | `3` | 0 – N (no hard max) | `collisions.lua` (Brocorat damage), `DanceScene` (healing on victory) | `collisions.lua` (combat threshold), `HealthIndicator` (HUD) | Yes |
+| `healthPoints` | number | `3` | 0 – `Config.Player.maxHealthPoints` (10, hard cap) | `collisions.lua` (Brocorat damage), `DanceScene` (healing on victory, clamped), `MazeScene.cranked` (microwave cooking, clamped) | `collisions.lua` (combat threshold), `HealthIndicator` (HUD, up to 10 dots), `Player:update()` (upper clamp) | Yes |
 | `danceThresholdHP` | number | `1` | 0 – N | — (constant, never modified at runtime) | `collisions.lua` — when `healthPoints < danceThresholdHP` triggers `fight()` | Yes |
 | `healedHP` | number | `2` | 0 – N | — (constant) | `DanceScene` win — amount of HP to restore | Yes |
 | `battery` | number | `100` | 0 – 100 (forced clamp in `update()`) | `movement.lua` (drain in darkness), `hole.lua` (drain in holes), `lightburst.lua` (cost), `sanity.lua` (charging), `items.lua` (`fillBattery`) | `sanity.lua` (sanity tick), `movement.lua` (reduced speed), `enemy.lua` (AI speed), `crewmember.lua` (AI movement), `lightburst.lua` (validation) | Yes |
 | `sanity` | number | `100` | 0 – 100 (clamp in `sanity.lua`) | `sanity.lua` (periodic tick every 2 s), `state.lua:focus()` (spending) | `sanityHud` (HUD), `sanity.lua` (detects 0 hit) | Yes |
 | `sanityCounter` | number | `0` | 0 – N (no hard limit; `Config.Dance.sanityMax = 100` for normalization) | `sanity.lua` (increments when `sanity` reaches 0) | `DanceScene:determineDifficultyUpgrade()` (weight 0.35), `Utilities.checkSanityAchievements()` | Yes |
-| `calories` | number | `100` | 0 – 500 (semantic; `Config.Dance.caloriesMax = 500`) | `state.lua:burnCalories()` (−10 every 200 steps) | `DanceScene:determineDifficultyUpgrade()` (weight 0.20) | Yes |
+| `calories` | number | `100` | 0 – 500 (`Config.Dance.caloriesMax = 500`, clamped on every gain) | `state.lua:burnCalories()` (−10 every 200 steps), `MazeScene.cranked` (microwave: +`Config.Microwave.caloriesPerFood` per food cooked), `DanceScene` (+60 on win) | `DanceScene:determineDifficultyUpgrade()` (weight 0.20) | Yes |
+| `food` | number | `0` | 0 – `Config.Microwave.carryMax` (10) | `items.lua:grabFood()` (+`perPickup` on pickup, clamped), `MazeScene.cranked` (−1 per food cooked) | `MazeScene.cranked` (cook loop), `state.lua:startCooking()` (entry guard) | Yes |
 | `steps` | number | `0` | 0 – `Config.Pedometer.stepsToTrigger` (200, then resets) | `state.lua:pedometer()` (+0.5 per each `move()`) | `state.lua:pedometer()` (burn threshold) | Yes |
 | `totalSteps` | number | `1000` | 0 – ∞ (lifetime, never resets) | `state.lua:pedometer()` (+0.5 per each `move()`) | — (not used in active logic, potential for achievements) | Yes |
 | `mapPercent` | number | `0` | 0 – 100 | — (no documented active writer) | `Trigger:conditionalScript()` (script conditions) | Yes |
@@ -55,6 +56,7 @@ These flags form the central state machine. **Check before any game logic.** In 
 | `isActive` | boolean | `false` | Player performed an action (turn signal for NPCs) | `player:move()` (at start), `player:chargeBattery()` | `player:update()` (at end of each frame) | No |
 | `isCharging` | boolean | `false` | Crank battery charging in progress | `chargeBattery()` (start of tick) | After completing the charge tick | No |
 | `readyToShrink` | boolean | `false` | Player overlaps minifier prop | `collisions.lua` PropItem "minifier" branch | `player:finishMinifying()`, `player:checkMinifier()` (on overlap exit) | No |
+| `readyToCook` | boolean | `false` | Player overlaps microwave prop | `collisions.lua` PropItem "microwave" branch | `player:checkMicrowave()` (on overlap exit) | Yes (transient; reset by `checkMicrowave()`) |
 | `isTiny` | boolean | `false` | Player in tiny state | `player:shrink()` | `player:grow()` | Yes |
 | `isBig` | boolean | `false` | Player in big state | `player:transformCycle()` | `player:transformCycle()` (toggle) | Yes |
 | `isInDarkness` | boolean | `false` | Current room has darkness/shadow | `MazeScene:enter()` reading `customFields.shadow` | Next `MazeScene:enter()` (always overwritten) | No |
