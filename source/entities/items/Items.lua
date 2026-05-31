@@ -22,7 +22,7 @@ function Items:init(x, y, type, keyNumber, grants, iid)
   self.animation:addState('radio', 19, 21)
   self.animation.radio.frameDuration = 8
   -- TODO art: dedicated food frames; reuse 'notes' frames (10-12) as a placeholder for now
-  self.animation:addState('food', 10, 12)
+  self.animation:addState('food', 22, 24)
   self.animation.food.frameDuration = 8
   self:setSize(32, 32)
   self:setCollideRect(0 ,0, 32, 32)
