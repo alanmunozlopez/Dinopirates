@@ -1049,7 +1049,7 @@ table.insert(levelsLDTK, {
         customFields = {
           type = "computer",
           conditionalScripts = {
-            "condition:script:grants"
+            "true:catWhat"
           },
           sourceFeed = 0,
           hasGranted = false

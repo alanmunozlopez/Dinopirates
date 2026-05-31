@@ -679,6 +679,22 @@ function IsPlayerOnTinyHole(px, py)
 	return false
 end
 
+-- Generic hole check (IntGrid value 3) around a world point, sampling a 3×3 grid
+-- centered on the point. Used by enemies, which are always normal-size and so
+-- treat tinyHole (32) as floor — only real holes (3) block them.
+function IsHoleAt(px, py)
+	local r = 8
+	local offsets = { -r, 0, r }
+	for _, dx in ipairs(offsets) do
+		for _, dy in ipairs(offsets) do
+			if GetTileUnderPlayer(px + dx, py + dy) == Config.Tiles.IntGrid.hole then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 local function formatNumberK(n)
 	if n >= 1000000 then
 		return string.format("%.1fM", n / 1000000):gsub("%.0M", "M")

@@ -148,7 +148,7 @@
 				"customFields": {
 					"type": "computer",
 					"conditionalScripts": [
-						"true:catWhat"
+						"!items.hasLamp:catNoLamp"
 					],
 					"sourceFeed": 0,
 					"hasGranted": false
